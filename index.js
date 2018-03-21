@@ -1,8 +1,7 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
+const pokedex = require('./pokedex.json');
 
 /**
  * ===================================
@@ -24,15 +23,12 @@ app.set('view engine', 'handlebars');
  */
 
 app.get('/:id', (request, response) => {
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = request.params.id;
 
     // find pokemon by id from the pokedex json file
     // (note: find() is a built-in method of JavaScript arrays)
-    let pokemon = obj.pokemon.find((currentPokemon) => {
+    let pokemon = pokedex.pokemon.find((currentPokemon) => {
       return currentPokemon.id === parseInt(inputId, 10);
     });
 
@@ -47,7 +43,6 @@ app.get('/:id', (request, response) => {
       // send html file back with pokemon's data
       response.render('pokemon', context);
     }
-  });
 });
 
 /**
