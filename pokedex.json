@@ -1,9 +1,9 @@
 {
   "pokemon": [
     {
-      "id": "1",
+      "id": 1,
       "num": "001",
-      "name": "Bulbasaro",
+      "name": "Bulbasaur",
       "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
       "height": "0.71 m",
       "weight": "6.9 kg",
@@ -11,8 +11,7 @@
       "candy_count": "25",
       "egg": "2 km",
       "avg_spawns": "69",
-      "spawn_time": "20:00",
-      "submit": "Submit"
+      "spawn_time": "20:00"
     },
     {
       "id": 2,
@@ -1882,20 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": "1",
-      "num": "001",
-      "name": "Bulbasaro",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": "25",
-      "egg": "2 km",
-      "avg_spawns": "69",
-      "spawn_time": "20:00",
-      "submit": "Submit"
     }
   ]
 }

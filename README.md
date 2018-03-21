@@ -2,7 +2,7 @@
 
 We will build our first web app using Node.js and Express - a Pokedex app.
 
-For this exercise, we will continue building our Pokedex web app - setting up our server to accept POST requests to save user-provided data and providing relevant responses.
+For this exercise, we will continue building our Pokedex web app - setting up our server to accept POST requests to save user-provided data. We will serve a form to the user for them to send data to our server to create a new pokemon.
 
 The starter code in this repository builds upon the previous exercise's ([pokedex-express](https://github.com/wdi-sg/pokedex-express)).
 
@@ -19,11 +19,21 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Deliverables
 
-Use the data in `pokedex.json` and return a response with details about the requested Pokemon. Specifically:
+* Expose a new route that intercepts GET requests to `/`, which responds with a HTML page with a `form` that has these fields: `name`, `img`, `height`, and `weight`
 
-* Go through `pokedex.json` to understand how the data is structured. Where are all the pokemon data stored? (As usual, using a JSON parser for human-readable JSON is a good idea. There are many, [here](http://jsonprettyprint.com/) is one.)
+* Point the form to submit data to the root route (`/`) using POST method
 
+* Expose a new route that intercepts POST requests to `/`, which parses the form data, adds default values if they are missing, and saves the new pokemon data into `pokdex.json`
+  * Default values to add: `"id": null`, `"num": null`
+
+* Add a "Sort by name" button to the homepage (`pokemon.handlebars`) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
+  * Try to implement the button as an element within a `form` tag with `action="/"` and `method="POST"`
+
+* Modify your GET `/` logic to handle the new query parameter, returning an HTML page with all the pokemon sorted by their names (whereas previously it was sorted by ID)
 
 ## Further
 
-* Handle the case where an invalid pokemon name is provided (eg. `/names/Deadpool`). Return a HTML page with a `p` tag that says "Could not find information about `<pokemon_name>` - Is that a new pokemon? Gotta catch em' all!" (replace `<pokemon_name>` with the requested for pokemon name)
+* Create a `static/` folder that contains a `css/` folder and a `style.css` within it, and tell Express to make `static/` the folder to look for publicly available assets
+
+* Instead of saving `id` and `num` as `null` values, implement the logic that automatically increments the `id` and `num` of every newly created pokemon
+  * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object should have `"id": 152` and `"num": "152"`
