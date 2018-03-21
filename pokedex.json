@@ -1881,6 +1881,18 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "9999",
+      "num": "9999",
+      "name": "test",
+      "img": "test",
+      "height": "123",
+      "weight": "123",
+      "candy": "test",
+      "egg": "2km",
+      "avg_spawns": "0.01",
+      "spawn_time": "00.00"
     }
   ]
 }
