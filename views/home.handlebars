@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+<body>
+  <form>
+    <input type="hidden" name="sortby" value="name">
+    <input method="GET" action="/" type="submit" value="Sort by name">
+  </form>
+  <ul>
+    {{#each pokemons}}
+    <img src="{{this.img}}" alt="pokemon">
+    <li>{{this.num}}</li>
+    <li>{{this.name}}</li>
+    {{/each}}
+  </ul>
+</body>
+</html>

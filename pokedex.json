@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "1000",
+      "num": "1000",
+      "name": "Jed",
+      "img": "https://pbs.twimg.com/profile_images/378800000824085508/cfbd8f2d37be15cafd4e1ff1b1584832_400x400.jpeg",
+      "height": "178",
+      "weight": "88"
     }
   ]
 }
