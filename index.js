@@ -1,8 +1,10 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
-const jsonfile = require('jsonfile');
 
+const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
+
+const bodyParser = require('body-parser');
 
 /**
  * ===================================
@@ -17,13 +19,81 @@ const app = express();
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(express.static('public'));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+app.get('/', (request, response) => {
+  // send response with some data (a HTML file)
+  jsonfile.readFile(FILE, (err,obj) => {
+    const pokeArray = obj.pokemon;
+    // if(request.query.sortby === "name"){
+    //   pokeArray.sort(function(a,b){
+    //     if(a.name < b.name){
+    //       return -1;
+    //     }
+    //     if(a.name > b.name){
+    //       return 1;
+    //     }
+    //     return 0;
+    //   })
+    // }
+
+    // console.log(pokeArray.name);
+
+    // response.render('home',pokeArray);
+
+    let idArray = [];
+    let namesArray = [];
+    let imageArray = [];
+    let status = false;
+    for(let i=0; i<pokeArray.length; i++){
+      idArray.push(pokeArray[i].name);
+      imageArray.push(pokeArray[i].img);
+      if(request.query.sortby === "name"){
+        namesArray = idArray.sort();
+        status = true;
+      }
+    }
+    let context = {
+      sortId: idArray,
+      sortNames: namesArray,
+      show: status,
+      image: imageArray
+    }
+    response.render('home',context); 
+  });
+});
+
+app.post('/', (request,response) => {
+
+  jsonfile.readFile(FILE, (err,obj) => {
+    let pokeArray = obj.pokemon;
+    request.body.id = (pokeArray.length-1) + 1;
+    request.body.num = (pokeArray.length-1) + 1;
+    console.log(request.body);
+    pokeArray.push(request.body);
+
+      jsonfile.writeFile(FILE,obj,{spaces: 2},(err) => {
+        console.error(err);
+      });
+  });
+});
+
+app.get('/new', (request, response) => {
+  response.render('addPoke');
+});
+
 app.get('/:id', (request, response) => {
+
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
