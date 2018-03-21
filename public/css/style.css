@@ -1,0 +1,21 @@
+body {
+  /* background-color: pink; */
+  font-family: 'Share Tech Mono',
+  monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 30px;
+}
+
+.option {
+  text-decoration-line: none;
+  border: 1px solid #DDDDDD;
+  padding: 5px;
+  margin: 0 20px 20px 20px;
+}

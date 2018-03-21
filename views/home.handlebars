@@ -1,0 +1,13 @@
+<div class="details">
+  {{#each pokeNameArr}}
+  <div class="pokeDiv">
+    <div class="imgDiv">
+      <img src="{{this.img}}">
+    </div>
+    <div class="detailsDiv">
+      <p><a href="/{{this.id}}">{{this.id}}</a></p>
+      <h5>{{this.name}}</h5>
+    </div>
+  </div>
+  {{/each}}
+</div>
