@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Homepage</title>
 
@@ -20,7 +21,7 @@
 
     <div class="d-flex p-2 align-content-center justify-content-center flex-row flex-wrap">
       {{#each pokemons}}
-        <div class="d-flex m-2 align-content-center justify-content-center flex-column poke">
+        <div class="d-flex m-10 align-content-center justify-content-center flex-column poke">
           <img src={{this.img}} alt="">
           <p>#{{this.num}}</p>
           <h1>{{this.name}}</h1>
