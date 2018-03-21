@@ -1881,32 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": 152,
-      "num": 152,
-      "name": "Junwei",
-      "img": "noimg",
-      "height": "16.7",
-      "weight": "56"
-    },
-    {
-      "id": 153,
-      "num": 153,
-      "name": "Jeelin",
-      "img": "img",
-      "height": "165",
-      "weight": "50"
-    },
-    {
-      "id": 154,
-      "num": 154,
-      "name": "zad",
-      "img": "nil",
-      "height": "0",
-      "weight": "0"
     }
-  ],
-  "largestId": 154,
-  "largestNum": 154
+  ]
 }
