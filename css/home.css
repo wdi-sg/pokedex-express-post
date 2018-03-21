@@ -3,7 +3,16 @@ h1{
   text-align: center;
 }
 
+button{
+  margin-bottom: 50px;
+}
+
 .poke{
   width: 20vh;
-  height: 30vh;
+  height: 20vh;
+}
+
+.m-10{
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
