@@ -7,40 +7,78 @@
 <body>
   <ul class="pokemon-list">
     <li class="pokemon-attribute">
-      id:{{pokemon.id}}
+      id: {{pokemon.id}}
     </li>
     <li class="pokemon-attribute">
-      num:{{pokemon.num}}
+      num: {{pokemon.num}}
     </li>
     <li class="pokemon-attribute">
-      name:{{pokemon.name}}
+      name: {{pokemon.name}}
     </li>
     <li class="pokemon-attribute">
-      img:{{pokemon.img}}
+      img: {{pokemon.img}}
     </li>
     <li class="pokemon-attribute">
-      height:{{pokemon.height}}
+      type:
+      <ul>
+      {{#each pokemon.type}}
+        <li>{{this}}</li>
+      {{/each}}
+      </ul>
     </li>
     <li class="pokemon-attribute">
-      weight:{{pokemon.weight}}
+      height: {{pokemon.height}}
     </li>
     <li class="pokemon-attribute">
-      candy:{{pokemon.candy}}
+      weight: {{pokemon.weight}}
     </li>
     <li class="pokemon-attribute">
-      candy_count:{{pokemon.candy_count}}
+      candy: {{pokemon.candy}}
     </li>
     <li class="pokemon-attribute">
-      egg:{{pokemon.egg}}
+      candy_count: {{pokemon.candy_count}}
     </li>
     <li class="pokemon-attribute">
-      avg_spawns:{{pokemon.avg_spawns}}
+      egg: {{pokemon.egg}}
     </li>
     <li class="pokemon-attribute">
-      spawn_time:{{pokemon.spawn_time}}
+      spawn_chance: {{pokemon.chance}}
+    </li>
+    <li class="pokemon-attribute">
+      avg_spawns: {{pokemon.avg_spawns}}
+    </li>
+    <li class="pokemon-attribute">
+      spawn_time: {{pokemon.spawn_time}}
+    </li>
+    <li class="pokemon-attribute">
+      spawn_chance: {{pokemon.spawn_chance}}
+    </li>
+    <li class="pokemon-attribute">
+      multipliers:
+      <ul>
+      {{#each pokemon.multipliers}}
+        <li>{{this}}</li>
+      {{/each}}
+      </ul>
+    </li>
+    <li class="pokemon-attribute">
+      weaknesses:
+      <ul>
+      {{#each pokemon.weaknesses}}
+        <li>{{this}}</li>
+      {{/each}}
+      </ul>
+    </li>
+    <li class="pokemon-attribute">
+      next_evolution:
+      <ul>
+      {{#each pokemon.next_evolution}}
+        <li>num: {{this.num}}</li>
+        <li>name: {{this.name}}</li>
+      {{/each}}
+      </ul>
     </li>
   </ul>
 
 </body>
 </html>
-

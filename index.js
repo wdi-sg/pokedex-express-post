@@ -4,10 +4,6 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
-// post request libs
-const bodyParser = require('body-parser');
-
-
 /**
  * ===================================
  * Configurations and set up
@@ -16,10 +12,6 @@ const bodyParser = require('body-parser');
 
 // Init express app
 const app = express();
-
-
-// post request use
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
@@ -30,59 +22,30 @@ app.set('view engine', 'handlebars');
  * Routes
  * ===================================
  */
-app.get('/new', (request, response) => {
-  // send response with some data (a HTML file)
-  response.render('new');
-});
-
-app.post('/new', (request, response) => {
-
-
-  jsonfile.readFile(FILE, (err, obj) => {
-
-    let new_pokemon = request.body;
-
-    obj.pokemon.push( new_pokemon );
-
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.error(err)
-      response.render('404');
-    });
-  });
-
-
-  // send response with some data (a HTML file)
-});
 
 app.get('/:id', (request, response) => {
-
-    // get my json from the file
+  // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = request.params.id;
 
-    // obj is the pokedex json file
+    // find pokemon by id from the pokedex json file
+    // (note: find() is a built-in method of JavaScript arrays)
+    let pokemon = obj.pokemon.find((currentPokemon) => {
+      return currentPokemon.id === parseInt(inputId, 10);
+    });
 
-    // deal with the request
-    let name = request.params.id;
-
-    let pokemon = null;
-
-    for( let i=0; i<obj.pokemon.length; i++ ){
-      if( obj.pokemon[i].id == request.params.id ){
-        pokemon = obj.pokemon[i];
-      }
-    }
-
-    if( pokemon === null ){
-
+    if (pokemon === undefined) {
+      // send 404 back
       response.render('404');
-    }else{
+    } else {
       let context = {
-        pokemon : pokemon
+        pokemon: pokemon
       };
 
-      // send something back
+      // send html file back with pokemon's data
       response.render('pokemon', context);
-
     }
   });
 });
