@@ -25,7 +25,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Expose a new endpoint that intercepts POST requests to `/`, which parses the form data and saves the new pokemon data into `pokedex.json`
 
-* Add a "Sort by name" button to the homepage (`pokemon.handlebars`) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
+* Add a "Sort by name" button to the homepage (`home.handlebars`) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
   * Try to implement the button as an element within a `form` tag with `action="/"` and `method="GET"` - so you don't have to write an AJAX request in JavaScript
 
 * Modify your GET `/` logic to handle the new query parameter, returning an HTML page with all the pokemon sorted by their names (whereas previously it was sorted by ID)
