@@ -47,17 +47,15 @@ app.get('/', (request, response) => {
   let context = {
     pokemons: []
   }
-  jsonfile.readFile(FILE, (err, obj) => { 
+  jsonfile.readFile(FILE, (err, obj) => {
     let poke_length = obj.pokemon.length;
 
     for (var i = 0; i < poke_length; i++) {
       let poke_object = {};
-      console.log("Current index is ==> " + i);
       poke_object.img = obj.pokemon[i].img;
       poke_object.num = obj.pokemon[i].num;
       poke_object.name = obj.pokemon[i].name;
       context.pokemons.push(poke_object);
-      console.log(context.pokemons);
     }
 
     // now look inside your json file
