@@ -35,10 +35,9 @@ function addNewPokemon(newPokemon) {
 		tmp.push(newPokemon);
 		let result = {pokemon: tmp};
 		jsonfile.writeFile(FILE, result, {spaces: 4}, function(error) {
-			return error;
+			console.error(error);
 		});
 	});
-	return true;
 }
 
 /**
@@ -71,13 +70,8 @@ function postRootHandler (request, response) {
 	};
 	newPokemon.id = ++lastKey;
 	newPokemon.num = getNumFromId(lastKey);
-	let status = addNewPokemon(newPokemon);
-	if (status !== true) {
-		console.error(status);
-		response.send(status);
-	} else {
-		response.send(newPokemon);
-	};
+	addNewPokemon(newPokemon);
+	response.send(newPokemon);
 }
 
 function getRootHandler (request, response) {
@@ -90,6 +84,14 @@ function getRootHandler (request, response) {
 		});
 	}
 	switch (input[0]) {
+		case '':
+			let context = {}, tmp = [];
+			for (let pokemon in pokemonData) {
+				tmp.push(pokemonData[pokemon]);
+			};
+			context.pokemon = tmp;
+			response.render('home', context);
+			break;
 		case 'new':
 			// Render the form
 			response.render('form');
@@ -99,11 +101,12 @@ function getRootHandler (request, response) {
 			if (queryObject.sortby === 'name') {
 				// Sort the pokedex by name
 				pokemonNames.sort();
-				let tmp = [];
+				let context = {}, tmp = [];
 				pokemonNames.forEach(function(e){
-					tmp.push(pokemonData[e])
+					tmp.push(pokemonData[e]);
 				})
-				response.send("Sorted by name");
+				context.pokemon = tmp;
+				response.render('home', context);
 			} else {
 				response.send("Unknown sort criterion");
 			};

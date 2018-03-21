@@ -1,0 +1,22 @@
+form {
+    width: 66%;
+    margin: 0 auto;
+}
+
+label {
+    display: inline-block;
+    width: 10em;
+}
+
+label, input {
+    line-height: 2em;
+    margin-top: 1em;
+}
+
+.btn-submit {
+    display: block;
+    width: 16.5em;
+    margin-top: 1em;
+    color: white;
+    background-color: rgb(7, 98, 121);
+}
