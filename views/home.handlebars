@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Testing a View</title>
+  </head>
+  <body>
+     <!-- fields: id, num, name, img, height, and weight -->
+    <form method="POST" action="/new">
+      id:
+      <input type="text" name="id">
+      num:
+      <input type="text" name="num">
+      name:
+      <input type="text" name="name">
+      img:
+      <input type="text" name="img">
+      height:
+      <input type="text" name="height">
+      weight:
+      <input type="text" name="weight">
+      <input type="submit" value="Submit">
+    </form>
+    <form method="GET" action="/">
+    <button id="sort-by-name">Sort by name</button>
+    </form>
+  </body>
+</html>
