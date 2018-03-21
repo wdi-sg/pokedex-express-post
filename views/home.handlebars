@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Form</title>
+</head>
+<body>
+	<h1>New Pokemon Form</h1><br>
+	<form action="/" method="POST">
+		Id:	<input type="text" name="id" value="" placeholder="Pokemon's Id"><br><br>
+		Num:	<input type="text" name="num" value="" placeholder="Pokemon's Number"><br><br>
+		Name:	<input type="text" name="name" value="" placeholder="Pokemon's Name"><br><br>
+		Image URL:	<input type="text" name="img" value="" placeholder="Pokemon's Image Link"><br><br>
+		Height:	<input type="text" name="height" value="" placeholder="Pokemon's Height"><br><br>
+		Weight:	<input type="text" name="weight" value="" placeholder="Pokemon's Weight"><br><br>
+		Candy: <input type="text" name="candy" value="" placeholder="Pokemon's Candy"><br><br>
+		Egg: <input type="text" name="egg" value="" placeholder="Pokemon's Egg"><br><br>
+		Average Spawns: <input type="text" name="avg_spawns" value="" placeholder="Pokemon's Average Spawns"><br><br>
+		Spawn Time: <input type="text" name="spawn_time" value="" placeholder="Pokemon's Spawn Time"><br><br><br>
+		<input type="submit" value="Submit">
+	</form>
+	
+	<form action="/" method="GET">
+		<button type="submit" name="sortby" value="name">Sort by Name</button>
+	</form>
+
+	<ul>
+		{{#each pokemons}}
+		<img src='{{this.img}}' alt='{{this.name}}'>
+		{{this.num}}
+		{{this.name}}
+		{{/each}}
+	</ul>
+</body>
+</html>
