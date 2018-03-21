@@ -19,11 +19,11 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Deliverables
 
-* Expose a new route that intercepts GET requests to `/`, which responds with a HTML page with a `form` that has these fields: `name`, `img`, `height`, and `weight`
+* Expose a new endpoint that intercepts GET requests to `/`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
 
-* Point the form to submit data to the root route (`/`) using POST method
+* Point the form to submit data to the root route (`/`) using POST method (for the `id` and `num` fields, just input long, random numbers for now)
 
-* Expose a new endpoint that intercepts POST requests to `/`, which parses the form data, adds default values if they are missing, and saves the new pokemon data into `pokedex.json` (default values to add: `"id": null`, `"num": null`)
+* Expose a new endpoint that intercepts POST requests to `/`, which parses the form data and saves the new pokemon data into `pokedex.json`
 
 * Add a "Sort by name" button to the homepage (`pokemon.handlebars`) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
   * Try to implement the button as an element within a `form` tag with `action="/"` and `method="POST"` - so you don't have to write an AJAX request in JavaScript
@@ -32,8 +32,9 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Further
 
-* Instead of saving `id` and `num` as `null` values, implement the logic that automatically increments the `id` and `num` of every newly created pokemon
+* Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that automatically increments the `id` and `num` of every newly created pokemon
   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object should have `"id": 152` and `"num": "152"`
+  * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
 
 * Create a `public/` folder that contains a `css/` folder and a `style.css` within it, and use `app.use(express.static('public'))` tell Express to look into the `public/` folder for assets that should be publicly available (eg. CSS files, JavaScript files, images, etc.)
 
