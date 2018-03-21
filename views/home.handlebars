@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Pokemon</title>
+</head>
+<body>
+  <form action="/" method="get">
+      <button type="submit" name="sortby" value="name">Sort by Name</button>
+      <button type="submit" name="sortby" value="id">Sort by ID</button>
+  </form>
+
+    {{#if show}}
+      <ul>
+        {{#each sortNames}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>  
+    {{else}}
+      <ul>  
+        {{#each sortId}}
+          <li>{{this}}</li>
+        {{/each}}      
+      </ul>
+    {{/if}}
+
+
+</body>
+</html>
