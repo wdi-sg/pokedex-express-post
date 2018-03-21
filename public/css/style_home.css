@@ -39,6 +39,20 @@ a {
     cursor: pointer;
 }
 
+#new {
+    display:block;
+    float:right;
+    text-align: center;
+    border-radius: 6px;
+    background-color: rgb(255, 81, 0);
+    height: 3em;
+    color: white;
+    line-height: 3em;
+    width: 200px;
+    margin: 1.5em 0 1.5em 0;
+    cursor: pointer;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -93,6 +107,10 @@ a {
 
     #btn-sort {
         width: 35%;
+    }
+
+    #new {
+        width: 150px;
     }
 
     .grid-container {
