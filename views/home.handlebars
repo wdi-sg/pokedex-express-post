@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <title>Document</title>
+</head>
+<body>
+      <div class="container-fluid">
+            <div class="row">
+                  <div class="col-12">
+                        <h1>Welcome to the Home Page!</h1> <br>
+                        <button type="button" class="btn btn-primary custom" value="Sort By Name" onclick="window.location.href='?sortby=name'"> Sort By Name! </button>
+                  </div>
+            </div>
+      </div>
+      <div class="container-fluid">
+            <div class="row">
+                        {{#each showPokemon}}
+                        <div class="col-3"><img src="{{img}}"><h4>{{num}}</h4><p>{{name}}</p></div>
+                        {{/each}}
+            </div>
+      </div>
+      
+</body>
+</html>
