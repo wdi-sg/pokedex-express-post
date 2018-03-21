@@ -41,6 +41,30 @@ app.use(bodyParser.urlencoded({
  * Routes
  * ===================================
  */
+ // Handle get request to sort the pokemons by name
+app.get('/', (request, response) => {
+  console.log("Entered get function");
+  let context = {
+    pokemons: []
+  }
+  jsonfile.readFile(FILE, (err, obj) => { 
+    let poke_length = obj.pokemon.length;
+
+    for (var i = 0; i < poke_length; i++) {
+      let poke_object = {};
+      console.log("Current index is ==> " + i);
+      poke_object.img = obj.pokemon[i].img;
+      poke_object.num = obj.pokemon[i].num;
+      poke_object.name = obj.pokemon[i].name;
+      context.pokemons.push(poke_object);
+      console.log(context.pokemons);
+    }
+
+    // now look inside your json file
+    response.render('home', context);
+  });
+ });
+
  // Display form to create new pokemon
  app.get('/new', (request, response) => {
    response.render('newPokemon');
@@ -51,11 +75,8 @@ app.use(bodyParser.urlencoded({
    response.render('home');
  });
 
- // Handle get request to sort the pokemons by name
-
-
  // Handle post request to create new pokemon
- app.post('/', (request, response) => {
+ app.post('/newpokemon', (request, response) => {
    //debug code (output request body)
    console.log(request.body);
 
