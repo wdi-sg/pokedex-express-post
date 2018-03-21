@@ -3,42 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>Pokemon</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <form action="/" method="get">
+    <button type="submit" name="sortby" value="name">Sort by name</button>
+  </form>
   <ul class="pokemon-list">
+    {{#each pokemon}}
+    <img src="{{this.img}}" alt="">
     <li class="pokemon-attribute">
-      id: {{pokemon.id}}
+      id: {{this.id}}
     </li>
     <li class="pokemon-attribute">
-      num: {{pokemon.num}}
+      num: {{this.num}}
     </li>
     <li class="pokemon-attribute">
-      name: {{pokemon.name}}
+      name: {{this.name}}
+    </li>
+    {{!-- <li class="pokemon-attribute">
+      img: {{this.img}}
+    </li> --}}
+    <li class="pokemon-attribute">
+      height: {{this.height}}
     </li>
     <li class="pokemon-attribute">
-      img: {{pokemon.img}}
+      weight: {{this.weight}}
     </li>
     <li class="pokemon-attribute">
-      height: {{pokemon.height}}
+      candy: {{this.candy}}
     </li>
     <li class="pokemon-attribute">
-      weight: {{pokemon.weight}}
+      candy_count: {{this.candy_count}}
     </li>
     <li class="pokemon-attribute">
-      candy: {{pokemon.candy}}
+      egg: {{this.egg}}
     </li>
     <li class="pokemon-attribute">
-      candy_count: {{pokemon.candy_count}}
+      avg_spawns: {{this.avg_spawns}}
     </li>
     <li class="pokemon-attribute">
-      egg: {{pokemon.egg}}
+      spawn_time: {{this.spawn_time}}
     </li>
-    <li class="pokemon-attribute">
-      avg_spawns: {{pokemon.avg_spawns}}
-    </li>
-    <li class="pokemon-attribute">
-      spawn_time: {{pokemon.spawn_time}}
-    </li>
+    <br>
+    {{/each}}
   </ul>
 </body>
 </html>
