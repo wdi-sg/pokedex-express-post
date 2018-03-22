@@ -27,12 +27,12 @@ button{
 
 .image{
 	background-color: #E9D9CF;
-	padding-bottom: 10px;
-	padding-top:5px;
+	padding: 5px 0px 10px 0px;
+	margin-bottom: 10px;
 }
 
 .num{
-	font-size: 15px;
+	font-size: 17px;
 }
 
 .name{
