@@ -57,10 +57,11 @@
       "name": "Charmeleon",
       "img": "http://www.serebii.net/pokemongo/pokemon/005.png",
       "height": "1.09 m",
+      "weight": "19.0 kg",
       "candy": "Charmander Candy",
-      "candy_count": "100",
+      "candy_count": 100,
       "egg": "Not in Eggs",
-      "avg_spawns": "1.2",
+      "avg_spawns": 1.2,
       "spawn_time": "19:00"
     },
     {
@@ -1880,16 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": 152,
-      "num": "152",
-      "name": "junwei",
-      "img": "ni",
-      "height": "nil",
-      "weight": "nil"
     }
-  ],
-  "largestId": 153,
-  "largestNum": 153
+  ]
 }
