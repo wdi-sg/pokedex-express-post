@@ -34,42 +34,23 @@ app.use(express.static('public'));
 app.get('/', (request, response) => {
   // send response with some data (a HTML file)
   jsonfile.readFile(FILE, (err,obj) => {
-    const pokeArray = obj.pokemon;
-    // if(request.query.sortby === "name"){
-    //   pokeArray.sort(function(a,b){
-    //     if(a.name < b.name){
-    //       return -1;
-    //     }
-    //     if(a.name > b.name){
-    //       return 1;
-    //     }
-    //     return 0;
-    //   })
-    // }
-
-    // console.log(pokeArray.name);
-
-    // response.render('home',pokeArray);
-
-    let idArray = [];
-    let namesArray = [];
-    let imageArray = [];
-    let status = false;
-    for(let i=0; i<pokeArray.length; i++){
-      idArray.push(pokeArray[i].name);
-      imageArray.push(pokeArray[i].img);
-      if(request.query.sortby === "name"){
-        namesArray = idArray.sort();
-        status = true;
-      }
+    const pokeArray = obj.pokemon
+    let param = request.query.sortby;
+    if (param == undefined){
+      param = 'id';
     }
+
+    pokeArray.sort((first,second)=>{
+      if(first[param] < second[param]) return -1;
+      if(first[param] > second[param]) return 1;
+      return 0;
+    });
+
     let context = {
-      sortId: idArray,
-      sortNames: namesArray,
-      show: status,
-      image: imageArray
+      pokedex : pokeArray
     }
-    response.render('home',context); 
+    //have to pass in a object not an array for render
+    response.render('home',context);
   });
 });
 

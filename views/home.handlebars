@@ -10,20 +10,23 @@
       <button type="submit" name="sortby" value="id">Sort by ID</button>
   </form>
 
-    {{#if show}}
-      <ul>
-        {{#each sortNames}}
-          <li>{{this}}</li>
+      <div class="container">
+        {{#each pokedex}}
+        <div class="row">
+          <div class = "image">
+            <div>
+              <img src={{this.img}}>
+            </div>
+          </div>
+          <div class = "num">
+              #{{this.num}}
+          </div>
+          <div class = "name">
+              {{this.name}}
+          </div>
+        </div>
         {{/each}}
-      </ul>  
-    {{else}}
-      <ul>  
-        {{#each sortId}}
-          <li>{{this}}</li>
-        {{/each}}      
-      </ul>
-    {{/if}}
-
+      </div>  
 
 </body>
 </html>

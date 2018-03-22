@@ -1,3 +1,8 @@
+form{
+	text-align: center;
+	margin-bottom: 20px;
+}
+
 button{
 	padding: 10px 0px 10px 0px;
 	color: white;
@@ -5,4 +10,31 @@ button{
 	border-radius: 5px;
 	font-size:20px;
 	width:300px;
+}
+
+.container{
+	width:85%;
+	margin:0 auto;
+	text-align: center;
+}
+
+.row{
+	display:inline-block;
+	text-align: center;
+	width:20%;
+	margin-bottom: 20px;
+}
+
+.image{
+	background-color: #E9D9CF;
+	padding-bottom: 10px;
+	padding-top:5px;
+}
+
+.num{
+	font-size: 15px;
+}
+
+.name{
+	font-size: 20px;
 }
