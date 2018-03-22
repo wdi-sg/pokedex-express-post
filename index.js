@@ -82,7 +82,7 @@ app.post('/', (request, response) => {
   newPokemon["num"] = newId.toString();
   Object.assign(newPokemon, request.body);
   pokedex.pokemon.push(newPokemon);
-  jsonfile.writeFile(FILE, pokedex, (err) => {
+  jsonfile.writeFile(FILE, pokedex, {spaces: 2}, (err) => {
     console.log(err);
   })
   response.end("New Pokemon added successfully!");
