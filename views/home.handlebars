@@ -1,48 +1,38 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title>Pokedex</title>
-  </head>
-  <body>
-    <h1>{{ message }}</h1>
-    <ul>
-      {{ weight }}
-    </ul>
-    <form method="GET" action="/">
-      <input type="hidden" name="sortby" value="name" />
-      <button>Sort By Name</button>
-    </form>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Picture</th>
-        <th>Height</th>
-        <th>Weight</th>
-        <th>Candy</th>
-        <th>Candy Count</th>
-        <th>Egg</th>
-        <th>Spwan Chance</th>
-        <th>Avg Spawns</th>
-        <th>Spawn Time</th>
 
-      </tr>
-      {{#each pokedex}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.name}}</td>
-        <td><img src="{{this.img}}"></td>
-        <td>{{this.height}}</td>
-        <td>{{this.weight}}</td>
-        <td>{{this.candy}}</td>
-        <td>{{this.candy_count}}</td>
-        <td>{{this.egg}}</td>
-        <td>{{this.spawn_chance}}</td>
-        <td>{{this.avg_spawns}}</td>
-        <td>{{this.spawn_time}}</td>
-      </tr>
-      {{/each}}
-    </table>
-  </body>
-</html>
+<h1>{{ message }}</h1>
+<ul>
+  {{ weight }}
+</ul>
+<form method="GET" action="/">
+  <button type="submit" name="sortby" value="name">Sort By Name</button>
+  <button type="submit" name="sortby" value="id">Sort By ID</button>
+</form>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Picture</th>
+    <th>Height</th>
+    <th>Weight</th>
+    <th>Candy</th>
+    <th>Candy Count</th>
+    <th>Egg</th>
+    <th>Avg Spawns</th>
+    <th>Spawn Time</th>
+
+  </tr>
+  {{#each pokedex}}
+  <tr>
+    <td>{{this.id}}</td>
+    <td>{{this.name}}</td>
+    <td><img src="{{this.img}}"></td>
+    <td>{{this.height}}</td>
+    <td>{{this.weight}}</td>
+    <td>{{this.candy}}</td>
+    <td>{{this.candy_count}}</td>
+    <td>{{this.egg}}</td>
+    <td>{{this.avg_spawns}}</td>
+    <td>{{this.spawn_time}}</td>
+  </tr>
+  {{/each}}
+</table>

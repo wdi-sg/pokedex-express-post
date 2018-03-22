@@ -1,0 +1,17 @@
+
+
+<form method="GET" action="/home">
+  <button type="submit" name="sortby" value="name">Sort By Name</button>
+  <button type="submit" name="sortby" value="id">Sort By ID</button>
+</form>
+<div class="container">
+  {{#each pokedex}}
+  <div class="pokemon-container">
+    <div class="img-container">
+      <img src="{{this.img}}">
+    </div>
+    <p>#{{ this.num }}</p>
+    <h3>{{ this.name }}</h3>
+  </div>
+  {{/each}}
+</div>

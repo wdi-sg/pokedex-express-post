@@ -2,7 +2,10 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+
 let sorted = true;
+let sortedNum = false;
 
 const FILE = 'pokedex.json';
 
@@ -14,6 +17,18 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+
+// Set handlebars to be the default view engine
+// app.engine('handlebars', handlebars.create().engine);
+app.engine("handlebars", handlebars({ defaultLayout: "main" }));
+app.set('view engine', 'handlebars');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
 // read json file into memory
 const pokedata = jsonfile.readFileSync(FILE);
@@ -35,21 +50,10 @@ for (i=0; i<pokedata.pokemon.length; i++) {
 // update largest id and largest num
 pokedata.largestId = largestID;
 pokedata.largestNum = largestNum;
-console.log("DONE");
+
 // jsonfile.writeFile(FILE, pokedata, {spaces: 2}, (error) => {
 //   console.error(error)
 // });
-
-
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(express.static('public'))
 
 /**
  * ===================================
@@ -65,6 +69,86 @@ app.use(express.static('public'))
    };
    response.render('new', content);
    // response.send(pokedata);
+ });
+
+ app.get('/:id/edit', (request, response) => {
+   let inputId = request.params.id;
+   let pokemon = pokedata.pokemon.find((currentPokemon) => {
+     return currentPokemon.id === parseInt(inputId, 10);
+   })
+   let context = {
+     pokemon
+   };
+   // console.log(pokedata);
+   // console.log(context);
+   response.render('edit', context);
+ });
+
+ app.get('/home', (request, response) => {
+   // console.log("home");
+   // sort ID by defauly
+   let sortBy = request.query.sortby || "";
+   let objs = pokedata.pokemon.slice();
+   // console.log(request.query.sortby, sorted);
+
+   if (sortBy === "name") {
+     objs.sort((a, b) => {
+       if (a.name.toLowerCase() < b.name.toLowerCase())
+         return (sorted ? -1 : 1);
+       if (a.name.toLowerCase() > b.name.toLowerCase())
+         return (sorted ? 1 : -1);
+       return 0;
+     });
+     sorted = !sorted
+   } else if (sortBy === "id") {
+     objs.sort((a, b) => {
+       if (a.id < b.id)
+         return (sortedNum ? -1 : 1);
+       if (a.id > b.id)
+         return (sortedNum ? 1 : -1);
+       return 0;
+     });
+       sortedNum = !sortedNum;
+   };
+
+   let content = { pokedex: objs };
+   response.render('home2', content);
+ });
+
+ app.put('/:id', (request, response) => {
+   // console.log(request.params);
+   // console.log(request.body);
+   let id = request.params.id;
+   // findINDEX
+   let pokemonPosition = pokedata.pokemon.findIndex((currentPokemon) => {
+     return currentPokemon.id === parseInt(id);
+   });
+
+   console.log(pokemonPosition);
+   // force id back to integer
+   request.body.id = parseInt(request.body.id);
+   pokedata.pokemon[pokemonPosition] = request.body;
+
+   jsonfile.writeFile(FILE, pokedata, {spaces: 2}, (error) => {
+     console.error(error)
+   });
+   response.send("pokemon edited!");
+ });
+
+ app.delete('/:id', (req, res) => {
+   let id = req.params.id;
+   let pokemonPosition = pokedata.pokemon.findIndex((currentPokemon) => {
+     return currentPokemon.id === parseInt(id);
+   });
+   console.log(pokemonPosition);
+
+   pokedata.pokemon.splice(pokemonPosition, 1);
+
+   jsonfile.writeFile(FILE, pokedata, {spaces: 2}, (error) => {
+     console.error(error)
+   });
+   res.redirect('home');
+
  });
 
 app.get('/:id', (request, response) => {
@@ -95,9 +179,17 @@ app.get('/:id', (request, response) => {
 });
 
 app.post('/', (request, response) => {
+
+  pokedata.largestId++;
+  pokedata.largestNum++;
+
+  let pokeNum = pokedata.largestNum.toString();
+  while (pokeNum.length < 3) {
+    pokeNum = "0" + pokeNum;
+  }
   let pokemon = {
-    id: pokedata.largestId + 1,
-    num: pokedata.largestNum + 1,
+    id: pokedata.largestId,
+    num: pokeNum,
     name: request.body.name,
     img: request.body.img,
     height: request.body.height,
@@ -111,30 +203,41 @@ app.post('/', (request, response) => {
   jsonfile.writeFile(FILE, pokedata, {spaces: 2}, (error) => {
     console.error(error)
   });
-  response.send("pokemon created");
+  response.redirect("home");
 });
 
 app.get('/', (request, response) => {
-  // sorting function
-  function compare(a, b,) {
-    if (a.name.toLowerCase() < b.name.toLowerCase())
-      return (sorted ? -1 : 1);
-    if (a.name.toLowerCase() > b.name.toLowerCase())
-      return (sorted ? 1 : -1);
-    return 0;
-  }
-
+  // sort ID by defauly
+  let sortBy = request.query.sortby || "id";
   let objs = pokedata.pokemon.slice();
-  console.log(request.query.sortby, sorted);
+  // console.log(request.query.sortby, sorted);
 
-  if (request.query.sortby === "name") {
-    objs.sort(compare);
+  if (sortBy === "name") {
+    objs.sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase())
+        return (sorted ? -1 : 1);
+      if (a.name.toLowerCase() > b.name.toLowerCase())
+        return (sorted ? 1 : -1);
+      return 0;
+    });
     sorted = !sorted
-  }
+  } else if (sortBy === "id") {
+    objs.sort((a, b) => {
+      if (a.id < b.id)
+        return (sortedNum ? -1 : 1);
+      if (a.id > b.id)
+        return (sortedNum ? 1 : -1);
+      return 0;
+    });
+      sortedNum = !sortedNum;
+  };
 
   let content = { pokedex: objs };
   response.render('home', content);
 });
+
+
+
 
 
 /**
