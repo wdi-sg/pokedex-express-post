@@ -12,15 +12,11 @@
   </head>
   <body>
     <h1>Welcome to the online Pokedex!</h1>
+    
     <br>
-    <div class="d-flex align-content-center justify-content-center flex-row">
-      <form method="get" action="/?sortby=name">
-        <button type="submit" value="Submit" class="btn btn-primary">Sort By Name</button>
-      </form>
-    </div>
 
     <div class="d-flex p-2 align-content-center justify-content-center flex-row flex-wrap">
-      {{#each pokemons}}
+      {{#each sortedPokemons}}
         <div class="d-flex m-10 align-content-center justify-content-center flex-column poke">
           <img src={{this.img}} alt="">
           <p>#{{this.num}}</p>
