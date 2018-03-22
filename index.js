@@ -111,7 +111,7 @@ function postRootHandler(request, response) {
 	newPokemon.id = ++lastKey; // increment the lastKey value, THEN set the new pokemon's ID to it
 	newPokemon.num = getNumFromId(lastKey); // this utility function generates a 3 character string from a digit, i.e. 1 becomes "001"
 	addNewPokemon(newPokemon); // this utility function adds a new object to the roster of pokemons in memory, then writes it to disk
-	response.send(newPokemon);
+	response.location('/');
 }
 
 function getHome(request, response) {
