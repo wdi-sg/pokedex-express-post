@@ -47,6 +47,55 @@ app.use(cookieParser())
  * Routes
  * ===================================
  */
+ // Handle get request to sort the pokemons by their name
+ app.get('/', (request, response) => {
+   // // get the currently set cookie
+   // var visits = request.cookies['visits'];
+   // let myname = "Edmundcjj";
+   //
+   // // see if there is a cookie
+   // if (visits === undefined) {
+   //
+   //   // set a default value if it doesn't exist
+   //   visits = 1;
+   // } else {
+   //
+   //   // if a cookie exists, make a value thats 1 bigger
+   //   visits = parseInt(visits) + 1;
+   // }
+   console.log("Entered handler to display pokemons based on their name");
+   if (request.query.sortby === "name") {
+     let context = {
+       sortedPokemons: []
+     }
+     // Read the file and sort the pokemons by their name in alphabetical order
+     jsonfile.readFile(FILE, (err, obj) => {
+       // sort the pokedex data
+       let sorted_array = obj.pokemon.sort(function(a, b) {
+           var textA = a.name.toUpperCase();
+           var textB = b.name.toUpperCase();
+           return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+       });
+
+       let poke_length = sorted_array.length;
+
+       for (var i = 0; i < poke_length; i++) {
+         let poke_object = {};
+         poke_object.img = sorted_array[i].img;
+         poke_object.num = sorted_array[i].num;
+         poke_object.name = sorted_array[i].name;
+         context.sortedPokemons.push(poke_object);
+       }
+
+       // Render the sorted pokemons by name to the html page
+       response.render('sortedPokemons', context);
+     });
+   }
+   // set the cookie
+   // response.cookie('visits', visits);
+   // response.cookie('myname', myname);
+ });
+
  // Handle get request to sort the pokemons by their num and id
  app.get('/home', (request, response) => {
    console.log("Entered handler to display pokemons based on their id");
@@ -70,54 +119,6 @@ app.use(cookieParser())
    });
  });
 
- // Handle get request to sort the pokemons by their name
-app.get('/', (request, response) => {
-  console.log("Entered handler to display pokemons based on their name");
-  // // get the currently set cookie
-  // var visits = request.cookies['visits'];
-  // let myname = "Edmundcjj";
-  //
-  // // see if there is a cookie
-  // if (visits === undefined) {
-  //
-  //   // set a default value if it doesn't exist
-  //   visits = 1;
-  // } else {
-  //
-  //   // if a cookie exists, make a value thats 1 bigger
-  //   visits = parseInt(visits) + 1;
-  // }
-
-  let context = {
-    sortedPokemons: []
-  }
-  // Read the file and sort the pokemons by their name in alphabetical order
-  jsonfile.readFile(FILE, (err, obj) => {
-    // sort the pokedex data
-    let sorted_array = obj.pokemon.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    });
-
-    let poke_length = sorted_array.length;
-
-    for (var i = 0; i < poke_length; i++) {
-      let poke_object = {};
-      poke_object.img = sorted_array[i].img;
-      poke_object.num = sorted_array[i].num;
-      poke_object.name = sorted_array[i].name;
-      context.sortedPokemons.push(poke_object);
-    }
-
-    // Render the sorted pokemons by name to the html page
-    response.render('sortedPokemons', context);
-  });
-
-  // set the cookie
-  // response.cookie('visits', visits);
-  // response.cookie('myname', myname);
-});
 
 // Display form to create new pokemon
 app.get('/new', (request, response) => {
