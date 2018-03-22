@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to the Pokedex!</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="css/style_home.css">
+    <script src="js/script_home.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="/sort?sortby=name"><div id="btn-sort">Sort by Name</div></a>
+        <a href="/new"><div id="new">New Pokemon</div></a>
+        <br>
+        <div class="grid-container">
+            {{#each pokemon}}
+            <a href="/{{this.name}}">
+                <div class="pokemon">
+                    <img src="{{this.img}}" alt="">
+                    <div class="pokemon-number">{{this.num}}</div>
+                    <div class="pokemon-name">{{this.name}}</div>
+                </div>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+    <div id="btn-reveal">
+        See more...
+    </div>
+</body>
+
+</html>
