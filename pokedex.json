@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Sharpedo",
+      "img": "https://cdn.bulbagarden.net/upload/a/a8/319Sharpedo.png",
+      "height": "1.8m",
+      "weight": "88.9kg"
     }
   ]
 }

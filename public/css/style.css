@@ -1,0 +1,82 @@
+h1 {
+  font-size: 3rem;
+}
+
+body {
+  padding: 20px 20px;
+  text-align: center;
+}
+
+button {
+  width: 200px;
+  height: 50px;
+  background-color: dodgerblue;
+  color: white;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-top: 20px;
+  margin-right: 20px;
+  outline: none;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 50px 30px;
+  margin: 50px auto;
+  width: 80%;
+  padding: 0;
+  justify-items: center;
+}
+
+.image-container {
+    border-radius: 5px;
+    background-color: #EEE;
+    width: 180px;
+    height: 220px;
+}
+
+.image {
+  width: 100%;
+}
+
+.num, .name {
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+}
+
+.num {
+  color: slategrey;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+@media screen and (max-width: 1050px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <title>Pokedex</title>
+</head>
+<body>
+  <h1>Pokedex</h1>
+  <form method="GET" action="/">
+    <button type="submit" value="name" name="sortby">Sort by Name</button>
+    <button type="submit" value="id" name="sortby">Sort by ID</button>
+  </form>
+  <ul class="grid-container">
+    {{#each pokemon}}
+    <div class="grid-item">
+      <div class="image-container">
+        <img class="image" src="{{this.img}}">
+      </div>
+      <p class="num">#{{this.num}}</p>
+      <p class="name">{{this.name}}</p>
+    </div>
+    {{/each}}
+  </ul>
+</body>
+</html>
