@@ -6,10 +6,10 @@
   <body>
      <!-- fields: id, num, name, img, height, and weight -->
     <form method="POST" action="/new">
-      id:
+      <!-- id:
       <input type="text" name="id">
       num:
-      <input type="text" name="num">
+      <input type="text" name="num"> -->
       name:
       <input type="text" name="name">
       img:
@@ -21,7 +21,19 @@
       <input type="submit" value="Submit">
     </form>
     <form method="GET" action="/">
-    <button id="sort-by-name">Sort by name</button>
+    <button value="name" name="sortby">Sort by name</button>
+    <button value="id" name="sortby">Sort by id</button>
     </form>
+
+    <!-- add all the images of the pokemons here  -->
+    <!-- {{#if homepage}}
+    <h1>A list of all pokemons of type: {{type}}</h1>
+    <ul>
+      {{#each pokelist}}
+        <li>{{this.name}}</li>
+      {{/each}}
+    </ul>
+    {{/if}} -->
+
   </body>
 </html>
