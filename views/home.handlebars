@@ -1,0 +1,15 @@
+<html>
+	<body>
+		<h1>Welcome to the Online Pokedex</h1>
+		<h2>List of pokemons</h2>
+
+		<ul class="pokemon_list">
+			{{#each pokemon}}
+    			<li><a href="/{{this.id}}">
+    			{{this.name}}
+    			</a></li>
+  		 	{{/each}}
+		</ul>
+
+	</body>
+</html>
