@@ -1,6 +1,7 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
+const bodyParser = require('body-parser');
 
 const FILE = 'pokedex.json';
 
@@ -17,11 +18,21 @@ const app = express();
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+app.get('/new', (request, response) =>{
+  jsonfile.readFile(FILE, (err, obj) =>{
+    let count = obj.pokemon.length+1
+    response.render('new', { id : count, num : count});
+  });
+});
 
 app.get('/:id', (request, response) => {
   // get json from specified file
@@ -33,10 +44,10 @@ app.get('/:id', (request, response) => {
     // find pokemon by id from the pokedex json file
     // (note: find() is a built-in method of JavaScript arrays)
     let pokemon = obj.pokemon.find((currentPokemon) => {
-      return currentPokemon.id === parseInt(inputId, 10);
+      return currentPokemon.id == parseInt(inputId, 10);
     });
 
-    if (pokemon === undefined) {
+    if (pokemon == undefined) {
       // send 404 back
       response.render('404');
     } else {
@@ -47,6 +58,31 @@ app.get('/:id', (request, response) => {
       // send html file back with pokemon's data
       response.render('pokemon', context);
     }
+  });
+});
+
+app.get('/', (request,response) => {
+  jsonfile.readFile(FILE, (err,obj) => {
+    let pokedex = obj; 
+    response.render('home', { pokemon: pokedex.pokemon } );
+  // NOTE that render only accepts an object... sigh..
+  });
+});
+
+app.post('/', (request, response) => {
+  jsonfile.readFile(FILE, (err,obj)=>{
+
+    let formInput = request.body;
+
+    obj.pokemon.push(formInput);
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err);
+
+      // now look inside your json file
+      response.render('home', obj );
+      console.log(obj);
+    });
   });
 });
 
