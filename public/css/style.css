@@ -1,0 +1,49 @@
+form {
+	text-align: center;
+}
+
+h1 {
+	text-align: center;
+	padding-top: 20px;
+}
+
+img {
+	background-color: #D3D3D3;
+	padding: 10px;
+
+}
+
+div {
+	text-align: center;
+}
+.pokemon-item {
+	font-family: 'Roboto', sans-serif;
+	text-align: center;
+	display: inline-block;
+	height: 100%;
+
+}
+
+.pokemon-id {
+	background-color: white;
+}
+
+.id-number {
+	color: grey;
+	font-size: 10px;
+	text-align: left;
+
+}
+
+.name {
+	font-size: 13px;
+	font-weight: 800;
+	text-align: left;
+	margin-top: -10px;
+}
+
+.btn-primary  {
+	width: 200px;
+	margin: 5px;
+
+}

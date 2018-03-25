@@ -2,43 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pokemon</title>
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <title>Pokedex</title>
 </head>
 <body>
+<div>
+  <h1>Catch them if you can!</h1>
+  <form method="GET" action="/">
+  <div>
+    <button class="btn-primary rounded" type="submit" name="sortby" value="name">Sort by name
+    </button>
+  </div>
+  <div>
+    <button class="btn-primary rounded" type="submit" name="sortby" value="id">Sort by id
+    </button>
+  </div>
+</form>
+</div>
+  
+<div class="container">
+{{# each pokemon}}
+<div class="pokemon-item col-3 justify-content-md-center">  
+  
+  <img class="pokemon-attribute rounded" src={{img}} />
+    
+    <div class="pokemon-id">
+      <p class="id-number">#{{id}}
+        </p>
+      <p class="name">{{name}}
+      </p>
+    </div>
+</div>
+  {{/each}}
+</div>
+
+
+
+
+<!-- {{# each pokemon}}
+<div>  
   <ul class="pokemon-list">
     <li class="pokemon-attribute">
-      id: {{pokemon.id}}
+      id: {{id}}
     </li>
     <li class="pokemon-attribute">
-      num: {{pokemon.num}}
+      num: {{num}}
     </li>
     <li class="pokemon-attribute">
-      name: {{pokemon.name}}
+      name: {{name}}
     </li>
     <li class="pokemon-attribute">
-      img: {{pokemon.img}}
+      <img src={{img}} />
     </li>
     <li class="pokemon-attribute">
-      height: {{pokemon.height}}
+      height: {{height}}
     </li>
     <li class="pokemon-attribute">
-      weight: {{pokemon.weight}}
+      weight: {{weight}}
     </li>
     <li class="pokemon-attribute">
-      candy: {{pokemon.candy}}
+      candy: {{candy}}
     </li>
     <li class="pokemon-attribute">
-      candy_count: {{pokemon.candy_count}}
+      candy_count: {{candy_count}}
     </li>
     <li class="pokemon-attribute">
-      egg: {{pokemon.egg}}
+      egg: {{egg}}
     </li>
     <li class="pokemon-attribute">
-      avg_spawns: {{pokemon.avg_spawns}}
+      avg_spawns: {{avg_spawns}}
     </li>
     <li class="pokemon-attribute">
-      spawn_time: {{pokemon.spawn_time}}
+      spawn_time: {{spawn_time}}
     </li>
   </ul>
+</div>
+</div>
+  {{/each}} -->
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
