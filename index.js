@@ -33,7 +33,6 @@ let handleRequestId =(request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = request.params.id;
-
     // find pokemon by id from the pokedex json file
     // (note: find() is a built-in method of JavaScript arrays)
                                                                       //###THIS WOULD WORK TOO###
