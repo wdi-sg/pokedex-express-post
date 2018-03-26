@@ -76,12 +76,26 @@ app.get('/', (request, response) => {
     if (sortby !== undefined) {
       if (sortby === "name") {
         obj.pokemon.sort(function(a, b) {
-          
+          var nameA = a.name.toLowerCase();
+          var nameB = b.name.toLowerCase();
+          return (nameA < nameB) ? -1 : (nameA > nameB) ? 1:0;
         })
       }
+        else if (sortby === "id") {
+          obj.pokemon.sort(function (a, b) {
+            return (a.id - b.id);
+      })
+    } 
+    response.send(obj);
     }
+    jsonfile.writeFile(FILE, obj, {spaces: 4}, function(error) {
+      console.exception(err);  
+    })
   })
+  response.render('home');
 }) 
+
+   
 
 
 /**
