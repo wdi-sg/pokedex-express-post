@@ -1,6 +1,7 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const jsonfile = require('jsonfile');
+const bodyParser = require('body-parser');
 
 const FILE = 'pokedex.json';
 
@@ -13,6 +14,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// tell your app to use the body parser module
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+})); 
+
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
@@ -23,6 +30,12 @@ app.set('view engine', 'handlebars');
  * ===================================
  */
 
+// Qns1: Expose a new endpoint that intercepts GET requests to /new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
+app.get('/new', (request, response) => {
+  response.render('pokemon'); // i overwrite the given handlebar file
+})
+
+// Qns2: Point the form to submit data to the root route (/) using POST method (for the id and num fields, just input long, random numbers for now)
 app.get('/:id', (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -49,6 +62,27 @@ app.get('/:id', (request, response) => {
     }
   });
 });
+
+// online given solution to sorting
+// objArray.sort(function(a, b) {
+//     var textA = a.DepartmentName.toUpperCase();
+//     var textB = b.DepartmentName.toUpperCase();
+//     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+// });
+
+app.get('/', (request, response) => {
+  var sortby = request.query.sortby // found this online, request.params.sortby don't work
+  jsonfile.readFile(FILE, function(err,obj) {
+    if (sortby !== undefined) {
+      if (sortby === "name") {
+        obj.pokemon.sort(function(a, b) {
+          
+        })
+      }
+    }
+  })
+}) 
+
 
 /**
  * ===================================
