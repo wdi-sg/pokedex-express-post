@@ -92,7 +92,7 @@ app.get('/', (request, response) => {
       console.exception(err);  
     })
   })
-  response.render('home');
+  response.render('pokemon');
 }) 
 
    
