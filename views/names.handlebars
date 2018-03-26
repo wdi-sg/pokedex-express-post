@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to the online Pokedex!</title>
+  </head>
+  <body style="background: url('https://wallpapers.walldevil.com/wallpapers/a89/preview/pikachu-pokemon.jpg') no-repeat right bottom fixed; background-size: cover; ">
+	<div class ="listPics" style="max-width: 800px; margin:0 auto;">
+	<h1>Welcome to the online Pokedex!</h1>
+  <div style="width: 400px;">
+   {{#if notFound}}
+  <p>Could not find information about {{request}} - Is that a new pokemon? Gotta catch em' all!</p>
+ {{else}}
+  <div style="float:right"><img src="{{img}}"></div>
+  <h2>{{name}}</h2>
+  <ul>
+  <li>ID: {{id}}</li>
+  <li>Number: {{num}}</li>
+  <li>Type: {{#each type}}{{this}}, {{/each}}</li>
+  <li>Height: {{height}}</li>
+  <li>Weight: {{weight}}</li>
+  <li>Weakness: {{#each weaknesses}}{{this}}, {{/each}}</lu>
+  <li>Evolution: {{#each next_evolution}}<a href = "{{this.name}}">{{this.name}}</a>, {{/each}}</li>
+  </ul>
+ {{/if}} 
+    </div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to the online Pokedex!</title>
+  </head>
+  <body style="background: url('https://wallpapers.walldevil.com/wallpapers/a89/preview/pikachu-pokemon.jpg') no-repeat right bottom fixed; background-size: cover; ">
+	<div class ="listPics" style="max-width: 800px; margin:0 auto;">
+	<h1>Welcome to the online Pokedex!</h1>
+	<form action = "/" method = "GET"><input type="hidden" name="sortby" value = "name"><input type="submit" value="Sort by Name"></form>
+  <br>
+  {{#each pokemons}}
+    <div style= "width:180px;float:left;margin-right: 20px; text-align: center; "><a href = "names/{{this.name}}"><div style="padding:20px 5px 40px 5px; background-color: #f0f0f0;"><img style = "width: 140px; height: 140px;" src="{{this.img}}"></a></div><div style="text-align: left;"><br>#{{this.num}}<h3>{{this.name}}<br><br></h3></div></div>
+    {{/each}}
+    </div>
+  </body>
+</html>
