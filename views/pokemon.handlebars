@@ -5,6 +5,31 @@
   <title>Pokemon</title>
 </head>
 <body>
+  <h1>Hello, Welcome to Pokedex!</h1>
+  
+  <form method="POST" action="/new">
+  id: <br>
+  <input type="text" name="id">
+  <br>
+  num: <br>
+  <input type="text" name="num">
+  <br>
+  name: <br>
+  <input type="text" name="name">
+  <br>
+  img: <br>
+  <input type="text" name="img">
+  <br>
+  height: <br>
+  <input type="text" name="height">
+  <br>
+  weight: <br>
+  <input type="text" name="weight">
+  <br>
+  <br>
+  <input type="submit" value="Submit">
+</form>
+
   <ul class="pokemon-list">
     <li class="pokemon-attribute">
       id: {{pokemon.id}}
