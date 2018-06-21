@@ -1,5 +1,5 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
+const reactEngine = require('express-react-views').createEngine();
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
@@ -13,9 +13,14 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-// Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
-app.set('view engine', 'handlebars');
+// this line below, sets a layout look to your express project
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets jsx to be the default view engine
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -24,6 +29,7 @@ app.set('view engine', 'handlebars');
  */
 
 app.get('/:id', (request, response) => {
+
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
@@ -38,9 +44,9 @@ app.get('/:id', (request, response) => {
 
     if (pokemon === undefined) {
       // send 404 back
-      response.render('404');
+      response.render('404', {path: request.path} );
     } else {
-      let context = {
+      const context = {
         pokemon: pokemon
       };
 
@@ -48,6 +54,10 @@ app.get('/:id', (request, response) => {
       response.render('pokemon', context);
     }
   });
+});
+
+app.get('/', (request, response) => {
+  response.send("yay");
 });
 
 /**
