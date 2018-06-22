@@ -1,6 +1,6 @@
-# Pokedex Express App (with POST request)
+# Pokedex Express App (with CRUD)
 
-We will build our first web app using Node.js and Express - a Pokedex app.
+We will build a web app using Node.js and Express - a Pokedex app.
 
 For this exercise, we will continue building our Pokedex web app - setting up our server to accept POST requests to save user-provided data. We will serve a form to the user for them to send data to our server to create a new pokemon.
 
@@ -19,25 +19,29 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Deliverables
 
-* Expose a new endpoint that intercepts GET requests to `/new`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
+* Expose a new endpoint that intercepts GET requests to `/pokemon/new`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
 
-* Point the form to submit data to the root route (`/`) using POST method (for the `id` and `num` fields, just input long, random numbers for now)
+* Point the form to submit data to the (`/pokemon`) route using POST method
 
-* Expose a new endpoint that intercepts POST requests to `/`, which parses the form data and saves the new pokemon data into `pokedex.json`
+* (for the `id` and `num` fields, for now, the user will simply choose a number. Obviously if they happen to pick an id that already exists, they will have a bad time. We will have the tools to correct this soon)
 
-* Add a "Sort by name" button to the homepage (`home.handlebars`) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
+* Expose a new endpoint that accepts POST requests to `/pokemon`, which parses the form data and saves the new pokemon data into `pokedex.json`
+
+* Create a `public/` folder, and use `app.use(express.static('public'))` tell Express to look into the `public/` folder for assets that should be publicly available static files
+
+* in the public folder put the HTML form that you will use to make the post request
+
+## Further
+
+* create the ability to edit and delete pokemon from the json file
+
+* Add a "Sort by name" button to the homepage (`/` route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name"
   * Try to implement the button as an element within a `form` tag with `action="/"` and `method="GET"` - so you don't have to write an AJAX request in JavaScript
 
 * Modify your GET `/` logic to handle the new query parameter, returning an HTML page with all the pokemon sorted by their names (whereas previously it was sorted by ID)
 
-## Further
-
-* Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that automatically increments the `id` and `num` of every newly created pokemon
-  * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object should have `"id": 152` and `"num": "152"`
+* Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
+  * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object could have `"id": 152` and `"num": "152"`
   * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
+  * are there any other ways to make a unique id for something? Remember that it is technically possible for 2 requests to be made to your server at almost the exact same time.
 
-* Create a `public/` folder that contains a `css/` folder and a `style.css` within it, and use `app.use(express.static('public'))` tell Express to look into the `public/` folder for assets that should be publicly available (eg. CSS files, JavaScript files, images, etc.)
-
-* Style your homepage according to this screenshot (your images may look different)
-
-![screenshot](pokedex-screenshot.png)

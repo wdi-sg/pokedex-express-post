@@ -1,5 +1,4 @@
 const express = require('express');
-const reactEngine = require('express-react-views').createEngine();
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
@@ -12,15 +11,6 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
-
-// this line below, sets a layout look to your express project
-app.engine('jsx', reactEngine);
-
-// this tells express where to look for the view files
-app.set('views', __dirname + '/views');
-
-// this line sets jsx to be the default view engine
-app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -43,15 +33,13 @@ app.get('/:id', (request, response) => {
     });
 
     if (pokemon === undefined) {
-      // send 404 back
-      response.render('404', {path: request.path} );
-    } else {
-      const context = {
-        pokemon: pokemon
-      };
 
-      // send html file back with pokemon's data
-      response.render('pokemon', context);
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      response.send(pokemon);
     }
   });
 });
