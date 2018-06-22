@@ -18,8 +18,9 @@ The starter code in this repository builds upon the previous exercise's ([pokede
 The comments in this file are deliberately verbose meant to orientate you to an Express app for the first time. Feel free to remove any or all comments.
 
 ## Deliverables
+* Create a `public/` folder, and use `app.use(express.static('public'))` tell Express to look into the `public/` folder for assets that should be publicly available static files
 
-* Expose a new endpoint that intercepts GET requests to `/pokemon/new`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
+* Create an HTML file in the public folder: `/pokemonnew.html`. It contains a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
 
 * Point the form to submit data to the (`/pokemon`) route using POST method
 
@@ -27,9 +28,6 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Expose a new endpoint that accepts POST requests to `/pokemon`, which parses the form data and saves the new pokemon data into `pokedex.json`
 
-* Create a `public/` folder, and use `app.use(express.static('public'))` tell Express to look into the `public/` folder for assets that should be publicly available static files
-
-* in the public folder put the HTML form that you will use to make the post request
 
 ## Further
 
