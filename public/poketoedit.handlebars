@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit The Pokemon</title>
+</head>
+
+<body>
+    <form method="POST" action="/pokemon/{{id}}/edit">
+        <input type="hidden" name="_method" value="PUT">
+        <div>
+            <label>ID</label>
+            <input type="text" name="id" value={{id}}>
+        </div>
+        <div>
+            <label>Number</label>
+            <input type="text" name="num" value={{num}}>
+        </div>
+        <div>
+            <label>Name</label>
+            <input type="text" name="name" value={{name}}>
+        </div>
+        <div>
+            <label>Image</label>
+            <input type="text" name="img" value={{img}}>
+        </div>
+        <div>
+            <label>Height</label>
+            <input type="text" name="height" value={{height}}>
+        </div>
+        <div>
+            <label>Weight</label>
+            <input type="text" name="weight" value={{weight}}>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</body>
+
+</html>
