@@ -1,5 +1,9 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+const path = require('path');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const myModule = require('./my-module.js')
 
 const FILE = 'pokedex.json';
 
@@ -12,41 +16,24 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.set('view engine', 'ejs');
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = request.params.id;
-
-    // find pokemon by id from the pokedex json file
-    // (note: find() is a built-in method of JavaScript arrays)
-    let pokemon = obj.pokemon.find((currentPokemon) => {
-      return currentPokemon.id === parseInt(inputId, 10);
-    });
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-});
-
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+app.get('/', myModule.rootPath);
+app.get('/pokemon/new', myModule.newPokemon);
+app.post('/pokemon', myModule.savePokemon);
+app.get('/:id', myModule.viewPokemon);
+app.put('/:id/update', myModule.updatePokemon);
+app.get('/:id/delete', myModule.deletePokemon);
+app.delete('/:id/delete-confirm', myModule.confirmDeletePokemon);
 
 /**
  * ===================================

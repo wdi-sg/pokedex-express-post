@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+  </head>
+  <body>
+    <% include ../partials/navbar  %>
+
+    <h3>Pokedex</h3>
+    <form action="/" method="get">
+      <input type="hidden" name="sortby" value="name">
+      <input type="submit" value="Sort By Name">
+    </form>
+    <ul>
+      <% pokemon.forEach(function(p) { %>
+        <li>ID: <%= p[1] %> - Name: <%= p[0] %></li>
+        <a href=<%= '/' + p[1] %>>Edit</a>
+        <a href=<%= '/' + p[1] + '/delete' %>>Delete</a>
+      <% }) %>
+    </ul>
+  </body>
+</html>
