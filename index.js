@@ -1,5 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+const handlebars = require('express-handlebars');
 
 const FILE = 'pokedex.json';
 
@@ -11,6 +12,11 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.use(express.static('public'))
+
+// Set handlebars to be the default view engine
+app.engine('handlebars', handlebars.create().engine);
+app.set('view engine', 'handlebars');
 
 /**
  * ===================================
@@ -20,33 +26,66 @@ const app = express();
 
 app.get('/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = request.params.id;
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+        // extract input data from request
+        let inputId = request.params.id;
 
-    // find pokemon by id from the pokedex json file
-    // (note: find() is a built-in method of JavaScript arrays)
-    let pokemon = obj.pokemon.find((currentPokemon) => {
-      return currentPokemon.id === parseInt(inputId, 10);
+        // find pokemon by id from the pokedex json file
+        // (note: find() is a built-in method of JavaScript arrays)
+        let pokemon = obj.pokemon.find((currentPokemon) => {
+            return currentPokemon.id === parseInt(inputId, 10);
+        });
+
+        if (pokemon === undefined) {
+
+            // send 404 back
+            response.status(404);
+            response.send("not found");
+        } else {
+
+            response.send(pokemon);
+        }
     });
+});
 
-    if (pokemon === undefined) {
+app.get('/pokemon/new/', (request, response) => {
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+    response.render('newpokeform');
 
-      response.send(pokemon);
-    }
-  });
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+    response.send("Welcome To Pokedex POST");
 });
+
+app.post('/pokemon/', (request, response) => {
+
+  jsonfile.readFile(FILE, (err, objRead) => {
+
+    newPokemon = {
+      "id": response.body.id,
+      "num": response.body.num,
+      "name": response.body.name,
+      "img": response.body.img,
+      "height": response.body.height,
+      "weight": response.body.weight,
+      "candy": "",
+      "candy_count": "",
+      "egg": "",
+      "avg_spawns": "",
+      "spawn_time": ""
+    }
+
+  objRead.pokemon.push(newPokemon);
+
+  jsonfile.writeFile(FILE, (err, objWrite) => {
+    objWrite = objRead;
+  })
+  })
+});
+
 
 /**
  * ===================================
