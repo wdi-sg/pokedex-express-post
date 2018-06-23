@@ -32,6 +32,8 @@ jsonfile.readFile(FILE, (err, obj) => {
 
   let input = request.body;
   input.id = parseInt(input.id);
+  input.height += ' m';
+  input.weight += ' kg';
   console.log(input)
 
 
@@ -45,37 +47,56 @@ jsonfile.readFile(FILE, (err, obj) => {
     response.send(obj);
 
   });
-  
   // response.send(pokemonData);
+  });
 
+  app.get('/pokemon/edit', (request, response) => {
+
+    let html = '<h1>Edit Pokemon</h1><form method="POST" action="/:id?_method=PUT">Id: <input type="number" name="id"><br>Num: <input type="number" name="num"><br>Height: <input type="text" name="height"><br>Weight: <input type="text" name="weight"><input type="submit" value="Submit"></form>';
+
+    response.send(html);
 
   });
 
-// app.get('/:id', (request, response) => {
+  // app.put('/:id', (request, response) => {
 
-//   // get json from specified file
-//   jsonfile.readFile(FILE, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = request.params.id;
+  //   console.log(request.params.id);
+  //   console.log(request.body.id);
 
-//     // find pokemon by id from the pokedex json file
-//     // (note: find() is a built-in method of JavaScript arrays)
-//     let pokemon = obj.pokemon.find((currentPokemon) => {
-//       return currentPokemon.id === parseInt(inputId, 10);
-//     });
 
-//     if (pokemon === undefined) {
+  // });
 
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
+  app.get('/:id', (request, response) => {
 
-//       response.send(pokemon);
-//     }
-//   });
-// });
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = request.params.id;
+
+    // find pokemon by id from the pokedex json file
+    // (note: find() is a built-in method of JavaScript arrays)
+    let pokemon = obj.pokemon.find((currentPokemon) => {
+      return currentPokemon.id === parseInt(inputId, 10);
+    });
+
+    let pokemonName = pokemon.name;
+    let pokemonId = pokemon.id;
+    let pokemonNum = pokemon.num;
+    let pokemonImg = '<img src="' + pokemon.img + '">';
+    let pokemonHeight = pokemon.height;
+    let pokemonWeight = pokemon.weight;
+
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul></body></html>');
+    }
+  });
+
 
   app.get('/', (request, response) => {
     response.send("yay");

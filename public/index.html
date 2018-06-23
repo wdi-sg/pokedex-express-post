@@ -4,9 +4,10 @@
 	<title></title>
 </head>
 <body>
+	<h1>Add Pokemon</h1>
 	<form method="POST" action="/pokemon/new">
 	  Pokemon Id:
-	  <input type="text" name="id" >
+	  <input type="number" name="id" min="152">
 	  <br>
 	  Pokemon Number:
 	  <input type="text" name="num">
@@ -15,10 +16,10 @@
 	  <input type="text" name="name">
 	  <br>
 	  Pokemon Height:
-	  <input type="text" name="height">
+	  <input type="text" name="height"> m
 	  <br>
 	  Pokemon Weight:
-	  <input type="text" name="weight">
+	  <input type="text" name="weight"> kg
 	  <br>
 	  <input type="submit" value="Submit">
 	</form>
