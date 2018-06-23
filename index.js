@@ -12,6 +12,43 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'))
 
 // routes
+
+app.get('/pokemon/new', (request, response) => {
+  response.sendFile(__dirname + '/public/form.html');
+});
+
+app.get('/pokemon/edit', (request, response) => {
+  response.sendFile(__dirname + '/public/editform.html');
+});
+
+app.get('/pokemon/delete', (request, response) => {
+  response.sendFile(__dirname + '/public/deleteform.html');
+});
+
+app.get('/pokemon', (request, response) => {
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let pokemons = obj.pokemon;
+  
+    if (request.query.sortby == "name") {
+
+      pokemons.sort( (a, b) => {
+        if (a.name < b.name)
+          return -1;
+        if (b.name < a.name)
+          return 1;
+        return 0;
+      });
+      response.send(obj);
+
+    } else {
+      response.send(obj)
+    }
+
+  })
+});
+
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -38,17 +75,19 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/pokemon/new', (request, response) => {
-  response.sendFile(__dirname + '/public/form.html');
+app.get('/', (request, response) => {
+  let html = 
+  '<form method="GET" action="/pokemon">\
+    <h1>Hello</h1>\
+    <input type="submit" value="Sort By Name">\
+    <input type="hidden" name="sortby" value="name">\
+  </form>'
+  // ask!! is input type=hidden etc, the right way...? Cannot add another input type, as it would append the query
+  response.send(html);
 });
 
-app.get('/pokemon/edit', (request, response) => {
-  response.sendFile(__dirname + '/public/editform.html');
-});
 
-app.get('/pokemon/delete', (request, response) => {
-  response.sendFile(__dirname + '/public/deleteform.html');
-});
+
 
 
 // ----------------------------------
@@ -67,13 +106,13 @@ app.post('/pokemon', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
 
     obj.pokemon.push(data);
+
     response.send(obj);
 
     // writes the obj with new data inside
     jsonfile.writeFile(FILE, obj);
 
   })
-
 });
 
 app.put('/pokemon', (request, response) => {
@@ -92,21 +131,21 @@ app.put('/pokemon', (request, response) => {
 
   jsonfile.readFile(FILE, (err, obj) => {
 
-    let pokemon = obj.pokemon;
+    let pokemons = obj.pokemon;
     
     // finds the pokemon with the matching id
-    let pokemonReplace = pokemon.find((currentPokemon) => {
+    let pokemonReplace = pokemons.find((currentPokemon) => {
       
       return currentPokemon.id === editPokemon.id
     });
 
     // replace old object with new object
-    let indexToReplace = pokemon.indexOf(pokemonReplace);
-    pokemon.splice(indexToReplace, 1, editPokemon);
+    let indexToReplace = pokemons.indexOf(pokemonReplace);
+    pokemons.splice(indexToReplace, 1, editPokemon);
 
-    response.send(pokemon);
+    response.send(pokemons);
   });
-})
+});
 
 app.delete('/pokemon', (request, response) => {
 
@@ -124,9 +163,9 @@ app.delete('/pokemon', (request, response) => {
 
   jsonfile.readFile(FILE, (err, obj) => {
 
-    let pokemon = obj.pokemon;
+    let pokemons = obj.pokemon;
 
-    let pokemonRemove = pokemon.find((currentPokemon) => {
+    let pokemonRemove = pokemons.find((currentPokemon) => {
 
       return currentPokemon.id === deletePokemon.id
     });
@@ -135,24 +174,17 @@ app.delete('/pokemon', (request, response) => {
       response.send('cannot remove anything');
 
     } else {
-      let indexToRemove = pokemon.indexOf(pokemonRemove);
-      pokemon.splice(indexToRemove, 1);
-      response.send(pokemon);
+      let indexToRemove = pokemons.indexOf(pokemonRemove);
+      pokemons.splice(indexToRemove, 1);
+      response.send(pokemons);
 
     }
 
   });
-
 });
 
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
+
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
