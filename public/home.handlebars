@@ -4,22 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome To Pokedex!</title>
+    <style>
+        body {
+            font-family: Helvetica;
+        }
+        h1 {
+            text-align: center;
+        }
+        .sortform {
+            display: block;
+        }
+        .buttonDiv {
+            display: flex;
+            justify-content: center;
+        }
+        .sortNameButton, .sortIdButton{
+            background-color: #2FA299;
+            height: 50px;
+            width: 250px;
+            font-size: 15px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .sortNameButton:hover, .sortIdButton:hover {
+            opacity: 0.9;
+        }
+        .sortNameButton:active, .sortIdButton:active {
+            color: #000;
+            transform: translateY(-2px);
+        }
+        .pokemonContainer {
+            width: 60%;
+            margin: 0 auto;
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .pokemonDisplay {
+            height: 300px;
+            width: 200px;
+            display: flex:
+        }
+        .pokeImage {
+            display: block;
+            margin: auto;
+            padding: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+        }
+        .pokeName {
+            text-align: center;
+            padding: 20px;
+        }
+
+    </style>
 </head>
 
 <body>
-    <form method="GET" action="/">
+    <form class="sortform" method="GET" action="/">
         <input type="hidden" name="sortby" value="name">
         <h1>Welcome To Pokedex!</h1>
-        <div>
-            <label>Sort the pokemons by name</label>
-            <input type="submit" value="Sort">
+        <div class="buttonDiv">
+            <input class="sortNameButton" type="submit" value="Sort Pokemons By Name">
         </div>
     </form>
-    <ul>
-        {{#each pokemonList}}
-        <li>{{this}}</li>
+    <form class="sortform" method="GET" action="/">
+        <input type="hidden" name="sortby" value="id">
+        <div class="buttonDiv">
+            <input class="sortIdButton" type="submit" value="Sort Pokemons By ID">
+        </div>
+    </form>
+
+    <div class="pokemonContainer">
+        {{#each pokeinfo}}
+        <div class="pokemonDisplay">
+            <img class="pokeImage" src="{{this.img}}">
+            <p class="pokeName">#{{this.num}}<br><br>{{this.name}}</p>
+        </div>
         {{/each}}
-    </ul>
+    </div>
 </body>
 
 </html>
