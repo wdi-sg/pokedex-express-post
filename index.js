@@ -1,23 +1,18 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+const methodOverride = require('method-override');
 
 const FILE = 'pokedex.json';
 
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+// middleware
+app.use(express.static('public'))
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(methodOverride('_method'))
 
+// routes
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -43,6 +38,30 @@ app.get('/:id', (request, response) => {
     }
   });
 });
+
+
+app.post('/pokemon', (request, response) => {
+
+  let data = request.body;
+
+  // making id a number instead of string
+  let id = parseInt(data['id']);
+  data['id'] = id;
+
+  // adding the new pokemon data into the list of pokemon
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    obj.pokemon.push(data);
+    response.send(obj);
+
+    // writes the obj with new data inside
+    jsonfile.writeFile(FILE, obj);
+
+  })
+
+})
+
+
 
 app.get('/', (request, response) => {
   response.send("yay");

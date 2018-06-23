@@ -1,4 +1,4 @@
-# Pokedex Express App (with CRUD)
+ # Pokedex Express App (with CRUD)
 
 We will build a web app using Node.js and Express - a Pokedex app.
 
