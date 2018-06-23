@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delete The Pokemon</title>
+</head>
+
+<body>
+    <form method="POST" action="/pokemon/{{id}}/delete">
+        <input type="hidden" name="_method" value="DELETE">
+        <h1>Are you sure you want to delete this pokemon?</h1>
+        <div>
+            <label>ID</label>
+            <input type="text" name="id" value={{id}}>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</body>
+
+</html>

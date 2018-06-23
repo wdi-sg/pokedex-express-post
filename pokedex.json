@@ -1873,13 +1873,14 @@
     {
         "id": 151,
         "num": "151",
-        "name": "Mew",
-        "img": "http://www.serebii.net/pokemongo/pokemon/151.png",
-        "height": "0.41 m",
-        "weight": "4.0 kg",
-        "candy": "None",
-        "egg": "Not in Eggs",
-        "avg_spawns": 0,
-        "spawn_time": "N/A"
+        "name": "s",
+        "img": "s",
+        "height": "s",
+        "weight": "s",
+        "candy": "",
+        "candy_count": "",
+        "egg": "",
+        "avg_spawns": "",
+        "spawn_time": ""
     }]
 }

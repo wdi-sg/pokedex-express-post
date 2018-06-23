@@ -79,12 +79,28 @@ app.get('/pokemon/new/', (request, response) => {
     response.render('newpokeform');
 });
 
+let generateNum = (id) => {
+    let num;
+    if (id < 10) {
+        num = "00" + String(id);
+    } else if (id < 100) {
+        num = "0" + String(id);
+    } else {
+        num = String(id);
+    }
+    return num;
+}
+
 app.post('/pokemon/new', (request, response) => {
     jsonfile.readFile(FILE, (err, objRead) => {
 
+        let pokeId = objRead.pokemon.map( pokemon => pokemon.id)
+        let nextPokeId = Math.max.apply(Math, pokeId) + 1;
+        let nextPokeNum = generateNum(nextPokeId);
+
         let newPokemon = {
-            "id": request.body.id,
-            "num": request.body.num,
+            "id": nextPokeId,
+            "num": nextPokeNum,
             "name": request.body.name,
             "img": request.body.img,
             "height": request.body.height,
@@ -116,7 +132,7 @@ app.post('/pokemon/edit/', (request, response) => {
             context = matchingPoke[0];
             response.render('poketoedit', context);
         } else {
-            response.send("No matching pokemon!");
+            response.send("No matching pokemon to edit!");
         }
     })
 
@@ -127,7 +143,6 @@ app.put('/pokemon/:id/edit', (request, response) => {
         if (err) {
             console.log(err);
         } else {
-            console.log("looking foreach");
             objRead.pokemon.forEach( pokemon => {
                 if (String(pokemon.id) == request.params.id) {
                     pokemon.id = parseInt(request.body.id);
@@ -144,6 +159,37 @@ app.put('/pokemon/:id/edit', (request, response) => {
     })
 });
 
+app.get('/pokemon/delete/', (request, response) => {
+    response.render('deletepokeform');
+});
+
+// app.post('/pokemon/delete/', (request, response) => {
+//     let context;
+//     jsonfile.readFile(FILE, (err, objRead) => {
+//         let matchingPoke = objRead.pokemon.filter( pokemon => String(pokemon.id) === request.body.id);
+//         if (matchingPoke) {
+//             context = matchingPoke[0];
+//             response.render('poketodelete', context);
+//         } else {
+//             response.send("No matching pokemon to delete!");
+//         }
+//     })
+// });
+
+app.delete('/pokemon/:id/delete/', (request, response) => {
+
+    jsonfile.readFile(FILE, (err, objRead) => {
+
+        objRead.pokemon.forEach( (pokemon, index, array) => {
+            if (String(pokemon.id) === request.params.id) {
+                array.splice(index, 1);
+            }
+        })
+
+        jsonfile.writeFile(FILE, objRead, function(err) {});
+        response.redirect('/');
+    })
+});
 
 /**
  * ===================================

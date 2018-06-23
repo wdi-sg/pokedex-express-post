@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Pokemon Time</title>
+</head>
+
+<body>
+    <form id="deletePokeForm" method="POST" action="/pokemon/delete/">
+    <input type="hidden" name="_method" value="DELETE">
+
+        <h1>Which pokemon ID do you want to delete?</h1>
+        <div>
+            <label>ID</label>
+            <input id="inputId" type="text" name="id">
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        let form = document.querySelector('#deletePokeForm');
+        let input = document.querySelector('#inputId');
+
+        let changeAction = function() {
+            let id = this.value;
+            form.action = "/pokemon/" + id + "/delete/";
+        }
+
+        input.addEventListener('change', changeAction);
+    </script>
+</body>
+
+</html>
