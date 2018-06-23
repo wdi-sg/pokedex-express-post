@@ -27,12 +27,12 @@ app.use(express.static('public'))
  * ===================================
  */
 
- app.get('/test', (req, res) => {
-   jsonfile.readFile(FILE, (err, obj) => {
-     let pokemon = obj.pokemon
-     res.render('index.ejs', { pokemonnames : pokemon})
-   })
- })
+ // app.get('/test', (req, res) => {
+ //   jsonfile.readFile(FILE, (err, obj) => {
+ //     let pokemon = obj.pokemon
+ //     res.render('index.ejs', { pokemonnames : pokemon})
+ //   })
+ // })
 
 app.get('/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
@@ -45,7 +45,7 @@ app.get('/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-      response.send(pokemon);
+      response.render('index.ejs', {pokemon})
     }
   });
 });
