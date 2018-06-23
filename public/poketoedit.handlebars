@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Edit The Pokemon</title>
+    <title>Welcome To Pokedex!</title>
 </head>
 
 <body>
-    <form method="POST" action="/pokemon/{{id}}/edit">
+    <form method="POST" action="/pokemon/{{id}}">
         <input type="hidden" name="_method" value="PUT">
+        <h1>What information do you want to edit?</h1>
         <div>
             <label>ID</label>
             <input type="text" name="id" value={{id}}>

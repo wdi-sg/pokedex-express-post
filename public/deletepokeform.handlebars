@@ -3,13 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Delete Pokemon Time</title>
+    <title>Welcome To Pokedex!</title>
 </head>
 
 <body>
-    <form id="deletePokeForm" method="POST" action="/pokemon/delete/">
+    <form id="deletePokeForm" method="POST" action="/pokemon">
     <input type="hidden" name="_method" value="DELETE">
-
         <h1>Which pokemon ID do you want to delete?</h1>
         <div>
             <label>ID</label>
@@ -26,7 +25,7 @@
 
         let changeAction = function() {
             let id = this.value;
-            form.action = "/pokemon/" + id + "/delete/";
+            form.action = "/pokemon/" + id;
         }
 
         input.addEventListener('change', changeAction);
