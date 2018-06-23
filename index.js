@@ -15,6 +15,10 @@ const bodyParser = require('body-parser');
 
 app.use(express.static('public'));
 
+// Set up method-override for PUT and DELETE forms
+var methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -50,22 +54,6 @@ jsonfile.readFile(FILE, (err, obj) => {
   // response.send(pokemonData);
   });
 
-  app.get('/pokemon/edit', (request, response) => {
-
-    let html = '<h1>Edit Pokemon</h1><form method="POST" action="/:id?_method=PUT">Id: <input type="number" name="id"><br>Num: <input type="number" name="num"><br>Height: <input type="text" name="height"><br>Weight: <input type="text" name="weight"><input type="submit" value="Submit"></form>';
-
-    response.send(html);
-
-  });
-
-  // app.put('/:id', (request, response) => {
-
-  //   console.log(request.params.id);
-  //   console.log(request.body.id);
-
-
-  // });
-
   app.get('/:id', (request, response) => {
 
     // obj is the object from the pokedex json file
@@ -93,10 +81,41 @@ jsonfile.readFile(FILE, (err, obj) => {
       response.send("not found");
     } else {
 
-      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul></body></html>');
+      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul><br><form method="GET" action=/'+ pokemon.id + '/edit?_method=PUT><button type="submit">UPDATE</button></form><br><form method="POST" action=/{{pokemon.id}}?_method=DELETE><button type="submit">DELETE</button></form></body></html>');
     }
   });
 
+  app.get('/:id/edit', (request, response) => {
+
+    let pokemonIndex = parseInt(request.params.id);
+
+    let html = '<h1>Edit Pokemon</h1><form method="POST" action="/' + pokemonIndex + '/edit?_method=PUT">Id: <input type="number" name="id"><br>Num: <input type="number" name="num"><br>Name: <input type="text" name="name"><br>Height: <input type="text" name="height"><br>Weight: <input type="text" name="weight"><br><input type="submit" value="Submit"></form>';
+
+    response.send(html);
+   
+  });
+
+  app.put('/:id/edit', (request, response) => {
+
+    // console.log(request.params.id);
+    // console.log(request.body);
+
+    let poke = parseInt(request.params.id) - 1;
+
+    let newValue = request.body;
+    newValue.height += ' m';
+    newValue.weight += ' kg';
+    obj.pokemon[poke] = newValue;
+
+    response.send("Pokemon details updated.");
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err);
+
+    response.send(obj);
+
+    });
+  });
 
   app.get('/', (request, response) => {
     response.send("yay");
