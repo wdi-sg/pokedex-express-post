@@ -1,7 +1,9 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 const FILE = 'pokedex.json';
+const path = require('path');
 
 /**
  * ===================================
@@ -11,6 +13,13 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(methodOverride('_method'));
+app.use(express.static('public'))
 
 /**
  * ===================================
@@ -44,9 +53,20 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+app.get('/pokemon/new', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public', 'form.html'));
+})
+app.post('/pokemon', (req, res) => {
+  console.log(req.body);
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj["pokemon"].push(req.body);
+    const newData = obj;
+    jsonfile.writeFile(FILE, newData, (err) =>{
+      console.error(err);
+    })
+  })
+  res.sendFile(path.join(__dirname, '/public', 'success.html'));
+})
 
 /**
  * ===================================
