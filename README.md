@@ -31,7 +31,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * in the public folder put the HTML form that you will use to make the post request
 
-## Further
+## Further  
 
 * create the ability to edit and delete pokemon from the json file
 

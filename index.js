@@ -1,7 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const methodOverride = require('method-override');
-
 const FILE = 'pokedex.json';
 
 const app = express();
@@ -39,8 +38,24 @@ app.get('/:id', (request, response) => {
   });
 });
 
+app.get('/pokemon/new', (request, response) => {
+  response.sendFile(__dirname + '/public/form.html');
+});
+
+app.get('/pokemon/edit', (request, response) => {
+  response.sendFile(__dirname + '/public/editform.html');
+});
+
+app.get('/pokemon/delete', (request, response) => {
+  response.sendFile(__dirname + '/public/deleteform.html');
+});
+
+
+// ----------------------------------
 
 app.post('/pokemon', (request, response) => {
+
+  console.log('posted stuff')
 
   let data = request.body;
 
@@ -59,8 +74,76 @@ app.post('/pokemon', (request, response) => {
 
   })
 
+});
+
+app.put('/pokemon', (request, response) => {
+
+  console.log('updated stuff');
+
+  // what is the id to edit
+  // find the object with that id in the database
+  // replace all information in that object
+
+  let editPokemon = request.body;
+
+  // making id a number instead of string
+  let id = parseInt(editPokemon['id']);
+  editPokemon['id'] = id;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let pokemon = obj.pokemon;
+    
+    // finds the pokemon with the matching id
+    let pokemonReplace = pokemon.find((currentPokemon) => {
+      
+      return currentPokemon.id === editPokemon.id
+    });
+
+    // replace old object with new object
+    let indexToReplace = pokemon.indexOf(pokemonReplace);
+    pokemon.splice(indexToReplace, 1, editPokemon);
+
+    response.send(pokemon);
+  });
 })
 
+app.delete('/pokemon', (request, response) => {
+
+  console.log('deleted stuff');
+
+  // what is the id to delete
+  // find the object with that id in the database
+  // remove that object
+
+  let deletePokemon = request.body
+
+  // making id a number instead of string
+  let id = parseInt(deletePokemon['id']);
+  deletePokemon['id'] = id;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let pokemon = obj.pokemon;
+
+    let pokemonRemove = pokemon.find((currentPokemon) => {
+
+      return currentPokemon.id === deletePokemon.id
+    });
+
+    if (pokemonRemove == undefined) {
+      response.send('cannot remove anything');
+
+    } else {
+      let indexToRemove = pokemon.indexOf(pokemonRemove);
+      pokemon.splice(indexToRemove, 1);
+      response.send(pokemon);
+
+    }
+
+  });
+
+});
 
 
 app.get('/', (request, response) => {
