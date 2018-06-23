@@ -4,40 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome To Pokedex!</title>
+    <style>
+        body {
+            font-family: Helvetica;
+            background-color: #CEEDEA;
+        }
+        h1 {
+            text-align: center;
+        }
+        .newFormContainer {
+            width: 100%;
+            text-align: center;
+            display; flex;
+            justify-content: center;
+        }
+        .formLabel {
+            width: 50px;
+            font-size: 13px;
+            text-align: right;
+            display:inline-block;
+            margin: 20px;
+        }
+        .formInput {
+            width: 200px;
+
+        }
+        .submitButton {
+            width: 100px;
+            height: 30px;
+            margin-left: 200px;
+            margin-top: 30px;
+            background-color: #2FA299;
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 10px;
+            line-height: 10px;
+        }
+        .submitButton:hover {
+            opacity: 0.9;
+        }
+        .submitButton:active {
+            color: #000;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body>
-    <form method="POST" action="/pokemon/{{id}}">
-        <input type="hidden" name="_method" value="PUT">
-        <h1>What information do you want to edit?</h1>
-        <div>
-            <label>ID</label>
-            <input type="text" name="id" value={{id}}>
-        </div>
-        <div>
-            <label>Number</label>
-            <input type="text" name="num" value={{num}}>
-        </div>
-        <div>
-            <label>Name</label>
-            <input type="text" name="name" value={{name}}>
-        </div>
-        <div>
-            <label>Image</label>
-            <input type="text" name="img" value={{img}}>
-        </div>
-        <div>
-            <label>Height</label>
-            <input type="text" name="height" value={{height}}>
-        </div>
-        <div>
-            <label>Weight</label>
-            <input type="text" name="weight" value={{weight}}>
-        </div>
-        <div>
-            <input type="submit" value="Submit">
-        </div>
-    </form>
+    <div class="newFormContainer">
+        <form method="POST" action="/pokemon/{{id}}">
+            <input type="hidden" name="_method" value="PUT">
+            <h1>What information do you want to edit?</h1>
+            <div>
+                <label class="formLabel">Name</label>
+                <input class="formInput" type="text" name="name" value={{name}}>
+            </div>
+            <div>
+                <label class="formLabel">Image</label>
+                <input class="formInput" type="text" name="img" value={{img}}>
+            </div>
+            <div>
+                <label class="formLabel">Height</label>
+                <input class="formInput" type="text" name="height" value={{height}}>
+            </div>
+            <div>
+                <label class="formLabel">Weight</label>
+                <input class="formInput" type="text" name="weight" value={{weight}}>
+            </div>
+            <div>
+                <input class="submitButton" type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

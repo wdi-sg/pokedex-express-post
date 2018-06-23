@@ -37,11 +37,11 @@ app.get('/', controllers.showRoot);
 app.get('/pokemon/new', controllers.showNewPokemonForm);
 
 // Edit Pokemon handler
-app.get('/pokemon/edit', controllers.showSelectPokemonForm)
-    .post('/pokemon/edit', controllers.showEditPokemonForm);
+// app.get('/pokemon/edit', controllers.showSelectPokemonForm)
+app.get('/pokemon/:id/edit', controllers.showEditPokemonForm);
 
 // Delete Pokemon handler
-app.get('/pokemon/delete', controllers.showDeletePokemonForm);
+// app.get('/pokemon/delete', controllers.showDeletePokemonForm);
 
 // Database handler (CRUD)
 app.post('/pokemon', controllers.pokemonCreate);

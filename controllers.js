@@ -5,7 +5,7 @@ const FILE = 'pokedex.json';
 module.exports = {
     showRoot: (request, response) => {
         jsonfile.readFile(FILE, (err, objRead) => {
-            let pokeinfo = objRead.pokemon.map( pokemon => { return { "name": pokemon.name, "num": pokemon.num, "img": pokemon.img }; })
+            let pokeinfo = objRead.pokemon.map( pokemon => { return { "name": pokemon.name, "id": pokemon.id, "num": pokemon.num, "img": pokemon.img }; })
             let context;
             if (request.query.sortby == "name") {
                 pokeinfo = pokeinfo.sort(helpers.sortObject);
@@ -21,14 +21,10 @@ module.exports = {
         response.render('newpokeform');
     },
 
-    showSelectPokemonForm: (request, response) => {
-        response.render('editpokeform');
-    },
-
     showEditPokemonForm: (request, response) => {
         let context;
         jsonfile.readFile(FILE, (err, objRead) => {
-            let matchingPoke = objRead.pokemon.filter( pokemon => String(pokemon.id) === request.body.id);
+            let matchingPoke = objRead.pokemon.filter( pokemon => String(pokemon.id) === request.params.id);
             if (matchingPoke) {
                 context = matchingPoke[0];
                 response.render('poketoedit', context);
@@ -36,10 +32,6 @@ module.exports = {
                 response.send("No matching pokemon to edit!");
             }
         })
-    },
-
-    showDeletePokemonForm: (request, response) => {
-        response.render('deletepokeform');
     },
 
     pokemonCreate: (request, response) => {
@@ -94,8 +86,6 @@ module.exports = {
             } else {
                 objRead.pokemon.forEach( pokemon => {
                     if (String(pokemon.id) == request.params.id) {
-                        pokemon.id = parseInt(request.body.id);
-                        pokemon.num = request.body.num;
                         pokemon.name = request.body.name;
                         pokemon.img = request.body.img;
                         pokemon.height = request.body.height;
@@ -110,15 +100,19 @@ module.exports = {
 
     pokemonDelete: (request, response) => {
         jsonfile.readFile(FILE, (err, objRead) => {
+            let pokemonFound = false;
             objRead.pokemon.forEach( (pokemon, index, array) => {
                 if (String(pokemon.id) === request.params.id) {
                     array.splice(index, 1);
-                } else {
-                    response.send("No matching pokemon to delete!");
+                    pokemonFound = true;
                 }
             })
-            jsonfile.writeFile(FILE, objRead, function(err) {});
-            response.redirect('/');
+            if (pokemonFound) {
+                jsonfile.writeFile(FILE, objRead, function(err) {});
+                response.redirect('/');
+            } else {
+                response.send("Pokemon with id", request.params.id, "not found");
+            }
         })
     }
 }
