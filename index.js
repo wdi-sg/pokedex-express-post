@@ -20,7 +20,7 @@ app.get('/:id', (request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = request.params.id;
-    // find pokemon by id from the pokedex json file
+    // find pokemon by id from the pokedex json files
     // (note: find() is a built-in method of JavaScript arrays)
     let pokemon = obj.pokemon.find((currentPokemon) => {
       return currentPokemon.id === parseInt(inputId, 10);
@@ -40,10 +40,9 @@ app.get('/', (request, response) => {
   response.send("Welcome to the Pokedex!");
 });
 
-
 //Intercept /pokemon/new with a form
 app.get('/pokemon/new', (request, response) => {
-  response.send('<form method="POST" action="/pokemon">' +  
+  let htmlForm = '<form method="POST" action="/pokemon">' +  
               '<input type="text" name="id" placeholder="id"/>' +
               '<input type="text" name="num" placeholder="num"/>' +
               '<input type="text" name="name" placeholder="name"/>' +
@@ -51,9 +50,22 @@ app.get('/pokemon/new', (request, response) => {
               '<input type="text" name="height" placeholder="height"/>' +
               '<input type="text" name="weight" placeholder="weight"/>' +
               '<input type="submit" value="Create">' +
-              '</form>');
+              '</form>'
+  response.send(htmlForm);
 });
 
+
+app.post('/pokemon', (request, response) => {
+  let newPokemon = {
+    "id": request.body.id,
+    "num": request.body.num,
+    "name": request.body.name,
+    "img": request.body.img,
+    "height": request.body.height,
+    "weight": request.body.weight,
+  }
+    response.send("New Pokemon Created!");
+  });
 
 
 /**
