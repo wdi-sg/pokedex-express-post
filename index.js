@@ -1,7 +1,14 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
+const app = express();
+const bodyParser = require('body-parser');
+const http=require("http");
+// tell your app to use the module
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 /**
  * ===================================
@@ -10,7 +17,7 @@ const FILE = 'pokedex.json';
  */
 
 // Init express app
-const app = express();
+
 
 /**
  * ===================================
@@ -30,6 +37,7 @@ app.get('/:id', (request, response) => {
     // (note: find() is a built-in method of JavaScript arrays)
     let pokemon = obj.pokemon.find((currentPokemon) => {
       return currentPokemon.id === parseInt(inputId, 10);
+      //decimal system radix
     });
 
     if (pokemon === undefined) {
@@ -44,10 +52,51 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+app.get('/*',getRootHandler)
+function getRootHandler (request, response){
+  let input=[]; 
+  let parameters= request.params[0].split('/')
+  if(parameters != []){
+        input=parameters.map(function(parameter){
+        return parameter.toLowerCase();
+    })
 
+  }
+  if(input[0] == 'new'){
+    let htmlForm = '<form method="POST" action="/pokemon">' + 
+     '<input type="text" name="id" placeholder="id"/>' +
+     '<input type="text" name="num" placeholder="num"/>' +
+     '<input type="text" name="name" placeholder="name"/>' +
+     '<input type="text" name="img" placeholder="img"/>' +
+     '<input type="text" name="height" placeholder="height"/>' +
+     '<input type="text" name="weight" placeholder="weight"/>' +
+     '<input type="submit" value="Create">' +
+     '</form>'
+   response.send(htmlForm)
+    }
+let createNewPokemon =(request,response)=>{
+    let newPokemon={
+      "id":request.body.id,
+      "num":request.body.num,
+      "name":request.body.name,
+      "img":request.body.img,
+      "height":request.body.height,
+      "weight":request.body.weight
+    }
+//adds new object into pokemon's array
+  obj.pokemon.push(newPokemon);
+   //to make sure var pokemon does not get overwritten
+   let newObj = obj;
+
+   //overwrites Json file
+   jsonfile.writeFile('pokedex.json', newObj, (err) => {
+
+        response.send('created pokemon! Check pokedex.json');
+    };
+ 
+  console.log(parameters)
+  response.send('index.html');
+};
 /**
  * ===================================
  * Listen to requests on port 3000
