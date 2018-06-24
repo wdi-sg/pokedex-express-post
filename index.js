@@ -32,28 +32,29 @@ app.use(bodyParser.urlencoded({
   
 jsonfile.readFile(FILE, (err, obj) => {
 
+  // add pokemon
   app.post('/pokemon/new', (request, response) => {
 
-  let input = request.body;
-  input.id = parseInt(input.id);
-  input.height += ' m';
-  input.weight += ' kg';
-  console.log(input)
+    let input = request.body;
+    input.id = parseInt(input.id);
+    input.height += ' m';
+    input.weight += ' kg';
+    console.log(input)
 
 
-  let pokemonData = obj.pokemon;
-  pokemonData.push(input);
+    let pokemonData = obj.pokemon;
+    pokemonData.push(input);
 
 
-  jsonfile.writeFile(FILE, obj, (err) => {
-    console.error(err);
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err);
 
-    response.send(obj);
+      response.send(obj);
 
+    });
   });
-  // response.send(pokemonData);
-  });
 
+  // display pokemon
   app.get('/:id', (request, response) => {
 
     // obj is the object from the pokedex json file
@@ -81,10 +82,11 @@ jsonfile.readFile(FILE, (err, obj) => {
       response.send("not found");
     } else {
 
-      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul><br><form method="GET" action=/'+ pokemon.id + '/edit?_method=PUT><button type="submit">UPDATE</button></form><br><form method="POST" action=/{{pokemon.id}}?_method=DELETE><button type="submit">DELETE</button></form></body></html>');
+      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul><br><form method="GET" action=/'+ pokemon.id + '/edit?_method=PUT><button type="submit">UPDATE</button></form><br><form method="POST" action=/' + pokemon.id + '/delete?_method=DELETE><button type="submit">DELETE</button></form></body></html>');
     }
   });
 
+  // edit pokemon
   app.get('/:id/edit', (request, response) => {
 
     let pokemonIndex = parseInt(request.params.id);
@@ -109,12 +111,36 @@ jsonfile.readFile(FILE, (err, obj) => {
 
     response.send("Pokemon details updated.");
 
+    // updating file
     jsonfile.writeFile(FILE, obj, (err) => {
       console.error(err);
 
-    response.send(obj);
+      response.send(obj);
 
     });
+  });
+
+  // remove pokemon
+  app.delete('/:id/delete', (request, response) => {
+
+    console.log(request.params.id);
+
+    let poke = parseInt(request.params.id) - 1;
+
+    let removePokemon = obj.pokemon[poke]; 
+
+    obj.pokemon.splice(poke, 1);
+
+    response.send("Pokemon deleted.");
+
+    // updating file
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err);
+
+      response.send(obj);  
+
+    });  
+
   });
 
   app.get('/', (request, response) => {
