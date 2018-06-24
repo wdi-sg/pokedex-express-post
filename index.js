@@ -16,11 +16,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-/**
- * ===================================
- * Routes
- * ===================================
- */
 
 app.get('/:id', (request, response) => {
 
@@ -53,7 +48,8 @@ app.get('/', (request, response) => {
 });
 
 app.get('/pokemon/new', (request, response) =>{
-  response.send( '<form>'+
+  
+  let htmlPage = '<form method="POST">'+
       'Id: <input type="text" name="Id">'+ 
       'num: <input type="text" name="num">'+ 
       'Name: <input type="text" name="name">'+ 
@@ -61,25 +57,25 @@ app.get('/pokemon/new', (request, response) =>{
       'Height: <input type="text" name="weight">'+ 
       'Weight: <input type="text" name="height">'+ 
       '<button>Submit</button>'+
-      '</form>')
+      '</form>';
+  response.send(htmlPage);
 });
 
-app.post('/pokemon', submitPokeData);
+app.get('/pokemon', submitPokeData);
 
 function submitPokeData(request, response) {
-  let newPokemon = {};
-  newPokemon.id = request.body.id;
-  newPokemon.num = request.body.num;
-  newPokemon.name = request.body.name;
-  newPokemon.img = request.body.img;
-  newPokemon.height = request.body.height;
-  newPokemon.weight = request.body.weight;
-  
-  jsonfile.writeFile('pokedex.json', newPokemon, function (err) {
-    //console.error(err)
-  });
+  let newInput = request.params['id'];
+  let postHtml = '<form method="POST" action="/'+ newInput + '"><input type="text" name="' + newInput + '"><input type="submit" value="Submit"></form>';
+  response.send(html);
 }
 
+app.post('/:pokemon', createPokemonData);
+
+function createPokemonData(request, response) {
+  let createdPokeData = request.params['pokemon'];
+  let value = request.body[createdPokeData];
+  pokemonObj[createdPokeData] = value;
+}
 
 /**
  * ===================================
