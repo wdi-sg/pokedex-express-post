@@ -80,6 +80,7 @@ module.exports = {
                     }
                 })
                 jsonfile.writeFile(FILE, objRead, function(err) {});
+                request.flash('success', 'Pokemon updated successfully!');
                 response.redirect('/');
             }
         })

@@ -3,6 +3,7 @@ const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 const path = require('path');
 const jsonfile = require('jsonfile');
+const fs = require('fs');
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -41,9 +42,15 @@ app.use(function (req, res, next) {
   next();
 });
 
-
 // Set handlebars to be the default view engine
-app.engine('handlebars', handlebars.create().engine);
+const hbs = handlebars.create({
+    // defaultLayout: 'main',
+    partialsDir: [
+        'views/partials/'
+    ]
+});
+app.engine('handlebars', hbs.engine);
+// app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '/views'));
 
