@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Pokedex</title>
+</head>
+
+<body>
+    <h1>Enter the name of your pokemon you want to search</h1>
+    <form method="GET" action="/">
+        <input type="hidden" name="sortby" value="name">
+        <div>
+            <label>Sort by name</label>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    <ul>
+        {{#each pokemonList}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</body>
+
+</html>

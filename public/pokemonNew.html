@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Pokedex</title>
+    <style type="text/css">
+    h1{
+        text-align: center;
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+        margin-left: 45%;
+
+    }
+
+    ul li {
+        list-style: none;
+        font-size: 30px;
+
+    }
+    #submit{
+        margin-left: 48%;
+        margin-top: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <h1>Enter the pokemon you want to create</h1>
+    <form method="GET" action="pokemonNew.html">
+        <ul id="fieldList">
+            <li>
+                <input name="id" type="text" placeholder="Id" />
+            </li>
+            <li>
+                <input name="num" type="text" placeholder="Num" />
+            </li>
+            <li>
+                <input name="name" type="text" placeholder="Name">
+            </li>
+            <li>
+                <input name="img" type="text" placeholder="Image">
+            </li>
+            <li>
+                <input name="height" type="text" placeholder="Height">
+            </li>
+            <li>
+                <input name="weight" type="text" placeholder="Weight">
+            </li>
+        </ul>
+        <input id="submit" type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
