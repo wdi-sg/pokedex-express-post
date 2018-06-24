@@ -106,6 +106,20 @@ h1 {
 
 
 /* Add & Edit Poke Form */
+#messages {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.success, .error, .info {
+    font-size: 10px;
+    color: #333;
+}
+
+.error {
+    color: red;
+}
 
 .newFormContainer {
     width: 100%;

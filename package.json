@@ -4,8 +4,11 @@
   "main": "app.js",
   "license": "MIT",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.15.6",
     "jsonfile": "^4.0.0",
     "method-override": "^2.3.10"
   }

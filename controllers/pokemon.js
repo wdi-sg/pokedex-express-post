@@ -13,7 +13,7 @@ module.exports = {
             let matchingPoke = objRead.pokemon.filter( pokemon => String(pokemon.id) === request.params.id);
             if (matchingPoke) {
                 context = matchingPoke[0];
-                response.render('poketoedit', context);
+                response.render('editpokeform', context);
             } else {
                 response.send("No matching pokemon to edit!");
             }
@@ -40,6 +40,7 @@ module.exports = {
             }
             objRead.pokemon.push(newPokemon);
             jsonfile.writeFile(FILE, objRead, function(err) {});
+            request.flash('success', 'Pokemon added successfully!');
             response.redirect('/');
         })
     },
@@ -95,9 +96,11 @@ module.exports = {
             })
             if (pokemonFound) {
                 jsonfile.writeFile(FILE, objRead, function(err) {});
+                request.flash('success', 'Pokemon deleted successfully!');
                 response.redirect('/');
             } else {
-                response.send("Pokemon with id", request.params.id, "not found");
+                request.flash('error', 'Pokemon was not found!');
+                response.redirect('/');
             }
         })
     }

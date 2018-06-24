@@ -3,6 +3,8 @@ const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 const path = require('path');
 const jsonfile = require('jsonfile');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const helpers = require("./helpers.js");
 // load the router module in the app
@@ -27,6 +29,19 @@ app.use(methodOverride(function (req, res) {
     return method
   }
 }));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  // cookie: { secure: true }
+}));
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)();
+  next();
+});
+
+
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
@@ -53,7 +68,6 @@ app.get('/', (request, response) => {
         response.render('home', context);
     })
 });
-
 
 /** * ===================================
  * Listen to requests on port 3000
