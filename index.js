@@ -67,20 +67,19 @@ jsonfile.readFile(FILE, (err, obj) => {
       return currentPokemon.id === parseInt(inputId, 10);
     });
 
-    let pokemonName = pokemon.name;
-    let pokemonId = pokemon.id;
-    let pokemonNum = pokemon.num;
-    let pokemonImg = '<img src="' + pokemon.img + '">';
-    let pokemonHeight = pokemon.height;
-    let pokemonWeight = pokemon.weight;
-
-
     if (pokemon === undefined) {
 
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
+
+      let pokemonName = pokemon.name;
+      let pokemonId = pokemon.id;
+      let pokemonNum = pokemon.num;
+      let pokemonImg = '<img src="' + pokemon.img + '">';
+      let pokemonHeight = pokemon.height;
+      let pokemonWeight = pokemon.weight;
 
       response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul><br><form method="GET" action=/'+ pokemon.id + '/edit?_method=PUT><button type="submit">UPDATE</button></form><br><form method="POST" action=/' + pokemon.id + '/delete?_method=DELETE><button type="submit">DELETE</button></form></body></html>');
     }
@@ -142,6 +141,37 @@ jsonfile.readFile(FILE, (err, obj) => {
     });  
 
   });
+
+  // pokemon by name
+  app.get('/pokemon/:pokemonName', (request, response) => {
+
+    let inputId = request.params.pokemonName;
+    inputId.toLowerCase();
+    console.log(inputId);
+
+    let pokemon = obj.pokemon.find((currentPokemon) => {
+      return currentPokemon.name === inputId;
+    });
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      let pokemonName = pokemon.name;
+      let pokemonId = pokemon.id;
+      let pokemonNum = pokemon.num;
+      let pokemonImg = '<img src="' + pokemon.img + '">';
+      let pokemonHeight = pokemon.height;
+      let pokemonWeight = pokemon.weight;
+
+      response.send('<html><body>' + pokemonImg + '<br><h1>' + pokemonName + '</h1><ul><li>Id : ' + pokemonId + '</li><li>Num : ' + pokemonNum + '</li><li>Height : ' + pokemonHeight + '</li><li>Weight : ' + pokemonWeight + '</li></ul><br><form method="GET" action=/'+ pokemon.id + '/edit?_method=PUT><button type="submit">UPDATE</button></form><br><form method="POST" action=/' + pokemon.id + '/delete?_method=DELETE><button type="submit">DELETE</button></form></body></html>');
+    }
+
+  });
+
 
   app.get('/', (request, response) => {
     response.send("yay");
