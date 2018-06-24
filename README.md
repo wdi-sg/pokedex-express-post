@@ -1,4 +1,4 @@
-# Pokedex Express App (with CRUD)
+ # Pokedex Express App (with CRUD)
 
 We will build a web app using Node.js and Express - a Pokedex app.
 
@@ -31,7 +31,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * in the public folder put the HTML form that you will use to make the post request
 
-## Further
+## Further  
 
 * create the ability to edit and delete pokemon from the json file
 
