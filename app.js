@@ -44,13 +44,12 @@ app.use(function (req, res, next) {
 
 // Set handlebars to be the default view engine
 const hbs = handlebars.create({
-    // defaultLayout: 'main',
+    defaultLayout: 'main',
     partialsDir: [
         'views/partials/'
     ]
 });
 app.engine('handlebars', hbs.engine);
-// app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '/views'));
 
