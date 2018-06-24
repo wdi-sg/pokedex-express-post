@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pokemon Form</title>
+</head>
+<style>
+	h1 {
+		text-align: center;
+		color: blue;
+	}
+	form {
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	input {
+		text-align: center;
+	}
+
+	p {
+		color: orange;
+	}
+
+	body {
+		background-color: rgb(242, 79, 79);
+	}
+
+</style>
+<body>
+	<h1>New Pokemon Entry</h1>
+	<form method= 'POST' action='/pokemon'>
+		<p>Pokemon ID:</p>
+		<input type= 'number' name= 'id' min= '152' placeholder= '152 onwards'><br>
+		<p>Pokemon Number</p>
+		<input type= 'number' name= 'num' placeholder= '152 onwards'><br>
+		<p>Pokemon Name</p>
+		<input type= 'text' name= 'pokename' placeholder= 'Pokemon Name'><br>
+		<p>Image path</p>
+		<input type= 'img' name= 'image' placeholder= 'Link'><br>
+		<p>Pokemon Height</p>
+		<input type= 'number' name= 'height' placeholder= 'Height: m'> M<br>
+		<p>Pokemon Weight</p>
+		<input type= 'number' name= 'weight' placeholder= 'Weight: kg'> KG<br><br>
+		<input type= 'submit' value= 'Submit entry'>
+	</form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pokemon Edit Form</title>
+</head>
+<style>
+	h1 {
+		text-align: center;
+		color: blue;
+	}
+	form {
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	input {
+		text-align: center;
+	}
+
+	p {
+		color: orange;
+	}
+
+	body {
+		background-color: rgb(44, 183, 76);
+	}
+
+</style>
+<body>
+	<h1>Edit Pokemon Entry</h1>
+	<form method= 'PUT' action='/:id/edit'>
+		<p>Pokemon ID:</p>
+		<input type= 'number' name= 'id' placeholder= 'Input ID'><br>
+		<p>Pokemon Number</p>
+		<input type= 'number' name= 'num' placeholder= 'Input Number'><br>
+		<p>Pokemon Name</p>
+		<input type= 'text' name= 'pokename' placeholder= 'Pokemon Name'><br>
+		<p>Image path</p>
+		<input type= 'img' name= 'image' placeholder= 'Link'><br>
+		<p>Pokemon Height</p>
+		<input type= 'number' name= 'height' placeholder= 'Height: m'> M<br>
+		<p>Pokemon Weight</p>
+		<input type= 'number' name= 'weight' placeholder= 'Weight: kg'> KG<br><br>
+		<input type= 'submit' value= 'Submit entry'>
+	</form>
+</body>
+</html>
