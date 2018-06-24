@@ -1,22 +1,8 @@
-const helpers = require("./helpers.js");
+const helpers = require("../helpers.js");
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
 
 module.exports = {
-    showRoot: (request, response) => {
-        jsonfile.readFile(FILE, (err, objRead) => {
-            let pokeinfo = objRead.pokemon.map( pokemon => { return { "name": pokemon.name, "id": pokemon.id, "num": pokemon.num, "img": pokemon.img }; })
-            let context;
-            if (request.query.sortby == "name") {
-                pokeinfo = pokeinfo.sort(helpers.sortObject);
-                context = { pokeinfo };
-            } else {
-                context = { pokeinfo };
-            }
-            response.render('home', context);
-        })
-    },
-
     showNewPokemonForm: (request, response) => {
         response.render('newpokeform');
     },

@@ -19,17 +19,7 @@
         </div>
     </form>
 
-    <script type="text/javascript">
-        let form = document.querySelector('#deletePokeForm');
-        let input = document.querySelector('#inputId');
-
-        let changeAction = function() {
-            let id = this.value;
-            form.action = "/pokemon/" + id;
-        }
-
-        input.addEventListener('change', changeAction);
-    </script>
+    <script type="text/javascript" src="/js/script.js"></script>
 </body>
 
 </html>

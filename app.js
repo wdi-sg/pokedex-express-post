@@ -2,7 +2,13 @@ const express = require('express');
 const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 const path = require('path');
-const controllers = require("./controllers.js");
+const jsonfile = require('jsonfile');
+
+const helpers = require("./helpers.js");
+// load the router module in the app
+const pokemon = require('./routes/pokemon');
+
+const FILE = 'pokedex.json';
 
 /** * ===================================
  * Configurations and set up
@@ -24,30 +30,30 @@ app.use(methodOverride(function (req, res) {
 // Set handlebars to be the default view engine
 app.engine('handlebars', handlebars.create().engine);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, '/public'));
+app.set('views', path.join(__dirname, '/views'));
 
 /** * ===================================
  * Routes
  * =================================== */
 
+// use the pokemon router
+app.use('/pokemon', pokemon);
+
 // Root handler
-app.get('/', controllers.showRoot);
+app.get('/', (request, response) => {
+    jsonfile.readFile(FILE, (err, objRead) => {
+        let pokeinfo = objRead.pokemon.map( pokemon => { return { "name": pokemon.name, "id": pokemon.id, "num": pokemon.num, "img": pokemon.img }; })
+        let context;
+        if (request.query.sortby == "name") {
+            pokeinfo = pokeinfo.sort(helpers.sortObject);
+            context = { pokeinfo };
+        } else {
+            context = { pokeinfo };
+        }
+        response.render('home', context);
+    })
+});
 
-// New Pokemon handler
-app.get('/pokemon/new', controllers.showNewPokemonForm);
-
-// Edit Pokemon handler
-// app.get('/pokemon/edit', controllers.showSelectPokemonForm)
-app.get('/pokemon/:id/edit', controllers.showEditPokemonForm);
-
-// Delete Pokemon handler
-// app.get('/pokemon/delete', controllers.showDeletePokemonForm);
-
-// Database handler (CRUD)
-app.post('/pokemon', controllers.pokemonCreate);
-app.get('/pokemon/:id', controllers.pokemonRead);
-app.put('/pokemon/:id', controllers.pokemonUpdate);
-app.delete('/pokemon/:id', controllers.pokemonDelete);
 
 /** * ===================================
  * Listen to requests on port 3000

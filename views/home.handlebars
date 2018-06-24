@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome To Pokedex!</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="formDiv">
+        <form class="sortform" method="GET" action="/">
+            <input type="hidden" name="sortby" value="name">
+            <h1>Welcome To Pokedex!</h1>
+            <div class="buttonDiv">
+                <input class="sortNameButton" type="submit" value="Sort Pokemons By Name">
+            </div>
+        </form>
+        <form class="sortform" method="GET" action="/">
+            <input type="hidden" name="sortby" value="id">
+            <div class="buttonDiv">
+                <input class="sortIdButton" type="submit" value="Sort Pokemons By ID">
+            </div>
+        </form>
+        <form class="sortform" method="GET" action="/pokemon/new">
+            <div class="buttonDiv">
+                <input class="createPoke" type="submit" value="Create New Pokemon">
+            </div>
+        </form>
+    </div>
+
+    <div class="pokemonContainer">
+        {{#each pokeinfo}}
+        <div class="pokemonDisplay">
+            <img class="pokeImage" src="{{this.img}}">
+            <p class="pokeName"><span class="small">#{{this.num}}</span><br><br>{{this.name}}</p>
+            <div class="actionButtonDiv">
+                <form class="actionForm" method="GET" action="/pokemon/{{this.id}}/edit">
+                    <input class="actionButtons" type="submit" value="edit">
+                </form>
+                <form class="actionForm" method="POST" action="/pokemon/{{this.id}}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input class="actionButtons" type="submit" value="del"></a>
+                </form>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</body>
+
+</html>
