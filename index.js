@@ -42,13 +42,14 @@ app.get('/', (request, response) => {
 
 //Intercept /pokemon/new with a form
 app.get('/pokemon/new', (request, response) => {
-  let htmlForm = '<form method="POST" action="/pokemon">' +  
-              '<input type="text" name="id" placeholder="id"/>' +
-              '<input type="text" name="num" placeholder="num"/>' +
-              '<input type="text" name="name" placeholder="name"/>' +
-              '<input type="text" name="img" placeholder="img"/>' +
-              '<input type="text" name="height" placeholder="height"/>' +
-              '<input type="text" name="weight" placeholder="weight"/>' +
+  let htmlForm = '<header><h1>Add New Pokemon</h1></header><br>' +
+              '<form method="POST" action="/pokemon"><br>' +  
+              '<input type="text" name="id" placeholder="id"/><br>' +
+              '<input type="text" name="num" placeholder="num"/><br>' +
+              '<input type="text" name="name" placeholder="name"/><br>' +
+              '<input type="text" name="img" placeholder="img"/><br>' +
+              '<input type="text" name="height" placeholder="height"/><br>' +
+              '<input type="text" name="weight" placeholder="weight"/><br>' +
               '<input type="submit" value="Create">' +
               '</form>'
   response.send(htmlForm);
@@ -67,7 +68,21 @@ app.post('/pokemon', (request, response) => {
     response.send("New Pokemon Created!");
   });
 
-
+// add new pokemon
+app.post('/pokemon', (request, response) => {
+  console.log('posted stuff')
+  let data = request.body;
+  // making id a number instead of string
+  let id = parseInt(data['id']);
+  data['id'] = id;
+  // adding the new pokemon data into the list of pokemon
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.push(data);
+    response.send(obj);
+    // writes the obj with new data inside
+    jsonfile.writeFile(FILE, obj);
+  })
+});
 /**
  * ===================================
  * Listen to requests on port 3000
