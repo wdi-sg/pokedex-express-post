@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PokeForm</title>
+	<style>
+		* {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		h1 {
+			color: green;
+			font-weight: 800;
+		}
+		label {
+			font-weight: 600;
+		}
+		input {
+			font-size: 1em;
+			width: 100%;
+			margin: 1em auto;
+		}
+		input[type=text] {
+			background-color: green;
+			color: white;
+			box-sizing: border-box;
+			padding: 1em;
+		}
+		input[type=submit] {
+			color: green;
+			font-weight: 600;
+			margin: 1em auto;
+			padding: 2em;
+		}
+	</style>
+</head>
+<body>
+	<h1>NEW POKEMON</h1>
+	<form method="POST" action="/pokemon/?_method=PUT">
+		<label for="id">ID</label>
+		<input type="text" name="id"></input>
+		<label for="id">NUM</label>
+		<input type="text" name="num"></input>
+		<label for="id">NAME</label>
+		<input type="text" name="name"></input>
+		<label for="id">IMAGE</label>
+		<input type="text" name="img"></input>
+		<label for="id">HEIGHT</label>
+		<input type="text" name="height"></input>
+		<label for="id">WEIGHT</label>
+		<input type="text" name="weight"></input>
+		<input type="submit" value="SUBMIT"></input>
+	</form>
+	<h1>DELETE POKEMON</h1>
+	<form method="POST" action="/pokemon/?_method=DELETE">
+		<label for="delName">NAME</label>
+		<input type="text" name="delName"></input>
+		<input type="submit" value="SUBMIT"></input>
+	</form>
+</body>
+</html>
