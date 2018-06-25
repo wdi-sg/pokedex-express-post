@@ -1,0 +1,43 @@
+
+<ul class="pokemon-list">
+  <li class="pokemon-attribute">
+    id: {{pokemon.id}}
+  </li>
+  <li class="pokemon-attribute">
+    num: {{pokemon.num}}
+  </li>
+  <li class="pokemon-attribute">
+    name: {{pokemon.name}}
+  </li>
+  <li class="pokemon-attribute">
+    img: {{pokemon.img}}
+  </li>
+  <li class="pokemon-attribute">
+    height: {{pokemon.height}}
+  </li>
+  <li class="pokemon-attribute">
+    weight: {{pokemon.weight}}
+  </li>
+  <li class="pokemon-attribute">
+    candy: {{pokemon.candy}}
+  </li>
+  <li class="pokemon-attribute">
+    candy_count: {{pokemon.candy_count}}
+  </li>
+  <li class="pokemon-attribute">
+    egg: {{pokemon.egg}}
+  </li>
+  <li class="pokemon-attribute">
+    avg_spawns: {{pokemon.avg_spawns}}
+  </li>
+  <li class="pokemon-attribute">
+    spawn_time: {{pokemon.spawn_time}}
+  </li>
+</ul>
+
+<form method="POST" action="/{{pokemon.id}}?_method=DELETE">
+  <button type="submit">DELETE</button>
+</form>
+<form method="GET" action="/{{pokemon.id}}/edit">
+  <button type="submit">EDIT</button>
+</form>
