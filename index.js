@@ -31,6 +31,13 @@ app.use(express.urlencoded({
  * ===================================
  */
 
+
+//GET request to link to form.html
+app.get('/pokemon/new', (request, response) => {
+  response.sendFile(path.join(__dirname, '/public', 'form.html'))
+});
+
+
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -55,14 +62,8 @@ app.get('/:id', (request, response) => {
       response.send(pokemon);
     }
   });
-});
-
-//GET request to link to form.html
-app.get('/pokemon/new', (request, response) => {
-  response.sendFile(path.join(__dirname, '/public', 'form.html'))
-});
-
-
+}); 
+  
 //when the form is submitted, the input is POSTed
 app.post('/pokemon', function(request, response) {
   
@@ -70,10 +71,10 @@ app.post('/pokemon', function(request, response) {
   console.log(request.body);
 
   //reads Json file
-  jsonfile.readFile('pokedex.json', (err,obj) => {
+  jsonfile.readFile(FILE, (err,obj) => {
     
     let newPoke = {
-            "id": request.body.id,
+            "id": parseInt(request.body.id),
             "num": request.body.num,
             "name": request.body.name,
             "img": request.body.img,
@@ -88,15 +89,13 @@ app.post('/pokemon', function(request, response) {
     let updatedPokedex = obj;
 
     //Updates Json file
-    jsonfile.writeFile('pokedex.json', updatedPokedex, (err) => {
+    jsonfile.writeFile(FILE, updatedPokedex, (err) => {
 
       response.send('pokemon added to pokedex!');
 
       });
 
   })
-  
-
 
 });
 
