@@ -1881,6 +1881,30 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "Id": "55555",
+      "num": "34",
+      "name": "ere",
+      "img": "",
+      "height": "333",
+      "weight": "3333"
+    },
+    {
+      "Id": "00000000",
+      "num": "",
+      "name": "",
+      "img": "",
+      "height": "",
+      "weight": "8089898"
+    },
+    {
+      "Id": "979070",
+      "num": "",
+      "name": "",
+      "img": "",
+      "height": "897987",
+      "weight": "8755"
     }
   ]
 }
