@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-</head>
+    <title>Create Pokemon</title>
+</head> 
 <body>
-    <form>
-        <input type="text" name="id" placeholder="Pokemon ID">
-        <input type="text" name="num" placeholder="Pokemon Number">
-        <input type="text" name=name placeholder="Pokemon Name">
-        <input type="text" name="img" placeholder="Pokemon Image">
-        <input type="text" name="height" placeholder="Pokemon Height">
-        <input type="text" name="weight" placeholder="Pokemon Weight">
-        <input type="submit" value="create">
+    <h1>Create a New Pokemon!</h1>
+    <form method="POST" action="/pokemon">
+        <input type="text" name="id" placeholder="New Pokemon ID"><br>
+        <input type="text" name="num" placeholder="New Pokemon Number"><br>
+        <input type="text" name=name placeholder="New Pokemon Name"><br>
+        <input type="text" name="img" placeholder="New Pokemon Image"><br>
+        <input type="text" name="height" placeholder="Pokemon Height"><br>
+        <input type="text" name="weight" placeholder="Pokemon Weight"><br>
+        <input type="submit" value="Submit">
     </form>
 </body>
 </html>
