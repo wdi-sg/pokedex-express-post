@@ -7,5 +7,10 @@
     "express": "^4.16.3",
     "jsonfile": "^4.0.0",
     "method-override": "^2.3.10"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
   }
 }
