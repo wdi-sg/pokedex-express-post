@@ -134,7 +134,7 @@ app.get('*', (request, response) => {
             }
 
             var pageNameQuery = '';
-            pageNameQuery += '<html><body><ul>' + nameList + '</ul></body></html>';
+            pageNameQuery += '<html><body><h1>List of pokemon names: </h1><ul>' + nameList + '</ul></body></html>';
 
             response.send(pageNameQuery);
 
