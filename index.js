@@ -11,39 +11,25 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-// FUNCTIONS
-const capitalize = (word) => {
-  let capitalized = word.charAt(0).toUpperCase();
-  capitalized += word.substring(1);
-  return capitalized;
-};
+// REACT
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
 
-const generateHtml = (title, pokedex) => {
-  let body = '<html><body style="font-family:monospace;">';
-  body += `<h1>${title}</h1>`;
-  if (typeof pokedex === 'object') {
-    body += '<ul style="list-style-type:none; padding:0; margin:0;">';
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
 
-    Object.keys(pokedex).forEach((key) => {
-      // CHANGE INDEX TO START FROM 1
-      let index = key;
-      if (index.match(/^[0-9]+$/) !== null) {
-        index = parseInt(index, 10) + 1;
-      }
-      // CHECK FOR IMG ELEMENT
-      if (index === 'img') {
-        body += `<img src="${pokedex[key]}">`;
-      } else if (key === 'next_evolution' || key === 'prev_evolution') { // CHECK FOR NEXT/PREV EVO OBJECT
-        pokedex[key].forEach((item) => {
-          body += `<li><strong>${capitalize(index.toString().replace('_', ' '))}</strong>: ${item.name}</li>`;
-        });
-      } else body += `<li><strong>${capitalize(index.toString().replace('_', ' '))}</strong>: ${pokedex[key]}</li>`;
-    });
-    body += '</ul>';
-  } else body += pokedex;
-  body += '</body></html';
-  return body;
-};
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+app.get('/', (req, res) => {
+  if (req.query.sortby === 'name') {
+    jsonfile.readFile(FILE, (readErr, obj) => {
+      res.render('select-name', obj);
+    })
+  } else if (!res.headersSent)
+    res.render('home');
+});
 
 // NEW STUFF
 app.get('/pokemon/new', (req, res) => {
@@ -75,7 +61,7 @@ app.post('/pokemon', (req, res) => {
       jsonfile.writeFile(FILE, pokedex, (writeErr) => {
         if (writeErr) res.send(writeErr);
         else {
-          res.send(generateHtml('Added', data));
+          res.send('Thank You & Come again.');
         }
       });
     }
@@ -111,12 +97,6 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send('yay');
-});
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+
+app.listen(3000);
