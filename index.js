@@ -104,8 +104,12 @@ app.post('/pokemon', (request, response) => {
     newPokemon.height = newPokemon.height + ' m';
     newPokemon.weight = newPokemon.weight + ' kg';
 
-    obj.pokemon.push(newPokemon);
+    if (newPokemon.id <= obj.pokemon.length) {
+      response.send('Please enter an ID that is greater than ' + obj.pokemon.length);
+      return;
+    }
 
+    obj.pokemon.push(newPokemon);
     jsonfile.writeFile(FILE, obj, err => {
       if (err) {
         response.status(404).send(err);

@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Behemoth",
+      "img": "https://vignette.wikia.nocookie.net/finalfantasy/images/8/8d/Behemoth_FFXV.png/revision/latest?cb=20170902160023",
+      "height": "100 m",
+      "weight": "100 kg"
     }
   ]
 }
