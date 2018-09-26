@@ -3,56 +3,70 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true,
+}))
 
 app.get('/:id', (request, response) => {
 
-  // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
 
-    var pokemon;
+  })
+})
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
 
-      let currentPokemon = obj.pokemon[i];
+app.get('/pokemon/new', (request, response) => {
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+  let html = "";
+  html += "<html><body>";
+  html += `<form method="POST" action="/pokemon">`;
+  html += "<h1>Make a new Pokemon:</h1>";
+  html += `ID: <input type="text" name="id"><br>`;
+  html += `No: <input type="text" name="num"><br>`;
+  html += `Name: <input type="text" name="name"><br>`;
+  html += `Image: <input type="text" name="img"><br>`;
+  html += `Height: <input type="text" name="height"><br>`;
+  html += `Weight: <input type="text" name="weight"><br>`;
+  html += '<input type="submit" value="Submit"><br>';
+  html += "</form>";
+  html += "</body></html>";
 
-    if (pokemon === undefined) {
+  response.send(html);
+})
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+app.post('/pokemon', (request, response) => {
 
-      response.send(pokemon);
-    }
-  });
-});
+  let newPokemon = {};
+  newPokemon["data"] = request.body;
+  newPokemon["id"] = request.body.id;
+  newPokemon["num"] = request.body.num;
+  newPokemon["name"] = request.body.name;
+  newPokemon["img"] = request.body.img;
+  newPokemon["height"] = request.body.height;
+  newPokemon["weight"] = request.body.weight;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let pokedex = obj;
+
+    pokedex.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, pokedex, (err) => {
+      if (err) console.log(err);
+
+      response.send(pokedex.pokemon);
+    })
+  })
+})
 
 app.get('/', (request, response) => {
-  response.send("yay");
-});
+  response.send("This is where the Pokedex should be.");
+})
+
+
 
 /**
  * ===================================
