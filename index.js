@@ -48,7 +48,7 @@ var createHtmlPagePokemon = function(request, response){
 app.get('/pokemon/new', createHtmlPagePokemon);
 
 app.post('/pokemon', (request, response) =>{
-    console.log(request.body);
+    //console.log(request.body);
     var requestOrd = request.body;
     let file = 'pokedex.json';
     //const obj = request.body;
@@ -111,16 +111,25 @@ app.post('/pokemon', (request, response) =>{
 app.get('/', (request, response) => {
   //create a sort by button
   let buttonPage = '';
-  buttonPage += '<html><body><h1>IF you want to sort the pokemon: </h1><br>';
+  buttonPage += '<html><body><h1>How do you want to sort the pokemons:  </h1><br>';
   //buttonPage += '<input type="button" value="Sort By Name">';
-  buttonPage += '<a href="/pokemon?sortby=name">Sort by name</a>';
+  buttonPage += '<form action="/pokemon"><select name="sortby">';
+  buttonPage += '<option value="name">name</option>';
+  buttonPage += '<option value="id">id</option>';
+  buttonPage += '<option value="height">height</option>';
+  buttonPage += '<option value="weight">weight</option>';
+  buttonPage += '<option value="weight">weight</option>';
+  buttonPage += '</select><br><br><input type="submit"></form>';
   buttonPage += '</body></html>';
 
 
   response.send(buttonPage);
+  console.log(request.query);
+
 });
 
-app.get('*', (request, response) => {
+app.get('/pokemon', (request, response) => {
+    //console.log(request.query.sortby
     jsonfile.readFile(FILE,(err, obj) => {
         if (err){
             response.status(404).send(err);
