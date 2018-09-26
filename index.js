@@ -109,18 +109,44 @@ app.get("/", (req, res) => {
     let html = "<html>";
     html += "<body><p>Welcome to the online Pokedex</p>";
     html +=
-      '<form method="GET" action=""><label for="sort-by-name">Sort By Name</label><input type="submit" name="sortby" value="name" id="sort-by-name"/></form>';
+      '<form method="GET" action=""><label for="sort-by-name">Sort By</label><select name="sortby"><option value="name">Name</option><option value="height">Height</option><option value="weight">Weight</option></select><input type="submit"/></form>';
     html += "</body></html>";
     if (!req.query.sortby) {
       res.send(html);
     } else if (req.query.sortby === "name") {
-      pokemonObject.sort(sortingFunction);
+      pokemonObject.sort(sortingFunctionByName);
       pokemonlist = "";
       pokemonlist += "<html><body><ul>";
       for (i in pokemonObject) {
-        pokemonlist += "<li>"
-        pokemonlist += pokemonObject[i].name
-        pokemonlist += "</li>"
+        pokemonlist += "<li>";
+        pokemonlist += pokemonObject[i].name;
+        pokemonlist += "</li>";
+      }
+      pokemonlist += "</ul></body></html>";
+      res.send(pokemonlist);
+    } else if (req.query.sortby === "height") {
+      pokemonObject.sort(sortingFunctionByHeight);
+      pokemonlist = "";
+      pokemonlist += "<html><body><ul>";
+      for (i in pokemonObject) {
+        pokemonlist += "<li>";
+        pokemonlist += pokemonObject[i].name;
+        pokemonlist += " ";
+        pokemonlist += pokemonObject[i].height;
+        pokemonlist += "</li>";
+      }
+      pokemonlist += "</ul></body></html>";
+      res.send(pokemonlist);
+    } else if (req.query.sortby === "weight") {
+      pokemonObject.sort(sortingFunctionByWeight);
+      pokemonlist = "";
+      pokemonlist += "<html><body><ul>";
+      for (i in pokemonObject) {
+        pokemonlist += "<li>";
+        pokemonlist += pokemonObject[i].name;
+        pokemonlist += " ";
+        pokemonlist += pokemonObject[i].weight;
+        pokemonlist += "</li>";
       }
       pokemonlist += "</ul></body></html>";
       res.send(pokemonlist);
@@ -128,11 +154,35 @@ app.get("/", (req, res) => {
   });
 });
 
-var sortingFunction = (a, b) => {
+const sortingFunctionByName = (a, b, x) => {
   if (a.name < b.name) {
     return -1;
   }
   if (a.name > b.name) {
+    return +1;
+  }
+  return 0;
+};
+
+const sortingFunctionByHeight = (a, b) => {
+  if (a.height < b.height) {
+    return -1;
+  }
+  if (a.height > b.height) {
+    return +1;
+  }
+  return 0;
+};
+
+const sortingFunctionByWeight = (a, b) => {
+    let weightSplit = {
+        a: a.weight.split(" "),
+        b: b.weight.split(" ")
+    }
+  if (weightSplit.a[0] < weightSplit.b[0]) {
+    return -1;
+  }
+  if (weightSplit.a[0] > weightSplit.b[0]) {
     return +1;
   }
   return 0;
