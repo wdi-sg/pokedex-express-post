@@ -27,21 +27,40 @@ var handleRequestRoot = (request, response) => {
 
         let html = "";
 
+
+        if (Object.keys(request.query).length > 0) {    // For queries e.g. /?sortby=name or /?sortby=height
+
+            obj.pokemon.sort ( (a, b) => {
+
+                return a.name.toLowerCase().localeCompare( b.name.toLowerCase() );
+            });
+
+            console.log (request.query);
+            console.log (request.query.sortby);
+            console.log (obj.pokemon);
+
+        };
+
+
         html += `<html><body style="margin:5vw;"><h1>Welcome to the online Pokedex!</h1><h3 style="color:red;">Pokemon:</h3>`;
+
+        html += `<div style="margin-bottom:5vw;"><input type="button" onclick="window.location.href='/?sortby=name';" value="Sort by Name" /></div>`;
+        // html += `<div style="margin-bottom:5vw;"><a href=/?sortby=name>Sort by Name</a></div>`;  - Why are these approaches bad?
+
 
         for (i in obj.pokemon) {
 
-            html += `<a href = "/${obj.pokemon[i].name}">${parseInt(i)+1}. ${obj.pokemon[i].name}</a><br>`;
+            html += `<a href = "/${obj.pokemon[i].name}">${obj.pokemon[i].num}. ${obj.pokemon[i].name}</a><br>`;
         };
 
         html += `</body></html>`;
 
-        response.send(html);
+        return response.send(html);
     });
 };
 
 
-var handleRequestName = (request, response) => {
+var handleRequestName = (request, response) => {    // For direct Pokemon search e.g. /mewtwo
 
     console.log("Handling response now...");
     console.log("Request path: " + request.path);
@@ -200,7 +219,7 @@ var handleRequestEvo = (request, response) => {
 };
 
 
-var handleRequestSearch = (request, response) => {
+var handleRequestSearch = (request, response) => {  // e.g. /search/spawn_chance?amount=1&compare=more
 
     console.log("Handling response now...");
     console.log("Request path: " + request.path);
@@ -226,7 +245,7 @@ var handleRequestSearch = (request, response) => {
 
             if (operators[request.query.compare] (parseFloat(pokes[i][request.params.searchattribute]), (request.query.amount))) {
 
-                html += `<a href = "/${pokes[i].name}">${parseInt(i)+1}. ${pokes[i].name}</a><br>`;
+                html += `<a href = "/${pokes[i].name}">${pokes[i].num}. ${pokes[i].name}</a><br>`;
             };
         };
 
@@ -236,7 +255,7 @@ var handleRequestSearch = (request, response) => {
 };
 
 
-app.get('/pokemon/new', (request, response) => {
+app.get('/pokemon/new', (request, response) => {    // Generates input form for new entries to Pokedex
 
     let html = `<html><body style="margin:5vw;">`;
 
@@ -259,7 +278,7 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 
-app.post('/pokepost', (request, response) => {
+app.post('/pokepost', (request, response) => {  // Handles post for new Pokemon input
 
     console.log(request.body);
 
@@ -288,11 +307,27 @@ app.get('/:name', handleRequestName );
 app.get('/', handleRequestRoot );
 
 
-app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3001 ~~~'));
 
 
 
+// ## Further
 
+// * Add a "Sort by name" button to the homepage (`/` route) that when clicked,
+// sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
+
+// * Implement this sort functionality as a drop down (`select` `input`) of all the sorting fields the user can choose to sort by.
+
+// * Instead of saving `id` and `num` as random values input by the user via the form,
+// implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
+
+//   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`,
+//   the new pokemon object could have `"id": 152` and `"num": "152"`
+//   * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
+//   * are there any other ways to make a unique id for something?
+//   Remember that it is technically possible for 2 requests to be made to your server at almost the exact same time.
+//   What would happen when request 1 comes in and you begin to write to the disk and
+//   request 2 comes in and starts *and* finishes writing to the disk before request 1 finished writing to the disk?
 
 
 
