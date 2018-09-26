@@ -9,31 +9,38 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const generateHtml = (content) => {
+  let html = '<html>';
+  html += '<head>';
+  html += '<title>Pokemon</title>';
+  html += '<style>* {padding: 0; margin: 0; box-sizing: border-box;} body {padding: 2rem;} a {text-decoration: none; padding: 1rem 2rem; border: 1px solid black;}</style>';
+  html += '</head>';
+  html += '<body>';
+  html += content;
+  html += '</body>';
+  html += '</html>';
+  return html;
+};
+
 const generateForm = () => {
-  let form = '<html>';
-  form += '<head>';
-  form += '<title>Pokemon</title>';
-  form += '</head>';
-  form += '<body>';
+  let form = '';
   form += '<form method="POST" action="/pokemon">';
   form += '<label for="id">id</label> <input type="number" name="id"><br>';
   form += '<label for="num">num</label> <input type="number" name="num"><br>';
   form += '<label for="name">name</label> <input type="text" name="name"><br>';
   form += '<label for="img">img</label> <input type="url" name="img"><br>';
-  form += '<label for="height">height</label> <input type="text" name="height"><br>';
-  form += '<label for="weight">weight</label> <input type="text" name="weight"><br>';
+  form += '<label for="height">height</label> <input type="number" name="height"> m<br>';
+  form += '<label for="weight">weight</label> <input type="number" name="weight"> kg<br>';
   form += '<input type="submit" value="Submit">';
   form += '</form>';
-  form += '</body>';
-  form += '</html>';
   return form;
 };
 
 app.get('/pokemon/new', (request, response) => {
-  response.send(generateForm());
+  response.send(generateHtml(generateForm()));
 });
 
-app.get('/:id', (request, response) => {
+app.get('/pokemon/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     let inputId = parseInt(request.params.id);
     let pokemon;
@@ -54,8 +61,22 @@ app.get('/:id', (request, response) => {
   });
 });
 
+// /pokemon?sortby=name
+app.get('/pokemon', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      response.status(404).send(err);
+    }
+
+    const sortBy = request.query.sortby;
+    obj.pokemon.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+    response.send(obj.pokemon);
+  });
+});
+
 app.get('/', (request, response) => {
-  response.send("yay");
+  let content = '<a href="/pokemon?sortby=name">Sort by name</a>';
+  response.send(generateHtml(content));
 });
 
 app.post('/pokemon', (request, response) => {
@@ -64,13 +85,10 @@ app.post('/pokemon', (request, response) => {
       response.status(404).send(err);
     }
 
-    let newPokemon = {};
-    newPokemon.id = request.body.id;
-    newPokemon.num = request.body.num;
-    newPokemon.name = request.body.name;
-    newPokemon.img = request.body.img;
-    newPokemon.height = request.body.height;
-    newPokemon.weight = request.body.weight;
+    let newPokemon = request.body;
+    newPokemon.id = parseInt(newPokemon.id);
+    newPokemon.height = newPokemon.height + ' m';
+    newPokemon.weight = newPokemon.weight + ' kg';
 
     obj.pokemon.push(newPokemon);
 
@@ -78,7 +96,7 @@ app.post('/pokemon', (request, response) => {
       if (err) {
         response.status(404).send(err);
       }
-      response.send('New pokemon saved!');
+      response.send(newPokemon);
     });
   });
 });
