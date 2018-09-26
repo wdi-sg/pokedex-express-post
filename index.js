@@ -109,7 +109,7 @@ app.get("/", (req, res) => {
     let html = "<html>";
     html += "<body><p>Welcome to the online Pokedex</p>";
     html +=
-      '<form method="GET" action=""><input type="submit" name="sortby" value="name"></form>';
+      '<form method="GET" action=""><label for="sort-by-name">Sort By Name</label><input type="submit" name="sortby" value="name" id="sort-by-name"/></form>';
     html += "</body></html>";
     if (!req.query.sortby) {
       res.send(html);
