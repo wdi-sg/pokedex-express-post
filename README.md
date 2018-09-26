@@ -36,7 +36,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 * Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object could have `"id": 152` and `"num": "152"`
   * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
-  * are there any other ways to make a unique id for something? Remember that it is technically possible for 2 requests to be made to your server at almost the exact same time.
+  * are there any other ways to make a unique id for something? Remember that it is technically possible for 2 requests to be made to your server at almost the exact same time. What would happen when request 1 comes in and you begin to write to the disk and request 2 comes in and starts and finishes writing to the disk before request 1?
   
 
 
