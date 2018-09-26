@@ -3,6 +3,8 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
+
+
 /**
  * ===================================
  * Configurations and set up
@@ -18,28 +20,45 @@ const app = express();
  * ===================================
  */
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 var createHtmlPagePokemon = function(request, response){
     jsonfile.readFile(FILE, (err, obj) =>{
         var newEmpArray = [];
         var pokemonObj = obj.pokemon;
-        for (let i = 0; i < pokemonObj.length; i++){
-            var html = '<html><body><h1>Form for new pokemon: </h1>';
-            html += '<form method="POST">';
-            html += 'Id Number:<br> <input type="text" id="id"><br>';
-            html += 'Number:<br> <input type="text" num="num"><br>';
-            html += 'Name:<br> <input type="text" name="name"><br>';
-            html += 'Image:<br> <input type="text" img="img"><br>';
-            html += 'Height:<br> <input type="text" height="height"><br>';
-            html += 'Weight:<br> <input type="text" weight="weight"><br>';
-            html += '<input type="submit" value="Submit"><br>';
-            html += '</form></body></html>';
+        var html = '<html><body><h1>Form for new pokemon: </h1>';
+        html += '<form method="POST" action="/pokemon">';
+        html += 'Id Number:<br> <input type="text" name="id"><br>';
+        html += 'Number:<br> <input type="text" name="num"><br>';
+        html += 'Name:<br> <input type="text" name="name"><br>';
+        html += 'Image:<br> <input type="text" name="img"><br>';
+        html += 'Height:<br> <input type="text" name="height"><br>';
+        html += 'Weight:<br> <input type="text" name="weight"><br>';
+        html += '<input type="submit" value="Submit"><br>';
+        html += '</form></body></html>';
 
-            response.send(html);
-        }
+        response.send(html);
     })
 }
 
-app.get('/new', createHtmlPagePokemon);
+app.get('/pokemon/new', createHtmlPagePokemon);
+
+app.post('/pokemon', (request, response) =>{
+
+    console.log(request.body);
+    let file = 'data.json';
+    const obj = request.body;
+
+    jsonfile.writeFile(file, obj, function(err){
+        if (err){
+            console.log("ERROR: ", err);
+        }
+        response.send(request.body);
+    })
+})
 
 app.get('/:id', (request, response) => {
 
