@@ -103,12 +103,40 @@ app.get("/:id", (request, response) => {
 });
 
 app.get("/", (req, res) => {
-  let html = "<html>";
-  html += "<body><p>Welcome to the online Pokedex</p>";
-  html += '<button method="post" action="?sortby=name">Sort By Name</button>';
-  html += "</body></html>";
-  res.send(html);
+  jsonfile.readFile(FILE, (err, obj) => {
+    let pokedex = obj;
+    let pokemonObject = obj.pokemon;
+    let html = "<html>";
+    html += "<body><p>Welcome to the online Pokedex</p>";
+    html +=
+      '<form method="GET" action=""><input type="submit" name="sortby" value="name"></form>';
+    html += "</body></html>";
+    if (!req.query.sortby) {
+      res.send(html);
+    } else if (req.query.sortby === "name") {
+      pokemonObject.sort(sortingFunction);
+      pokemonlist = "";
+      pokemonlist += "<html><body><ul>";
+      for (i in pokemonObject) {
+        pokemonlist += "<li>"
+        pokemonlist += pokemonObject[i].name
+        pokemonlist += "</li>"
+      }
+      pokemonlist += "</ul></body></html>";
+      res.send(pokemonlist);
+    }
+  });
 });
+
+var sortingFunction = (a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return +1;
+  }
+  return 0;
+};
 
 /**
  * ===================================
