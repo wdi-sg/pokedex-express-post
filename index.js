@@ -2,7 +2,7 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
-
+const PORT = process.env.PORT || 8080
 const app = express();
 
 // ENCODING STUFF
@@ -21,6 +21,10 @@ app.set('views', __dirname + '/views');
 
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
+
+app.get('/pokemon/new', (req, res) => {
+  res.render('add_pokemon')
+});
 
 // NEW STUFF
 // app.get('/pokemon/new', (req, res) => {
@@ -41,23 +45,23 @@ app.set('view engine', 'jsx');
 //   res.send(content);
 // });
 
-// app.post('/pokemon', (req, res) => {
-//   const data = req.body;
-//   jsonfile.readFile(FILE, (readErr, obj) => {
-//     if (readErr) res.send(readErr);
-//     else {
-//       const pokedex = obj;
-//       pokedex.pokemon.push(data);
+app.post('/pokemon', (req, res) => {
+  const data = req.body;
+  jsonfile.readFile(FILE, (readErr, obj) => {
+    if (readErr) res.send(readErr);
+    else {
+      const pokedex = obj;
+      pokedex.pokemon.push(data);
 
-//       jsonfile.writeFile(FILE, pokedex, (writeErr) => {
-//         if (writeErr) res.send(writeErr);
-//         else {
-//           res.send('Thank You & Come again.');
-//         }
-//       });
-//     }
-//   });
-// });
+      jsonfile.writeFile(FILE, pokedex, (writeErr) => {
+        if (writeErr) res.send(writeErr);
+        else {
+          res.send('Thank You & Come again.');
+        }
+      });
+    }
+  });
+});
 
 app.get('/', (req, res) => {
   jsonfile.readFile(FILE, (readErr, obj) => {
@@ -69,5 +73,4 @@ app.get('/', (req, res) => {
   });
 });
 
-
-app.listen(3000);
+app.listen(PORT);
