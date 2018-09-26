@@ -30,15 +30,23 @@ var handleRequestRoot = (request, response) => {
 
         if (Object.keys(request.query).length > 0) {    // For queries e.g. /?sortby=name or /?sortby=height
 
-            obj.pokemon.sort ( (a, b) => {
-
-                return a.name.toLowerCase().localeCompare( b.name.toLowerCase() );
-            });
-
             console.log (request.query);
             console.log (request.query.sortby);
-            console.log (obj.pokemon);
 
+
+            obj.pokemon.sort ( (a, b) => {
+
+                const sorter = request.query.sortby.toLowerCase();
+
+                if (sorter === 'name') {
+
+                    return a[sorter].localeCompare ( b[sorter] );
+
+                } else {
+
+                    return parseFloat(a[sorter]) - parseFloat(b[sorter]);
+                };
+            });
         };
 
 
@@ -46,6 +54,21 @@ var handleRequestRoot = (request, response) => {
 
         html += `<div style="margin-bottom:5vw;"><input type="button" onclick="window.location.href='/?sortby=name';" value="Sort by Name" /></div>`;
         // html += `<div style="margin-bottom:5vw;"><a href=/?sortby=name>Sort by Name</a></div>`;  - Why are these approaches bad?
+
+        html += `<form action="/?" method="get">`
+        html += `<select name="sortby">`
+        html += `<optgroup label="Sorting Criteria">`
+        html += `<option value="">Select Attribute to Sort by</option>`
+        html += `<option value="name">Sort by Name</option>`
+        html += `<option value="id">Sort by ID</option>`
+        html += `<option value="height">Sort by Height</option>`
+        html += `<option value="weight">Sort by Weight</option>`
+        html += `<option value="spawn_chance">Sort by Spawn Chance</option>`
+        html += `<option value="avg_spawns">Sort by Average Spawns</option>`
+        html += `</optgroup>`
+        html += `</select>`
+        html += `<input type="submit" value="Go"/>`
+        html += `</form>`
 
 
         for (i in obj.pokemon) {
