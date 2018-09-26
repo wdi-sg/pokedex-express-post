@@ -1,3 +1,4 @@
+
 const express = require('express');
 const jsonfile = require('jsonfile');
 
@@ -28,7 +29,7 @@ const pokemonStuff = () => {
     let execute = "<html>";
     execute += "<body>";
     execute += '<form method="POST" action="/pokemon">';
-    execute += "Pokemon name:";
+    execute += "Poke Poke mon name:";
     execute += '<p>ID:<input type="text" name="id"><p>';
     execute += '<p>Num:<input type="text" name="num"><p>';
     execute += '<p>Name:<input type="text" name="name"><p>';
@@ -74,38 +75,43 @@ app.get('/:id', (request, response) => {
   });
 });
 
+
 app.get('/', (request, response) => {
-  response.send("wass wass up");
-});
-
-app.post('/pokemon', (request,response) => {
-    console.log(request.body)
-
-    var orderRequest = request.body
-    let file = 'pokedex.json';
-
-  let objectRide = {
-    id: parseInt(orderRequest['id'],
-    num: orderRequest['num'],
-    name: orderRequest['name'],
-    img: orderRequest['img'],
-    height: orderRequest['height'],
-    weight: orderRequest['weight']
-  }
-
-   // jsonfile.readFile(file, (err, obj) => {
-      obj.pokemon.push(objectRide);
-
-      jsonfile.writeFile(file, obj, function (err) =>  {
-      if (err) {
-        console.log("ERROR:",err)
-      }
-        respond.send('wass wass up?!?!?');
-      });
-    });
-  // });
+   response.send("yay");
+ });
 
 
+app.post('/pokemon', function (request, response)  {
+
+    jsonfile.readFile(FILE, (err,obj) => {
+    if (err) {
+      console.log("ERROR", err)
+    }
+  })
+
+// console.log(request.body)
+// let file = 'pokedex.json'
+const obj = request.body;
+
+
+ let nuevoPokemon = {};
+    nuevoPokemon.id = request.body.id;
+    nuevoPokemon.num = request.body.num;
+    nuevoPokemon.name = request.body.name;
+    nuevoPokemon.img = request.body.img;
+    nuevoPokemon.height = request.body.height;
+    nuevoPokemon.weight = request.body.weight;
+
+      obj.pokemon.push(nuevoPokemon);
+
+//saving request.body
+  jsonfile.writeFile(FILE, obj, function(err) {
+    if (err) {
+      console.log("ERROR", err)
+    }
+  })
+  response.send(request.body);
+})
 
 /**
  * ===================================
