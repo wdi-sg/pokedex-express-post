@@ -46,6 +46,35 @@ const pokemonStuff = () => {
     response.send(pokemonStuff());
 });
 
+
+app.post('/pokemon', (request,response) => {
+    console.log(request.body)
+
+    var orderRequest = request.body
+    let file = 'pokedex.json';
+
+  let objectRide = {
+    id: parseInt(orderRequest['id'],
+    num: orderRequest['num'],
+    name: orderRequest['name'],
+    img: orderRequest['img'],
+    height: orderRequest['height'],
+    weight: orderRequest['weight']
+  }
+
+   jsonfile.readFile(file, (err, obj) => {
+      obj['pokemon'].push(objectRide);
+
+      jsonfile.writeFile(file, obj, function (err) =>  {
+      if (err) {
+        console.log("ERROR:",err)
+      }
+        respond.send('wass wass up?!?!?');
+      });
+    });
+  });
+
+
 /**
  * ===================================
  * Listen to requests on port 3000
