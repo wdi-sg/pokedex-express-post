@@ -109,7 +109,15 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  //create a sort by button
+  var buttonPage = '';
+  buttonPage += '<html><body><h1>IF you want to sort the pokemon: </h1><br>';
+  //buttonPage += '<input type="button" value="Sort By Name">';
+  buttonPage += '<a href="/pokemon?sortby=name">Sort by name</a>';
+  buttonPage += '</body></html>';
+
+
+  response.send(buttonPage);
 });
 
 /**
