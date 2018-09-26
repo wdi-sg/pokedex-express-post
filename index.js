@@ -23,8 +23,7 @@ const generateHtml = (content) => {
 };
 
 const generateForm = () => {
-  let form = '';
-  form += '<form method="POST" action="/pokemon">';
+  let form = '<form method="POST" action="/pokemon">';
   form += '<label for="id">id</label> <input type="number" name="id"><br>';
   form += '<label for="num">num</label> <input type="number" name="num"><br>';
   form += '<label for="name">name</label> <input type="text" name="name"><br>';
@@ -72,15 +71,15 @@ app.get('/pokemon', (request, response) => {
     if (sortBy === 'name') {
       obj.pokemon.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
     } else {
-      obj.pokemon.sort((a, b) => parseFloat(a[sortBy]).toFixed(2) - parseFloat(b[sortBy]).toFixed(2));
+      obj.pokemon.sort((a, b) => parseFloat(a[sortBy]).toFixed(2) -
+        parseFloat(b[sortBy]).toFixed(2));
     }
     response.send(obj.pokemon);
   });
 });
 
 app.get('/', (request, response) => {
-  let content = '';
-  content += '<form action="/pokemon">';
+  let content = '<form action="/pokemon">';
   content += '<select name="sortby">';
   content += '<option disabled selected value>Sort by...</option>';
   content += '<option value="id">id</option>';
@@ -114,6 +113,7 @@ app.post('/pokemon', (request, response) => {
       if (err) {
         response.status(404).send(err);
       }
+
       response.send(newPokemon);
     });
   });
