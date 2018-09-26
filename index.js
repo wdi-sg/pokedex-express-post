@@ -40,6 +40,7 @@ var createHtmlPagePokemon = function(request, response){
         html += '<input type="submit" value="Submit"><br>';
         html += '</form></body></html>';
 
+        //console.log(html);
         response.send(html);
     })
 }
@@ -47,10 +48,18 @@ var createHtmlPagePokemon = function(request, response){
 app.get('/pokemon/new', createHtmlPagePokemon);
 
 app.post('/pokemon', (request, response) =>{
-
     console.log(request.body);
+    var requestOrd = request.body;
     let file = 'data.json';
-    const obj = request.body;
+    //const obj = request.body;
+    let obj = {
+        id: parseInt(requestOrd['id']),
+        num: requestOrd['num'],
+        name: requestOrd['name'],
+        img: requestOrd['img'],
+        height: requestOrd['height'],
+        weight: requestOrd['weight']
+    }
 
     jsonfile.writeFile(file, obj, function(err){
         if (err){
