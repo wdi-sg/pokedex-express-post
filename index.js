@@ -76,41 +76,41 @@ app.post('/pokemon', (request, response) =>{
 
 })
 
-app.get('/:id', (request, response) => {
+// app.get('/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+//   // get json from specified file
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     // obj is the object from the pokedex json file
+//     // extract input data from request
+//     let inputId = parseInt( request.params.id );
 
-    var pokemon;
+//     var pokemon;
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+//     // find pokemon by id from the pokedex json file
+//     for( let i=0; i<obj.pokemon.length; i++ ){
 
-      let currentPokemon = obj.pokemon[i];
+//       let currentPokemon = obj.pokemon[i];
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+//       if( currentPokemon.id === inputId ){
+//         pokemon = currentPokemon;
+//       }
+//     }
 
-    if (pokemon === undefined) {
+//     if (pokemon === undefined) {
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+//       // send 404 back
+//       response.status(404);
+//       response.send("not found");
+//     } else {
 
-      response.send(pokemon);
-    }
-  });
-});
+//       response.send(pokemon);
+//     }
+//   });
+// });
 
 app.get('/', (request, response) => {
   //create a sort by button
-  var buttonPage = '';
+  let buttonPage = '';
   buttonPage += '<html><body><h1>IF you want to sort the pokemon: </h1><br>';
   //buttonPage += '<input type="button" value="Sort By Name">';
   buttonPage += '<a href="/pokemon?sortby=name">Sort by name</a>';
@@ -119,6 +119,39 @@ app.get('/', (request, response) => {
 
   response.send(buttonPage);
 });
+
+app.get('*', (request, response) => {
+    jsonfile.readFile(FILE,(err, obj) => {
+        if (err){
+            response.status(404).send(err);
+        }
+        if (request.query.sortby == 'name'){
+            let sortedName = obj.pokemon.sort(compare);
+            let nameList = '';
+            for (var i = 0; i < sortedName.length; i++){
+                let list = '<li>' + sortedName[i].name + '</li>';
+                nameList += list;
+            }
+
+            var pageNameQuery = '';
+            pageNameQuery += '<html><body><ul>' + nameList + '</ul></body></html>';
+
+            response.send(pageNameQuery);
+
+        }
+    });
+});
+
+//write a function that sort arrays of object by string property in Javascript
+var compare = function(a,b){
+    if (a.name < b.name){
+        return -1;
+    }
+    if (a.name > b.name){
+        return +1;
+    }
+    return 0;
+}
 
 /**
  * ===================================
