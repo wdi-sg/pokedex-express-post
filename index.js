@@ -24,13 +24,19 @@ app.get('/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
-    let inputId = request.params.id;
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
 
     // find pokemon by id from the pokedex json file
-    // (note: find() is a built-in method of JavaScript arrays)
-    let pokemon = obj.pokemon.find((currentPokemon) => {
-      return currentPokemon.id === parseInt(inputId, 10);
-    });
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
 
     if (pokemon === undefined) {
 
