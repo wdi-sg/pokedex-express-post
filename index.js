@@ -42,27 +42,24 @@ app.post('/pokemon', (request, response) => {
     let newPokemon = {};
     let pokedex = obj;
 
-    newPokemon["id"] = parseInt(obj.pokemon.length);
-    newPokemon["num"] = obj.pokemon.length;
+    newPokemon["id"] = parseInt(obj.pokemon.length + 1);
+    newPokemon["num"] = obj.pokemon.length + 1;
     newPokemon["name"] = request.body.name;
     newPokemon["img"] = request.body.img;
     newPokemon["height"] = request.body.height;
     newPokemon["weight"] = request.body.weight;
-
 
     pokedex.pokemon.push(newPokemon);
 
     jsonfile.writeFile(FILE, pokedex, (err) => {
       if (err) console.log(err);
 
-      response.send(pokedex.pokemon);
+      response.redirect("/?sortby=id");
     })
   })
 })
 
 app.get('/', (request, response) => {
-
-  console.log(request.query);
 
   let sortBy = request.query.sortby;
 
@@ -97,7 +94,7 @@ app.get('/', (request, response) => {
       html += "<ol>";
 
       for (let i in sorted) {
-        html += `<li>${sorted[i].name}</li>`;
+        html += `<li><br>${sorted[i].name}<br><img src="${sorted[i].img}"></li>`;
       }
 
       html += "</ol>";
@@ -129,7 +126,6 @@ app.get('/', (request, response) => {
     html += `<option value="id" selected>ID Number</option>`;
     html += `<option value="height">Height</option>`;
     html += `<option value="weight">Weight</option>`;
-    html += `<option value="candy_count">Candy Count</option>`;
     html += `<option value="avg_spawns">Average Spawns</option>`;
     html += `<option value="spawn_time">Spawn Time</option>`;
     html += "</select>";
