@@ -18,6 +18,59 @@ const app = express();
  * ===================================
  */
 
+
+app.use(express.json());
+ app.use(express.urlencoded({
+   extended: true
+ }));
+
+var createHtmlPagePokemon = function(request, response){
+     jsonfile.readFile(FILE, (err, obj) =>{
+         var newEmpArray = [];
+         var pokemonObj = obj.pokemon;
+         for (let i = 0; i < pokemonObj.length; i++){
+             var html = '<html><body><h1>Form for new pokemon: </h1>';
+             html += '<form method="POST">';
+             html += 'Id Number:<br> <input type="text" id="id"><br>';
+             html += 'Number:<br> <input type="text" num="num"><br>';
+             html += 'Name:<br> <input type="text" name="name"><br>';
+             html += 'Image:<br> <input type="text" img="img"><br>';
+             html += 'Height:<br> <input type="text" height="height"><br>';
+             html += 'Weight:<br> <input type="text" weight="weight"><br>';
+             html += '<input type="submit" value="Submit"><br>';
+             html += '</form></body></html>';
+
+             response.send(html);
+         }
+     })
+ }
+
+app.get('/pokemon/new', createHtmlPagePokemon);
+
+ app.post('/pokemon', (request, response) =>{
+
+     console.log(request.body);
+     var requestOrd = request.body;
+     let file = 'data.json';
+
+
+      let obj = {
+         id: parseInt(requestOrd['id']),
+         num: requestOrd['num'],
+         name: requestOrd['name'],
+         img: requestOrd['img'],
+         height: requestOrd['height'],
+         weight: requestOrd['weight']
+     }
+
+     jsonfile.writeFile(file, obj, function(err){
+         if (err){
+             console.log("ERROR: ", err);
+         }
+         response.send(request.body);
+     })
+ })
+
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -59,4 +112,4 @@ app.get('/', (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3002, () => console.log('~~~ Tuning in to the waves of port 3002 ~~~'));
