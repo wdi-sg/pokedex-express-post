@@ -68,14 +68,28 @@ app.get('/pokemon', (request, response) => {
       response.status(404).send(err);
     }
 
-    const sortBy = request.query.sortby;
-    obj.pokemon.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+    const sortBy = request.query.sortby.toLowerCase();
+    if (sortBy === 'name') {
+      obj.pokemon.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+    } else {
+      obj.pokemon.sort((a, b) => parseFloat(a[sortBy]).toFixed(2) - parseFloat(b[sortBy]).toFixed(2));
+    }
     response.send(obj.pokemon);
   });
 });
 
 app.get('/', (request, response) => {
-  let content = '<a href="/pokemon?sortby=name">Sort by name</a>';
+  let content = '';
+  content += '<form action="/pokemon">';
+  content += '<select name="sortby">';
+  content += '<option disabled selected value>Sort by...</option>';
+  content += '<option value="id">id</option>';
+  content += '<option value="name">name</option>';
+  content += '<option value="height">height</option>';
+  content += '<option value="weight">weight</option>';
+  content += '</select>'
+  content += '<input type="submit"/>';
+  content += '</form>';
   response.send(generateHtml(content));
 });
 
