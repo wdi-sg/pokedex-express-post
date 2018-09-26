@@ -46,6 +46,37 @@ const pokemonStuff = () => {
     response.send(pokemonStuff());
 });
 
+//pre-load with s/edits
+app.get('/:id', (request, response) => {
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+    let pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      let currentPokemon = obj.pokemon[i];
+      if( currentPokemon.id === inputId){
+        pokemon = currentPokemon;
+      }
+    }
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      response.send(pokemon);
+    }
+  });
+});
+
+app.get('/', (request, response) => {
+  response.send("wass wass up");
+});
 
 app.post('/pokemon', (request,response) => {
     console.log(request.body)
@@ -62,8 +93,8 @@ app.post('/pokemon', (request,response) => {
     weight: orderRequest['weight']
   }
 
-   jsonfile.readFile(file, (err, obj) => {
-      obj['pokemon'].push(objectRide);
+   // jsonfile.readFile(file, (err, obj) => {
+      obj.pokemon.push(objectRide);
 
       jsonfile.writeFile(file, obj, function (err) =>  {
       if (err) {
@@ -72,7 +103,8 @@ app.post('/pokemon', (request,response) => {
         respond.send('wass wass up?!?!?');
       });
     });
-  });
+  // });
+
 
 
 /**
