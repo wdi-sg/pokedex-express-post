@@ -5,6 +5,46 @@ const FILE = 'pokedex.json';
 
 const app = express();
 
+// ENCODING STUFF
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true,
+}));
+
+// FUNCTIONS
+const capitalize = (word) => {
+  let capitalized = word.charAt(0).toUpperCase();
+  capitalized += word.substring(1);
+  return capitalized;
+};
+
+const generateHtml = (title, pokedex) => {
+  let body = '<html><body style="font-family:monospace;">';
+  body += `<h1>${title}</h1>`;
+  if (typeof pokedex === 'object') {
+    body += '<ul style="list-style-type:none; padding:0; margin:0;">';
+
+    Object.keys(pokedex).forEach((key) => {
+      // CHANGE INDEX TO START FROM 1
+      let index = key;
+      if (index.match(/^[0-9]+$/) !== null) {
+        index = parseInt(index, 10) + 1;
+      }
+      // CHECK FOR IMG ELEMENT
+      if (index === 'img') {
+        body += `<img src="${pokedex[key]}">`;
+      } else if (key === 'next_evolution' || key === 'prev_evolution') { // CHECK FOR NEXT/PREV EVO OBJECT
+        pokedex[key].forEach((item) => {
+          body += `<li><strong>${capitalize(index.toString().replace('_', ' '))}</strong>: ${item.name}</li>`;
+        });
+      } else body += `<li><strong>${capitalize(index.toString().replace('_', ' '))}</strong>: ${pokedex[key]}</li>`;
+    });
+    body += '</ul>';
+  } else body += pokedex;
+  body += '</body></html';
+  return body;
+};
+
 // NEW STUFF
 app.get('/pokemon/new', (req, res) => {
   let content = '<html><head>';
@@ -13,15 +53,33 @@ app.get('/pokemon/new', (req, res) => {
   content += '<h1>Pokedex</h1>';
   content += '<h3>Add New Pokemon</h3>';
   content += '<form method="POST" action="/pokemon" autocomplete="off">';
-  content += '<input type="text" name="id" placeholder="Enter ID here.">';
+  content += '<input type="number" name="id" placeholder="Enter ID here.">';
   content += '<input type="text" name="num" placeholder="Enter number here.">';
   content += '<input type="text" name="name" placeholder="Enter name here.">';
   content += '<input type="text" name="img" placeholder="Enter image link here.">';
   content += '<input type="text" name="height" placeholder="Enter height in meters here.">';
-  content += '<input type="text" name="weight" placeholder="Enter height in meters here.">';
+  content += '<input type="text" name="weight" placeholder="Enter weight in meters here.">';
   content += '<input type="submit" value="Submit">';
   content += '</form></div></body></html>';
   res.send(content);
+});
+
+app.post('/pokemon', (req, res) => {
+  const data = req.body;
+  jsonfile.readFile(FILE, (readErr, obj) => {
+    if (readErr) res.send(readErr);
+    else {
+      const pokedex = obj;
+      pokedex.pokemon.push(data);
+
+      jsonfile.writeFile(FILE, pokedex, (writeErr) => {
+        if (writeErr) res.send(writeErr);
+        else {
+          res.send(generateHtml('Added', data));
+        }
+      });
+    }
+  });
 });
 
 // STOCK STUFF
@@ -30,7 +88,7 @@ app.get('/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
-    const inputId = parseInt(request.params.id);
+    const inputId = parseInt(request.params.id, 10);
 
     let pokemon;
 
