@@ -236,30 +236,20 @@ var handleRequestSearch = (request, response) => {
 };
 
 
-// Expose a new endpoint that intercepts GET requests to /pokemon/new,
-// which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-
-// Point the form to submit data to the (/pokemon) route using POST method
-
-// (for the id and num fields, for now, the user will simply choose a number.
-// Obviously if they happen to pick an id that already exists, they will have a bad time. We will have the tools to correct this soon)
-
-// Expose a new endpoint that accepts POST requests to /pokemon,
-// which parses the form data and saves the new pokemon data into pokedex.json
-
-
 app.get('/pokemon/new', (request, response) => {
 
     let html = `<html><body style="margin:5vw;">`;
 
     html += `<h3 style="color:red;">Pokedex data submitter</h3>`;
-    html += '<form method="POST" action="/pokemon">';
+    html += '<form method="POST" action="/pokepost">';
     html += `ID: <input type="text" name="id"><br />`;
     html += `Num: <input type="text" name="num"><br />`;
     html += `Name: <input type="text" name="name"><br />`;
     html += `Image Link: <input type="text" name="img"><br />`;
+    html += `Type: <input type="text" name="type[]"><br />`;
     html += `Height: <input type="text" name="height"><br />`;
     html += `Weight: <input type="text" name="weight"><br />`;
+    html += `Weakness: <input type="text" name="weaknesses[]"><br />`;
 
     html += '<input type="submit" value="Submit">';
     html += "</form>";
@@ -269,14 +259,23 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 
-app.post('/pokemon', (request, response) => {
+app.post('/pokepost', (request, response) => {
 
     console.log(request.body);
 
-    jsonfile.writeFile('data.json', request.body, (err) => {
-        console.error(err)
+    jsonfile.readFile(file, (err, obj) => {
 
-        response.send(request.body);
+        if (err) {console.log(err)};
+
+        obj.pokemon.push(request.body);
+
+        jsonfile.writeFile('pokedex.json', obj, (err) => {
+
+            console.error(err)
+
+            response.redirect('/');
+
+        });
     });
 });
 
