@@ -18,6 +18,29 @@ const app = express();
  * ===================================
  */
 
+var createHtmlPagePokemon = function(request, response){
+    jsonfile.readFile(FILE, (err, obj) =>{
+        var newEmpArray = [];
+        var pokemonObj = obj.pokemon;
+        for (let i = 0; i < pokemonObj.length; i++){
+            var html = '<html><body><h1>Form for new pokemon: </h1>';
+            html += '<form method="POST">';
+            html += 'Id Number:<br> <input type="text" id="id"><br>';
+            html += 'Number:<br> <input type="text" num="num"><br>';
+            html += 'Name:<br> <input type="text" name="name"><br>';
+            html += 'Image:<br> <input type="text" img="img"><br>';
+            html += 'Height:<br> <input type="text" height="height"><br>';
+            html += 'Weight:<br> <input type="text" weight="weight"><br>';
+            html += '<input type="submit" value="Submit"><br>';
+            html += '</form></body></html>';
+
+            response.send(html);
+        }
+    })
+}
+
+app.get('/new', createHtmlPagePokemon);
+
 app.get('/:id', (request, response) => {
 
   // get json from specified file
