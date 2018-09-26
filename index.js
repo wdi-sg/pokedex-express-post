@@ -50,9 +50,9 @@ app.get('/pokemon/new', createHtmlPagePokemon);
 app.post('/pokemon', (request, response) =>{
     console.log(request.body);
     var requestOrd = request.body;
-    let file = 'data.json';
+    let file = 'pokedex.json';
     //const obj = request.body;
-    let obj = {
+    let objFromHtml = {
         id: parseInt(requestOrd['id']),
         num: requestOrd['num'],
         name: requestOrd['name'],
@@ -61,12 +61,19 @@ app.post('/pokemon', (request, response) =>{
         weight: requestOrd['weight']
     }
 
-    jsonfile.writeFile(file, obj, function(err){
-        if (err){
-            console.log("ERROR: ", err);
-        }
-        response.send(request.body);
+    jsonfile.readFile(file, (err,obj)=>{
+        obj['pokemon'].push(objFromHtml);
+
+        jsonfile.writeFile(file, obj, function(err){
+            if (err){
+                console.log("ERROR: ", err);
+            }
+            response.send("Yay added successfully!");
+        });
+
     })
+
+
 })
 
 app.get('/:id', (request, response) => {

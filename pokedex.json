@@ -1881,6 +1881,46 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "MewFour",
+      "img": "www.mewfour.com",
+      "height": "18",
+      "weight": "20"
+    },
+    {
+      "id": 154,
+      "num": "154",
+      "name": "MewFour",
+      "img": "www.mewfour.com",
+      "height": "18",
+      "weight": "20"
+    },
+    {
+      "id": 155,
+      "num": "155",
+      "name": "Mewfive",
+      "img": "www.pokemonmaster.com",
+      "height": "19",
+      "weight": "20kg"
+    },
+    {
+      "id": 157,
+      "num": "157",
+      "name": "Kingslayer",
+      "img": "www.king.com",
+      "height": "12",
+      "weight": "12"
+    },
+    {
+      "id": 158,
+      "num": "158",
+      "name": "Squirtle2",
+      "img": "www.tortoisemania.com",
+      "height": "16",
+      "weight": "19"
     }
   ]
 }
