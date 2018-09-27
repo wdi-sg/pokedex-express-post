@@ -10,66 +10,145 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true,
-    }));
+}));
 
 //ROUTES
-app.get('/pokemon/new', (request, response) => {
-    // render a template form here
-    let html = "<html>";
-    html += "<body>";
-    html += '<form method="POST" action="/pokemon/">';
-    html += "Inputs:";
-    html += '<div><div>';
-    html += '<br>';
-    html += "ID: ";
-    html += '<input type="text" name="id" style="margin-left: 5vw">';
-    html += '<div><div>';
-    html += "Number: ";
-    html += '<input type="text" name="num" style="margin-left: 1.6vw">';
-    html += '<div><div>';
-    html += "Name: ";
-    // html += '<div style="margin:10px";"padding:10px">Weight<div>';
-    html += '<input type="text" name="name" style="margin-left: 3vw">';
-    html += '<div><div>';
-    html += "Image: ";
-    html += '<input type="text" name="img" style="margin-left: 2.8vw">';
-    html += '<div><div>';
-    html += "Height: ";
-    html += '<input type="text" name="height" style="margin-left: 2.5vw">';
-    html += '<div><div>';
-    html += "Weight: ";
-    html += '<input type="text" name="weight" style="margin-left: 2.3vw">';
-    html += '<div><div>';
-    html += '<br>';
-    // html += '<button>Sort by name</button>'
-    html += '<input type="submit" value="Submit">';
-    html += "</form>";
-    html += "</body>";
-    html += "</html>";
 
-    response.send(html);
+// //Q1. when someone visits your site and thereby makes a request, send them a HTML form
+// app.get('/pokemon/new', (request, response) => {
+//     // render a template form here
+//     let html = "<html>";
+//     html += "<body>";
+//     html += '<form method="POST" action="/pokemon/">';
+//     html += "<span style='font-size:30px'>Inputs:</span>";
+//     html += '<br>';
+//     html += '<br>';
+//     html += "ID: ";
+//     html += '<input type="text" name="id" style="margin-left: 4.8vw">';
+//     html += '<br>';
+//     html += "Number: ";
+//     html += '<input type="text" name="num" style="margin-left: 1.7vw">';
+//     html += '<br>';
+//     html += "Name: ";
+//     html += '<input type="text" name="name" style="margin-left: 2.9vw">';
+//     html += '<br>';
+//     html += "Image: ";
+//     html += '<input type="text" name="img" style="margin-left: 2.8vw">';
+//     html += '<br>';
+//     html += "Height: ";
+//     html += '<input type="text" name="height" style="margin-left: 2.5vw">';
+//     html += '<br>';
+//     html += "Weight: ";
+//     html += '<input type="text" name="weight" style="margin-left: 2.3vw">';
+//     html += '<br>';
+//     html += '<br>';
+//     // html += '<button>Sort by name</button>'
+//     html += '<input type="submit" value="Submit">';
+//     html += "</form>";
+//     html += "</body>";
+//     html += "</html>";
+
+//     response.send(html);
+// });
+
+// //when the visitor fills in the info, this info is POSTed to request.body. Node's body-parser reads the form's input and stores it as a javascript object accessible through request.body
+// app.post('/pokemon', function(request, response) {
+//     // console.log(request.body);
+//     var userInput = request.body; //pokemonObject is an object containing users inputs
+
+//     //function readfile has 2 parameters, first one is the target file, the second one is a callback function with 2 parameters
+//     jsonfile.readFile(FILE, (error, object) => {
+//         // console.log(object);
+//         object.pokemon.push(userInput);
+
+//         // save the request.body
+//         jsonfile.writeFile(FILE, object, (err) => {
+//             console.error(err)
+//         })
+//     })
+
+//     // now look inside your json file
+//     response.send("Success");
+// });
+
+
+//FURTHER Q1
+
+//Add a "Sort by name" button to the homepage (/ route) that when clicked,
+//sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
+    //Implement this sort functionality as a drop down (select input) of all the sorting fields
+    //the user can choose to sort by.
+
+app.get('/', (request, response) => {
+    // render a template form here for users to choose what category to sort them by
+    let sortingPage = "<html>";
+    sortingPage += "<body>";
+    sortingPage += '<form method="GET" action="/pokemon/">';
+    sortingPage += "<span style='font-size:30px'>How do you want to sort the Pokemon?</span>";
+    sortingPage += '<br><br>';
+    sortingPage += '<select name="sortby" style="width:10vw">'
+    sortingPage += '<option value="name">name</option>';
+    sortingPage += '<option value="id">id</option>';
+    sortingPage += '<option value="height">height</option>';
+    sortingPage += '<option value="weight">weight</option>';
+    sortingPage += '</select><br><br>'
+    sortingPage += '<input type="submit" value="Sort">';
+    sortingPage += "</form></body></html>";
+
+    response.send(sortingPage);
 });
 
-//Post
+//UNDERSTAND HOW THIS FN WORKS
+    function compareName(a, b) {
+      if (a.name < b.name) {
+        return -1;
+      } else if
+      (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    };
 
-//when someone makes a response
+app.get('/pokemon', (request, response) => {
+    let searchQuery = request.query.sortby;
+    let nameList = '';
+
+    jsonfile.readFile(FILE,(err, obj) => {
+        if (searchQuery === 'name') {
+            var sortedNames = obj.pokemon.sort(compareName);
+            // console.log(sortedNames);
+            for (i in sortedNames) {
+                nameList += '<li>';
+                nameList += sortedNames[i].name;
+                nameList += '</li>';
+            }
+        }
+    response.send(nameList);
+    })
+});
+
+//             if (request.query.sortby == 'name'){
+//             let sortedName = obj.pokemon.sort(compareName);
+//             let nameList = '';
+//             for (var i = 0; i < sortedName.length; i++){
+//                 let list = '<li>' + sortedName[i].name + '</li>';
+//                 nameList += list;
+//             }
+
+
+
+
+//when the visitor fills in the info, this info is POSTed to request.body. Node's body-parser reads the form's input and stores it as a javascript object accessible through request.body
 app.post('/pokemon', function(request, response) {
     // console.log(request.body);
     var userInput = request.body; //pokemonObject is an object containing users inputs
-    // let newObject = {
-    //     id: parseInt(pokemonObject['id']),
-    //     num: pokemonObject['num'],
-    //     img: ['img'],
-    //     height: ['height'],
-    //     weight: ['weight']
-    // };
 
-//function readfile has 2 parameters, first one is the target file, the second one is a callback function with 2 parameters
-    jsonfile.readFile(FILE,(error,object) => {
+    //function readfile has 2 parameters, first one is the target file, the second one is a callback function with 2 parameters
+    jsonfile.readFile(FILE, (error, object) => {
         // console.log(object);
         object.pokemon.push(userInput);
 
-        // save the request body
+        // save the request.body
         jsonfile.writeFile(FILE, object, (err) => {
             console.error(err)
         })
@@ -79,67 +158,6 @@ app.post('/pokemon', function(request, response) {
     response.send("Success");
 });
 
-
-// app.post('/pokemon', (request, response) =>{
-//     console.log(request.body);
-//     var requestOrd = request.body;
-//     let file = 'pokedex.json';
-
-//     //const obj = request.body;
-//     let objFromHtml = {
-//         id: parseInt(requestOrd['id']),
-//         num: requestOrd['num'],
-//         name: requestOrd['name'],
-//         img: requestOrd['img'],
-//         height: requestOrd['height'],
-//         weight: requestOrd['weight']
-//     }
-
-//     jsonfile.readFile(file, (err,obj)=>{
-//         obj['pokemon'].push(objFromHtml);
-
-//         jsonfile.writeFile(file, obj, function(err){
-//             if (err){
-//                 console.log("ERROR: ", err);
-//             }
-//             response.send("Yay added successfully!");
-//         });
-
-//     })
-
-// })
-
-// app.get('/:id', (request, response) => {
-
-//     // get json from specified file
-//     jsonfile.readFile(FILE, (err, obj) => {
-//         // obj is the object from the pokedex json file
-//         // extract input data from request
-//         let inputId = parseInt(request.params.id);
-
-//         var pokemon;
-
-//         // find pokemon by id from the pokedex json file
-//         for (let i = 0; i < obj.pokemon.length; i++) {
-
-//             let currentPokemon = obj.pokemon[i];
-
-//             if (currentPokemon.id === inputId) {
-//                 pokemon = currentPokemon;
-//             }
-//         }
-
-//         if (pokemon === undefined) {
-
-//             // send 404 back
-//             response.status(404);
-//             response.send("not found");
-//         } else {
-
-//             response.send(pokemon);
-//         }
-//     });
-// });
 
 //Get server up to listen for request
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
