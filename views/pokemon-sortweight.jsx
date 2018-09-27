@@ -25,7 +25,13 @@ class Sortweight extends React.Component {
     })
 
     return (
-      <div>
+        <html>
+    <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    </head>
+    <body>
+      <div class="container">
+      <h1>Welcome to the online Pokedex</h1>
         <form action='/'>
           <select name='sortby'>
             <option value=''>Sort by</option>
@@ -33,13 +39,13 @@ class Sortweight extends React.Component {
             <option value='id'>Id Number</option>
             <option value='weight'>Weight</option>
             <option value='height'>Height</option>
-          </select>
-          <input type='submit' value='Submit'/>
+          </select><br/><br/>
+          <input type='submit' value='Submit'/><br/><br/>
         </form>
         <ul>
         {pokemonSortWeight}
         </ul>
-      </div>
+      </div></body></html>
     );
   }
 }

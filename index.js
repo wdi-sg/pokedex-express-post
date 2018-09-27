@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const jsonfile = require('jsonfile');
 
+
 const FILE = 'pokedex.json';
 
 // this line below, sets a layout look to your express project
@@ -161,9 +162,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
         }
 
         if (foundPokemon) {
-
             console.log("FOUND:", foundPokemon);
-
             response.render('pokemon-edit', { pokemon: foundPokemon })
         } else {
             response.send("not a pokemon");
