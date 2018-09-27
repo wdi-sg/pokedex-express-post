@@ -55,7 +55,7 @@ app.get('/pokemon/:id/edit',(request, response)=>{
 
 app.put('/pokemon/:id', (request, response) => {
 
-    console.log("REQ BODY:", request.body )
+    console.log("requestBody:", request.body )
 
 
     jsonfile.readFile( FILE, (err, obj) => {
@@ -89,46 +89,8 @@ app.put('/pokemon/:id', (request, response) => {
                   }
     });
 })
-// app.get('/', (request, response) => {
-//   // giving home.jsx file an object/context with `name` as a property
-//   response.render('home');
-// });
 
-// app.get('/:id', (request, response) => {
 
-//   // get json from specified file
-//   jsonfile.readFile(FILE, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = parseInt( request.params.id );
-
-//     var pokemon;
-
-//     // find pokemon by id from the pokedex json file
-//     for( let i=0; i<obj.pokemon.length; i++ ){
-
-//       let currentPokemon = obj.pokemon[i];
-
-//       if( currentPokemon.id === inputId ){
-//         pokemon = currentPokemon;
-//       }
-//     }
-
-//     if (pokemon === undefined) {
-
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
-
-//       response.send(pokemon);
-//     }
-//   });
-// });
-
-app.get('/', (request, response) => {
-  response.send("It good to be home!");
-});
 //form post from user
 app.post('/pokemon', function(request, response) {
 
@@ -161,25 +123,9 @@ app.post('/pokemon', function(request, response) {
         });
     });
 });
+
 //form get info from user
 app.get('/pokemon/new', (request, response) => {
-
-
-    // let html = "<html>";
-    // // html += '<head><link rel="stylesheet" href="public/main.css"></head>'
-    // html += "<body>";
-    // html += '<form name="myPokemon" method="POST" action="/pokemon">';
-    // html += "<h2>Creat A New Pokemon:</h2>";
-    // html += 'ID: <input type="text" name="id"/></br>';
-    // html += 'Num: <input type="text" name="num"/></br>';
-    // html += 'Name: <input type="text" name="name"/></br>';
-    // html += 'Upload Image: <input type="file" name="img"/></br>';
-    // html += 'Height: <input type="text" name="height"/></br>';
-    // html += 'Weight: <input type="text" name="weight"/></br>';
-    // html += '<input type="submit" value="Submit">';
-    // html += "</form>";
-    // html += "</body>";
-    // html += "</html>";
 
     response.render('home', request.body)//html render in home.jsx
     // response.send( html );
@@ -187,6 +133,78 @@ app.get('/pokemon/new', (request, response) => {
   // render a template form here
   //response.send("hello world");
 });
+//==
+app.get('/:name', (request, response) => {
+
+    jsonfile.readFile(FILE,(err,obj)=>{
+
+        let inputName = request.params.name
+        let allPokemon = obj.pokemon;
+        // let userRequest = request.params.name//request.path.split('/');
+        // console.log(userRequest[1]);
+
+        for(var i = 0; i < allPokemon.length; i++){
+
+                if(inputName.toLowerCase() === allPokemon[i].name.toLowerCase()){
+                    // for(var k = 0; k < allPokemon[i].next_evolution.length; k++){
+                    //console.log("YAYSYD",allPokemon[i]);
+
+                    response.render('allpokemon',allPokemon[i]);
+                        }
+                    }
+                });
+
+                //response.send("=====" + request.params.name);
+            });
+
+//==
+app.get('/:id', (request, response) => {
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      response.send(pokemon);
+    }
+  });
+});
+
+
+//==
+app.get('*', (request, response) => {
+
+    jsonfile.readFile(FILE,(err,obj)=>{
+
+        let allPokemon = obj.pokemon;
+        let userRequest = request.path.split('/');
+        console.log(userRequest);
+
+            });
+        response.send("It good to be home!")
+    })
+
+
 /**
  * ===================================
  * Listen to requests on port 3000
