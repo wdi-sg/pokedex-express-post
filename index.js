@@ -18,4 +18,13 @@ app.engine('jsx', reactEngine);
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'jsx');
 
+// HOME PAGE
+app.get('/', (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (req.query.sortby === 'id') return res.render('list-pokemon', { object: obj });
+    if (req.params[0] === undefined) return res.render('index', { object: obj });
+    return res.send('Wrong part of town');
+  });
+});
+
 app.listen(PORT);
