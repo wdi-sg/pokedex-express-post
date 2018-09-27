@@ -5,6 +5,12 @@ const FILE = 'pokedex.json';
 
 const app = express();
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true,
@@ -12,8 +18,11 @@ app.use(express.urlencoded({
 
 app.get('/:id', (request, response) => {
 
+  let searchId = parseInt(request.params.id);
+
   jsonfile.readFile(FILE, (err, obj) => {
 
+    response.render('id', {search: searchId, pokedex: obj.pokemon});
   })
 })
 
