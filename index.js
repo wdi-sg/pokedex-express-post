@@ -55,8 +55,40 @@ const pokemonStuff = () => {
       return execute;
 };
 
-  app.get('/pokemon/new', (request, response) => {
+
+//pre-load with s/edits
+
+
+app.get('/pokemon/new', (request, response) => {
     response.send(pokemonStuff());
+});
+
+app.get('/:id', (request, response) => {
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+    let pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      let currentPokemon = obj.pokemon[i];
+      if( currentPokemon.id === inputId){
+        pokemon = currentPokemon;
+      }
+    }
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+     } else {
+
+      response.send(pokemon);
+    }
+  // };
+  });
 });
 
 
@@ -74,7 +106,7 @@ console.log(request.body)
     }
   })
 
-let file = 'data.json'
+let file = 'pokedex.json'
 const obj = request.body;
 
  let newPokemon = [];
@@ -98,38 +130,42 @@ const obj = request.body;
   response.send(request.body);
 })
 
+//making edits to JSON File
+ app.put('/pokemon/:id', (request, response) => {
+     // console.log( request.body )
 
-//pre-load with s/edits
-app.get('/:id', (request, response) => {
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-    let pokemon;
+     jsonfile.readFile( FILE, (err, obj) => {
+           // console.log( "obj:",obj );
+           console.log( "err:",err );
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-      let currentPokemon = obj.pokemon[i];
-      if( currentPokemon.id === inputId){
-        pokemon = currentPokemon;
-      }
-    }
-    if (pokemon === undefined) {
+           let requestedPokemonId = request.params.id;
+           for( let i=0; i< obj.pokemon.length; i++){
+             if( obj.pokemon[i].id === requestedPokemonId){
+                 var foundPokemonIndex = i;
+                 var foundPokemon = obj.pokemon[i];
+             }
+           }
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+           if( foundPokemon ){
+             console.log("FOUND:", foundPokemon );
+             obj.pokemon[foundPokemonIndex] = request.body;
+             obj.pokemon[foundPokemonIndex].id = parseInt( obj.pokemon[foundPokemonIndex].id )
 
-      response.send(pokemon);
-    }
-  });
-});
+             jsonfile.writeFile(FILE, obj, function (err) {
+                 if (err) console.log("ERROR:",err)
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
+                 response.send("FOUND, WORKS")
+             })
+
+           } else{
+               response.send("not a Pokemon");
+           }
+       });
+
+ })
+
+
+ // * ===================================
+ // * Listen to requests on port 3000
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
