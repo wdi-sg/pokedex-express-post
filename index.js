@@ -3,14 +3,23 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
+
+
+
+// this line below, sets a layout look to your express project
+ const reactEngine = require('express-react-views').createEngine();
+ app.engine('jsx', reactEngine);
+
+ // this tells express where to look for the view files
+ app.set('views', __dirname + '/views');
+
+ // this line sets react to be the default view engine
+ app.set('view engine', 'jsx');
+
+ const methodOverride = require('method-override')
+ app.use(methodOverride('_method'));
+
 
 /**
  * ===================================
@@ -24,52 +33,68 @@ app.use(express.json());
    extended: true
  }));
 
-var createHtmlPagePokemon = function(request, response){
-     jsonfile.readFile(FILE, (err, obj) =>{
-         var newEmpArray = [];
-         var pokemonObj = obj.pokemon;
-         for (let i = 0; i < pokemonObj.length; i++){
-             var html = '<html><body><h1>Form for new pokemon: </h1>';
-             html += '<form method="POST">';
-             html += 'Id Number:<br> <input type="text" id="id"><br>';
-             html += 'Number:<br> <input type="text" num="num"><br>';
-             html += 'Name:<br> <input type="text" name="name"><br>';
-             html += 'Image:<br> <input type="text" img="img"><br>';
-             html += 'Height:<br> <input type="text" height="height"><br>';
-             html += 'Weight:<br> <input type="text" weight="weight"><br>';
-             html += '<input type="submit" value="Submit"><br>';
-             html += '</form></body></html>';
 
-             response.send(html);
-         }
-     })
- }
 
-app.get('/pokemon/new', createHtmlPagePokemon);
 
- app.post('/pokemon', (request, response) =>{
 
+// //GET from html form
+//  app.get('/pokemon/new', (request, response) => {
+//    let html = `<html>`;
+//    html += "<body>";
+//    html += '<form method="POST" action="/pokemon">';
+
+//    html += '<p>';
+//    html += "Pokemon id:";
+//    html += '<input type="number" name=id>'
+//    html += '</p>';
+
+//    html += '<p>';
+//    html += "Pokemon Num:";
+//    html += '<input type="number" name="num">'
+//    html += '</p>';
+
+//    html += '<p>';
+//    html += "Pokemon Name:";
+//    html += '<input type="text" name="Name">';
+//    html += '</p>';
+
+//    html += '<p>';
+//    html += "Pokemon Height:";
+//    html += '<input type="number" name="Height">'
+//    html += '</p>';
+
+//    html += "Pokemon Weight:";
+//    html += '<input type="number" name="Weight">'
+//    html += '<input type="submit" value="Submit">';
+//    html += "</form>";
+//    html += "</body>";
+//    html += "</html>";
+//  response.send(html);
+//  });
+
+
+
+  //POST to pokedex.json
+ app.post('/pokemon', function(request, response){
+
+     console.log("Wow this works!");
      console.log(request.body);
-     var requestOrd = request.body;
-     let file = 'data.json';
+     response.send(request.body);
 
+   jsonfile.readFile(FILE, (err, obj) => {
 
-      let obj = {
-         id: parseInt(requestOrd['id']),
-         num: requestOrd['num'],
-         name: requestOrd['name'],
-         img: requestOrd['img'],
-         height: requestOrd['height'],
-         weight: requestOrd['weight']
-     }
-
-     jsonfile.writeFile(file, obj, function(err){
-         if (err){
-             console.log("ERROR: ", err);
-         }
-         response.send(request.body);
-     })
+     let allPokemon = obj['pokemon']
+     let newPokemon = request.body
+     allPokemon.push(newPokemon)
+   jsonfile.writeFile(FILE, obj, (err) => {
+     console.log(err)
+   })
+   });
  })
+
+
+
+
 
 app.get('/:id', (request, response) => {
 
@@ -95,7 +120,7 @@ app.get('/:id', (request, response) => {
 
       // send 404 back
       response.status(404);
-      response.send("not found");
+      response.send("not found: BUT WHY?");
     } else {
 
       response.send(pokemon);
@@ -106,6 +131,9 @@ app.get('/:id', (request, response) => {
 app.get('/', (request, response) => {
   response.send("yay");
 });
+
+
+
 
 /**
  * ===================================
