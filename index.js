@@ -22,6 +22,52 @@ const app = express();
  * ===================================
  */
 
+//REACT
+
+jsonfile.readFile (file, function(err, obj) {
+
+    const methodOverride = require('method-override')
+
+    app.use(methodOverride('_method'));
+
+
+    // this line below, sets a layout look to your express project
+    const reactEngine = require('express-react-views').createEngine();
+    app.engine('jsx', reactEngine);
+
+    // this tells express where to look for the view files
+    app.set('views', __dirname + '/views');
+
+    // this line sets handlebars to be the default view engine
+    app.set('view engine', 'jsx');
+
+    app.get('/pokemon/:name/edit', (req, res) => {
+      // giving home.jsx file an object/context with `name` as a property
+
+        let reqPoke = [];
+
+        reqPoke.push(req.params.name);
+
+// var result = pokeObj.filter(pokemon => pokemon.name);
+
+      res.render('home', reqPoke);
+    });
+
+    app.get('/pokemon/:name', (req, res) => {
+
+        let reqPoke = [];
+
+        reqPoke.push(req.params.name);
+
+        res.render('eachpoke', obj);
+    });
+
+
+});
+
+
+
+
 app.get('/', (request, response) => {
 
     jsonfile.readFile (file, function(err, obj) {
@@ -51,17 +97,6 @@ app.get('/', (request, response) => {
                 console.log(typeArr);
 //---------------------------------------------------------------------
 
-
-var selectChange = function()
-{
-    var items = document.getElementsByTagName('option');
-       for (i in items) {
-        var str = items[i].value;
-       }
-        document.querySelectorAll('.catergory').value = str;
-
-};
-
     var title = `Welcome to Pokedex!`;
     var html = '';
     html += "<html>";
@@ -69,7 +104,7 @@ var selectChange = function()
     html += "<h1>"+title+"</h1>";
     html += '<h2>Select your sort parameter:</h2>';
 
-    html += '<form action="/search/sortby">';
+    html += '<form action="/sortby">';
     html += '<select name="choice">';
     html += '<option value="pokename">Name</option>';
     html += '<option value="type">Type</option>';
@@ -87,7 +122,7 @@ var selectChange = function()
 
 
 
-app.get('/search/sortby', (request, response) => {
+app.get('/sortby', (request, response) => {
 
     jsonfile.readFile (file, function(err, obj) {
 
@@ -131,11 +166,12 @@ app.get('/search/sortby', (request, response) => {
                     html += '<h2 class="names-lib">Pokemon Name Library</h2>';
                         html += '<ul>';
                     for (i in pokeObj){
-                        html += '<li><img src="'+ pokeObj[i].img +'"></div>';
-                        html += '<a href="/' + pokeObj[i].name.toLowerCase() + ' ">' + pokeObj[i].name + '</a></li>';
+                        html += '<li><img src="'+ pokeObj[i].img +'">';
+                        html += '<a href="/' + pokeObj[i].name.toLowerCase() + '">' + pokeObj[i].name + '</a></li>';
                         html += '<br />';
                     };
                         break;
+
                     case "type":
                         html += '<h2 class="type">Types:</h2>';
                         html += '<ul>';
@@ -169,9 +205,9 @@ app.get('/:name', (request, response) => {
 
         console.log(file);
 
-        pokeObj = obj.pokemon;
+        let pokeObj = obj.pokemon;
 
-        var req = request.params.name.toLowerCase();
+        let req = request.params.name.toLowerCase();
 
         console.log(req);
 
@@ -183,7 +219,7 @@ app.get('/:name', (request, response) => {
 
                 if (req === pokeObj[i].name.toLowerCase()) {
 
-                     var html = '';
+                     let html = '';
 
                     html += "<html>";
                     html += "<body>";
@@ -418,34 +454,58 @@ app.post('/pokemon', function(request, response) {
 
 
 app.get('/pokemon/new', (request, response) => {
-    var html = '';
-    html += '<html>';
-    html += '<body>';
-    html += '<h1>Create your own pokemon!</h1>'
-    html += '<form method="POST" action="/pokemon">';
-    html += "ID:";
-    html += '<input type="number" name="id" min="152" max="250">';
-    html += '<br />'
-    html += "Number:";
-    html += '<input type="number" name="num" min="152" max="250">';
-    html += '<br />'
-    html += "Name:";
-    html += '<input type="text" name="name">';
-    html += '<br />'
-    html += "Image:";
-    html += '<input type="text" name="img">';
-    html += '<br />'
-    html += "Type:";
-    html += '<input type="text" name="type[]">';
-    html += '<br />'
-    html += "Weight:";
-    html += '<input type="number" name="weight">'+'kg';
-    html += '<br />'
-    html += '<input type="submit" value="Submit">';
-    html += "</form>";
-    html += "</body>";
-    html += "</html>";
-  response.send(html);
+
+     jsonfile.readFile (file, function(err, obj) {
+
+        console.log(file);
+
+        pokeObj = obj.pokemon;
+
+        var minimum = [];
+
+            var html = '';
+            html += '<html>';
+            html += '<body>';
+            html += '<h1>Create your own pokemon!</h1>'
+            html += '<form method="POST" action="/pokemon">';
+            html += "ID:";
+
+            for (i in pokeObj){
+                minimum.push(pokeObj[i].id);
+            };
+
+            var largest= 0;
+
+            for (i=0; i<=largest;i++){
+                if (minimum[i]>largest) {
+                    var largest = minimum[i];
+                }
+            };
+
+
+            html += '<input type="number" name="id" min="'+ num + '" max="'+num+'">';
+            html += '<br />'
+            html += "Number:";
+            html += '<input type="number" name="num" min="'+Math.max(minimum)+ '" max="'+Math.max(minimum)+'">';
+            html += '<br />'
+            html += "Name:";
+            html += '<input type="text" name="name">';
+            html += '<br />'
+            html += "Image:";
+            html += '<input type="text" name="img">';
+            html += '<br />'
+            html += "Type:";
+            html += '<input type="text" name="type[]">';
+            html += '<br />'
+            html += "Weight:";
+            html += '<input type="number" name="weight">'+'kg';
+            html += '<br />'
+            html += '<input type="submit" value="Submit">';
+            html += "</form>";
+            html += "</body>";
+            html += "</html>";
+          response.send(html);
+    });
 });
 
 
