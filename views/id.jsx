@@ -3,12 +3,13 @@ var React = require('react');
 class Home extends React.Component {
   render() {
 
-    let searchId = this.props.search;
+    let searchId = parseInt(this.props.search);
     let pokedex = this.props.pokedex;
+    let pokemon;
 
     for (let i in pokedex) {
       if (pokedex[i].id === searchId) {
-        var pokemon = pokedex[i];
+        pokemon = pokedex[i];
         break;
       }
     }
