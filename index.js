@@ -48,7 +48,7 @@ app.get('/pokemon/:id', (req, res) => {
     if (foundPokemon) {
       res.render('PokemonDetail', foundPokemon);
     } else {
-      res.status(404).send('Not found');
+      res.render('Error', { message: 'Not found!' });
     }
   });
 });
@@ -68,7 +68,7 @@ app.get('/pokemon', (req, res) => {
         parseFloat(b[sortBy]).toFixed(2));
     }
 
-    res.render('PokemonList', { pokemons: obj.pokemon });
+    res.render('PokemonList', { pokemons: obj.pokemon, sortBy: sortBy });
   });
 });
 

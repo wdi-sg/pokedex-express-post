@@ -7,23 +7,39 @@ class PokemonEdit extends React.Component {
     const weight = parseFloat(this.props.weight).toFixed(1);
 
     return (
-      <div>
-        <form method="POST" action={path}>
-          <label htmlFor="id">Id</label>
-          <input type="number" name="id" value={this.props.id} disabled /><br />
-          {/* <label htmlFor="num">Num</label>
-          <input type="number" name="num" value={this.props.num} /><br /> */}
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" value={this.props.name} pattern=".{2,}" title="2 characters minimum" required /><br />
-          <label htmlFor="img">Image</label>
-          <input type="url" name="img" value={this.props.img} required /><br />
-          <label htmlFor="height">Height</label>
-          <input type="text" name="height" value={height} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required /> m<br />
-          <label htmlFor="weight">Weight</label>
-          <input type="text" name="weight" value={weight} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required /> kg<br />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
+      <html>
+        <head>
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous" />
+        </head>
+        <body>
+          <div className="container">
+            <h1 className="text-center">{this.props.name}</h1>
+            <form method="POST" action={path}>
+              <div className="form-group">
+                <label htmlFor="id">Id</label>
+                <input className="form-control" type="number" name="id" value={this.props.id} disabled />
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input className="form-control" type="text" name="name" value={this.props.name} pattern=".{2,}" title="2 characters minimum" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="img">Image</label>
+                <input className="form-control" type="url" name="img" value={this.props.img} required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="height">Height (m)</label>
+                <input className="form-control" type="text" name="height" value={height} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="weight">Weight (kg)</label>
+                <input className="form-control" type="text" name="weight" value={weight} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required />
+              </div>
+              <input className="btn btn-primary" type="submit" value="Submit" />
+            </form>
+          </div>
+        </body>
+      </html>
     );
   }
 }
