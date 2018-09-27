@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "152",
+      "num": "152",
+      "name": "Solutions",
+      "img": "ls-solutions.png",
+      "height": "201",
+      "weight": "30"
     }
   ]
 }
