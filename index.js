@@ -164,6 +164,32 @@ const obj = request.body;
 
  })
 
+//react
+  app.get('/pokemon/:id/edit', (request, response) => {
+
+     jsonfile.readFile(FILE, (err, obj) => {
+     // obj is the object from the pokedex json file
+     // extract input data from request
+     let requestPokemonId = request.params.id;
+
+     for( let i=0; i < obj.pokemon.length; i++ ){
+
+         if( obj.pokemon[i].id === requestPokemonId ){
+
+             var foundPokemon = obj.pokemon[i];
+         }
+     }
+     if(foundPokemon){
+         console.log("FOUND:", foundPokemon );
+
+         response.render('home', foundPokemon);
+
+     } else {
+         response.send("Pokemon not found");
+     }
+
+ });
+ });
 
  // * ===================================
  // * Listen to requests on port 3000
