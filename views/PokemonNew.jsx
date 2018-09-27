@@ -8,8 +8,6 @@ class PokemonNew extends React.Component {
         <form method="POST" action='/pokemon'>
           <label htmlFor="id">Id</label>
           <input type="number" name="id" /><br />
-          <label htmlFor="num">Num</label>
-          <input type="number" name="num" /><br />
           <label htmlFor="name">Name</label>
           <input type="text" name="name" /><br />
           <label htmlFor="img">Image</label>

@@ -84,6 +84,7 @@ app.post('/pokemon', (req, res) => {
 
     let newPokemon = req.body;
     newPokemon.id = parseInt(newPokemon.id);
+    newPokemon.num = '' + req.body.id;
     newPokemon.height = parseFloat(newPokemon.height).toFixed(2) + ' m';
     newPokemon.weight = parseFloat(newPokemon.weight).toFixed(1) + ' kg';
 
@@ -121,8 +122,8 @@ app.put('/pokemon/:id', (req, res) => {
     });
 
     if (foundIndex !== -1) {
-      obj.pokemon[foundIndex] = req.body;
-      obj.pokemon[foundIndex].id = parseInt(req.body.id);
+      obj.pokemon[foundIndex].name = req.body.name;
+      obj.pokemon[foundIndex].img = req.body.img;
       obj.pokemon[foundIndex].height = parseFloat(req.body.height).toFixed(2) + ' m';
       obj.pokemon[foundIndex].weight = parseFloat(req.body.weight).toFixed(1) + ' kg';
 

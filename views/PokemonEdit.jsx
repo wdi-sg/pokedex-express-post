@@ -10,9 +10,9 @@ class PokemonEdit extends React.Component {
       <div>
         <form method="POST" action={path}>
           <label htmlFor="id">Id</label>
-          <input type="number" name="id" value={this.props.id} /><br />
-          <label htmlFor="num">Num</label>
-          <input type="number" name="num" value={this.props.num} /><br />
+          <input type="number" name="id" value={this.props.id} disabled /><br />
+          {/* <label htmlFor="num">Num</label>
+          <input type="number" name="num" value={this.props.num} /><br /> */}
           <label htmlFor="name">Name</label>
           <input type="text" name="name" value={this.props.name} /><br />
           <label htmlFor="img">Image</label>
