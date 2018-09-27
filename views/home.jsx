@@ -2,6 +2,7 @@ var React = require('react');
 
 class Home extends React.Component {
     render() {
+
         let inputType = 'button';
         let formAction = '/pokemon';
         let selectName = 'sortby';

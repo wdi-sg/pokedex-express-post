@@ -25,6 +25,11 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+//add overwrite method
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -159,20 +164,6 @@ app.get('/:id', (request, response) => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // var compareWeight = function(a,b){
 //     if (a.weight < b.weight){
 //         return -1;
@@ -182,6 +173,61 @@ app.get('/:id', (request, response) => {
 //     }
 //     return 0;
 // }
+
+app.put('/pokemon/:id', (request, response) =>{
+    jsonfile.readFile( FILE, (err, obj) => {
+          // console.log( "obj:",obj );
+          console.log( "err:",err );
+
+          let requestedPokemonId = request.params.id
+
+          for( let i=0; i< obj.pokemon.length; i++){
+
+            if( obj.pokemon[i].id === parseInt( requestedPokemonId )){
+                var foundPokemonIndex = i;
+                var foundPokemon = obj.pokemon[i];
+            }
+          }
+
+          if( foundPokemon ){
+            console.log("FOUND:", foundPokemon );
+            obj.pokemon[foundPokemonIndex] = request.body;
+            obj.pokemon[foundPokemonIndex].id = parseInt( obj.pokemon[foundPokemonIndex].id )
+
+            jsonfile.writeFile(FILE, obj, function (err) {
+                if (err) console.log("ERROR:",err)
+                response.send("FOUND, WORKS")
+                // response.send(request.body);
+                // response.send(request.body);
+            })
+          }else{
+              response.send("not a pokemon");
+          }
+      });
+
+})
+
+
+app.get('/pokemon/:id/edit', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log( 'ERR: ', err);
+
+        let requestedPokemonID = request.params.id;
+        for (let i = 0 ; i < obj.pokemon.length; i++){
+            if (obj.pokemon[i].id === parseInt(requestedPokemonID)){
+                var foundPokemon = obj.pokemon[i];
+            }
+        }
+
+        if (foundPokemon){
+            console.log("FOUND: ", foundPokemon);
+            response.render('pokemon-edit', {pokemon: foundPokemon});
+        }
+        else{
+            response.send("POKEMON NOT FOUND!");
+        }
+    })
+})
 
 /**
  * ===================================
