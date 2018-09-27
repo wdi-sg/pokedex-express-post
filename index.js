@@ -67,22 +67,16 @@ var selectChange = function()
     html += "<html>";
     html += "<body>";
     html += "<h1>"+title+"</h1>";
-    html += '<h2>Select your sort parameter:</h2>'
+    html += '<h2>Select your sort parameter:</h2>';
 
-    html += '<form method="link" action="/search/sortby" id="choiceform">';
-
-    html += '<select class="catergory" onchange="selectChange()">';
+    html += '<form action="/search/sortby">';
+    html += '<select name="choice">';
     html += '<option value="pokename">Name</option>';
     html += '<option value="type">Type</option>';
     html += '<option value="weakness">Weakness</option>';
     html += '</select>&nbsp';
-
-    html += '<input type="submit" class="button" value="Sort" onlick="" />'
+    html += '<input type="submit" value="Submit">';
     html += '</form>';
-    html += '<h2 class="weakness">Choose by weakness:</h2>';
-    for (i in typeArr) {
-        html += '<div><a href="weakness/'+typeArr[i]+' ">'+typeArr[i].charAt(0).toUpperCase() + typeArr[i].substr(1) +'</a></div>';
-    };
 
     response.status(200);
     response.send(html);
@@ -94,25 +88,6 @@ var selectChange = function()
 
 
 app.get('/search/sortby', (request, response) => {
-
-    jsonfile.readFile (file, function(err, obj) {
-
-        console.log(file);
-
-        pokeObj = obj.pokemon;
-
-
-
-
-
-
-    });
-});
-
-
-
-
-app.get('/type', (request, response) => {
 
     jsonfile.readFile (file, function(err, obj) {
 
@@ -141,31 +116,50 @@ app.get('/type', (request, response) => {
                 console.log(typeArr);
 //---------------------------------------------------------------------
 
+        let choice = request.query.choice.toLowerCase();
 
-        var html ='';
-        html += "<html>";
-        html += "<body>";
-        html += '<h2 class="type">Types:</h2>';
-            for (i in typeArr) {
-                html += '<div><a href="type/'+typeArr[i]+' ">'+typeArr[i].charAt(0).toUpperCase() + typeArr[i].substr(1) +'</a></div>';
-            };
-        html += '</body>';
-        html += '</html>';
+            response.status(200);
 
-        response.status(200);
-        response.send(html);
+
+            var html = '';
+            html += '<html>';
+            html += '<body>';
+
+
+                switch (choice) {
+                    case "pokename":
+                    html += '<h2 class="names-lib">Pokemon Name Library</h2>';
+                        html += '<ul>';
+                    for (i in pokeObj){
+                        html += '<li><img src="'+ pokeObj[i].img +'"></div>';
+                        html += '<a href="/' + pokeObj[i].name.toLowerCase() + ' ">' + pokeObj[i].name + '</a></li>';
+                        html += '<br />';
+                    };
+                        break;
+                    case "type":
+                        html += '<h2 class="type">Types:</h2>';
+                        html += '<ul>';
+                        for (i in typeArr) {
+                            html += '<li><a href="type/'+typeArr[i]+' ">'+typeArr[i].charAt(0).toUpperCase() + typeArr[i].substr(1) +'</a></li>';
+                        };
+                        break;
+
+                    case "weakness":
+                        html += '<h2 class="weakness">Weaknesses:</h2>';
+                        html += '<ul>';
+                            for (i in typeArr) {
+                                html += '<div><a href="weakness/'+typeArr[i]+' ">'+typeArr[i].charAt(0).toUpperCase() + typeArr[i].substr(1) +'</a></div>';
+                            };
+                        break;
+                    };
+
+            html += '</ul>';
+            html += '</body>';
+            html += '</html>';
+            response.send(html);
 
     });
 });
-
-// app.get('/search', (request, response) => {
-
-//     if(request.query.sortby === name) {
-//         var html = '';
-//         response.send("HELLO");
-//     }
-
-// });
 
 
 
@@ -248,7 +242,7 @@ app.get('/:name', (request, response) => {
 
         setTimeout(function(){
             response.redirect('/');
-            }, 2000);
+            }, 1000);
 
 
         console.log(request.path);
@@ -351,7 +345,6 @@ app.get('/search/:item', (request ,response) => {
         let item = request.params.item.toLowerCase();
         let amount = request.query.amount;
         let compare = request.query.compare.toLowerCase();
-
 
         if (item === "spawn_chance") {
 

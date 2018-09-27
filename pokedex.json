@@ -3331,5 +3331,8 @@
 				"spawn_time": "N/A",
 				"multipliers": null,
 				"weaknesses": ["Bug", "Ghost", "Dark"]
+		},
+		{
+				"lastNumber": 151
 		}]
 }
