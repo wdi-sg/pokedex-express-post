@@ -47,28 +47,10 @@ app.get('/pokemon', (request, response) => {
             response.status(404).send(err);
         }
         if (request.query.sortby == 'name'){
-            let sortedName = obj.pokemon.sort(compareName);
-            let nameList = '';
-            for (var i = 0; i < sortedName.length; i++){
-                let list = '<li>' + sortedName[i].name + '</li>';
-                nameList += list;
-            }
-
-            var pageNameQuery = '';
-            pageNameQuery += '<html><body><h1>List of pokemon sorted by name: </h1><ul>' + nameList + '</ul></body></html>';
-
-            response.send(pageNameQuery);
+            response.render('pokemon-sortedname', obj);
         }
         else if (request.query.sortby == 'id'){
-            let sortedId = obj.pokemon.sort(compareId);
-            let sortByIdList = '';
-            for (var i = 0; i < sortedId.length; i++){
-                let list = '<li>' + sortedId[i].name + '</li>';
-                sortByIdList += list;
-            }
-            var pageNameQuery = '';
-            pageNameQuery += '<html><body><h1>List of pokemon sorted by ID: </h1><ul>' + sortByIdList + '</ul></body></html>';
-            response.send(pageNameQuery);
+            response.render('pokemon-sortedid', obj);
 
         }
 
@@ -194,26 +176,9 @@ app.get('/:id', (request, response) => {
 
 
 
-//write a function that sort arrays of object by string property in Javascript
-var compareName = function(a,b){
-    if (a.name < b.name){
-        return -1;
-    }
-    if (a.name > b.name){
-        return +1;
-    }
-    return 0;
-}
 
-var compareId = function(a,b){
-    if (a.id < b.id){
-        return -1;
-    }
-    if (a.id > b.id){
-        return +1;
-    }
-    return 0;
-}
+
+
 
 // var compareHeight = function(a,b){
 //     if (a.height < b.height){
