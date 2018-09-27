@@ -1,9 +1,15 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+const methodOverride = require('method-override');
+const reactEngine = require('express-react-views').createEngine();
 
 const FILE = 'pokedex.json';
 const app = express();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
 
+app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -37,6 +43,25 @@ const generateForm = () => {
 
 app.get('/pokemon/new', (request, response) => {
   response.send(generateHtml(generateForm()));
+});
+
+app.get('/pokemon/:id/edit', (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    const foundPokemon = obj.pokemon.filter(pokemon => {
+      return pokemon.id === parseInt(req.params.id);
+    });
+
+    if (foundPokemon.length > 0) {
+      res.render('PokemonEdit', foundPokemon[0]);
+    } else {
+      res.send('Not a pokemon!');
+    }
+  });
 });
 
 app.get('/pokemon/:id', (request, response) => {
@@ -119,4 +144,35 @@ app.post('/pokemon', (request, response) => {
   });
 });
 
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.put('/pokemon/:id', (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    var foundIndex = obj.pokemon.findIndex(pokemon => {
+      return pokemon.id === parseInt(req.params.id);
+    });
+
+    if (foundIndex !== -1) {
+      obj.pokemon[foundIndex] = req.body;
+      obj.pokemon[foundIndex].id = parseInt(req.body.id);
+      obj.pokemon[foundIndex].height = req.body.height + ' m';
+      obj.pokemon[foundIndex].weight = req.body.weight + ' kg';
+
+      jsonfile.writeFile(FILE, obj, err => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        res.send('Pokemon updated!');
+      });
+    } else {
+      res.send('Not a pokemon!');
+    }
+  });
+});
+
+app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
