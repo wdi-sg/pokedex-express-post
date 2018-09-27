@@ -15,6 +15,16 @@ app.use(
     extended: true
   })
 );
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 /**
  * ===================================
  * Routes
@@ -106,6 +116,7 @@ app.get("/", (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
     let pokedex = obj;
     let pokemonObject = obj.pokemon;
+    // Creating The HTML Page to return
     let html = "<html>";
     html += "<body><p>Welcome to the online Pokedex</p>";
     html +=
@@ -113,6 +124,7 @@ app.get("/", (req, res) => {
     html += "</body></html>";
     if (!req.query.sortby) {
       res.send(html);
+      // Filter Requests based on the selection
     } else if (req.query.sortby === "name") {
       pokemonObject.sort(sortingFunctionByName);
       pokemonlist = "";
@@ -153,7 +165,7 @@ app.get("/", (req, res) => {
     }
   });
 });
-
+// Create Sort Function By Name
 const sortingFunctionByName = (a, b, x) => {
   if (a.name < b.name) {
     return -1;
@@ -163,7 +175,7 @@ const sortingFunctionByName = (a, b, x) => {
   }
   return 0;
 };
-
+// Create Sort Function By Height
 const sortingFunctionByHeight = (a, b) => {
   if (a.height < b.height) {
     return -1;
@@ -173,7 +185,7 @@ const sortingFunctionByHeight = (a, b) => {
   }
   return 0;
 };
-
+// Create Sort Function By Weight
 const sortingFunctionByWeight = (a, b) => {
     let weightSplit = {
         a: a.weight.split(" "),
