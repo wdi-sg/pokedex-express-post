@@ -15,34 +15,8 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-const generateHtml = (content) => {
-  let html = '<html>';
-  html += '<head>';
-  html += '<title>Pokemon</title>';
-  html += '<style>* {padding: 0; margin: 0; box-sizing: border-box;} body {padding: 2rem;} a {text-decoration: none; padding: 1rem 2rem; border: 1px solid black;}</style>';
-  html += '</head>';
-  html += '<body>';
-  html += content;
-  html += '</body>';
-  html += '</html>';
-  return html;
-};
-
-const generateForm = () => {
-  let form = '<form method="POST" action="/pokemon">';
-  form += '<label for="id">id</label> <input type="number" name="id"><br>';
-  form += '<label for="num">num</label> <input type="number" name="num"><br>';
-  form += '<label for="name">name</label> <input type="text" name="name"><br>';
-  form += '<label for="img">img</label> <input type="url" name="img"><br>';
-  form += '<label for="height">height</label> <input type="number" name="height"> m<br>';
-  form += '<label for="weight">weight</label> <input type="number" name="weight"> kg<br>';
-  form += '<input type="submit" value="Submit">';
-  form += '</form>';
-  return form;
-};
-
-app.get('/pokemon/new', (request, response) => {
-  response.send(generateHtml(generateForm()));
+app.get('/pokemon/new', (req, res) => {
+  res.render('PokemonNew');
 });
 
 app.get('/pokemon/:id/edit', (req, res) => {
@@ -52,94 +26,85 @@ app.get('/pokemon/:id/edit', (req, res) => {
       return;
     }
 
-    const foundPokemon = obj.pokemon.filter(pokemon => {
+    const foundPokemon = obj.pokemon.find(pokemon => {
       return pokemon.id === parseInt(req.params.id);
     });
 
-    if (foundPokemon.length > 0) {
-      res.render('PokemonEdit', foundPokemon[0]);
+    if (foundPokemon) {
+      res.render('PokemonEdit', foundPokemon);
     } else {
-      res.send('Not a pokemon!');
+      res.status(404).send('Not a pokemon!');
     }
   });
 });
 
-app.get('/pokemon/:id', (request, response) => {
+app.get('/pokemon/:id', (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
-    let inputId = parseInt(request.params.id);
-    let pokemon;
+    let inputId = parseInt(req.params.id);
+    const foundPokemon = obj.pokemon.find(pokemon => {
+      return pokemon.id === inputId;
+    });
 
-    for (let i = 0; i < obj.pokemon.length; i++) {
-      let currentPokemon = obj.pokemon[i];
-      if (currentPokemon.id === inputId) {
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-      response.status(404);
-      response.send("not found");
+    if (foundPokemon) {
+      res.render('PokemonDetail', foundPokemon);
     } else {
-      response.send(pokemon);
+      res.status(404).send('Not found');
     }
   });
 });
 
 // /pokemon?sortby=name
-app.get('/pokemon', (request, response) => {
+app.get('/pokemon', (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) {
-      response.status(404).send(err);
+      res.status(404).send(err);
     }
 
-    const sortBy = request.query.sortby.toLowerCase();
+    const sortBy = req.query.sortby.toLowerCase();
     if (sortBy === 'name') {
       obj.pokemon.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
     } else {
       obj.pokemon.sort((a, b) => parseFloat(a[sortBy]).toFixed(2) -
         parseFloat(b[sortBy]).toFixed(2));
     }
-    response.send(obj.pokemon);
+
+    res.render('PokemonList', { pokemons: obj.pokemon });
   });
 });
 
-app.get('/', (request, response) => {
-  let content = '<form action="/pokemon">';
-  content += '<select name="sortby">';
-  content += '<option disabled selected value>Sort by...</option>';
-  content += '<option value="id">id</option>';
-  content += '<option value="name">name</option>';
-  content += '<option value="height">height</option>';
-  content += '<option value="weight">weight</option>';
-  content += '</select>'
-  content += '<input type="submit"/>';
-  content += '</form>';
-  response.send(generateHtml(content));
+app.get('/', (req, res) => {
+  res.render('Home');
 });
 
-app.post('/pokemon', (request, response) => {
+app.post('/pokemon', (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) {
-      response.status(404).send(err);
+      res.status(404).send(err);
     }
 
-    let newPokemon = request.body;
+    let newPokemon = req.body;
     newPokemon.id = parseInt(newPokemon.id);
-    newPokemon.height = newPokemon.height + ' m';
-    newPokemon.weight = newPokemon.weight + ' kg';
+    newPokemon.height = parseFloat(newPokemon.height).toFixed(2) + ' m';
+    newPokemon.weight = parseFloat(newPokemon.weight).toFixed(1) + ' kg';
 
-    if (newPokemon.id <= obj.pokemon.length) {
-      response.send('Please enter an ID that is greater than ' + obj.pokemon.length);
+    const foundPokemon = obj.pokemon.find(pokemon => {
+      return pokemon.id === newPokemon.id;
+    });
+
+    if (foundPokemon || newPokemon.id < 1) {
+      const message = 'Invalid ID. Please try another one.';
+      res.render('Error', { message: message });
       return;
     }
 
     obj.pokemon.push(newPokemon);
     jsonfile.writeFile(FILE, obj, err => {
       if (err) {
-        response.status(404).send(err);
+        console.log(err);
+        return;
       }
 
-      response.send(newPokemon);
+      res.redirect('/pokemon/' + newPokemon.id);
     });
   });
 });
@@ -158,8 +123,8 @@ app.put('/pokemon/:id', (req, res) => {
     if (foundIndex !== -1) {
       obj.pokemon[foundIndex] = req.body;
       obj.pokemon[foundIndex].id = parseInt(req.body.id);
-      obj.pokemon[foundIndex].height = req.body.height + ' m';
-      obj.pokemon[foundIndex].weight = req.body.weight + ' kg';
+      obj.pokemon[foundIndex].height = parseFloat(req.body.height).toFixed(2) + ' m';
+      obj.pokemon[foundIndex].weight = parseFloat(req.body.weight).toFixed(1) + ' kg';
 
       jsonfile.writeFile(FILE, obj, err => {
         if (err) {
@@ -167,10 +132,11 @@ app.put('/pokemon/:id', (req, res) => {
           return;
         }
 
-        res.send('Pokemon updated!');
+        res.redirect('/pokemon/' + req.params.id);
       });
     } else {
-      res.send('Not a pokemon!');
+      const message = 'Not a pokemon!';
+      res.render('Error', { message: message });
     }
   });
 });

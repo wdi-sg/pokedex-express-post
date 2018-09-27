@@ -1889,6 +1889,14 @@
       "img": "https://vignette.wikia.nocookie.net/finalfantasy/images/8/8d/Behemoth_FFXV.png/revision/latest?cb=20170902160023",
       "height": "100.00 m",
       "weight": "205.0 kg"
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "Tonberry",
+      "img": "https://vignette.wikia.nocookie.net/finalfantasy/images/7/7a/Tonberry_FFXV.png/revision/latest?cb=20170329173553",
+      "height": "0.40 m",
+      "weight": "5.0 kg"
     }
   ]
 }

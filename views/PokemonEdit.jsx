@@ -18,9 +18,9 @@ class PokemonEdit extends React.Component {
           <label htmlFor="img">Image</label>
           <input type="url" name="img" value={this.props.img} /><br />
           <label htmlFor="height">Height</label>
-          <input type="number" name="height" value={height} /> m<br />
+          <input type="text" name="height" value={height} /> m<br />
           <label htmlFor="weight">Weight</label>
-          <input type="number" name="weight" value={weight} /> kg<br />
+          <input type="text" name="weight" value={weight} /> kg<br />
           <input type="submit" value="Submit" />
         </form>
       </div>
