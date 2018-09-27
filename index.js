@@ -54,18 +54,9 @@ app.get('/pokemon', (request, response) => {
 
         }
 
-        //Weight and height are in strings, maybe need to substring the string, then parseFloat to compare the float value
-        // else if (request.query.sortby == 'height'){
-        //     let sortedHeight = obj.pokemon.sort(compareHeight);
-        //     let sortByHeightList = '';
-        //     for (var i = 0; i < sortedHeight.length; i++){
-        //         let list = '<li>' + sortedHeight[i].name + '</li>';
-        //         sortByHeightList += list;
-        //     }
-        //     var pageNameQuery = '';
-        //     pageNameQuery += '<html><body><h1>List of pokemon sorted by Height: </h1><ul>' + sortByHeightList + '</ul></body></html>';
-        //     response.send(pageNameQuery);
-        // }
+        else if (request.query.sortby == 'height'){
+            response.render('pokemon-sortedheight', obj);
+        }
 
         // else if (request.query.sortby == 'weight'){
         //     let sortedWeight = obj.pokemon.sort(compareWeight);
@@ -180,15 +171,7 @@ app.get('/:id', (request, response) => {
 
 
 
-// var compareHeight = function(a,b){
-//     if (a.height < b.height){
-//         return -1;
-//     }
-//     if (a.height > b.height){
-//         return +1;
-//     }
-//     return 0;
-// }
+
 
 // var compareWeight = function(a,b){
 //     if (a.weight < b.weight){

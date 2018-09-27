@@ -23,7 +23,7 @@ class PokemonId extends React.Component {
     //console.log(this.props.pokemon);
     return (
       <div>
-        <h1>List of pokemon sorted by names!</h1>
+        <h1>List of pokemon sorted by ID!</h1>
         <ul>{pokemonSortId}</ul>
       </div>
     );

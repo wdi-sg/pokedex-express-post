@@ -16,7 +16,6 @@ class PokemonName extends React.Component {
 
     //this.props = obj
     let sortedName = this.props.pokemon.sort(compareName);
-    let nameList = '';
     let pokemonSortName = sortedName.map( pokemon =>{
       return <li>{pokemon.name}</li>
     })
