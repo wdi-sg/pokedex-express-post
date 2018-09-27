@@ -22,7 +22,7 @@ class Index extends React.Component {
         <body>
           <header>
             <nav className="navbar navbar-light bg-light">
-              <a class="navbar-brand font-weight-bold" href="/">
+              <a className="navbar-brand font-weight-bold" href="/">
                 Pokedex
               </a>
             </nav>

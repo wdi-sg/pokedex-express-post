@@ -2,8 +2,9 @@ const React = require('react');
 
 class ListPokemon extends React.Component {
   render() {
+    const url = '/pokemon/?id=';
     const pokemans = this.props.object.pokemon.map(pokeman => (
-      <a href="#" className="list-group-item" key={pokeman.id}>
+      <a href={url + pokeman.id} className="list-group-item" key={pokeman.id}>
         {pokeman.name}
       </a>
     ));
@@ -22,7 +23,7 @@ class ListPokemon extends React.Component {
         <body>
           <header>
             <nav className="navbar navbar-light bg-light">
-              <a class="navbar-brand font-weight-bold" href="/">
+              <a className="navbar-brand font-weight-bold" href="/">
                 Pokedex
               </a>
             </nav>
