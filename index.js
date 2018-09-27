@@ -8,6 +8,9 @@ const app = express();
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
@@ -19,11 +22,102 @@ app.use(express.urlencoded({
 // stops requests from returning favicon.ico
 app.get('/favicon.ico', (req, res) => res.status(204));
 
+app.get('/:id/edit', (request, response) => {
+
+  let id = request.params.id;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.log(err);
+
+    response.render('edit', {id: id, pokedex: obj.pokemon});
+  })
+})
+
+//last further
+app.post('/:id', (request, response) => {
+
+  let id = parseInt(request.params.id);
+  let typeOne = request.body.typeOne;
+  let typeTwo = request.body.typeTwo;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let pokedex = obj;
+    let index;
+
+    for (let i in pokedex.pokemon) {
+      if (pokedex.pokemon[i].id === id) {
+        index = i;
+      }
+    }
+
+    if (typeOne || typeTwo) {
+      pokedex.pokemon[index]["type"] = [];
+
+      if (typeOne) {
+        pokedex.pokemon[index].type.push(typeOne);
+      }
+
+      if (typeTwo && typeTwo !== typeOne) {
+        pokedex.pokemon[index].type.push(typeTwo);
+      }
+
+      jsonfile.writeFile(FILE, pokedex, (err) => {
+        if (err) console.log(err);
+
+        response.redirect("/" + id);
+      })
+
+    } else {
+      response.send("No type selected!");
+    }
+  })
+})
+
+app.put('/:id', (request, response) => {
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let id = parseInt(request.body.id);
+    let pokedex = obj;
+    let index;
+
+    for (let i in pokedex.pokemon) {
+      if (pokedex.pokemon[i].id === id) {
+        index = i;
+      }
+    }
+
+    if (index) {
+
+      pokedex.pokemon[index].name = request.body.name;
+      pokedex.pokemon[index].img = request.body.img;
+      pokedex.pokemon[index].height = request.body.height;
+      pokedex.pokemon[index].weight = request.body.weight;
+
+      // further 2
+      if (pokedex.pokemon[index].name.length < 3 ) {
+        response.send("Name too short!");
+      } else {
+
+        jsonfile.writeFile(FILE, pokedex, (err) => {
+          if (err) console.log(err);
+
+          response.redirect("/");
+        })
+      }
+    } else {
+      response.send("Invalid edit request!");
+    }
+  })
+})
+
 app.get('/:id', (request, response) => {
 
   let searchId = request.params.id;
 
   jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.log(err);
 
     response.render('id', {search: searchId, pokedex: obj.pokemon});
   })
@@ -54,7 +148,7 @@ app.post('/pokemon', (request, response) => {
     jsonfile.writeFile(FILE, pokedex, (err) => {
       if (err) console.log(err);
 
-      response.redirect("/?sortby=id");
+      response.redirect("/");
     })
   })
 })

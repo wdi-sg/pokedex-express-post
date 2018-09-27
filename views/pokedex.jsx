@@ -17,7 +17,14 @@ class Home extends React.Component {
             let value = pokedex[i][sortBy].split(":");
             value = parseInt(value[0]*60) + parseInt(value[1]);
             pokedex[i][sortBy] = value;
+
+            // raichu > tentacruel correctly but not being sorted behind
+            if (pokedex[i].name === "Tentacruel" || pokedex[i].name === "Raichu") {
+              console.log(pokedex[i].name + " : " + value)
+            }
           }
+
+          // why is this not sorting the two highest spawn time pokemon (tentacruel & raichu correctly?)
           pokedex = pokedex.sort((a, b) => {
             return a[sortBy] - b[sortBy];
           })
@@ -49,31 +56,36 @@ class Home extends React.Component {
 
     let outputDex = pokedex.map( pokemon => {
       let pokeURL = "/" + pokemon.id;
-      return <li><a href={pokeURL}><img src={pokemon.img} />{pokemon.name}</a></li>
+      return <li className="list-inline-item"><a href={pokeURL}><img src={pokemon.img} /><br/>{pokemon.name}</a></li>
     })
+
+    let bootstrap = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
 
     return (
       <html>
         <header>
           <title>Pokedex</title>
+          <link rel="stylesheet" href={bootstrap} />
         </header>
         <body>
-          <h1>Pokedex {sortLine}</h1>
-          <h2>Sort By:</h2>
-          <form method="GET" action="/">
-            <select name="sortby">
-              <option value="id" selected>ID Number</option>
-              <option value="name">Name</option>
-              <option value="height">Height</option>
-              <option value="weight">Weight</option>
-              <option value="avg_spawns">Average Spawns</option>
-              <option value="spawn_time">Spawn Time</option>
-            </select>
-            <input type="submit" value="Submit" />
-          </form>
-          <ol>
-            {outputDex}
-          </ol>
+          <div className="container">
+            <h1>Pokedex {sortLine}</h1>
+            <h2>Sort By:</h2>
+            <form method="GET" action="/">
+              <select name="sortby">
+                <option value="id" selected>ID Number</option>
+                <option value="name">Name</option>
+                <option value="height">Height</option>
+                <option value="weight">Weight</option>
+                <option value="avg_spawns">Average Spawns</option>
+                <option value="spawn_time">Spawn Time</option>
+              </select>
+              <input type="submit" class="btn btn-danger" value="Submit" />
+            </form>
+            <ul className="list-inline">
+              {outputDex}
+            </ul>
+          </div>
         </body>
       </html>
     )
