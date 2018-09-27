@@ -1,4 +1,4 @@
-{
+const pokedex = {
   "pokemon": [
     {
       "id": 1,
@@ -1884,3 +1884,4 @@
     }
   ]
 }
+module.exports = pokedex

@@ -1,5 +1,7 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
+const pokedex = require("./pokedex");
+const methodOverride = require("method-override");
 const FILE = "pokedex.json";
 
 /**
@@ -15,16 +17,17 @@ app.use(
     extended: true
   })
 );
+app.use(methodOverride("_method"));
 
 // this line below, sets a layout look to your express project
-const reactEngine = require('express-react-views').createEngine();
-app.engine('jsx', reactEngine);
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
 
 // this tells express where to look for the view files
-app.set('views', __dirname + '/views');
+app.set("views", __dirname + "/views");
 
 // this line sets react to be the default view engine
-app.set('view engine', 'jsx');
+app.set("view engine", "jsx");
 /**
  * ===================================
  * Routes
@@ -53,6 +56,47 @@ app.get("/pokemon/new", (req, res) => {
   htmlform += "</body>";
   htmlform += "</html>";
   res.send(htmlform);
+});
+
+app.put("/pokemon/:id", (req, res) => {
+  let requestedPokemonID = req.params.id;
+  //Get the JSON file with the information
+  jsonfile.readFile(FILE, (err, obj) => {
+    for (i in obj.pokemon) {
+      if (obj.pokemon[i].id === parseInt(requestedPokemonID)) {
+        var foundPokemonIndex = i;
+        var foundPokemon = obj.pokemon[i];
+      }
+    }
+    if (foundPokemon) {
+      console.log("FOUND:", foundPokemon);
+      obj.pokemon[foundPokemonIndex] = req.body;
+      obj.pokemon[foundPokemonIndex].id = parseInt(
+        obj.pokemon[foundPokemonIndex].id
+      );
+
+      jsonfile.writeFile(FILE, obj, err => {
+        if (err) console.log("ERROR:", err);
+        res.render("success", obj.pokemon[foundPokemonIndex]);
+      });
+    } else {
+      response.send("not a pokemon");
+    }
+  });
+});
+
+app.get("/pokemon/:id/edit", (req, res) => {
+  let requestedPokemonID = req.params.id;
+  for (i in pokedex.pokemon) {
+    if (pokedex.pokemon[i].id === parseInt(requestedPokemonID)) {
+      var foundPokemon = pokedex.pokemon[i];
+    }
+  }
+  if (foundPokemon) {
+    res.render("edit", { pokemon: foundPokemon });
+  } else {
+    res.render("edit");
+  }
 });
 
 app.post("/pokemon", function(req, res) {
@@ -113,92 +157,16 @@ app.get("/:id", (request, response) => {
 });
 
 app.get("/", (req, res) => {
-  jsonfile.readFile(FILE, (err, obj) => {
-    let pokedex = obj;
-    let pokemonObject = obj.pokemon;
-    // Creating The HTML Page to return
-    let html = "<html>";
-    html += "<body><p>Welcome to the online Pokedex</p>";
-    html +=
-      '<form method="GET" action=""><label for="sort-by-name">Sort By</label><select name="sortby"><option value="name">Name</option><option value="height">Height</option><option value="weight">Weight</option></select><input type="submit"/></form>';
-    html += "</body></html>";
-    if (!req.query.sortby) {
-      res.send(html);
-      // Filter Requests based on the selection
-    } else if (req.query.sortby === "name") {
-      pokemonObject.sort(sortingFunctionByName);
-      pokemonlist = "";
-      pokemonlist += "<html><body><ul>";
-      for (i in pokemonObject) {
-        pokemonlist += "<li>";
-        pokemonlist += pokemonObject[i].name;
-        pokemonlist += "</li>";
-      }
-      pokemonlist += "</ul></body></html>";
-      res.send(pokemonlist);
-    } else if (req.query.sortby === "height") {
-      pokemonObject.sort(sortingFunctionByHeight);
-      pokemonlist = "";
-      pokemonlist += "<html><body><ul>";
-      for (i in pokemonObject) {
-        pokemonlist += "<li>";
-        pokemonlist += pokemonObject[i].name;
-        pokemonlist += " ";
-        pokemonlist += pokemonObject[i].height;
-        pokemonlist += "</li>";
-      }
-      pokemonlist += "</ul></body></html>";
-      res.send(pokemonlist);
-    } else if (req.query.sortby === "weight") {
-      pokemonObject.sort(sortingFunctionByWeight);
-      pokemonlist = "";
-      pokemonlist += "<html><body><ul>";
-      for (i in pokemonObject) {
-        pokemonlist += "<li>";
-        pokemonlist += pokemonObject[i].name;
-        pokemonlist += " ";
-        pokemonlist += pokemonObject[i].weight;
-        pokemonlist += "</li>";
-      }
-      pokemonlist += "</ul></body></html>";
-      res.send(pokemonlist);
-    }
-  });
+  if (!req.query.sortby) {
+    res.render("home");
+  } else if (req.query.sortby === "name") {
+    res.render("name");
+  } else if (req.query.sortby === "height") {
+    res.render("height");
+  } else if (req.query.sortby === "weight") {
+    res.render("weight");
+  }
 });
-// Create Sort Function By Name
-const sortingFunctionByName = (a, b, x) => {
-  if (a.name < b.name) {
-    return -1;
-  }
-  if (a.name > b.name) {
-    return +1;
-  }
-  return 0;
-};
-// Create Sort Function By Height
-const sortingFunctionByHeight = (a, b) => {
-  if (a.height < b.height) {
-    return -1;
-  }
-  if (a.height > b.height) {
-    return +1;
-  }
-  return 0;
-};
-// Create Sort Function By Weight
-const sortingFunctionByWeight = (a, b) => {
-    let weightSplit = {
-        a: a.weight.split(" "),
-        b: b.weight.split(" ")
-    }
-  if (weightSplit.a[0] < weightSplit.b[0]) {
-    return -1;
-  }
-  if (weightSplit.a[0] > weightSplit.b[0]) {
-    return +1;
-  }
-  return 0;
-};
 
 /**
  * ===================================
