@@ -142,4 +142,4 @@ app.put('/pokemon/:id', (req, res) => {
   });
 });
 
-app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));

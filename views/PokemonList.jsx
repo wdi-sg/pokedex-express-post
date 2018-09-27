@@ -4,7 +4,11 @@ class PokemonList extends React.Component {
   render() {
     const pokemonList = this.props.pokemons.map(pokemon => {
       const pokemonLink = '/pokemon/' + pokemon.id;
-      return <li className="list-group-item text-center"><a href={pokemonLink}>{pokemon.name}</a></li>;
+      return (
+        <li className="list-group-item text-center" key={pokemon.id}>
+          <a href={pokemonLink}>{pokemon.name}</a>
+        </li>
+      );
     });
 
     return (
