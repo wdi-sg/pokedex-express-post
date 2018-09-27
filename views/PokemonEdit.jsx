@@ -14,13 +14,13 @@ class PokemonEdit extends React.Component {
           {/* <label htmlFor="num">Num</label>
           <input type="number" name="num" value={this.props.num} /><br /> */}
           <label htmlFor="name">Name</label>
-          <input type="text" name="name" value={this.props.name} /><br />
+          <input type="text" name="name" value={this.props.name} pattern=".{2,}" title="2 characters minimum" required /><br />
           <label htmlFor="img">Image</label>
-          <input type="url" name="img" value={this.props.img} /><br />
+          <input type="url" name="img" value={this.props.img} required /><br />
           <label htmlFor="height">Height</label>
-          <input type="text" name="height" value={height} /> m<br />
+          <input type="text" name="height" value={height} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required /> m<br />
           <label htmlFor="weight">Weight</label>
-          <input type="text" name="weight" value={weight} /> kg<br />
+          <input type="text" name="weight" value={weight} pattern="^([0-9])+(\.)*([0-9])*" title="Any number" required /> kg<br />
           <input type="submit" value="Submit" />
         </form>
       </div>
