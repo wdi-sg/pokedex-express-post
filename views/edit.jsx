@@ -25,7 +25,6 @@ class Home extends React.Component {
           <h1>Edit {pokemon.name}:</h1>
           <img src={pokemon.img} />
           <form method="POST" action={postAction}>
-            //readOnly is jsx version of html readonly, value can't be changed
             ID: <input type="text" name="id" value={pokemon.id} readOnly/><br/>
             Name: <input type="text" name="name" value={pokemon.name} /><br/>
             Image: <input type="text" name="img" value={pokemon.img} /><br/>

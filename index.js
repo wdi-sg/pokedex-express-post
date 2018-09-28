@@ -33,6 +33,44 @@ app.get('/:id/edit', (request, response) => {
   })
 })
 
+app.put('/:id', (request, response) => {
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let id = parseInt(request.body.id);
+    let pokedex = obj;
+    let index;
+
+    for (let i in pokedex.pokemon) {
+      if (pokedex.pokemon[i].id === id) {
+        index = i;
+      }
+    }
+
+    if (index) {
+
+      pokedex.pokemon[index].name = request.body.name;
+      pokedex.pokemon[index].img = request.body.img;
+      pokedex.pokemon[index].height = request.body.height;
+      pokedex.pokemon[index].weight = request.body.weight;
+
+      // further 2
+      if (pokedex.pokemon[index].name.length < 3 ) {
+        response.send("Name too short!");
+      } else {
+
+        jsonfile.writeFile(FILE, pokedex, (err) => {
+          if (err) console.log(err);
+
+          response.redirect("/");
+        })
+      }
+    } else {
+      response.send("Invalid edit request!");
+    }
+  })
+})
+
 //last further
 app.post('/:id', (request, response) => {
 
@@ -70,44 +108,6 @@ app.post('/:id', (request, response) => {
 
     } else {
       response.send("No type selected!");
-    }
-  })
-})
-
-app.put('/:id', (request, response) => {
-
-  jsonfile.readFile(FILE, (err, obj) => {
-
-    let id = parseInt(request.body.id);
-    let pokedex = obj;
-    let index;
-
-    for (let i in pokedex.pokemon) {
-      if (pokedex.pokemon[i].id === id) {
-        index = i;
-      }
-    }
-
-    if (index) {
-
-      pokedex.pokemon[index].name = request.body.name;
-      pokedex.pokemon[index].img = request.body.img;
-      pokedex.pokemon[index].height = request.body.height;
-      pokedex.pokemon[index].weight = request.body.weight;
-
-      // further 2
-      if (pokedex.pokemon[index].name.length < 3 ) {
-        response.send("Name too short!");
-      } else {
-
-        jsonfile.writeFile(FILE, pokedex, (err) => {
-          if (err) console.log(err);
-
-          response.redirect("/");
-        })
-      }
-    } else {
-      response.send("Invalid edit request!");
     }
   })
 })
