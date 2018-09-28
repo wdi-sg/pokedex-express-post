@@ -17,6 +17,13 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -51,70 +58,74 @@ app.get('/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      response.render('Home', {pokemon: pokemon});
     }
   });
 });
 
-app.get('/pokemon/new', (request, response) => {
-
-  let html = "<html>";
-    html += "<body>";
-    html += '<form method="POST" action="/pokemon">';
-    html += "<h2>Create New Pokemon: </h2>";
-    html += 'id: <input type = "text" name = "id"><br>';
-    html += 'num: <input type = "text" name = "num"><br>';
-    html += 'name: <input type = "text" name = "name"><br>';
-    html += 'img: <input type = "text" name = "img"><br>';
-    html += 'height: <input type = "text" name = "height"><br>';
-    html += 'weight: <input type = "text" name = "weight"><br>';
-    html += '<input type = "submit" value = "Submit">';
-    html += "</form>";
-    html += "</body>";
-    html += "</html>";
-
-  response.send(html);
-
+app.get("/pokemon/new", (request, response) => {
+  response.render('newPokemon');
 });
 
 app.post('/pokemon', function(request, response) {
+  jsonfile.readFile(FILE, (err, obj) => {
+      		var newPokemon = {
+                  "id": request.body.id,
+                  "num": request.body.num,
+                  "name": request.body.name,
+                  "img": request.body.img,
+                  "height": request.body.height,
+                  "weight": request.body.weight,
+                  "candy": "",
+                  "candy_count": "",
+                  "egg": "",
+                  "avg_spawns": "",
+                  "spawn_time": ""
+              }
+              //add new pokemon
+              obj.pokemon.push(newPokemon);
 
-  jsonfile.readFile('pokedex.json', (err, obj) => {
+              var newobj = obj
 
-  		let newPokemon = {
-              "id": request.body.id,
-              "num": request.body.num,
-              "name": request.body.name,
-              "img": request.body.img,
-              "height": request.body.height,
-              "weight": request.body.weight,
-              "candy": "",
-              "candy_count": "",
-              "egg": "",
-              "avg_spawns": "",
-              "spawn_time": ""
-          }
-          //add new pokemon
-          obj.pokemon.push(newPokemon);
+              // if(request.body.id <= obj.pokemon.length){
+              //   response.send("This pokemon ID exists. Please try again.");
+              //   // response.redirect('/pokemon/new');
+              // }
+      //debug code (output request body)
+      // console.log(request.body);
 
-          let newobj = obj
+      // save the request body
+        jsonfile.writeFile('data.json', newobj, (err) => {
+          console.error(err);
 
-          if(request.body.id <= obj.pokemon.length){
-            response.send("This pokemon ID exists. Please try again.");
-            // response.redirect('/pokemon/new');  
-          }
-  //debug code (output request body)
-  // console.log(request.body);
+        });
+        console.log(newPokemon);
 
-  // save the request body
-    jsonfile.writeFile('pokedex.json', newobj, (err) => {
-      console.error(err);
+        response.render("pokemon");
 
-    // now look inside your json file
-      response.send("New Pokemon created!");
+      });
     });
-  });
-});
+
+// app.get('/pokemon/new', (request, response) => {
+//
+//   let html = "<html>";
+//     html += "<body>";
+//     html += '<form method="POST" action="/pokemon">';
+//     html += "<h2>Create New Pokemon: </h2>";
+//     html += 'id: <input type = "text" name = "id"><br>';
+//     html += 'num: <input type = "text" name = "num"><br>';
+//     html += 'name: <input type = "text" name = "name"><br>';
+//     html += 'img: <input type = "text" name = "img"><br>';
+//     html += 'height: <input type = "text" name = "height"><br>';
+//     html += 'weight: <input type = "text" name = "weight"><br>';
+//     html += '<input type = "submit" value = "Submit">';
+//     html += "</form>";
+//     html += "</body>";
+//     html += "</html>";
+//
+//   response.send(html);
+//
+// });
 
 /**
  * ===================================
