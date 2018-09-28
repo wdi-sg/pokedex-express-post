@@ -1889,6 +1889,14 @@
       "img": "ls-solutions.png",
       "height": "201",
       "weight": "30"
+    },
+    {
+      "id": "153",
+      "num": "153",
+      "name": "MewTHREE",
+      "img": "mew-three.png",
+      "height": "200",
+      "weight": "30"
     }
   ]
 }
