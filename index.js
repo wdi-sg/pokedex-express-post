@@ -1,13 +1,17 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
+// Sets up a layout look for the express project
+const reactEngine = require('express-reach-views').createEngine();
+app.engine('jsx', reactEngine);
 
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
+// This tells express where to look for the view files
+app.set('views', __dirname + 'views');
+
+// This sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
