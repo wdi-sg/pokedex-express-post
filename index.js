@@ -5,6 +5,19 @@ const jsonfile = require('jsonfile');
 const fileNew = 'pokedex_new.json';
 const file = 'pokedex.json';
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -50,10 +63,9 @@ var handleRequestRoot = (request, response) => {
         };
 
 
-        html += `<html><body style="margin:5vw;"><h1>Welcome to the online Pokedex!</h1><h3 style="color:red;">Pokemon:</h3>`;
+        html += `<html><body style="margin:5vw;"><h1>Welcome to the online Pokedex!</h1><h2 style="color:red;">Pokemon:</h2>`;
 
         html += `<div style="margin-bottom:5vw;"><input type="button" onclick="window.location.href='/?sortby=name';" value="Sort by Name" /></div>`;
-        // html += `<div style="margin-bottom:5vw;"><a href=/?sortby=name>Sort by Name</a></div>`;  - Why are these approaches bad?
 
         html += `<form action="/?" method="get">`
         html += `<select name="sortby">`
@@ -73,7 +85,7 @@ var handleRequestRoot = (request, response) => {
 
         for (i in obj.pokemon) {
 
-            html += `<a href = "/${obj.pokemon[i].name}">${obj.pokemon[i].num}. ${obj.pokemon[i].name}</a><br>`;
+            html += `<a href = "/${obj.pokemon[i].name}">${obj.pokemon[i].id}. ${obj.pokemon[i].name}</a><br>`;
         };
 
         html += `</body></html>`;
@@ -104,7 +116,7 @@ var handleRequestName = (request, response) => {    // For direct Pokemon search
 
                 html += `<html><body style="margin:5vw;"><h1>${pokes[i].name}</h1>`;
                 html += `<img src = '${pokes[i].img}'>`;
-                html += `<h2>Pokedex ID number: <span style="color:red;">${pokes[i].num}</span></h2>`;
+                html += `<h2>Pokedex ID number: <span style="color:red;">${pokes[i].id}</span></h2>`;
                 html += `<h2>Height: ${pokes[i].height}</h2>`;
                 html += `<h2>Weight: ${pokes[i].weight}</h2>`;
 
@@ -268,7 +280,7 @@ var handleRequestSearch = (request, response) => {  // e.g. /search/spawn_chance
 
             if (operators[request.query.compare] (parseFloat(pokes[i][request.params.searchattribute]), (request.query.amount))) {
 
-                html += `<a href = "/${pokes[i].name}">${pokes[i].num}. ${pokes[i].name}</a><br>`;
+                html += `<a href = "/${pokes[i].name}">${pokes[i].id}. ${pokes[i].name}</a><br>`;
             };
         };
 
@@ -284,8 +296,8 @@ app.get('/pokemon/new', (request, response) => {    // Generates input form for 
 
     html += `<h3 style="color:red;">Pokedex data submitter</h3>`;
     html += '<form method="POST" action="/pokepost">';
-    html += `ID: <input type="text" name="id"><br />`;
-    html += `Num: <input type="text" name="num"><br />`;
+    html += `ID: <input type="number" name="id"><br />`;
+    html += `Num: <input type="number" name="num"><br />`;
     html += `Name: <input type="text" name="name"><br />`;
     html += `Image Link: <input type="text" name="img"><br />`;
     html += `Type: <input type="text" name="type[]"><br />`;
@@ -313,13 +325,77 @@ app.post('/pokepost', (request, response) => {  // Handles post for new Pokemon 
 
         jsonfile.writeFile('pokedex.json', obj, (err) => {
 
-            console.error(err)
+            console.error(err);
 
             response.redirect('/');
 
         });
     });
 });
+
+
+app.get('/:id/edit', (request, response) => {
+
+    jsonfile.readFile (file, (err, obj) => {
+
+        if (err) {console.log(err)};
+
+        for (i in obj.pokemon) {
+
+            if (obj.pokemon[i].id === parseInt(request.params.id)) {
+
+                console.log("Pokemon to be edited: ", obj.pokemon[i] );
+
+                return response.render('pokemonEditor', obj.pokemon[i] );
+
+            };
+        };
+
+        return response.redirect('/');
+    });
+});
+
+
+app.put('/:id', (request, response) => {
+
+    console.log(request.params);
+    console.log(request.body);
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        if (err) {console.log(err)};
+
+        let pokeIndex;
+
+        for (i in obj.pokemon) {
+
+            if (obj.pokemon[i].id === parseInt(request.params.id)) {
+
+                pokeIndex = i;
+            }
+
+        }
+
+        let poke = obj.pokemon[pokeIndex];
+
+        poke.id = parseInt(request.body.id);
+        poke.name = request.body.name;
+        poke.height = request.body.height;
+        poke.weight = request.body.weight;
+
+        console.log("New Data: ", poke[request.body.id]);
+
+        jsonfile.writeFile('pokedex.json', obj, (err) => {
+
+            if (err) {console.log(err)};
+
+            return response.redirect(`/${poke.name}`);
+
+        });
+    });
+});
+
+
 
 
 app.get('/search/:searchattribute', handleRequestSearch);
@@ -331,6 +407,8 @@ app.get('/', handleRequestRoot );
 
 
 app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3001 ~~~'));
+
+
 
 
 
