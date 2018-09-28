@@ -7,18 +7,18 @@ class Sortweight extends React.Component {
         b = b.weight
         a = a.replace('kg','');
         b = b.replace('kg','');
-        console.log(a);
-        if (a < b){
-            return -1;
-        }
-        if (a > b){
-            return +1;
-        }
-        return 0;
+        return a-b;
+        // if (a < b){
+        //     return -1;
+        // }
+        // if (a > b){
+        //     return +1;
+        // }
+        // return 0;
     }
 
     let sortedWeight = this.props.pokemon.sort(compare);
-    //console.log(sortedWeight)
+    console.log(sortedWeight)
     const pokemonSortWeight = sortedWeight.map ( obj => {
         var idURL= 'pokemon/' + obj.id
         return <li><a href={idURL}>{obj.name}</a></li>
