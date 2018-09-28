@@ -15,14 +15,20 @@ class editPokemonHTML extends React.Component {
 
           <html>
 
+            <head>
+
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+
+            </head>
+
             <body style={{margin:'5vw'}}>
 
                 <h3 style={{color:'red'}}>Pokedex: Pokemon Editor</h3>
 
-                <form method="POST" action={postURL}>
+                <form method="POST" action={postURL} name="edit">
 
-                Name: <input type="text" name="name" value={this.props.name} /><br />
-                ID: <input type="text" name="id" value={this.props.id} /><br />
+                Name: <input type="text" name="name" value={this.props.name} minlength="2" required /><br />
+                ID: <input type="text" name="id" value={this.props.id} readonly="readonly" /><br />
                 Height: <input type="text" name="height" value={this.props.height} /><br />
                 Weight: <input type="text" name="weight" value={this.props.weight} /><br />
 
