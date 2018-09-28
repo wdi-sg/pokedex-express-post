@@ -12,7 +12,7 @@ app.use(express.urlencoded({
     extended: true,
 }));
 
-ROUTES
+// ROUTES
 
 //Q1. when someone visits your site and thereby makes a request, send them a HTML form
 app.get('/pokemon/new', (request, response) => {
@@ -106,7 +106,7 @@ app.get('/', (request, response) => {
 //         return 1;
 //     }
 //     return 0;
-// };
+// // };
 
 // app.get('/pokemon', (request, response) => {
 //     let searchQuery = request.query.sortby;
@@ -124,37 +124,6 @@ app.get('/', (request, response) => {
 //         }
 //         response.send(nameList);
 //     })
-// });
-
-// //             if (request.query.sortby == 'name'){
-// //             let sortedName = obj.pokemon.sort(compareName);
-// //             let nameList = '';
-// //             for (var i = 0; i < sortedName.length; i++){
-// //                 let list = '<li>' + sortedName[i].name + '</li>';
-// //                 nameList += list;
-// //             }
-
-
-
-
-// //when the visitor fills in the info, this info is POSTed to request.body. Node's body-parser reads the form's input and stores it as a javascript object accessible through request.body
-// app.post('/pokemon', function(request, response) {
-//     // console.log(request.body);
-//     var userInput = request.body; //pokemonObject is an object containing users inputs
-
-//     //function readfile has 2 parameters, first one is the target file, the second one is a callback function with 2 parameters
-//     jsonfile.readFile(FILE, (error, object) => {
-//         // console.log(object);
-//         object.pokemon.push(userInput);
-
-//         // save the request.body
-//         jsonfile.writeFile(FILE, object, (err) => {
-//             console.error(err)
-//         })
-//     })
-
-//     // now look inside your json file
-//     response.send("Success");
 // });
 
 

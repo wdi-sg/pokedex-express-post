@@ -6,6 +6,11 @@ const FILE = 'pokedex.json';
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
 
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -16,58 +21,78 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+
 //read and then pass info to jsx file
 app.get('/pokemon/:id/edit', (req, res) => {
     jsonfile.readFile(FILE, (error, object) => {
-        var i;
-        for (i in object.pokemon) {
+        if (error) {
+            console.log("-----------------")
+            console.error(error);
+            console.log("-----------------")
+        } else {
+            var i;
+            for (i in object.pokemon) {
             if (object.pokemon[i].id == req.params.id) {
                 var selectedPokemon = object.pokemon[i];
             }
         }
-        res.render('pokemon', {object:selectedPokemon});
+        res.render('pokemon', { object: selectedPokemon });
+        }
+
     })
 })
 
+//Once user fill in info, jsx file channels info from the form which we then retrieve here in app.put
 app.put("/pokemon/:id", (request, response) => {
-    console.log(request);
 
-  // //read the file in and write out to it
-  //   var userInput = request.body;
-    //function readfile has 2 parameters, first one is the target file, the second one is a callback function with 2 parameters
+    var pokemonId = request.params.id;
+
+    //read json file and update the selected fields
     jsonfile.readFile(FILE, (error, object) => {
-        console.log("-----------------");
-        console.log(request.body);
-        // update key value instead of pushing it in
-        // var i;
-        // for (i in object.pokemon) {
-        //     if (object.pokemon[i].id == req.params.id) {
-        //         let selectedPokemon = object.pokemon[i];
-        //         selectedPokemon.num = request.body.
-        //         selectedPokemon.name =
-        //         selectedPokemon.image =
-        //         selectedPokemon.height =
-        //         selectedPokemon.weight =
-        //     }
-        // }
+        if (error) {
+        console.log("-----------------")
+        console.error(error);
+        console.log("-----------------")
+        } else {
+            // pull the info from the form via request.body and store this info
+            let updatedTrait = request.body;
+            var i;
+            // update key value instead of pushing it in like the previous homework
+            for (i in object.pokemon) {
+                if (object.pokemon[i].id == pokemonId) {
+                    var selectedPokemon = object.pokemon[i];
+                    selectedPokemon.num = updatedTrait.number;
+                    selectedPokemon.name = updatedTrait.name;
+                    selectedPokemon.img = updatedTrait.image;
+                    selectedPokemon.height = updatedTrait.height;
+                    selectedPokemon.weight = updatedTrait.weight;
+                }
+            }
+            //update the jsonfile with new inputs
+            jsonfile.writeFile(FILE, object, (err) => {
+                console.error(err)
+            })
 
-        // save the request.body
-        jsonfile.writeFile(FILE, object, (err) => {
-            // console.error(err)
-        })
-            // now look inside your json file
-            response.send("Success");
-
+            //redirect user to a makeshift pokemon profile page (which displays only the name of pokemon) to check that name is indeed updated
+            response.redirect('/pokemon/'+selectedPokemon.name);
+            // response.send("success!")
+        }
     })
 })
 
-
-
-//LEARNING POINTS:
-// anything within "" is a string, for JSX variable.key cannot be indicated inside, so you have to define outside of return where the code reader understands javascript
-//double quote not applicable for variable
-
-
+//create a new app.get to double check that the name is indeed updated, after user updates it at pokemon/id/edit
+app.get('/pokemon/:name', (request, response) => {
+    jsonfile.readFile(FILE, function(error, object) {
+        //create object
+        for (key in object.pokemon) {
+            var pokemonArray = request.params.name
+            if (pokemonArray == object.pokemon[key].name) {
+                var pokemonNewName = object.pokemon[key].name;
+                response.send("Successful name change! Name of pokemon has been updated to " + pokemonNewName)
+            }
+        }
+    })
+})
 
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
