@@ -2,6 +2,19 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
 
+const cssStyle = `<style>
+                  body {
+                   text-align: center;
+                   font-family: "Impact"
+                  }
+
+                  div.eachPoke {
+                    display: inline-block;
+                    width: 250px;
+                    margin-bottom: 30px;
+                  }
+                  </style>`
+
 // Init express app
 const app = express();
 app.use(express.json());
@@ -11,10 +24,10 @@ app.use(express.urlencoded({
 
 
 
-
 //////////////////////////////////////////////////////
 ///////////////// MAIN FUNCTIONS /////////////////////
 //////////////////////////////////////////////////////
+
 
 // listing all pokemons available, with the choice of sorting
 app.get('/', (request, response) => {
@@ -45,7 +58,10 @@ app.get('/', (request, response) => {
 
         switch (request.query.sortby) {
             case "name":
-                var sortedPokemons = allPokemonsNameArr.sort();
+                var sortedByName = allPokemonsArr.sort((a, b) => (a.name > b.name) ? 1 : (b.name > a.name) ? -1 : 0);
+                var sortedPokemons = sortedByName.map(eachPokemon => {
+                  return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.name + `</div>`;
+                })
     
                 break;
 
@@ -54,7 +70,7 @@ app.get('/', (request, response) => {
                     return a.id - b.id;
                 })
                 var sortedPokemons = sortedById.map(eachPokemon => {
-                    return "#" + eachPokemon.id + " " + eachPokemon.name;
+                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + "#" + eachPokemon.id + " " + eachPokemon.name + `</div>`;
                 })
 
                 break;
@@ -64,7 +80,7 @@ app.get('/', (request, response) => {
                     return parseFloat(a.height) - parseFloat(b.height);
                 })
                 var sortedPokemons = sortedByHeight.map(eachPokemon => {
-                    return eachPokemon.height + " " + eachPokemon.name;
+                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.height + " " + eachPokemon.name + `</div>`;
                 })
 
                 break;
@@ -74,16 +90,19 @@ app.get('/', (request, response) => {
                     return parseFloat(a.weight) - parseFloat(b.weight);
                 })
                 var sortedPokemons = sortedByWeight.map(eachPokemon => {
-                    return eachPokemon.weight + " " + eachPokemon.name;
+                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.weight + " " + eachPokemon.name + `</div>`;
                 })
 
                 break;
 
             default:
-                var sortedPokemons = allPokemonsNameArr.join('<br>');
+                var sortedByName = allPokemonsArr.sort((a, b) => (a.name > b.name) ? 1 : (b.name > a.name) ? -1 : 0);
+                var sortedPokemons = sortedByName.map(eachPokemon => {
+                  return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.name + `</div>`;
+                })
         }
       
-        response.send(htmlButton + `<u>Pokemon List:</u> <br>` + sortedPokemons.join("<br>"));
+        response.send(cssStyle + htmlButton + `<h1><u>Pokemon List</u></h1> <br>` + sortedPokemons.join(""));
     })
 });
 
