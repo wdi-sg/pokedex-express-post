@@ -12,11 +12,70 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+//Tell app to use the module
+app.use(express.json());
+
+app.use(express.urlencoded({
+  extended: true
+}));
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+//page for user to create new pokemon (GET data from user)
+app.get('/pokemon/new', (request, response) => {
+
+    let requestForm = "<html>"+
+    "<body>"+
+    "<h1>Create a new Pokemon:</h1><br/>"+
+        "<form method='POST' action='/pokemon'>"+
+        "ID: <input type='text' name='id'><br />"+
+        "Number: <input type='text' name='num'><br />"+
+        "Name: <input type='text' name='name'><br />"+
+        "IMG: <input type='file' name='img'></br />"+
+        "Height: <input type='text' name='height'><br />"+
+        "Weight: <input type='text' name='weight'><br />"+
+        "<input type='submit'/>"+
+    "</body>"+
+    "</html>";
+
+    response.send(requestForm);
+});
+
+//uses form data from user (from requestForm) to create new Pokemon data in pokedex.json
+app.post("/pokemon", (request, response) => {
+
+//getting data from user and putting it into an obj newPokemonObj
+    let newPokemonObj = {
+        id: parseInt(request.body["id"]),
+        num: request.body["num"],
+        name: request.body["name"],
+        img: request.body["img"],
+        height: request.body["height"],
+        weight: request.body["weight"],
+    }
+
+    console.log("newPokemonObj", newPokemonObj);
+
+    //read json file (before writing to it)
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        //what you want to be written into the json file
+        obj["pokemon"].push(newPokemonObj);
+
+        //write to the json file
+        jsonfile.writeFile(FILE, obj, (err) => {
+        console.error(err);
+
+        // now, newPokemonObj has been pushed into the json file (look!)
+
+        response.send(newPokemonObj);
+        });
+    });
+});
 
 app.get('/:id', (request, response) => {
 
@@ -47,7 +106,9 @@ app.get('/:id', (request, response) => {
 
       response.send(pokemon);
     }
+
   });
+
 });
 
 app.get('/', (request, response) => {
