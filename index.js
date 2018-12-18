@@ -51,7 +51,15 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    let pokemon = obj.pokemon;
+    let allpokemon = [];
+        for (let i=0; i < pokemon.length; i++) {
+            allpokemon.push(pokemon[i].name);
+         }
+        response.send('This is all the list of pokemons: <br>' + allpokemon.join('<br>'));
+  });
 });
 
 /**
