@@ -35,7 +35,7 @@ app.get('/pokemon/new', (request, response) => {
         "ID: <input type='text' name='id'><br />"+
         "Number: <input type='text' name='num'><br />"+
         "Name: <input type='text' name='name'><br />"+
-        "IMG: <input type='file' name='img'></br />"+
+        "IMG: <input type='text' value='insert image link' name='img'></br />"+
         "Height: <input type='text' name='height'><br />"+
         "Weight: <input type='text' name='weight'><br />"+
         "<input type='submit'/>"+
@@ -111,9 +111,10 @@ app.get('/:id', (request, response) => {
 
 });
 
-//displays list of all pokemons in the pokedex at root route
+
 app.get('/', (request, response) => {
 
+    //displays list of all pokemons in the pokedex at root route
     jsonfile.readFile(FILE, (err, obj) => {
 
     let names = `<html><h1>List of all the Pokemons in the Pokedex: </h1></html>`;
@@ -127,7 +128,14 @@ app.get('/', (request, response) => {
 
     });
 
+    // let sortByForm = "<html>"+
+    // "<body>"+
+    // "<form method='GET' action='/?sortby=name'>"+
+    // "<input name='sortby' value='name'/>"+
+    // "<input type='submit'/>"+
+    // "</form>";
 
+    // response.send(sortByForm);
 
 });
 
