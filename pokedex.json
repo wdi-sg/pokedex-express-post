@@ -1883,27 +1883,27 @@
       "spawn_time": "N/A"
     },
     {
-      "id": "200",
+      "id": "152",
       "num": "200",
       "name": "Shit",
       "img": "lakdmfl",
-      "height": "10m",
+      "height": "0.3 m",
       "weight": "100kg"
     },
     {
-      "id": "201",
+      "id": "153",
       "num": "201",
       "name": "Joker",
       "img": "lsaflamfs",
-      "height": "5m",
+      "height": "5.1 m",
       "weight": "50kg"
     },
     {
-      "id": "202",
+      "id": "154",
       "num": "202",
       "name": "Real",
       "img": "alksfm",
-      "height": "10m",
+      "height": "10.2 m",
       "weight": "100kg"
     }
   ]

@@ -23,19 +23,67 @@ app.use(express.urlencoded({
  * ===================================
  */
 
+// function sortNumber(a, b){
+//     return a - b;
+// }
+
+function compareHt(a, b) {
+  if (a.height < b.height){
+    return -1;
+  }
+  if (a.height > b.height){
+    return 1;
+  }
+  return 0;
+}
+
+function compareWt(a, b) {
+  if (a.weight < b.weight){
+    return -1;
+  }
+  if (a.weight > b.weight){
+    return 1;
+  }
+  return 0;
+}
+
+function compareId(a, b) {
+    return a - b;
+}
+
+
 app.get("/", (request, response) => {
     let pokeList = [];
+    let pokeIdList = [];
+    let pokeHtList = [];
+    let pokeWtList = [];
     jsonfile.readFile(FILE, (err, obj) => {
+        var joinArr = pokeList.join("<br>");
+        pokeHtList.push(obj.pokemon.sort(compareHt));
+
         for(let i = 0; i < obj.pokemon.length; i++){
             pokeList.push(obj.pokemon[i].name);
+            pokeIdList.push(obj.pokemon[i].id);
         }
 
         if(request.query.sortby == "name"){
             pokeList.sort();
+            joinArr = pokeList.join("<br>");
         }
-        var joinArr = pokeList.join("<br>");
-        response.send('<form method="GET" action="/">' +
-                '<input type="text" name="sortby" value="name"> ' +
+        else if(request.query.sortby == "id"){
+            pokeIdList.sort(compareId);
+            joinArr = pokeIdList.join("<br>");
+            // console.log(pokeList);
+        }
+        else if(request.query.sortby == "height"){
+            joinArr = pokeList.join("<br>");
+        }
+        else if(request.query.sortby == "weight"){
+            pokeWtList.push(obj.pokemon.sort(compareWt));
+            joinArr = pokeWtList.join("<br>");
+        }
+        response.send('<form method="GET" action="/">' + '<select name="sortby">' +
+                '<option value="name">' + 'Name' + '</option>' + '<option value="id">' + 'ID' + '</option>' + '<option value="height">' + 'Height' + '</option>' + '<option value="Weight">' + 'Weight' + '</option>' + '</select>' + '&nbsp' +
                 '<input type="submit" value="sort"> ' +
                 '</form>' + "Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex:- <br><br>" + joinArr );
         // response.send("Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex sorted by name:- \n\n" + pokeList + '</form>');
