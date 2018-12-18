@@ -81,10 +81,10 @@ app.get("/pokemon/new", (request,response) => {
 app.post("/pokemon", (request,response) => {
 
     jsonfile.readFile(pokedex, (err, obj) => {
-        let currentPokedex = obj.pokemon;
+        let currentPokedex = obj;
         let newPokemon = {
-          "id": obj.pokemon.length+1,
-          "num": (obj.pokemon.length+1).toString(),
+          "id": currentPokedex.pokemon.length+1,
+          "num": (currentPokedex.pokemon.length+1).toString(),
           "name": request.body.name,
           "img": request.body.img,
           "height": request.body.height,
@@ -95,7 +95,7 @@ app.post("/pokemon", (request,response) => {
           "avg_spawns": "",
           "spawn_time": ""
         }
-        currentPokedex.push(newPokemon);
+        currentPokedex.pokemon.push(newPokemon);
         jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
             console.log(err);
             response.send(newPokemon);
@@ -119,9 +119,55 @@ app.get('/', (request, response) => {
         </head>
         <body>
         <div class="container">
+            <form name='sortby' method="get" action="/">
+            Sort By: <select name='sortby'>
+                     <option value='name'>Name</option>
+                     <option value='num'>Number</option>
+                     <option value='height'>Height</option>
+                     <option value='weight'>Weight</option>
+                     </select>
+            <input type='submit'/>
+            </form>
             <div class="row">`;
-        for (let i = 0; i < obj.length; i++) {
-            html = html + `<div class-"col"><img src=${obj[i].img}><h3>${obj[i].num}</h3><h4>${obj[i].name}</h4></div>`;
+
+        let sortDex = obj.pokemon;
+        switch (request.query.sortby) {
+            case "name":
+                sortDex.sort((name1, name2) => {
+                    if (name1.name > name2.name) return 1;
+                    if (name1.name < name2.name) return -1;
+                });
+                break;
+
+            case "num":
+                sortDex.sort((num1, num2) => {
+                    if (num1.id > num2.id) return 1;
+                    if (num1.id < num2.id) return -1;
+                });
+                break;
+
+            case "height":
+                sortDex.sort((height1, height2) => {
+                    if (parseFloat(height1.height) > parseFloat(height2.height)) return 1;
+                    if (parseFloat(height1.height) < parseFloat(height2.height)) return -1;
+                });
+                break;
+
+            case "weight":
+                sortDex.sort((weight1, weight2) => {
+                    if (parseFloat(weight1.weight) > parseFloat(weight2.weight)) return 1;
+                    if (parseFloat(weight1.weight) < parseFloat(weight2.weight)) return -1;
+                });
+                break;
+        }
+
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            html = html +
+                `<div class-"col">
+                    <a href="localhost:3000/${obj.pokemon[i].id}"><img src=${obj.pokemon[i].img}></a>
+                    <h3>${obj.pokemon[i].num}</h3>
+                    <h4>${obj.pokemon[i].name}</h4>
+                </div>`;
         };
         html = html + "</div></div></body></html>";
         response.send(html);
