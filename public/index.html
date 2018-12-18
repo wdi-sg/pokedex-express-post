@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pokedex</title>
+    <style>
+        body {
+        width: 80%;
+        margin: auto;
+    }
+</style>
+
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Pokedex</h1>
+    </header>
+    <form method="POST" action="/pokemon">
+        <!-- <div>
+            <label for="id">Pokemon ID:</label>
+            <select name="id" id="id">
+                <option value="">--Please choose an id--</option>
+            </select>
+        </div> -->
+        <div>
+            <label for="name">Name :</label>
+            <input type="text" name="name">
+        </div>
+        <div>
+            <label for="img">Image :</label>
+            <input type="text" name="img">
+        </div>
+        <div>
+            <label for="height">Height (m) :</label>
+            <input type="text" name="height">
+        </div>
+        <div>
+            <label for="weight">Weight (kg) :</label>
+            <input type="text" name="weight">
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    <script>
+        var id = document.getElementById('id');
+        maxId = 999;
+
+        for (var i = 1; i <= maxId; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = String(i);
+            id.insertAdjacentElement('beforeend', opt);
+        }
+    </script>
+</body>
+
+</html>
