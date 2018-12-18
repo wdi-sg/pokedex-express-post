@@ -98,13 +98,13 @@ app.post('/pokemon', function(request, response) {
         let x = true;
         let newPoke = request.body;
         let inputId = parseInt(request.body.id);
-
         // find pokemon by id from the pokedex json file
         for(let i = 0; i < obj.pokemon.length; i++){
 
           let currentPokemon = obj.pokemon[i];
 
           if(currentPokemon.id === inputId){
+            inputId++;
             x = false
           }
         }
@@ -115,8 +115,8 @@ app.post('/pokemon', function(request, response) {
             response.send(newPoke);
         }
         else if(x === false){
-            // throw error if id already exist in pokedex
-            response.status(404).send("Error in creating new pokemon");
+            // throw error if id already exist in pokedex till 151 only
+            response.status(404).send("Error in creating new pokemon. Please put ID after " + inputId);
         }
         else if(newPoke === undefined){
           // send 404 back
