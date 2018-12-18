@@ -30,6 +30,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 ## Further
 
 * Add a "Sort by name" button to the homepage (`/` route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
+  - (hint) this button should be a subit button in a form with method GET. You would need to add an input that creates the appropriate request.
 
 * Implement this sort functionality as a drop down (`select` `input`) of all the sorting fields the user can choose to sort by.
 
