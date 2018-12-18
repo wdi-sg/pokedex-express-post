@@ -9,20 +9,39 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <form action="/pokemon" method="POST">
-      <h2>Id</h2>
-      <input type="" name="id">
-      <h2>Num</h2>
-      <input type="" name="num">
-      <h2>Name</h2>
-      <input type="" name="name">
-      <h2>Img</h2>
-      <input type="" name="img">
-      <h2>Height</h2>
-      <input type="" name="height">
-      <h2>Weight</h2>
-      <input type="" name="weight">
-      <input type="submit">
-  </form>
+    <div class="container">
+        <div class="row">
+            <img src=${pokemon.img} class="col-md-1">
+            <ul>
+                <li>#${pokemon.num}</li>
+                <li>${pokemon.name}</li>
+                <li>${pokemon.height}</li>
+                <li>${pokemon.weight}</li>
+            </ul>
+        </div>
+        <form method="post" action=`/pokemon/${pokemon.id}`>
+            Pokemon Type: <select name='type'>
+                     <option value='normal'>Normal</option>
+                     <option value='fire'>Fire</option>
+                     <option value='water'>Water</option>
+                     <option value='electric'>Electric</option>
+                     <option value='grass'>grass</option>
+                     <option value='ice'>Ice</option>
+                     <option value='fighting'>Fighting</option>
+                     <option value='poison'>Poison</option>
+                     <option value='ground'>Ground</option>
+                     <option value='flying'>Flying</option>
+                     <option value='psychic'>Psychic</option>
+                     <option value='bug'>Bug</option>
+                     <option value='rock'>Rock</option>
+                     <option value='ghost'>Ghost</option>
+                     <option value='dragon'>Dragon</option>
+                     <option value='dark'>Dark</option>
+                     <option value='steel'>Steel</option>
+                     <option value='fairy'>Fairy</option>
+                     </select>
+            <input type='submit'/>
+        </form>
+    </div>
 </body>
 </html>
