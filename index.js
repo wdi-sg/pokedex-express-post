@@ -33,7 +33,7 @@ app.get('/pokemon/new', (request, response) => {
     "<h1>Create a new Pokemon:</h1><br/>"+
         "<form method='POST' action='/pokemon'>"+
         "ID: <input type='text' name='id'><br />"+
-        "Number: <input type='text' name='num'><br />"+
+        "Num: <input type='text' name='num'><br />"+
         "Name: <input type='text' name='name'><br />"+
         "IMG: <input type='text' value='insert image link' name='img'></br />"+
         "Height: <input type='text' name='height'><br />"+
