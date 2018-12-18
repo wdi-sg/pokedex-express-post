@@ -94,7 +94,7 @@ app.post("/pokemon/:id", (request, response) => {
     jsonfile.readFile(pokedex, (err, obj) => {
         let currentPokedex = obj;
         let currentPokemon = obj.pokemon[request.params.id -1];
-        currentPokemon["type"] = [];
+        if (currentPokemon["type"] === undefined) {currentPokemon["type"] = [];};
         currentPokemon["type"].push(request.body.type);
         currentPokedex.pokemon[request.params.id -1] = currentPokemon;
         jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
