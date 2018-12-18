@@ -12,6 +12,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// Tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -50,9 +56,95 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
+
+
+//      Create form       //
+app.get('/pokemon/new', (request, response) => {
+    let form =
+    "<html>"+
+    "<body>" +
+    '<form action="/pokemon" method="POST">' +
+        'Id: <br>'+
+        '<input type="number" name="id"/><br>' +
+        'Num: <br>'+
+        '<input type="text" name="num"/><br>' +
+        'Name: <br>'+
+        '<input type="text" name="name"/><br>' +
+        'Img: <br>'+
+        '<input type="text" name="img"/><br>' +
+        'Height: <br>'+
+        '<input type="text" name="height"/><br>' +
+        'Weight: <br>'+
+        '<input type="text" name="weight"/><br>' +
+        '<br>'+
+        '<input type="submit"/>' +
+    "</form>" +
+    "</body>" +
+    "</html>";
+
+  response.send(form);
 });
+
+
+
+//      Post to JSON file       //
+app.post('/pokemon', (request, response) => {
+
+    var newPokemon = request.body;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.pokemon.push(newPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+
+            console.error(err);
+            response.send(newPokemon);
+        });
+    });
+});
+
+
+
+//At the root route (GET request) / display a list of all the pokemons in the pokedex
+app.get('/', (request, response) => {
+
+//  Read pokedex.json
+    jsonfile.readFile(FILE, (err, obj) => {
+
+//  Create sort button
+        let sortButton =
+        '<form action="/" method="GET">' +
+            '<input type="button" value="Sort By Name"/>' +
+        '</form>';
+
+//  Display a list off all the pokemons in the pokedex
+        let listOfPokemon = '';
+        obj.pokemon.forEach((element, index) => { listOfPokemon += (`${index+1}. ${element.name}<br>`) });
+        response.send(`List of Pokemons: ${sortButton} ${listOfPokemon}`);
+    });
+
+});
+
+
+
+
+app.get('/?sortby=name', (request, response) => {
+
+//  Read pokedex.json
+    jsonfile.readFile(FILE, (err, obj) => {
+
+//  Display a list off all the pokemons in the pokedex
+        let sortedByAlpha = '';
+        obj.pokemon.forEach((element, index) => { sortedByAlpha += (`${index+1}. ${element.name}<br>`) });
+        response.send(`List of Pokemons: ${sortButton} ${sortedByAlpha.sort()}`);
+    });
+
+})
+
+
+
+
+
 
 /**
  * ===================================
