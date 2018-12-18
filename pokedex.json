@@ -1881,6 +1881,22 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    }
+    },
+    {
+      "id": "200",
+      "num": "200",
+      "name": "safn",
+      "img": "lakdmfl",
+      "height": "10m",
+      "weight": "100kg"
+    },
+    {
+      "id": "201",
+      "num": "201",
+      "name": "joker",
+      "img": "lsaflamfs",
+      "height": "5m",
+      "weight": "50kg"
+    },
   ]
 }
