@@ -24,7 +24,22 @@ app.use(express.urlencoded({
  */
 
 app.get("/", (request, response) => {
-    response.send("Welcome to the online Pokedex!");
+    let pokeList = [];
+    jsonfile.readFile(FILE, (err, obj) => {
+        for(let i = 0; i < obj.pokemon.length; i++){
+            pokeList.push(obj.pokemon[i].name);
+        }
+
+        if(request.query.sortby == "name"){
+            pokeList.sort();
+        }
+        var joinArr = pokeList.join("<br>");
+        response.send('<form method="GET" action="/">' +
+                '<input type="text" name="sortby" value="name"> ' +
+                '<input type="submit" value="sort"> ' +
+                '</form>' + "Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex:- <br><br>" + joinArr );
+        // response.send("Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex sorted by name:- \n\n" + pokeList + '</form>');
+    });
 });
 
 app.post('/pokemon', function(request, response) {
@@ -34,7 +49,7 @@ app.post('/pokemon', function(request, response) {
         // extract input data from request
         let x = true;
         let newPoke = request.body;
-        let inputId = request.body.id;
+        let inputId = parseInt(request.body.id);
 
         // find pokemon by id from the pokedex json file
         for(let i = 0; i < obj.pokemon.length; i++){
@@ -47,7 +62,9 @@ app.post('/pokemon', function(request, response) {
         }
 
         if(x === true){
+            // If no existing id in pokedex push user input
             obj.pokemon.push(newPoke);
+            response.send(newPoke);
         }
         else if(x === false){
             // throw error if id already exist in pokedex
@@ -57,13 +74,10 @@ app.post('/pokemon', function(request, response) {
           // send 404 back
           response.status(404).send("Error");
         }
-        else{
-          response.send(newPoke);
-        }
 
         jsonfile.writeFile(FILE, obj, (err) => {
-                    console.log(err);
-                });
+            console.log(err);
+        });
     });
     // jsonfile.readFile(FILE, (err, obj) => {
     //     response.send(obj);

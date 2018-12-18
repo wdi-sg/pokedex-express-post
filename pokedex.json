@@ -1885,7 +1885,7 @@
     {
       "id": "200",
       "num": "200",
-      "name": "safn",
+      "name": "Shit",
       "img": "lakdmfl",
       "height": "10m",
       "weight": "100kg"
@@ -1893,10 +1893,18 @@
     {
       "id": "201",
       "num": "201",
-      "name": "joker",
+      "name": "Joker",
       "img": "lsaflamfs",
       "height": "5m",
       "weight": "50kg"
     },
+    {
+      "id": "202",
+      "num": "202",
+      "name": "Real",
+      "img": "alksfm",
+      "height": "10m",
+      "weight": "100kg"
+    }
   ]
 }
