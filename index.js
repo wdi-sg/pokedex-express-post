@@ -17,15 +17,76 @@ app.use(express.urlencoded({
 app.get('/', (request, response) => {
   jsonfile.readFile(file, (err, obj) => {
    
-    var allPokemons = obj.pokemon.map(eachPokemon => {
-      console.log(eachPokemon.name);
+    var allPokemonsArr = obj.pokemon.map(eachPokemon => {
+      return eachPokemon;
+    })
+
+    var allPokemonsNameArr = obj.pokemon.map(eachPokemon => {
       return eachPokemon.name;
-    }).join('<br>');
+    })
+    var allPokemons = allPokemonsNameArr.join('<br>');
 
-    response.send("Pokemon List: <br>"+ allPokemons);
+    var htmlButton = "<html>" + "<body>" + 
+    '<form action="/" method="GET">' + 
+    `<select name="sortby">
+      <option value="name">Name</option>
+      <option value="id">ID</option>
+      <option value="height">Height</option>
+      <option value="weight">Weight</option>
+    </select>
+    ` +
+    '<input type="submit"/>' + 
+    '</form>' + '</body>'+ '</html>';
 
+    
+    switch(request.query.sortby){
+      case "name":
+        var sortedPokemons = allPokemonsNameArr.sort();
+        response.send(htmlButton + "Pokemon List (sorted by Name): <br>" + sortedPokemons.join("<br>"));
+        break;
+
+      case "id":
+        var sortedById = allPokemonsArr.sort((a,b) => {
+          return a.id - b.id;
+        })
+        var sortedByIdName = sortedById.map(eachPokemon => {
+          return "#" + eachPokemon.id + " " + eachPokemon.name;
+        })
+
+        response.send(htmlButton + "Pokemon List (sorted by ID): <br>" + sortedByIdName.join("<br>"));
+        break;
+
+      case "height":
+        var sortedByHeight = allPokemonsArr.sort((a,b) => {
+          return parseFloat(a.height) - parseFloat(b.height);
+        })
+
+        var sortedByHeightName = sortedByHeight.map(eachPokemon => {
+          return eachPokemon.height + " " +  eachPokemon.name;
+        })
+
+      response.send(htmlButton + "Pokemon List (sorted by Height): <br>" + sortedByHeightName.join("<br>"));       break;
+
+      case "weight":
+      var sortedByWeight = allPokemonsArr.sort((a,b) => {
+        return parseFloat(a.weight) - parseFloat(b.weight);
+      })
+
+      var sortedByWeightName = sortedByWeight.map(eachPokemon => {
+        return eachPokemon.weight + " " +  eachPokemon.name;
+      })
+      response.send(htmlButton + "Pokemon List (sorted by Weight): <br>" + sortedByWeightName.join("<br>"));       break;
+
+        break;
+      default:
+        response.send(htmlButton + "Pokemon List: <br>"+ allPokemons);
+    }
   })
 });
+
+app.get('/search', (requets, response) => {
+
+})
 
 
 // getting new pokemon from user
