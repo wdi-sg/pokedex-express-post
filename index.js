@@ -17,12 +17,36 @@ const newPokemonForm =  "<html>" +
 
 const dropdownMenu =    "<form method='GET' action='/'>" +
                             "<select name='sortby'>" +
+                                "<option>Number</option>" +
                                 "<option value='name'>Name</option>" +
                                 "<option value='height'>Height</option>" +
                                 "<option value='weight'>Weight</option>" +
                             "</select>" +
                             "<input type='submit'>" +
                         "</form>";
+
+const cssString =   `<style>
+                        div{
+                            display: inline-block;
+                            width: 120px;
+                            text-align:center;
+                            margin: 10px 20px 10px 20px;
+                        }
+                        h1{
+                            font-family: "Verdana", sans-serif;
+                            font-size: 16pt;
+                            margin: 3px auto;
+                        }
+                        img{
+                            width: 100%;
+                        }
+                        p{
+                            font-family: "Arial", sans-serif;
+                            font-size: 12pt;
+                            margin: 3px auto;
+                        }
+                    </style>`
+
 var pokedex = [];
 
 app.use(express.json());
@@ -41,26 +65,48 @@ app.get('/', (request, response) => {
     let sortMethod = request.query.sortby;
     jsonfile.readFile(file, (err,obj) => {
         initializeRead(err, obj);
-        response.send(dropdownMenu + sortPokedex(sortMethod));
+        response.send(dropdownMenu + cssString + sortPokedex(sortMethod));
     });
 });
 
 function sortPokedex(sortMethod){
     switch(sortMethod){
         case "name":
-            return pokedex.map(pokemon => {
-                return pokemon.name;
-            }).sort().join("<br/>");
+            return getHTMLString(pokedex.sort(stringComparator));
         case "weight":
-            return comparator(pokedex, "weight").map(getPokemonName).join("<br/>");
+            return getHTMLString(numberComparator(pokedex, "weight"));
         case "height":
-            return comparator(pokedex, "height").map(getPokemonName).join("<br/>");
+            return getHTMLString(numberComparator(pokedex, "height"));
         default:
-            return comparator(pokedex,"id").map(getPokemonName).join("<br/>");
+            return getHTMLString(pokedex);
     }
 }
 
-function comparator(array, category){
+function getHTMLString(array){
+    let resultString =  "";
+    array.forEach(pokemon => {
+        resultString+= `
+            <div>
+                <img src="${pokemon.img}">
+                <h1>${pokemon.name}</h1>
+                <p>#${pokemon.num}</p>
+            </div>
+            `
+    });
+    return resultString;
+}
+
+function stringComparator(first,second){
+    if (first.name < second.name){
+        return -1;
+    } else if (first.name > second.name){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+function numberComparator(array, category){
     return array.sort((first, second) => {
         return (parseFloat(first[category]) > parseFloat(second[category])) ? 1 : -1;
     });
@@ -70,7 +116,6 @@ app.post('/pokemon', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
         initializeRead(err, obj);
         let userInput = request.body;
-        console.log('here');
         let newPokemon = generateNewPokemon(userInput);
         pokedex.push(newPokemon);
 
