@@ -111,8 +111,24 @@ app.get('/:id', (request, response) => {
 
 });
 
+//displays list of all pokemons in the pokedex at root route
 app.get('/', (request, response) => {
-  response.send("yay");
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+    let names = `<html><h1>List of all the Pokemons in the Pokedex: </h1></html>`;
+    for (let i=0; i < obj.pokemon.length; i++) {
+        // names += "- " + obj.pokemon[i].name + "<br />";
+        names += `- ${obj.pokemon[i].name} <br />`;
+    }
+    console.log(names);
+
+    response.send(names);
+
+    });
+
+
+
 });
 
 /**
