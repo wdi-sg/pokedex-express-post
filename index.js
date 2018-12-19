@@ -5,7 +5,7 @@ const path = require('path');
 const FILE = 'pokedex.json';
 
 var publicPath = path.resolve(__dirname, 'public');
-
+var port = process.env.PORT || 3000;
 /**
  * ===================================
  * Configurations and set up
@@ -21,6 +21,35 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets handlebars to be the default view engine
+app.set('view engine', 'jsx');
+
+// Functions
+
+function getPokemon(id, obj) {
+  var pokemon;
+
+  // find pokemon by id from the pokedex json file
+  for (let i = 0; i < obj.pokemon.length; i++) {
+
+    let currentPokemon = obj.pokemon[i];
+
+    if (parseInt(currentPokemon.id) === parseInt(id)) {
+      pokemon = currentPokemon;
+      break;
+    }
+  }
+
+  return pokemon
+}
 
 function sortByName() {
 
@@ -101,54 +130,12 @@ function sortByWeight() {
  * Routes
  * ===================================
  */
-function getPokemnoDetail(rec) {
-
-  var result = "<body style='width: 80%; margin: auto'>";
-  result = result + 
-  '<header style = "text-align: center;">' +
-  '<h1 style="width: 800px; text-align: center;"> Welcome to Pokedex</h1>' +
-  '</header>'+
-  '<form  method="get" action="/"> ' + 
-    
-            '<label style="font-size: 20px;" for="choice">Choose your sorting option : </label>' +
-            '<select style="font-size: 20px;" name="choice" id="choice">' +
-                '<option style="font-size: 16px;" value="">--Please choose your option--</option>' +
-                '<option style="font-size: 16px;" value="name">Sort By Name</option>' +
-                '<option style="font-size: 16px;" value="height">Sort By Height</option>' +
-                '<option style="font-size: 16px;" value="weight">Sort By Weight</option>' +
-            '</select>' +
-        
-    '<input type="submit" name="sort" style="padding: 5px; font-size: 1rem;  font-weight: bold; margin-left: 30px; outline: none; background-color: red; color: white; border-radius: 5px; width: 70px;" value="Sort" onclick="redirect();" >' +
-  '</form>'
-
-  for (var i = 0; i < rec.length; i++) {
-
-    result = result + 
-      `<div style="display: inline-block; width: 380px; border: 2px solid blue; background-color: rgb(194, 236, 245); ">
-      <h1 style="width: 380px; text-align: center; line-height: 16px; margin-bottom: 5px; font-size: 24px;">${rec[i].name}</h1>
-      <div>
-      <div style="display:inline-block; width=380px;">
-      <img src='${rec[i].img}' alt='${rec[i].name} width: 120px; height: 120px;'>
-      </div>
-      <div style="display:inline-block; margin-left: 20px; width=200px;">
-      <p>Candy : ${rec[i].candy}</p>
-      <p>Height : ${rec[i].height}</p>
-      <p>Weight : ${rec[i].weight}</p>
-      </div>
-      </div>
-      </div>
-      `
-  }
-
-  result = result + "</body>";
-
-  return result
-}
 
 app.get('/', (request, response) => {
 
+  var html = "";
+  var pokemonList;
   if (request.query.choice) {
-    console.log(request.query.choice)
       if (request.query.choice === "name") {
         var pokemon = sortByName();
       } else if (request.query.choice === "height") {
@@ -157,7 +144,8 @@ app.get('/', (request, response) => {
         var pokemon = sortByWeight();
       }
 
-      var html = getPokemnoDetail(pokemon);
+      // html = getPokemnoDetail(pokemon);
+      pokemonList = pokemon;
         // response.send(html);
   } else {
  
@@ -165,10 +153,12 @@ app.get('/', (request, response) => {
         if (err) console.error(err);
       });
 
-      var html = getPokemnoDetail(pokemon.pokemon);
+      // html = getPokemnoDetail(pokemon.pokemon);
+      pokemonList = pokemon.pokemon;
   }
-  
-  response.send(html);
+
+  // response.send(html);
+  response.render('Pokemon', {pokemonList: pokemonList});
 
 });
 
@@ -233,22 +223,6 @@ app.post('/pokemon', (request, response) => {
   });
 });
 
-function getPokemon(id, obj) {
-  var pokemon;
-
-  // find pokemon by id from the pokedex json file
-  for (let i = 0; i < obj.pokemon.length; i++) {
-
-    let currentPokemon = obj.pokemon[i];
-
-    if (parseInt(currentPokemon.id) === parseInt(id)) {
-      pokemon = currentPokemon;
-      break;
-    }
-  }
-
-  return pokemon
-}
 
 app.get('/:id', (request, response) => {
 
@@ -279,4 +253,4 @@ app.get('/:id', (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(port, () => console.log(`~~~ Tuning in to the waves of port ${port} ~~~`));
