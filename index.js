@@ -166,13 +166,13 @@ app.post('/pokemon/addtype', (request, response) => {
     for(let t = 0; t < obj.pokemon.length; t++){
       if(obj.pokemon[t].name == pokeName){
         if(obj.pokemon[t].type == undefined){
-          obj.pokemon[t].type = [];
+          obj.pokemon[t].type = '';
         }
         if(obj.pokemon[t].type.includes(addType)){
           response.send(addType + " type already exist! " + " type have already been added to " + pokeName + " before");
         }
         else{
-          obj.pokemon[t].type.push(addType);
+          obj.pokemon[t].type += ', ' + addType;
             jsonfile.writeFile(FILE, obj, (err) => {
                 console.log(err);
             });
@@ -195,41 +195,37 @@ app.get('/pokemon/type', (request, response) => {
 });
 
 app.put('/pokemon/:id', (request, response) => {
-        let z = true;
-
-        let editPoke = {
-            id: parseInt(request.body.id),
-            num: request.body.num,
-            name: request.body.name,
-            img: request.body.img,
-            height: request.body.height,
-            weight: request.body.weight,
-            candy: request.body.candy,
-            egg: request.body.egg,
-            avg_spawns: request.body.avgspawns,
-            spawn_time: request.body.spawn_time
-        }
-        for(let e = 0; e < obj.pokemon.length; e++){
-            if(editPoke.id === obj.pokemon[e].id){
-                z = false;
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeId = parseInt(request.params.id);
+        let editPoke;
+        for(let i = 0; i < obj.pokemon.length; i++){
+            if(obj.pokemon[i].id === pokeId){
+                obj.pokemon[i].name = request.body.name;
+                obj.pokemon[i].img = request.body.img;
+                obj.pokemon[i].height = request.body.height;
+                obj.pokemon[i].weight = request.body.weight;
+                obj.pokemon[i].candy = request.body.candy;
+                obj.pokemon[i].egg = request.body.egg;
+                obj.pokemon[i].avg_spawns = request.body.avgspawns;
+                obj.pokemon[i].spawn_time = request.body.spawntime;
+                obj.pokemon[i].type = request.body.type;
+                editPoke = obj.pokemon[i];
             }
         }
-
-        if(z === true){
-            obj.pokemon.push(editPoke);
-            response.send(editPoke);
-        }
-        else if(z === false){
-            let editPokeNew = JSON.stringify(editPoke)
-            response.status(404).send("Error in editing pokemon. ID already exist" + " " + editPokeNew);
-        }
+        let editPokeNew = JSON.stringify(editPoke)
+        response.send("Successfully edited. Take a look at the new details for the pokemon " + "<br>" + editPokeNew);
+        // else if(z === false){
+        //     let editPoke = JSON.stringify(pokemon)
+        //     response.status(404).send("Error in editing pokemon. ID already exist" + " " + editPoke);
+        // }
 
         jsonfile.writeFile(FILE, obj, (err) => {
         });
+    });
 });
 
 app.get('/pokemon/:id/edit', (request, response) => {
-    var userInput = parseInt(request.params.id);
+    let userInput = parseInt(request.params.id);
     jsonfile.readFile(FILE, (err, obj) => {
         let pokeObj = [];
         for(let n = 0; n < obj.pokemon.length; n++){
@@ -237,10 +233,8 @@ app.get('/pokemon/:id/edit', (request, response) => {
                 pokeObj.push(obj.pokemon[n]);
             }
         }
-        response.send('<form method="POST" action="/pokemon/' + pokeObj[0].id + '?_method=PUT">'+
-  '<div class="pokemon-attribute">'+
-    'id: <input name="id" type="text" value="' + pokeObj[0].id + '"/>'+ '<br><br>' +
-    'num: <input name="num" type="text" value="' + pokeObj[0].num +'"/>' + '<br><br>' + 'name: <input name="name" type="text" value="' + pokeObj[0].name + '"/>' + '<br><br>' + 'img: <input name="img" type="text" value="' + pokeObj[0].img + '"/>' + '<br><br>' + 'height: <input name="height" type="text" value="' + pokeObj[0].height + '"/>' + '<br><br>' + 'weight: <input name="weight" type="text" value="' + pokeObj[0].weight + '"/>' + '<br><br>' + 'candy: <input name="candy" type="text" value="' + pokeObj[0].candy + '"/>' + '<br><br>' + 'egg: <input name="egg" type="text" value="' + pokeObj[0].egg + '"/>' + '<br><br>' + 'avg_spawns: <input name="avgspawns" type="text" value="' + pokeObj[0].avg_spawns + '"/>' + '<br><br>' + 'spawn_time: <input name="spawntime" type="text" value="' + pokeObj[0].spawn_time + '"/>' + '<br><br>' + 'type: <input name="type" type="text" value="' + pokeObj[0].type + '"/>' + '<br><br>' + '<input type="submit" value="Edit"> ' +
+        response.send('<form method="POST" action="/pokemon/' + userInput + '?_method=PUT">'+
+  '<div class="pokemon-attribute">' + 'name: <input name="name" type="text" value="' + pokeObj[0].name + '"/>' + '<br><br>' + 'img: <input name="img" type="text" value="' + pokeObj[0].img + '"/>' + '<br><br>' + 'height: <input name="height" type="text" value="' + pokeObj[0].height + '"/>' + '<br><br>' + 'weight: <input name="weight" type="text" value="' + pokeObj[0].weight + '"/>' + '<br><br>' + 'candy: <input name="candy" type="text" value="' + pokeObj[0].candy + '"/>' + '<br><br>' + 'egg: <input name="egg" type="text" value="' + pokeObj[0].egg + '"/>' + '<br><br>' + 'avg_spawns: <input name="avgspawns" type="text" value="' + pokeObj[0].avg_spawns + '"/>' + '<br><br>' + 'spawn_time: <input name="spawntime" type="text" value="' + pokeObj[0].spawn_time + '"/>' + '<br><br>' + 'type: <input name="type" type="text" value="' + pokeObj[0].type + '"/>' + '<br><br>' + '<input type="submit" value="Edit"> ' +
   '</div>'+
 '</form>');
     });
