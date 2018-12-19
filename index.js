@@ -29,6 +29,7 @@ const cssString =   `<style>
                         div{
                             display: inline-block;
                             width: 120px;
+                            height: 120px;
                             text-align:center;
                             margin: 10px 20px 10px 20px;
                         }
@@ -39,6 +40,7 @@ const cssString =   `<style>
                         }
                         img{
                             width: 100%;
+                            height: 100%;
                         }
                         p{
                             font-family: "Arial", sans-serif;
@@ -58,7 +60,10 @@ app.use(express.urlencoded({
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
 app.get('/pokemon/new', (request, response) => {
-    response.send(newPokemonForm);
+    jsonfile.readFile(file, (err,obj) => {
+        initializeRead(err, obj);
+        response.send(newPokemonForm);
+    });
 });
 
 app.get('/', (request, response) => {
@@ -118,10 +123,9 @@ app.post('/pokemon', (request, response) => {
         let userInput = request.body;
         let newPokemon = generateNewPokemon(userInput);
         pokedex.push(newPokemon);
-
-        jsonfile.writeFile(file, pokedex, (err) => {
+        jsonfile.writeFile(file, obj, (err) => {
             if (err) { console.error(err) };
-            response.send(pokedex);
+            response.send(dropdownMenu + cssString + sortPokedex("default"));
         });
     });
 });
