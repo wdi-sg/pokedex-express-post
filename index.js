@@ -147,6 +147,7 @@ app.put('/pokemon/:id', (request, response) => {
                 currentPokedex.pokemon[i].img = request.body.img;
                 currentPokedex.pokemon[i].height = request.body.height;
                 currentPokedex.pokemon[i].weight = request.body.weight;
+                currentPokedex.pokemon[i].type = request.body.type;
                 pokemon = currentPokedex.pokemon[i];
             }
         }
