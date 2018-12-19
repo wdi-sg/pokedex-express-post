@@ -8,6 +8,8 @@ const jsonfile = require('jsonfile');
 const pokedex = 'pokedex.json';
 const app = express();
 const Request = require("request");
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -26,123 +28,19 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-// app.get('/:id', (request, response) => {
-//   // get json from specified file
-//   jsonfile.readFile(pokedex, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = parseInt( request.params.id );
-//     var pokemon;
-//     // find pokemon by id from the pokedex json file
-//     for( let i=0; i<obj.pokemon.length; i++ ){
-//       let currentPokemon = obj.pokemon[i];
-//       if( currentPokemon.id === inputId ){
-//         pokemon = currentPokemon;
-//       }
-//     }
-//     if (pokemon === undefined) {
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
-//       let html =
-//       `<!DOCTYPE html>
-//         <html>
-//         <head>
-//           <meta charset="utf-8">
-//           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-//           <title>GA Pokedex</title>
-//           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-//           <link href="https://fonts.googleapis.com/css?family=Thasadith" rel="stylesheet">
-//           <link rel="stylesheet" type="text/css" href="styles.css">
-//         </head>
-//         <body>
-//             <div class="container">
-//                     <img src=${pokemon.img}>
-//                     <ul>
-//                         <li>Number: #${pokemon.num}</li>
-//                         <li>Name: ${pokemon.name}</li>
-//                         <li>Height: ${pokemon.height}</li>
-//                         <li>Weight: ${pokemon.weight}</li>
-//                         <li>Type: ${pokemon.type}</li>
-//                     </ul>
-//                 <form name="type" method="POST" action='/pokemon/${pokemon.id}''>
-//                     Pokemon Type: <select name='type'>
-//                              <option value='normal'>Normal</option>
-//                              <option value='fire'>Fire</option>
-//                              <option value='water'>Water</option>
-//                              <option value='electric'>Electric</option>
-//                              <option value='grass'>Grass</option>
-//                              <option value='ice'>Ice</option>
-//                              <option value='fighting'>Fighting</option>
-//                              <option value='poison'>Poison</option>
-//                              <option value='ground'>Ground</option>
-//                              <option value='flying'>Flying</option>
-//                              <option value='psychic'>Psychic</option>
-//                              <option value='bug'>Bug</option>
-//                              <option value='rock'>Rock</option>
-//                              <option value='ghost'>Ghost</option>
-//                              <option value='dragon'>Dragon</option>
-//                              <option value='dark'>Dark</option>
-//                              <option value='steel'>Steel</option>
-//                              <option value='fairy'>Fairy</option>
-//                              </select>
-//                     <input type='submit'/>
-//                 </form>
-//             </div>
-//         </body>
-//         </html>`
-//       response.send(html);
-//     }
-//   });
-// });
-
-// //add pokemon types
-// app.post("/pokemon/:id", (request, response) => {
-//     jsonfile.readFile(pokedex, (err, obj) => {
-//         let currentPokedex = obj;
-//         let currentPokemon = obj.pokemon[request.params.id -1];
-//         if (currentPokemon["type"] === undefined) {currentPokemon["type"] = [];};
-//         currentPokemon["type"].push(request.body.type);
-//         currentPokedex.pokemon[request.params.id -1] = currentPokemon;
-//         jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
-//             console.log(err);
-//             // response.send(currentPokemon);
-//             response.redirect(`http://localhost:3000/${request.params.id}`);
-//         });
-//     });
-// });
-
-// //add new pokemon
-// app.post("/pokemon", (request,response) => {
-
-//     jsonfile.readFile(pokedex, (err, obj) => {
-//         let currentPokedex = obj;
-//         let newPokemon = {
-//           "id": currentPokedex.pokemon.length+1,
-//           "num": (currentPokedex.pokemon.length+1).toString(),
-//           "name": request.body.name,
-//           "img": request.body.img,
-//           "height": request.body.height,
-//           "weight": request.body.weight,
-//           "candy": "",
-//           "candy_count": "",
-//           "egg": "",
-//           "avg_spawns": "",
-//           "spawn_time": ""
-//         }
-//         currentPokedex.pokemon.push(newPokemon);
-//         jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
-//             console.log(err);
-//             response.send(newPokemon);
-//         });
-//     });
-// });
-
-
 //REACT REFACTORING
 //homepage. display all with sort
 app.get('/', (request, response) => {
+    jsonfile.readFile(pokedex, (err, obj) => {
+
+        let pokedexAndSort = {};
+        pokedexAndSort.pokedex = obj.pokemon;
+        pokedexAndSort.sortby = request.query.sortby;
+
+        response.render("pokemons", pokedexAndSort);
+    });
+});
+app.get('/pokemon', (request, response) => {
     jsonfile.readFile(pokedex, (err, obj) => {
 
         let pokedexAndSort = {};
@@ -176,8 +74,8 @@ app.post("/pokemon/new", (request,response) => {
                   "num": (currentPokedex.pokemon.length+1).toString(),
                   "name": randomPokemon.name,
                   "img": `https://www.serebii.net/pokemongo/pokemon/${randomPokemon.id}.png`,
-                  "height": `${randomPokemon.height/10}.0 m`,
-                  "weight": `${randomPokemon.weight/10}.0 kg`,
+                  "height": `${randomPokemon.height/10} m`,
+                  "weight": `${randomPokemon.weight/10} kg`,
                   "candy": "",
                   "candy_count": "",
                   "egg": "",
@@ -210,6 +108,52 @@ app.post("/pokemon/new", (request,response) => {
                 response.render("pokemon", newPokemon);
             });
         };
+    });
+});
+
+//Individual Pokemon's Page
+app.get('/pokemon/:id', (request, response) => {
+  // get json from specified file
+  jsonfile.readFile(pokedex, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+    let pokemon;
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+      let currentPokemon = obj.pokemon[i];
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+        response.render('pokemon', pokemon);
+      }
+    }
+    if (pokemon === undefined) {
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    }
+  });
+});
+
+//Update Individual Pokemon's Data
+app.put('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(pokedex, (err, obj) => {
+        let currentId = parseInt(request.body.id);
+        let currentPokedex = obj;
+        let pokemon;
+        for (let i = 0; i < currentPokedex.pokemon.length; i++) {
+            if (currentPokedex.pokemon[i].id === currentId) {
+                currentPokedex.pokemon[i].name = request.body.name;
+                currentPokedex.pokemon[i].img = request.body.img;
+                currentPokedex.pokemon[i].height = request.body.height;
+                currentPokedex.pokemon[i].weight = request.body.weight;
+                pokemon = currentPokedex.pokemon[i];
+            }
+        }
+        jsonfile.writeFile('pokedex.json', currentPokedex ,(err) => {
+            console.log(err);
+            response.render("pokemon", pokemon);
+        });
     });
 });
 

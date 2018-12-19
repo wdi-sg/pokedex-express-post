@@ -43,7 +43,7 @@ class Pokemons extends React.Component {
     const display = sortDex.map( pokemon => {
         return (
             <div className="col">
-                <a href={"http://localhost:3000/" + pokemon.id}><img src={pokemon.img}/></a>
+                <a href={"http://localhost:3000/pokemon/" + pokemon.id}><img src={pokemon.img}/></a>
                 <h3>{pokemon.num}</h3>
                 <h4>{pokemon.name}</h4>
             </div>
