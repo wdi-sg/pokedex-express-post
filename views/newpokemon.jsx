@@ -23,12 +23,12 @@ class Pokeform extends React.Component {
                   <input type="" name="height"/>
                   <h2>Weight</h2>
                   <input type="" name="weight"/>
-                  <input type="submit" class="btn btn-primary"/>
+                  <input type="submit" className="btn btn-primary"/>
               </form>
               <br/>
               <form action="/pokemon/new" method="POST">
                   <input type="" name="name" value="random" style={{display: 'none'}}/>
-                  <input value= "Add Random Pokemon!" type="submit" class="btn btn-primary"/>
+                  <input value= "Add Random Pokemon!" type="submit" className="btn btn-primary"/>
               </form>
             </body>
         </html>

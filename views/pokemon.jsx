@@ -4,6 +4,19 @@ class Pokemon extends React.Component {
   render() {
 
     return (
+
+    <html>
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+            <title>GA Pokedex</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+            <link href="https://fonts.googleapis.com/css?family=Thasadith" rel="stylesheet"/>
+            <link rel="stylesheet" type="text/css" href="http://10.193.240.192:8080/style.css"/>
+        </head>
+
+        <body>
+
       <div>
         <img src={this.props.img}/>
         <ul>
@@ -46,17 +59,15 @@ class Pokemon extends React.Component {
             </select>
             <input type='submit' className="btn btn-primary"/>
         </form>
+        <form name='delete' method="POST" action={'/pokemon/' + this.props.id + '?_method=DELETE'}>
+                <input type="" name="id" value={this.props.id} style={{display: 'none'}}/>
+                <input value="Delete Pokemon"  type='submit' className="btn btn-primary"/>
+        </form>
       </div>
+    </body>
+    </html>
     );
   }
 }
-
-// '<form method="POST" action="/pokemon/'+pokemon.id+'?_method=PUT">'+
-//   '<div class="pokemon-attribute">'+
-//     'id: <input name="id" type="text" value="'+pokemon.id+'"/>'+
-//     'name: <input name="name" type="text" value="'+pokemon.name+'"/>'+
-//   '</div>'+
-// '</form>';
-
 
 module.exports = Pokemon;

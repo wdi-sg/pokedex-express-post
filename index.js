@@ -158,6 +158,32 @@ app.put('/pokemon/:id', (request, response) => {
     });
 });
 
+//Delete This Pokemon
+app.delete('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(pokedex, (err, obj) => {
+        let currentId = parseInt(request.body.id);
+        let deletedPokedex = obj.pokemon.filter( (value, index, arr) => {
+            return value.id != currentId;
+        });
+
+        for (let i = 0; i < deletedPokedex.length; i++) {
+                deletedPokedex[i].id = i+1;
+                deletedPokedex[i].num = i+1;
+        }
+
+        deletedPokedex = {
+            'newPokedex': {'pokemon': deletedPokedex},
+            'pokedex': deletedPokedex,
+            'sortby': "num"
+        }
+
+        jsonfile.writeFile('pokedex.json', deletedPokedex.newPokedex ,(err) => {
+            console.log(err);
+            response.render("pokemons", deletedPokedex);
+        });
+    });
+});
+
 /**
  * ===================================
  * Listen to requests on port 3000

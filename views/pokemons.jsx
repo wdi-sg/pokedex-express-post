@@ -2,7 +2,6 @@ var React = require('react');
 
 class Pokemons extends React.Component {
   render() {
-
     let sortDex = this.props.pokedex;
     switch (this.props.sortby) {
         case "name":
@@ -42,7 +41,7 @@ class Pokemons extends React.Component {
 
     const display = sortDex.map( pokemon => {
         return (
-            <div className="col">
+            <div className="col" key={pokemon.id}>
                 <a href={"http://localhost:3000/pokemon/" + pokemon.id}><img src={pokemon.img}/></a>
                 <h3>{pokemon.num}</h3>
                 <h4>{pokemon.name}</h4>
@@ -70,11 +69,11 @@ class Pokemons extends React.Component {
                                  <option value='height'>Height</option>
                                  <option value='weight'>Weight</option>
                              </select>
-                            <input type='submit'/>
+                            <input type='submit' className="btn btn-primary"/>
                     </form>
                     <br/>
                     <form name='create' method="get" action="/pokemon/new">
-                            <input value="Add New Pokemon"  type='submit'/>
+                            <input value="Add New Pokemon"  type='submit' className="btn btn-primary"/>
                     </form>
                     <div className="row">
                             {display}
