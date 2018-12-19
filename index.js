@@ -2,25 +2,25 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
 
-const cssStyle = `<style>
-                  body {
-                   text-align: center;
-                   font-family: "Impact"
-                  }
-
-                  div.eachPoke {
-                    display: inline-block;
-                    width: 250px;
-                    margin-bottom: 30px;
-                  }
-                  </style>`
-
-// Init express app
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(express.static(`${__dirname}/public/`));
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 
 
@@ -43,26 +43,13 @@ app.get('/', (request, response) => {
             return eachPokemon.name;
         })
 
-        var htmlButton = "<html>" + "<body>" +
-            '<form action="/" method="GET">' +
-            `<select name="sortby">
-                <option value="name">Name</option>
-                <option value="id">ID</option>
-                <option value="height">Height</option>
-                <option value="weight">Weight</option>
-              </select>
-              ` +
-            '<input type="submit"/>' +
-            '</form>' + '</body>' + '</html>';
-
-
         switch (request.query.sortby) {
             case "name":
                 var sortedByName = allPokemonsArr.sort((a, b) => (a.name > b.name) ? 1 : (b.name > a.name) ? -1 : 0);
                 var sortedPokemons = sortedByName.map(eachPokemon => {
-                  return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.name + `</div>`;
+                    return eachPokemon;
                 })
-    
+
                 break;
 
             case "id":
@@ -70,7 +57,7 @@ app.get('/', (request, response) => {
                     return a.id - b.id;
                 })
                 var sortedPokemons = sortedById.map(eachPokemon => {
-                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + "#" + eachPokemon.id + " " + eachPokemon.name + `</div>`;
+                    return eachPokemon;
                 })
 
                 break;
@@ -80,7 +67,7 @@ app.get('/', (request, response) => {
                     return parseFloat(a.height) - parseFloat(b.height);
                 })
                 var sortedPokemons = sortedByHeight.map(eachPokemon => {
-                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.height + " " + eachPokemon.name + `</div>`;
+                    return eachPokemon;
                 })
 
                 break;
@@ -90,7 +77,7 @@ app.get('/', (request, response) => {
                     return parseFloat(a.weight) - parseFloat(b.weight);
                 })
                 var sortedPokemons = sortedByWeight.map(eachPokemon => {
-                    return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.weight + " " + eachPokemon.name + `</div>`;
+                    return eachPokemon;
                 })
 
                 break;
@@ -98,17 +85,60 @@ app.get('/', (request, response) => {
             default:
                 var sortedByName = allPokemonsArr.sort((a, b) => (a.name > b.name) ? 1 : (b.name > a.name) ? -1 : 0);
                 var sortedPokemons = sortedByName.map(eachPokemon => {
-                  return `<div class="eachPoke"><img src="${eachPokemon.img}"><br>` + eachPokemon.name + `</div>`;
+                    return eachPokemon;
                 })
+
+
         }
-      
-        response.send(cssStyle + htmlButton + `<h1><u>Pokemon List</u></h1> <br>` + sortedPokemons.join(""));
+
+        response.render('sort', {
+            array: sortedPokemons,
+            sortType: request.query.sortby
+        });
     })
 });
 
-app.get('/search', (requets, response) => {
+app.get('/pokemon/:id/edit', (request, response) => {
+    let searchid = request.params.id - 1;
+    console.log(searchid);
+    jsonfile.readFile(file, function(err, obj) {
+        let searchedPokemon = obj.pokemon[searchid];
+        console.log(searchedPokemon);
+        
+        response.render('edit', {searchPoke: searchedPokemon});
+    })
+});
 
-})
+app.put('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(file, (err, obj) =>{
+        let currentPokedex = obj;
+        var currentId; 
+        var sameId = parseInt(request.body.id);
+        console.log("hi", sameId);
+        
+
+        for (var i=0; i < currentPokedex.pokemon.length; i++){
+            if (currentPokedex.pokemon[i].id === sameId){
+                // let pokemonObj = currentPokedex.pokemon[i];
+                currentPokedex.pokemon[i].weight = request.body.weight;
+                currentPokedex.pokemon[i].height = request.body.height;
+                currentPokedex.pokemon[i].candy = request.body.candy;
+                currentPokedex.pokemon[i]["candy_count"] = request.body["candy_count"];
+                currentId = i;
+                console.log(currentId, "hi");
+            }
+
+        }
+
+        jsonfile.writeFile('pokedex.json', currentPokedex, (err) => {
+            console.log(err)
+        });
+        
+        response.render('display', {searchPoke: obj.pokemon[currentId]});
+        
+
+    });
+});
 
 
 // getting new pokemon from user
