@@ -108,7 +108,7 @@ function getPokemnoDetail(rec) {
   '<header style = "text-align: center;">' +
   '<h1 style="width: 800px; text-align: center;"> Welcome to Pokedex</h1>' +
   '</header>'+
-  '<form  method="post" action="/?sortBy"> ' + 
+  '<form  method="get" action="/"> ' + 
     
             '<label style="font-size: 20px;" for="choice">Choose your sorting option : </label>' +
             '<select style="font-size: 20px;" name="choice" id="choice">' +
@@ -118,7 +118,7 @@ function getPokemnoDetail(rec) {
                 '<option style="font-size: 16px;" value="weight">Sort By Weight</option>' +
             '</select>' +
         
-    '<input type="submit" name="sortByName" style="padding: 5px; font-size: 1rem;  font-weight: bold; margin-left: 30px; outline: none; background-color: red; color: white; border-radius: 5px; width: 70px;" value="Sort" onclick="redirect();" >' +
+    '<input type="submit" name="sort" style="padding: 5px; font-size: 1rem;  font-weight: bold; margin-left: 30px; outline: none; background-color: red; color: white; border-radius: 5px; width: 70px;" value="Sort" onclick="redirect();" >' +
   '</form>'
 
   for (var i = 0; i < rec.length; i++) {
@@ -145,30 +145,31 @@ function getPokemnoDetail(rec) {
   return result
 }
 
-app.post('/', (request, response) => {
-
-  if (request.body.choice === "name") {
-    var pokemon = sortByName();
-  } else if (request.body.choice === "height") {
-    var pokemon = sortByHeight();
-  } else {
-    var pokemon = sortByWeight();
-  }
-
-  var html = getPokemnoDetail(pokemon);
-    response.send(html);
-}) 
-
 app.get('/', (request, response) => {
 
+  if (request.query.choice) {
+    console.log(request.query.choice)
+      if (request.query.choice === "name") {
+        var pokemon = sortByName();
+      } else if (request.query.choice === "height") {
+        var pokemon = sortByHeight();
+      } else {
+        var pokemon = sortByWeight();
+      }
+
+      var html = getPokemnoDetail(pokemon);
+        // response.send(html);
+  } else {
+ 
+      var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+        if (err) console.error(err);
+      });
+
+      var html = getPokemnoDetail(pokemon.pokemon);
+  }
   
-  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-    if (err) console.error(err);
-  });
-
-  var html = getPokemnoDetail(pokemon.pokemon);
-
   response.send(html);
+
 });
 
 app.get('/pokemon/new', (request, response) => {
