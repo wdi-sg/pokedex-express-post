@@ -70,7 +70,11 @@ class Pokemons extends React.Component {
                                  <option value='height'>Height</option>
                                  <option value='weight'>Weight</option>
                              </select>
-                    <input type='submit'/>
+                            <input type='submit'/>
+                    </form>
+                    <br/>
+                    <form name='create' method="get" action="/pokemon/new">
+                            <input value="Add New Pokemon"  type='submit'/>
                     </form>
                     <div className="row">
                             {display}
@@ -83,5 +87,3 @@ class Pokemons extends React.Component {
 }
 
 module.exports = Pokemons;
-
-
