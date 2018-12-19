@@ -32,3 +32,7 @@
 
 - validate the input from the user- what happens if they put in a blank field? ( you can make up the rules here- you can allow blank fields or not )
   - try to restrict the user from creating or editing the name of a pokemon to 1 character - (e.g., there shouldn't be a pokemon named "s")
+  - restrict the user from creating a pokemon name that is only numbers
+  
+ - when the user enters a name that is invalid, render the form page with a message about what they did wrong
+  
