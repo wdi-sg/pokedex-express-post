@@ -13,6 +13,11 @@ const FILE = 'pokedex.json';
 const app = express();
 
 app.use(express.json());//express.json is a middleware, which app.use will apply in the pipeline
+// app.use(express.urlencoded({
+//   extended: true
+// }));
+// A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body). This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
+ // The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false) or the qs library (when true). The "extended" syntax allows for rich objects and arrays to be encoded into the URL-encoded format, allowing for a JSON-like experience with URL-encoded. For more information, please see the qs library.
 
 /**
  * ===================================
@@ -73,26 +78,20 @@ app.post('/pokemon', function(request, response) {
     // console.error(err)
     // now look inside your json file
     jsonfile.readFile(FILE, (err, obj) => {
-      let newId = request.body.id;
-      let newNum = request.body.num;
-      let newName = request.body.name;
-      let newImg = request.body.img;
-      let newHeight = request.body.height;
-      let newWeight = request.body.weight;
-
         newPokemon = {
-          "id": newID,
-          "num": newNum,
-          "name": newName,
-          "img": newImg,
-          "height": newHeight,
-          "weight": newWeight
+          "id":  request.body.id,
+          "num": request.body.num,
+          "name": request.body.name,
+          "img": request.body.img,
+          "height": request.body.height,
+          "weight": request.body.weight
         };
 
         obj.pokemon.push(newPokemon);
-        jsonfile.writeFile(FILE, newPokemon, (err) => {
+        jsonfile.writeFile(FILE, obj, (err) => {
           if (err) { console.log(err) };
           console.log("New pokemon added!");
+          response.send(newPokemon);
         });
     });
 });
