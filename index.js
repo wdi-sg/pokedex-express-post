@@ -1,13 +1,22 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
-
-
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 
 app.get('/:id', (request, response) => {
 
@@ -45,11 +54,20 @@ app.get('/', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
     let pokemon = obj.pokemon;
-    let allpokemon = [];
+    let allpokemon = {pokemon:[]};
         for (let i=0; i < pokemon.length; i++) {
-            allpokemon.push(pokemon[i].name);
+            allpokemon.pokemon.push(pokemon[i].name);
          }
-        response.send('<h1>This is all the list of pokemons:</h1> <br>' + allpokemon.join('<br>'));
+         if (request.query.sortby === "name") {
+            allpokemon.pokemon.sort();
+         }
+
+         response.render("home", allpokemon);
+         // console.log(allpokemon);
+           jsonfile.writeFile(file, obj, (err) => {
+
+            console.log(err);
+        });
     });
 });
 
@@ -87,7 +105,7 @@ app.post('/pokemon', (request, response) => {
 
         response.send('New id is ' + newObj.id + '<br>New num is ' + newObj.num + '<br>New name is ' +  newObj.name);
 
-        console.log(newObj);
+        // console.log(newObj);
         pokemon.push(newObj);
 
         jsonfile.writeFile(file, obj, (err) => {
