@@ -5,9 +5,9 @@ class Pokemon extends React.Component {
     render() {
         const eachPokemon = this.props.array.map(eachPokemon =>{
             if (this.props.sortType === "name" || this.props.sortType === undefined){
-                return <div className="eachPoke"><img src={eachPokemon.img}/><br/><h3>{eachPokemon.name}</h3></div>;
+                return <div className="eachPoke"><a href={"/pokemon/" + eachPokemon.id}><img src={eachPokemon.img}/></a><br/><h3>{eachPokemon.name}</h3></div>;
             } else {
-               return <div className="eachPoke"><img src={eachPokemon.img}/><br/><h3>{eachPokemon.name}</h3><br/><p>{eachPokemon[this.props.sortType]}</p></div>;
+               return <div className="eachPoke"><a href={"/pokemon/" + eachPokemon.id}><img src={eachPokemon.img}/></a><br/><h3>{eachPokemon.name}</h3><br/><p>{eachPokemon[this.props.sortType]}</p></div>;
             }
             
 

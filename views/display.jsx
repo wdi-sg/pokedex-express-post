@@ -10,7 +10,7 @@ class DisplayPokemon extends React.Component {
             <link rel="stylesheet" type="text/css" href="/style.css"/>
             <body>
             <img src={chosenPokemon.img}></img><br/>
-            <h2>{chosenPokemon.name} (Updated)</h2>
+            <h2>{chosenPokemon.name}</h2>
             <p>Height: {chosenPokemon.height}</p><br/>
             <p>Weight: {chosenPokemon.weight}</p><br/>
             <p>Candy: {chosenPokemon.candy}</p><br/>
