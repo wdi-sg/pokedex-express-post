@@ -17,6 +17,7 @@ class Pokemon extends React.Component {
             <html>
             <link rel="stylesheet" type="text/css" href="style.css"/>
             <body>
+            <a className="buttonLink" href="/pokemon/new">Add new Pokemon!</a><br/>
             <form action="/" method="GET">
             <select name="sortby">
                 <option value="name">Name</option>
