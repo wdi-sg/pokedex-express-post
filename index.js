@@ -179,7 +179,7 @@ app.post('/pokemon', (request, response) => {
 })
 
 
-app.get('/:id', (request, response) => {
+app.get('/pokemon/:id', (request, response) => {
 
     // get json from specified file
     jsonfile.readFile(file, (err, obj) => {
@@ -203,10 +203,10 @@ app.get('/:id', (request, response) => {
 
             // send 404 back
             response.status(404);
-            response.send("not found");
+            response.send("Pokemon not found ):");
         } else {
 
-            response.send(pokemon);
+            response.render('display', {searchPoke: pokemon});
         }
     });
 });
