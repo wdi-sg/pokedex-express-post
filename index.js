@@ -12,6 +12,8 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());//express.json is a middleware, which app.use will apply in the pipeline
+
 /**
  * ===================================
  * Routes
@@ -65,14 +67,14 @@ app.get('/:id', (request, response) => {
 app.post('/pokemon', function(request, response) {
 
   //debug code (output request body)
-  // console.log(request.body);
+  console.log(request.body);
   // save the request body
 
     // console.error(err)
     // now look inside your json file
-    response.send(pokedex);
-      let newId = parseInt(request.body.id);
-      let newNum = parseInt(request.body.num);
+    jsonfile.readFile(FILE, (err, obj) => {
+      let newId = request.body.id;
+      let newNum = request.body.num;
       let newName = request.body.name;
       let newImg = request.body.img;
       let newHeight = request.body.height;
@@ -92,8 +94,8 @@ app.post('/pokemon', function(request, response) {
           if (err) { console.log(err) };
           console.log("New pokemon added!");
         });
-
-})
+    });
+});
 
 app.get('/pokemon/new', (request, response) => {
   // render a template form here
