@@ -28,23 +28,23 @@ app.use(express.urlencoded({
 // }
 
 function compareHt(a, b) {
-  if (a.height < b.height){
-    return -1;
-  }
-  if (a.height > b.height){
-    return 1;
-  }
-  return 0;
+    if (a.height < b.height){
+        return -1;
+    }
+    if (a.height > b.height){
+        return 1;
+    }
+    return 0;
 }
 
 function compareWt(a, b) {
-  if (a.weight < b.weight){
-    return -1;
-  }
-  if (a.weight > b.weight){
-    return 1;
-  }
-  return 0;
+    if (a.weight < b.weight){
+        return -1;
+    }
+    if (a.weight > b.weight){
+        return 1;
+    }
+    return 0;
 }
 
 function compareId(a, b) {
@@ -55,35 +55,69 @@ function compareId(a, b) {
 app.get("/", (request, response) => {
     let pokeList = [];
     let pokeIdList = [];
+    let pokeIdNew = [];
     let pokeHtList = [];
+    let pokeHtNew = [];
     let pokeWtList = [];
+    let pokeWtNew = [];
     jsonfile.readFile(FILE, (err, obj) => {
+        // pokeHtList.push(obj.pokemon.sort(compareHt));
         var joinArr = pokeList.join("<br>");
-        pokeHtList.push(obj.pokemon.sort(compareHt));
-
         for(let i = 0; i < obj.pokemon.length; i++){
-            pokeList.push(obj.pokemon[i].name);
-            pokeIdList.push(obj.pokemon[i].id);
+            // pokeList.push(obj.pokemon[i].name);
+            // pokeIdList.push(obj.pokemon[i].id);
+                if(request.query.sortby == "name"){
+                    pokeList.push(obj.pokemon[i].name);
+                    // joinArr = pokeList.join("<br>");
+                    // console.log(pokeList);
+                    // joinArr = pokeList.join("<br>");
+                }
+                else if(request.query.sortby == "id"){
+                    pokeIdList.push(obj.pokemon[i]);
+                    // joinArr = pokeList.join("<br>");
+                    // console.log(pokeList);
+                }
+                else if(request.query.sortby == "height"){
+                    pokeHtList.push(obj.pokemon[i]);
+                    // joinArr = pokeList.join("<br>");
+                }
+                else if(request.query.sortby == "weight"){
+                    pokeWtList.push(obj.pokemon[i]);
+                    // joinArr = pokeList.join("<br>");
+                }
         }
 
         if(request.query.sortby == "name"){
             pokeList.sort();
             joinArr = pokeList.join("<br>");
+            // console.log(pokeList);
+            // joinArr = pokeList.join("<br>");
         }
         else if(request.query.sortby == "id"){
             pokeIdList.sort(compareId);
-            joinArr = pokeIdList.join("<br>");
-            // console.log(pokeList);
+            // console.log(pokeIdList);
+            for(let d = 0; d < pokeIdList.length; d++){
+                pokeIdNew.push(pokeIdList[d].name);
+            }
+            joinArr = pokeIdNew.join("<br>");
         }
         else if(request.query.sortby == "height"){
-            joinArr = pokeList.join("<br>");
+            pokeHtList.sort(compareHt);
+            for(let h = 0; h < pokeHtList.length; h++){
+                pokeHtNew.push(pokeHtList[h].name);
+            }
+            joinArr = pokeHtNew.join("<br>");
         }
         else if(request.query.sortby == "weight"){
-            pokeWtList.push(obj.pokemon.sort(compareWt));
-            joinArr = pokeWtList.join("<br>");
+            pokeWtList.sort(compareWt);
+            for(let w = 0; w < pokeWtList.length; w++){
+                pokeWtNew.push(pokeWtList[w].name);
+            }
+            joinArr = pokeWtNew.join("<br>");
         }
+
         response.send('<form method="GET" action="/">' + '<select name="sortby">' +
-                '<option value="name">' + 'Name' + '</option>' + '<option value="id">' + 'ID' + '</option>' + '<option value="height">' + 'Height' + '</option>' + '<option value="Weight">' + 'Weight' + '</option>' + '</select>' + '&nbsp' +
+                '<option value="name">' + 'Name' + '</option>' + '<option value="id">' + 'ID' + '</option>' + '<option value="height">' + 'Height' + '</option>' + '<option value="weight">' + 'Weight' + '</option>' + '</select>' + '&nbsp' +
                 '<input type="submit" value="sort"> ' +
                 '</form>' + "Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex:- <br><br>" + joinArr );
         // response.send("Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex sorted by name:- \n\n" + pokeList + '</form>');
