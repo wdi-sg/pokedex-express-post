@@ -11,6 +11,15 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
@@ -53,6 +62,7 @@ function compareId(a, b) {
 
 
 app.get("/", (request, response) => {
+    let pokeMainList = [];
     let pokeList = [];
     let pokeIdList = [];
     let pokeIdNew = [];
@@ -62,7 +72,7 @@ app.get("/", (request, response) => {
     let pokeWtNew = [];
     jsonfile.readFile(FILE, (err, obj) => {
         // pokeHtList.push(obj.pokemon.sort(compareHt));
-        var joinArr = pokeList.join("<br>");
+        var joinArr = pokeMainList.join("<br>");
         for(let i = 0; i < obj.pokemon.length; i++){
             // pokeList.push(obj.pokemon[i].name);
             // pokeIdList.push(obj.pokemon[i].id);
@@ -84,6 +94,9 @@ app.get("/", (request, response) => {
                 else if(request.query.sortby == "weight"){
                     pokeWtList.push(obj.pokemon[i]);
                     // joinArr = pokeList.join("<br>");
+                }
+                else{
+                    pokeMainList.push(obj.pokemon[i].name);
                 }
         }
 
@@ -115,6 +128,9 @@ app.get("/", (request, response) => {
             }
             joinArr = pokeWtNew.join("<br>");
         }
+        else{
+            joinArr = pokeMainList.join("<br>");
+        }
 
         response.send('<form method="GET" action="/">' + '<select name="sortby">' +
                 '<option value="name">' + 'Name' + '</option>' + '<option value="id">' + 'ID' + '</option>' + '<option value="height">' + 'Height' + '</option>' + '<option value="weight">' + 'Weight' + '</option>' + '</select>' + '&nbsp' +
@@ -130,15 +146,22 @@ app.post('/pokemon', function(request, response) {
         // obj is the object from the pokedex json file
         // extract input data from request
         let x = true;
-        let newPoke = request.body;
-        let inputId = parseInt(request.body.id);
+        let newPoke = {
+            id: parseInt(obj.pokemon.length + 1),
+            num: (obj.pokemon.length + 1).toString(),
+            name: request.body.name,
+            img: request.body.img,
+            height: request.body.height,
+            weight: request.body.weight
+        }
+
+        // let inputId = parseInt(request.body.id);
         // find pokemon by id from the pokedex json file
         for(let i = 0; i < obj.pokemon.length; i++){
 
           let currentPokemon = obj.pokemon[i];
 
-          if(currentPokemon.id === inputId){
-            inputId++;
+          if(currentPokemon.id === newPoke.id){
             x = false
           }
         }
@@ -170,9 +193,9 @@ app.get('/pokemon/new', (request, response) => {
     response.send('<form method="POST" action="/pokemon">' +
     'Create a new Pokemon: ' + '<br><br>' +
     'Pokemon Id: ' +
-    '<input type="text" name="id"> ' + '<br>' +
+    '<input type="text" name="id" placeholder="Auto generated"> ' + '<br>' +
     'Pokemon Num: ' +
-    '<input type="text" name="num"> ' + '<br>' +
+    '<input type="text" name="num" placeholder="Auto generated"> ' + '<br>' +
     'Pokemon Name: ' +
     '<input type="text" name="name"> ' + '<br>' +
     'Pokemon Img: ' +

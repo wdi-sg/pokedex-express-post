@@ -1883,7 +1883,7 @@
       "spawn_time": "N/A"
     },
     {
-      "id": "152",
+      "id": 152,
       "num": "200",
       "name": "Shit",
       "img": "lakdmfl",
@@ -1891,7 +1891,7 @@
       "weight": "100kg"
     },
     {
-      "id": "153",
+      "id": 153,
       "num": "201",
       "name": "Joker",
       "img": "lsaflamfs",
@@ -1899,12 +1899,20 @@
       "weight": "50kg"
     },
     {
-      "id": "154",
+      "id": 154,
       "num": "202",
       "name": "Real",
       "img": "alksfm",
       "height": "10.2 m",
       "weight": "100kg"
+    },
+    {
+      "id": 155,
+      "num": "155",
+      "name": "sean",
+      "img": "sodaf",
+      "height": "1.82 m",
+      "weight": "100 kg"
     }
   ]
 }
