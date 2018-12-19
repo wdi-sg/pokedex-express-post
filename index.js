@@ -1,7 +1,7 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
+const FILE = 'data.json';
 
 /**
  * ===================================
@@ -11,6 +11,10 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}))
 
 /**
  * ===================================
@@ -18,42 +22,91 @@ const app = express();
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+app.post('/pokemon', function(request, response) {
+    //debug code (output request body)
+    var anyExistPoke = false;
+    var errorMessage ='Pokemon entered: ' + '</br>';
+    errorMessage = errorMessage + "id: " + request.body.id + '</br>';
+    errorMessage = errorMessage + "num: " + request.body.num + '</br>';
+    errorMessage = errorMessage + "name: " + request.body.name + '</br>' + '</br>';
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+    jsonfile.readFile(FILE, (err, obj) => {
+        request.body.id = parseInt(request.body.id);
 
-    var pokemon;
+        for (var i = 0; i < obj.pokemon.length; i++) {
+            if(obj.pokemon[i].id === request.body.id) {
+                anyExistPoke = true;
+                errorMessage = errorMessage + "id already exists" + '</br>'
+                break;
+            }
+        }
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+        for (var i = 0; i < obj.pokemon.length; i++) {
+            if(obj.pokemon[i].num === request.body.num) {
+                anyExistPoke = true;
+                errorMessage = errorMessage + "num already exists" + '</br>'
+                break;
+            }
+        }
 
-      let currentPokemon = obj.pokemon[i];
+        for (var i = 0; i < obj.pokemon.length; i++) {
+            if(obj.pokemon[i].name === request.body.name) {
+                anyExistPoke = true;
+                errorMessage = errorMessage + "name already exists" + '</br>'
+                break;
+            }
+        }
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+        if (!anyExistPoke){
+            //Display the pokemon added.
+            let form = `
+                <html>
+                <body>
+                    <h1> New Pokemon added </h1>
+                    <img src = ${request.body.img}>
+                    <p> num: ${request.body.num} </p>
+                    <p> name: ${request.body.name} </p>
+                    <p> height: ${request.body.height} </p>
+                    <p> weight: ${request.body.weight} </p>
+                </body>
+                </html>`;
 
-    if (pokemon === undefined) {
+            response.send(form);
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+            // save the request body
+            obj.pokemon.push(request.body);
+            jsonfile.writeFile(FILE, obj, (err) => {
+                console.log(err);
+            });
+        }
 
-      response.send(pokemon);
-    }
-  });
+        else {
+            response.send(errorMessage);
+        }
+    });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
 
+app.get('/pokemon/new', (request, response) => {
+  // render a template form here
+
+  response.send('<form method="POST" action="/pokemon">' +
+    'Pokemon to be added:' + '</br>' + '</br>' +
+    'Id :' +
+   '<input type="text" name="id">' + '</br>' + '</br>' +
+   'num :' +
+   '<input type="text" name="num">' + '</br>' + '</br>' +
+   'name :' +
+   '<input type="text" name="name">' + '</br>' + '</br>' +
+   'img :' +
+   '<input type="text" name="img">' + '</br>' + '</br>' +
+   'height :' +
+   '<input type="text" name="height">' + '</br>' + '</br>' +
+   'weight :' +
+   '<input type="text" name="weight">' + '</br>' + '</br>' +
+  '<input type="submit" value="Submit">' +
+  '</form>');
+});
 /**
  * ===================================
  * Listen to requests on port 3000
