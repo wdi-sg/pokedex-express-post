@@ -60,7 +60,6 @@ app.post('/pokemon', function(request, response) {
 //// Implement this sort functionality as a drop down (select input) of all the sorting fields the user can choose to sort by.
 app.get('/', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
-
         let htmlHome =
             "<!DOCTYPE html>" +
             "<html>" +
