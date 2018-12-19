@@ -16,7 +16,7 @@ class DisplayPokemon extends React.Component {
             <p>Candy: {chosenPokemon.candy}</p><br/>
             <p>Candy Count: {chosenPokemon["candy_count"]}</p><br/><br/>
             
-        
+            <a className="buttonLink" href={"/pokemon/" + chosenPokemon.id + "/edit"}>Edit this Pokemon!</a>
             </body>
             </html>
 

@@ -201,6 +201,7 @@ app.get('/pokemon/:id', (request, response) => {
 
         if (pokemon === undefined) {
 
+            
             // send 404 back
             response.status(404);
             response.send("Pokemon not found ):");
