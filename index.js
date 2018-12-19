@@ -165,29 +165,31 @@ app.post("/pokemon/new", (request,response) => {
         let randomPokemon;
         if (request.body.name === "random") {
             //I'm not stopping repeated pokemons
-            console.log("HELLO");
             let randomNum = Math.floor(Math.random() * 809 + 1);
-            Request.get("https://pokeapi.co/api/v2/pokemon/" + randomNum + "/", (error, response, body) => {
+            Request.get("https://pokeapi.co/api/v2/pokemon/" + randomNum + "/", (error, reqres, body) => {
                 if(error) {
                     return console.dir(error);
                 }
-                randomPokemon = body;
-                console.log(randomPokemon);
+                randomPokemon = JSON.parse(body);
+                let newPokemon = {
+                  "id": currentPokedex.pokemon.length+1,
+                  "num": (currentPokedex.pokemon.length+1).toString(),
+                  "name": randomPokemon.name,
+                  "img": `https://www.serebii.net/pokemongo/pokemon/${randomPokemon.id}.png`,
+                  "height": `${randomPokemon.height/10}.0 m`,
+                  "weight": `${randomPokemon.weight/10}.0 kg`,
+                  "candy": "",
+                  "candy_count": "",
+                  "egg": "",
+                  "avg_spawns": "",
+                  "spawn_time": ""
+                };
+                currentPokedex.pokemon.push(newPokemon);
+                jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
+                    console.log(err);
+                    response.render("pokemon", newPokemon);
+                });
             });
-
-            let newPokemon = {
-              "id": currentPokedex.pokemon.length+1,
-              "num": (currentPokedex.pokemon.length+1).toString(),
-              "name": randomPokemon.name,
-              "img": `https://www.serebii.net/pokemongo/pokemon/${randomPokemon.id}.png`,
-              "height": `${randomPokemon.height/10}.0 m`,
-              "weight": `${randomPokemon.weight/10}.0 kg`,
-              "candy": "",
-              "candy_count": "",
-              "egg": "",
-              "avg_spawns": "",
-              "spawn_time": ""
-            };
         } else {
             let newPokemon = {
               "id": currentPokedex.pokemon.length+1,
@@ -202,13 +204,12 @@ app.post("/pokemon/new", (request,response) => {
               "avg_spawns": "",
               "spawn_time": ""
             };
+            currentPokedex.pokemon.push(newPokemon);
+            jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
+                console.log(err);
+                response.render("pokemon", newPokemon);
+            });
         };
-
-        currentPokedex.pokemon.push(newPokemon);
-        jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
-            console.log(err);
-            response.render("pokemon", newPokemon);
-        });
     });
 });
 
