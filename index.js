@@ -45,12 +45,24 @@ app.get("/pokemon", (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         for(let i = 0; i < obj.pokemon.length; i++){
             if(request.query.sortby == "name"){
-                obj.pokemon.sort();
+                obj.pokemon.sort((a, b) => {
+                    if (a.name < b.name){
+                        return -1;
+                    }
+                    if (a.name > b.name){
+                        return 1;
+                    }
+                });
                 pokeList.push(obj.pokemon[i].name);
             }
             else if(request.query.sortby == "id"){
                 obj.pokemon.sort((a, b) => {
-                    return a - b;
+                    if (a.id < b.id){
+                        return -1;
+                    }
+                    if (a.id > b.id){
+                        return 1;
+                    }
                 });
                 pokeList.push(obj.pokemon[i].name);
             }
