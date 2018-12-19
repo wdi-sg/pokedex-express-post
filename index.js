@@ -36,111 +36,60 @@ app.use(express.urlencoded({
 //     return a - b;
 // }
 
-function compareHt(a, b) {
-    if (a.height < b.height){
-        return -1;
-    }
-    if (a.height > b.height){
-        return 1;
-    }
-    return 0;
-}
-
-function compareWt(a, b) {
-    if (a.weight < b.weight){
-        return -1;
-    }
-    if (a.weight > b.weight){
-        return 1;
-    }
-    return 0;
-}
-
-function compareId(a, b) {
-    return a - b;
-}
-
-
-app.get("/", (request, response) => {
-    let pokeMainList = [];
+app.get("/pokemon", (request, response) => {
     let pokeList = [];
-    let pokeIdList = [];
-    let pokeIdNew = [];
-    let pokeHtList = [];
-    let pokeHtNew = [];
-    let pokeWtList = [];
-    let pokeWtNew = [];
     jsonfile.readFile(FILE, (err, obj) => {
-        // pokeHtList.push(obj.pokemon.sort(compareHt));
-        var joinArr = pokeMainList.join("<br>");
         for(let i = 0; i < obj.pokemon.length; i++){
-            // pokeList.push(obj.pokemon[i].name);
-            // pokeIdList.push(obj.pokemon[i].id);
-                if(request.query.sortby == "name"){
-                    pokeList.push(obj.pokemon[i].name);
-                    // joinArr = pokeList.join("<br>");
-                    // console.log(pokeList);
-                    // joinArr = pokeList.join("<br>");
-                }
-                else if(request.query.sortby == "id"){
-                    pokeIdList.push(obj.pokemon[i]);
-                    // joinArr = pokeList.join("<br>");
-                    // console.log(pokeList);
-                }
-                else if(request.query.sortby == "height"){
-                    pokeHtList.push(obj.pokemon[i]);
-                    // joinArr = pokeList.join("<br>");
-                }
-                else if(request.query.sortby == "weight"){
-                    pokeWtList.push(obj.pokemon[i]);
-                    // joinArr = pokeList.join("<br>");
-                }
-                else{
-                    pokeMainList.push(obj.pokemon[i].name);
-                }
+            if(request.query.sortby == "name"){
+                obj.pokemon.sort();
+                pokeList.push(obj.pokemon[i].name);
+            }
+            else if(request.query.sortby == "id"){
+                obj.pokemon.sort((a, b) => {
+                    return a - b;
+                });
+                pokeList.push(obj.pokemon[i].name);
+            }
+            else if(request.query.sortby == "height"){
+                obj.pokemon.sort((a, b) => {
+                    if (a.height < b.height){
+                        return -1;
+                    }
+                    if (a.height > b.height){
+                        return 1;
+                    }
+                });
+                pokeList.push(obj.pokemon[i].name);
+            }
+            else if(request.query.sortby == "weight"){
+                obj.pokemon.sort((a, b) => {
+                    if (a.weight < b.weight){
+                        return -1;
+                    }
+                    if (a.weight > b.weight){
+                        return 1;
+                    }
+                });
+                pokeList.push(obj.pokemon[i].name);
+            }
+            else{
+                obj.pokemon.sort((a, b) => {
+                    return a - b;
+                });
+                pokeList.push(obj.pokemon[i].name);
+            }
         }
 
-        if(request.query.sortby == "name"){
-            pokeList.sort();
-            joinArr = pokeList.join("<br>");
-            // console.log(pokeList);
-            // joinArr = pokeList.join("<br>");
-        }
-        else if(request.query.sortby == "id"){
-            pokeIdList.sort(compareId);
-            // console.log(pokeIdList);
-            for(let d = 0; d < pokeIdList.length; d++){
-                pokeIdNew.push(pokeIdList[d].name);
-            }
-            joinArr = pokeIdNew.join("<br>");
-        }
-        else if(request.query.sortby == "height"){
-            pokeHtList.sort(compareHt);
-            for(let h = 0; h < pokeHtList.length; h++){
-                pokeHtNew.push(pokeHtList[h].name);
-            }
-            joinArr = pokeHtNew.join("<br>");
-        }
-        else if(request.query.sortby == "weight"){
-            pokeWtList.sort(compareWt);
-            for(let w = 0; w < pokeWtList.length; w++){
-                pokeWtNew.push(pokeWtList[w].name);
-            }
-            joinArr = pokeWtNew.join("<br>");
-        }
-        else{
-            joinArr = pokeMainList.join("<br>");
-        }
+        let joinArr = pokeList.join("<br>");
 
-        response.send('<form method="GET" action="/">' + '<select name="sortby">' +
+        response.send('<form method="GET" action="/pokemon">' + '<select name="sortby">' +
                 '<option value="name">' + 'Name' + '</option>' + '<option value="id">' + 'ID' + '</option>' + '<option value="height">' + 'Height' + '</option>' + '<option value="weight">' + 'Weight' + '</option>' + '</select>' + '&nbsp' +
                 '<input type="submit" value="sort"> ' +
-                '</form>' + "Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex:- <br><br>" + joinArr );
-        // response.send("Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex sorted by name:- \n\n" + pokeList + '</form>');
+                '</form>' + "Welcome to the online Pokedex! Here are the list of pokemon currently in the Pokedex:- <br><br>" + joinArr);
     });
 });
 
-app.post('/pokemon', function(request, response) {
+app.post('/pokemon/add', function(request, response) {
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
         // obj is the object from the pokedex json file
@@ -149,7 +98,7 @@ app.post('/pokemon', function(request, response) {
         let newPoke = {
             id: parseInt(obj.pokemon.length + 1),
             num: (obj.pokemon.length + 1).toString(),
-            name: request.body.name,
+            name: request.body.name.charAt(0).toUpperCase() + request.body.name.slice(1),
             img: request.body.img,
             height: request.body.height,
             weight: request.body.weight
@@ -184,13 +133,10 @@ app.post('/pokemon', function(request, response) {
             console.log(err);
         });
     });
-    // jsonfile.readFile(FILE, (err, obj) => {
-    //     response.send(obj);
-    // });
 });
 
 app.get('/pokemon/new', (request, response) => {
-    response.send('<form method="POST" action="/pokemon">' +
+    response.send('<form method="POST" action="/pokemon/add">' +
     'Create a new Pokemon: ' + '<br><br>' +
     'Pokemon Id: ' +
     '<input type="text" name="id" placeholder="Auto generated"> ' + '<br>' +
@@ -209,35 +155,20 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 
-// app.post('/pokemon', function(request, response) {
-//     // console.log(request.body.name);
-//     // get json from specified file
-//     jsonfile.readFile(FILE, (err, obj) => {
-//         // obj is the object from the pokedex json file
-//         // extract input data from request
-//         let inputId = parseInt(request.body.name);
+app.get('/pokemon/:id', (request, response) => {
+    var userInput = parseInt(request.params.id);
+    jsonfile.readFile(FILE, (err, obj) => {
+        for(let n = 0; n < obj.pokemon.length; n++){
+            if(userInput === obj.pokemon[n].id){
+                response.send(obj.pokemon[n]);
+            }
+        }
+    });
+});
 
-//         var pokemon;
-
-//         // find pokemon by id from the pokedex json file
-//         for(let i = 0; i < obj.pokemon.length; i++){
-
-//           let currentPokemon = obj.pokemon[i];
-
-//           if(currentPokemon.id === inputId){
-//             pokemon = currentPokemon;
-//           }
-//         }
-
-//         if(pokemon === undefined) {
-
-//           // send 404 back
-//           response.status(404).send("not found");
-//         } else {
-
-//           response.send(pokemon);
-//         }
-//       });
+// app.get("/greet/:name/:lastname", (request, response) => {
+//   response.send("Hello " + request.params.name + " " + request.params.lastname)
+//   console.log(request);
 // });
 
 /**
