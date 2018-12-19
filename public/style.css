@@ -1,0 +1,19 @@
+body {
+	text-align: center;
+	font-family: "Impact";
+}
+
+div.eachPoke {
+	display: inline-block;
+	width: 250px;
+	margin-bottom: 30px;
+	margin-top: 10px;
+}
+
+h3, p {
+	margin: 0;
+}
+
+p {
+	font-size: 12px;
+}
