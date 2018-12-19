@@ -89,7 +89,7 @@ app.get("/pokemon", (request, response) => {
     });
 });
 
-app.post('/pokemon/add', function(request, response) {
+app.post('/pokemon/add', (request, response) => {
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
         // obj is the object from the pokedex json file
@@ -154,6 +154,41 @@ app.get('/pokemon/new', (request, response) => {
     '</form>');
 });
 
+app.post('/pokemon/addtype', (request, response) => {
+  let addType = request.body.poketype;
+  let pokeName = request.body.pokename.charAt(0).toUpperCase() + request.body.pokename.slice(1);
+  console.log(pokeName);
+  jsonfile.readFile(FILE, (err, obj) => {
+    for(let t = 0; t < obj.pokemon.length; t++){
+      if(obj.pokemon[t].name == pokeName){
+        if(obj.pokemon[t].type == undefined){
+          obj.pokemon[t].type = [];
+        }
+        if(obj.pokemon[t].type.includes(addType)){
+          response.send(addType + " type already exist! " + " type have already been added to " + pokeName + " before");
+        }
+        else{
+          obj.pokemon[t].type.push(addType);
+            jsonfile.writeFile(FILE, obj, (err) => {
+                console.log(err);
+            });
+          response.send(addType + " type have been added to the pokemon " + pokeName);
+        }
+      }
+    }
+    });
+});
+
+
+app.get('/pokemon/type', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        response.send('<form method="POST" action="/pokemon/addtype">' +
+                '<input type="text" name="pokename" placeholder="Insert pokemon name"> ' + '&nbsp' + '<select name="poketype">' +
+                '<option value="fire">' + 'Fire' + '</option>' + '<option value="water">' + 'Water' + '</option>' + '<option value="grass">' + 'Grass' + '</option>' + '<option value="electric">' + 'Electric' + '</option>' + '<option value="ground">' + 'Ground' + '</option>' + '<option value="rock">' + 'Rock' + '</option>' + '<option value="flying">' + 'Flying' + '</option>' + '<option value="fighting">' + 'Fighting' + '</option>' + '</select>' + '&nbsp' +
+                '<input type="submit" value="Add"> ' +
+                '</form>' + "What typing do you want to add to existing pokemon?<br><br>");
+    });
+});
 
 app.get('/pokemon/:id', (request, response) => {
     var userInput = parseInt(request.params.id);
