@@ -11,6 +11,13 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -99,7 +106,8 @@ app.post("/pokemon/:id", (request, response) => {
         currentPokedex.pokemon[request.params.id -1] = currentPokemon;
         jsonfile.writeFile("pokedex.json", currentPokedex, (err) => {
             console.log(err);
-            response.send(currentPokemon);
+            // response.send(currentPokemon);
+            response.redirect(`http://localhost:3000/${request.params.id}`);
         });
     });
 });
@@ -119,10 +127,6 @@ app.get("/pokemon/new", (request,response) => {
     </head>
     <body>
       <form action="/pokemon" method="POST">
-          <h2 class="abc">Id</h2>
-          <input type="" name="id">
-          <h2>Num</h2>
-          <input type="" name="num">
           <h2>Name</h2>
           <input type="" name="name">
           <h2>Img</h2>
@@ -168,71 +172,12 @@ app.post("/pokemon", (request,response) => {
 //homepage. display all with sort
 app.get('/', (request, response) => {
     jsonfile.readFile(pokedex, (err, obj) => {
-        let html =
-        `<!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-          <title>GA Pokedex</title>
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-          <link href="https://fonts.googleapis.com/css?family=Thasadith" rel="stylesheet">
-          <link rel="stylesheet" type="text/css" href="http://10.193.240.192:8080/style.css">
-        </head>
-        <body>
-        <div class="container">
-            <form name='sortby' method="get" action="/">
-            Sort By: <select name='sortby'>
-                         <option value='name'>Name</option>
-                         <option value='num'>Number</option>
-                         <option value='height'>Height</option>
-                         <option value='weight'>Weight</option>
-                     </select>
-            <input type='submit'/>
-            </form>
-            <div class="row">`;
 
-        let sortDex = obj.pokemon;
-        switch (request.query.sortby) {
-            case "name":
-                sortDex.sort((name1, name2) => {
-                    if (name1.name > name2.name) return 1;
-                    if (name1.name < name2.name) return -1;
-                });
-                break;
+        let pokedexAndSort = {};
+        pokedexAndSort.pokedex = obj.pokemon;
+        pokedexAndSort.sortby = request.query.sortby;
 
-            case "num":
-                sortDex.sort((num1, num2) => {
-                    if (num1.id > num2.id) return 1;
-                    if (num1.id < num2.id) return -1;
-                });
-                break;
-
-            case "height":
-                sortDex.sort((height1, height2) => {
-                    if (parseFloat(height1.height) > parseFloat(height2.height)) return 1;
-                    if (parseFloat(height1.height) < parseFloat(height2.height)) return -1;
-                });
-                break;
-
-            case "weight":
-                sortDex.sort((weight1, weight2) => {
-                    if (parseFloat(weight1.weight) > parseFloat(weight2.weight)) return 1;
-                    if (parseFloat(weight1.weight) < parseFloat(weight2.weight)) return -1;
-                });
-                break;
-        }
-
-        for (let i = 0; i < obj.pokemon.length; i++) {
-            html = html +
-                `<div class-"col">
-                    <a href="http://localhost:3000/${obj.pokemon[i].id}"><img src=${obj.pokemon[i].img}></a>
-                    <h3>#${obj.pokemon[i].num}</h3>
-                    <h4>${obj.pokemon[i].name}</h4>
-                </div>`;
-        };
-        html = html + "</div></div></body></html>";
-        response.send(html);
+        response.render("pokemons", pokedexAndSort);
     });
 });
 
