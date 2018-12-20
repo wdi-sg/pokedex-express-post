@@ -14,7 +14,7 @@ class Home extends React.Component {
             <h1>This is all the list of pokemons:</h1>
             <form action="/" method="GET">
                 <select name="sortby">
-                    <option value="name">Sort by Nama</option>
+                    <option value="name">Sort by Name</option>
                     <option value="type">Sort By Type</option>
                     <option value="weight">Sort By Weight</option>
                     </select>

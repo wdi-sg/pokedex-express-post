@@ -18,7 +18,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 
-app.get('/:id', (request, response) => {
+app.get('pokemon/:id/edit', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(file, (err, obj) => {
@@ -103,7 +103,13 @@ app.post('/pokemon', (request, response) => {
             "weight":request.body.weight + ' kg'
             };
 
-        response.send('New id is ' + newObj.id + '<br>New num is ' + newObj.num + '<br>New name is ' +  newObj.name);
+        response.send(`
+            New id is  ${newObj.id}<br>
+            New num is  ${newObj.num}<br>
+            New name is  ${newObj.name}<br>
+            New Image is ${newObj.img}<br>
+            New Height is ${newObj.height}<br>
+            New Weight is ${newObj.weight}`);
 
         // console.log(newObj);
         pokemon.push(newObj);
