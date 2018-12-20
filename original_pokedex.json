@@ -507,6 +507,19 @@
     {
       "id": 41,
       "num": "041",
+      "name": "Zubat",
+      "img": "http://www.serebii.net/pokemongo/pokemon/041.png",
+      "height": "0.79 m",
+      "weight": "7.5 kg",
+      "candy": "Zubat Candy",
+      "candy_count": 50,
+      "egg": "2 km",
+      "avg_spawns": 652,
+      "spawn_time": "12:28"
+    },
+    {
+      "id": 42,
+      "num": "042",
       "name": "Golbat",
       "img": "http://www.serebii.net/pokemongo/pokemon/042.png",
       "height": "1.60 m",
@@ -517,8 +530,8 @@
       "spawn_time": "02:15"
     },
     {
-      "id": 42,
-      "num": "042",
+      "id": 43,
+      "num": "043",
       "name": "Oddish",
       "img": "http://www.serebii.net/pokemongo/pokemon/043.png",
       "height": "0.51 m",
@@ -530,8 +543,8 @@
       "spawn_time": "03:58"
     },
     {
-      "id": 43,
-      "num": "043",
+      "id": 44,
+      "num": "044",
       "name": "Gloom",
       "img": "http://www.serebii.net/pokemongo/pokemon/044.png",
       "height": "0.79 m",
@@ -543,8 +556,8 @@
       "spawn_time": "11:33"
     },
     {
-      "id": 44,
-      "num": "044",
+      "id": 45,
+      "num": "045",
       "name": "Vileplume",
       "img": "http://www.serebii.net/pokemongo/pokemon/045.png",
       "height": "1.19 m",
@@ -555,8 +568,8 @@
       "spawn_time": "23:58"
     },
     {
-      "id": 45,
-      "num": "045",
+      "id": 46,
+      "num": "046",
       "name": "Paras",
       "img": "http://www.serebii.net/pokemongo/pokemon/046.png",
       "height": "0.30 m",
@@ -568,8 +581,8 @@
       "spawn_time": "01:42"
     },
     {
-      "id": 46,
-      "num": "046",
+      "id": 47,
+      "num": "047",
       "name": "Parasect",
       "img": "http://www.serebii.net/pokemongo/pokemon/047.png",
       "height": "0.99 m",
@@ -580,8 +593,8 @@
       "spawn_time": "01:22"
     },
     {
-      "id": 47,
-      "num": "047",
+      "id": 48,
+      "num": "048",
       "name": "Venonat",
       "img": "http://www.serebii.net/pokemongo/pokemon/048.png",
       "height": "0.99 m",
@@ -593,8 +606,8 @@
       "spawn_time": "02:31"
     },
     {
-      "id": 48,
-      "num": "048",
+      "id": 49,
+      "num": "049",
       "name": "Venomoth",
       "img": "http://www.serebii.net/pokemongo/pokemon/049.png",
       "height": "1.50 m",
@@ -605,8 +618,8 @@
       "spawn_time": "23:40"
     },
     {
-      "id": 49,
-      "num": "049",
+      "id": 50,
+      "num": "050",
       "name": "Diglett",
       "img": "http://www.serebii.net/pokemongo/pokemon/050.png",
       "height": "0.20 m",
@@ -618,8 +631,8 @@
       "spawn_time": "02:22"
     },
     {
-      "id": 50,
-      "num": "050",
+      "id": 51,
+      "num": "051",
       "name": "Dugtrio",
       "img": "http://www.serebii.net/pokemongo/pokemon/051.png",
       "height": "0.71 m",
@@ -630,8 +643,8 @@
       "spawn_time": "12:37"
     },
     {
-      "id": 51,
-      "num": "051",
+      "id": 52,
+      "num": "052",
       "name": "Meowth",
       "img": "http://www.serebii.net/pokemongo/pokemon/052.png",
       "height": "0.41 m",
@@ -643,8 +656,8 @@
       "spawn_time": "02:54"
     },
     {
-      "id": 52,
-      "num": "052",
+      "id": 53,
+      "num": "053",
       "name": "Persian",
       "img": "http://www.serebii.net/pokemongo/pokemon/053.png",
       "height": "0.99 m",
@@ -655,8 +668,8 @@
       "spawn_time": "02:44"
     },
     {
-      "id": 53,
-      "num": "053",
+      "id": 54,
+      "num": "054",
       "name": "Psyduck",
       "img": "http://www.serebii.net/pokemongo/pokemon/054.png",
       "height": "0.79 m",
@@ -668,8 +681,8 @@
       "spawn_time": "03:41"
     },
     {
-      "id": 54,
-      "num": "054",
+      "id": 55,
+      "num": "055",
       "name": "Golduck",
       "img": "http://www.serebii.net/pokemongo/pokemon/055.png",
       "height": "1.70 m",
@@ -680,8 +693,8 @@
       "spawn_time": "23:06"
     },
     {
-      "id": 55,
-      "num": "055",
+      "id": 56,
+      "num": "056",
       "name": "Mankey",
       "img": "http://www.serebii.net/pokemongo/pokemon/056.png",
       "height": "0.51 m",
@@ -693,8 +706,8 @@
       "spawn_time": "12:52"
     },
     {
-      "id": 56,
-      "num": "056",
+      "id": 57,
+      "num": "057",
       "name": "Primeape",
       "img": "http://www.serebii.net/pokemongo/pokemon/057.png",
       "height": "0.99 m",
@@ -705,8 +718,8 @@
       "spawn_time": "12:33"
     },
     {
-      "id": 57,
-      "num": "057",
+      "id": 58,
+      "num": "058",
       "name": "Growlithe",
       "img": "http://www.serebii.net/pokemongo/pokemon/058.png",
       "height": "0.71 m",
@@ -718,8 +731,8 @@
       "spawn_time": "03:57"
     },
     {
-      "id": 58,
-      "num": "058",
+      "id": 59,
+      "num": "059",
       "name": "Arcanine",
       "img": "http://www.serebii.net/pokemongo/pokemon/059.png",
       "height": "1.91 m",
@@ -730,8 +743,8 @@
       "spawn_time": "03:11"
     },
     {
-      "id": 59,
-      "num": "059",
+      "id": 60,
+      "num": "060",
       "name": "Poliwag",
       "img": "http://www.serebii.net/pokemongo/pokemon/060.png",
       "height": "0.61 m",
@@ -743,8 +756,8 @@
       "spawn_time": "03:40"
     },
     {
-      "id": 60,
-      "num": "060",
+      "id": 61,
+      "num": "061",
       "name": "Poliwhirl",
       "img": "http://www.serebii.net/pokemongo/pokemon/061.png",
       "height": "0.99 m",
@@ -756,8 +769,8 @@
       "spawn_time": "09:14"
     },
     {
-      "id": 61,
-      "num": "061",
+      "id": 62,
+      "num": "062",
       "name": "Poliwrath",
       "img": "http://www.serebii.net/pokemongo/pokemon/062.png",
       "height": "1.30 m",
@@ -768,8 +781,8 @@
       "spawn_time": "01:32"
     },
     {
-      "id": 62,
-      "num": "062",
+      "id": 63,
+      "num": "063",
       "name": "Abra",
       "img": "http://www.serebii.net/pokemongo/pokemon/063.png",
       "height": "0.89 m",
@@ -781,8 +794,8 @@
       "spawn_time": "04:30"
     },
     {
-      "id": 63,
-      "num": "063",
+      "id": 64,
+      "num": "064",
       "name": "Kadabra",
       "img": "http://www.serebii.net/pokemongo/pokemon/064.png",
       "height": "1.30 m",
@@ -794,8 +807,8 @@
       "spawn_time": "11:25"
     },
     {
-      "id": 64,
-      "num": "064",
+      "id": 65,
+      "num": "065",
       "name": "Alakazam",
       "img": "http://www.serebii.net/pokemongo/pokemon/065.png",
       "height": "1.50 m",
@@ -806,8 +819,8 @@
       "spawn_time": "12:33"
     },
     {
-      "id": 65,
-      "num": "065",
+      "id": 66,
+      "num": "066",
       "name": "Machop",
       "img": "http://www.serebii.net/pokemongo/pokemon/066.png",
       "height": "0.79 m",
@@ -819,8 +832,8 @@
       "spawn_time": "01:55"
     },
     {
-      "id": 66,
-      "num": "066",
+      "id": 67,
+      "num": "067",
       "name": "Machoke",
       "img": "http://www.serebii.net/pokemongo/pokemon/067.png",
       "height": "1.50 m",
@@ -832,8 +845,8 @@
       "spawn_time": "10:32"
     },
     {
-      "id": 67,
-      "num": "067",
+      "id": 68,
+      "num": "068",
       "name": "Machamp",
       "img": "http://www.serebii.net/pokemongo/pokemon/068.png",
       "height": "1.60 m",
@@ -844,8 +857,8 @@
       "spawn_time": "02:55"
     },
     {
-      "id": 68,
-      "num": "068",
+      "id": 69,
+      "num": "069",
       "name": "Bellsprout",
       "img": "http://www.serebii.net/pokemongo/pokemon/069.png",
       "height": "0.71 m",
@@ -857,8 +870,8 @@
       "spawn_time": "04:10"
     },
     {
-      "id": 69,
-      "num": "069",
+      "id": 70,
+      "num": "070",
       "name": "Weepinbell",
       "img": "http://www.serebii.net/pokemongo/pokemon/070.png",
       "height": "0.99 m",
@@ -870,8 +883,8 @@
       "spawn_time": "09:45"
     },
     {
-      "id": 70,
-      "num": "070",
+      "id": 71,
+      "num": "071",
       "name": "Victreebel",
       "img": "http://www.serebii.net/pokemongo/pokemon/071.png",
       "height": "1.70 m",
@@ -882,8 +895,8 @@
       "spawn_time": "12:19"
     },
     {
-      "id": 71,
-      "num": "071",
+      "id": 72,
+      "num": "072",
       "name": "Tentacool",
       "img": "http://www.serebii.net/pokemongo/pokemon/072.png",
       "height": "0.89 m",
@@ -895,8 +908,8 @@
       "spawn_time": "03:20"
     },
     {
-      "id": 72,
-      "num": "072",
+      "id": 73,
+      "num": "073",
       "name": "Tentacruel",
       "img": "http://www.serebii.net/pokemongo/pokemon/073.png",
       "height": "1.60 m",
@@ -907,8 +920,8 @@
       "spawn_time": "23:36"
     },
     {
-      "id": 73,
-      "num": "073",
+      "id": 74,
+      "num": "074",
       "name": "Geodude",
       "img": "http://www.serebii.net/pokemongo/pokemon/074.png",
       "height": "0.41 m",
@@ -920,8 +933,8 @@
       "spawn_time": "12:40"
     },
     {
-      "id": 74,
-      "num": "074",
+      "id": 75,
+      "num": "075",
       "name": "Graveler",
       "img": "http://www.serebii.net/pokemongo/pokemon/075.png",
       "height": "0.99 m",
@@ -933,8 +946,8 @@
       "spawn_time": "04:53"
     },
     {
-      "id": 75,
-      "num": "075",
+      "id": 76,
+      "num": "076",
       "name": "Golem",
       "img": "http://www.serebii.net/pokemongo/pokemon/076.png",
       "height": "1.40 m",
@@ -945,8 +958,8 @@
       "spawn_time": "12:16"
     },
     {
-      "id": 76,
-      "num": "076",
+      "id": 77,
+      "num": "077",
       "name": "Ponyta",
       "img": "http://www.serebii.net/pokemongo/pokemon/077.png",
       "height": "0.99 m",
@@ -958,8 +971,8 @@
       "spawn_time": "02:50"
     },
     {
-      "id": 77,
-      "num": "077",
+      "id": 78,
+      "num": "078",
       "name": "Rapidash",
       "img": "http://www.serebii.net/pokemongo/pokemon/078.png",
       "height": "1.70 m",
@@ -970,8 +983,8 @@
       "spawn_time": "04:00"
     },
     {
-      "id": 78,
-      "num": "078",
+      "id": 79,
+      "num": "079",
       "name": "Slowpoke",
       "img": "http://www.serebii.net/pokemongo/pokemon/079.png",
       "height": "1.19 m",
@@ -983,8 +996,8 @@
       "spawn_time": "07:12"
     },
     {
-      "id": 79,
-      "num": "079",
+      "id": 80,
+      "num": "080",
       "name": "Slowbro",
       "img": "http://www.serebii.net/pokemongo/pokemon/080.png",
       "height": "1.60 m",
@@ -995,8 +1008,8 @@
       "spawn_time": "02:56"
     },
     {
-      "id": 80,
-      "num": "080",
+      "id": 81,
+      "num": "081",
       "name": "Magnemite",
       "img": "http://www.serebii.net/pokemongo/pokemon/081.png",
       "height": "0.30 m",
@@ -1008,8 +1021,8 @@
       "spawn_time": "04:04"
     },
     {
-      "id": 81,
-      "num": "081",
+      "id": 82,
+      "num": "082",
       "name": "Magneton",
       "img": "http://www.serebii.net/pokemongo/pokemon/082.png",
       "height": "0.99 m",
@@ -1020,8 +1033,8 @@
       "spawn_time": "15:25"
     },
     {
-      "id": 82,
-      "num": "082",
+      "id": 83,
+      "num": "083",
       "name": "Farfetch'd",
       "img": "http://www.serebii.net/pokemongo/pokemon/083.png",
       "height": "0.79 m",
@@ -1032,8 +1045,8 @@
       "spawn_time": "01:09"
     },
     {
-      "id": 83,
-      "num": "083",
+      "id": 84,
+      "num": "084",
       "name": "Doduo",
       "img": "http://www.serebii.net/pokemongo/pokemon/084.png",
       "height": "1.40 m",
@@ -1045,8 +1058,8 @@
       "spawn_time": "05:10"
     },
     {
-      "id": 84,
-      "num": "084",
+      "id": 85,
+      "num": "085",
       "name": "Dodrio",
       "img": "http://www.serebii.net/pokemongo/pokemon/085.png",
       "height": "1.80 m",
@@ -1057,8 +1070,8 @@
       "spawn_time": "02:12"
     },
     {
-      "id": 85,
-      "num": "085",
+      "id": 86,
+      "num": "086",
       "name": "Seel",
       "img": "http://www.serebii.net/pokemongo/pokemon/086.png",
       "height": "1.09 m",
@@ -1070,8 +1083,8 @@
       "spawn_time": "06:46"
     },
     {
-      "id": 86,
-      "num": "086",
+      "id": 87,
+      "num": "087",
       "name": "Dewgong",
       "img": "http://www.serebii.net/pokemongo/pokemon/087.png",
       "height": "1.70 m",
@@ -1082,8 +1095,8 @@
       "spawn_time": "06:04"
     },
     {
-      "id": 87,
-      "num": "087",
+      "id": 88,
+      "num": "088",
       "name": "Grimer",
       "img": "http://www.serebii.net/pokemongo/pokemon/088.png",
       "height": "0.89 m",
@@ -1095,8 +1108,8 @@
       "spawn_time": "15:11"
     },
     {
-      "id": 88,
-      "num": "088",
+      "id": 89,
+      "num": "089",
       "name": "Muk",
       "img": "http://www.serebii.net/pokemongo/pokemon/089.png",
       "height": "1.19 m",
@@ -1107,8 +1120,8 @@
       "spawn_time": "01:28"
     },
     {
-      "id": 89,
-      "num": "089",
+      "id": 90,
+      "num": "090",
       "name": "Shellder",
       "img": "http://www.serebii.net/pokemongo/pokemon/090.png",
       "height": "0.30 m",
@@ -1120,8 +1133,8 @@
       "spawn_time": "07:39"
     },
     {
-      "id": 90,
-      "num": "090",
+      "id": 91,
+      "num": "091",
       "name": "Cloyster",
       "img": "http://www.serebii.net/pokemongo/pokemon/091.png",
       "height": "1.50 m",
@@ -1132,8 +1145,8 @@
       "spawn_time": "02:33"
     },
     {
-      "id": 91,
-      "num": "091",
+      "id": 92,
+      "num": "092",
       "name": "Gastly",
       "img": "http://www.serebii.net/pokemongo/pokemon/092.png",
       "height": "1.30 m",
@@ -1145,8 +1158,8 @@
       "spawn_time": "04:21"
     },
     {
-      "id": 92,
-      "num": "092",
+      "id": 93,
+      "num": "093",
       "name": "Haunter",
       "img": "http://www.serebii.net/pokemongo/pokemon/093.png",
       "height": "1.60 m",
@@ -1158,8 +1171,8 @@
       "spawn_time": "00:10"
     },
     {
-      "id": 93,
-      "num": "093",
+      "id": 94,
+      "num": "094",
       "name": "Gengar",
       "img": "http://www.serebii.net/pokemongo/pokemon/094.png",
       "height": "1.50 m",
@@ -1170,8 +1183,8 @@
       "spawn_time": "03:55"
     },
     {
-      "id": 94,
-      "num": "094",
+      "id": 95,
+      "num": "095",
       "name": "Onix",
       "img": "http://www.serebii.net/pokemongo/pokemon/095.png",
       "height": "8.79 m",
@@ -1182,8 +1195,8 @@
       "spawn_time": "01:18"
     },
     {
-      "id": 95,
-      "num": "095",
+      "id": 96,
+      "num": "096",
       "name": "Drowzee",
       "img": "http://www.serebii.net/pokemongo/pokemon/096.png",
       "height": "0.99 m",
@@ -1195,8 +1208,8 @@
       "spawn_time": "01:51"
     },
     {
-      "id": 96,
-      "num": "096",
+      "id": 97,
+      "num": "097",
       "name": "Hypno",
       "img": "http://www.serebii.net/pokemongo/pokemon/097.png",
       "height": "1.60 m",
@@ -1207,8 +1220,8 @@
       "spawn_time": "02:17"
     },
     {
-      "id": 97,
-      "num": "097",
+      "id": 98,
+      "num": "098",
       "name": "Krabby",
       "img": "http://www.serebii.net/pokemongo/pokemon/098.png",
       "height": "0.41 m",
@@ -1220,8 +1233,8 @@
       "spawn_time": "03:33"
     },
     {
-      "id": 98,
-      "num": "098",
+      "id": 99,
+      "num": "099",
       "name": "Kingler",
       "img": "http://www.serebii.net/pokemongo/pokemon/099.png",
       "height": "1.30 m",
@@ -1232,8 +1245,8 @@
       "spawn_time": "03:44"
     },
     {
-      "id": 99,
-      "num": "099",
+      "id": 100,
+      "num": "100",
       "name": "Voltorb",
       "img": "http://www.serebii.net/pokemongo/pokemon/100.png",
       "height": "0.51 m",
@@ -1245,8 +1258,8 @@
       "spawn_time": "04:36"
     },
     {
-      "id": 100,
-      "num": "100",
+      "id": 101,
+      "num": "101",
       "name": "Electrode",
       "img": "http://www.serebii.net/pokemongo/pokemon/101.png",
       "height": "1.19 m",
@@ -1257,8 +1270,8 @@
       "spawn_time": "04:10"
     },
     {
-      "id": 101,
-      "num": "101",
+      "id": 102,
+      "num": "102",
       "name": "Exeggcute",
       "img": "http://www.serebii.net/pokemongo/pokemon/102.png",
       "height": "0.41 m",
@@ -1270,8 +1283,8 @@
       "spawn_time": "09:09"
     },
     {
-      "id": 102,
-      "num": "102",
+      "id": 103,
+      "num": "103",
       "name": "Exeggutor",
       "img": "http://www.serebii.net/pokemongo/pokemon/103.png",
       "height": "2.01 m",
@@ -1282,8 +1295,8 @@
       "spawn_time": "12:34"
     },
     {
-      "id": 103,
-      "num": "103",
+      "id": 104,
+      "num": "104",
       "name": "Cubone",
       "img": "http://www.serebii.net/pokemongo/pokemon/104.png",
       "height": "0.41 m",
@@ -1295,8 +1308,8 @@
       "spawn_time": "01:51"
     },
     {
-      "id": 104,
-      "num": "104",
+      "id": 105,
+      "num": "105",
       "name": "Marowak",
       "img": "http://www.serebii.net/pokemongo/pokemon/105.png",
       "height": "0.99 m",
@@ -1307,8 +1320,8 @@
       "spawn_time": "03:59"
     },
     {
-      "id": 105,
-      "num": "105",
+      "id": 106,
+      "num": "106",
       "name": "Hitmonlee",
       "img": "http://www.serebii.net/pokemongo/pokemon/106.png",
       "height": "1.50 m",
@@ -1319,8 +1332,8 @@
       "spawn_time": "03:59"
     },
     {
-      "id": 106,
-      "num": "106",
+      "id": 107,
+      "num": "107",
       "name": "Hitmonchan",
       "img": "http://www.serebii.net/pokemongo/pokemon/107.png",
       "height": "1.40 m",
@@ -1331,8 +1344,8 @@
       "spawn_time": "05:58"
     },
     {
-      "id": 107,
-      "num": "107",
+      "id": 108,
+      "num": "108",
       "name": "Lickitung",
       "img": "http://www.serebii.net/pokemongo/pokemon/108.png",
       "height": "1.19 m",
@@ -1343,8 +1356,8 @@
       "spawn_time": "02:46"
     },
     {
-      "id": 108,
-      "num": "108",
+      "id": 109,
+      "num": "109",
       "name": "Koffing",
       "img": "http://www.serebii.net/pokemongo/pokemon/109.png",
       "height": "0.61 m",
@@ -1356,8 +1369,8 @@
       "spawn_time": "08:16"
     },
     {
-      "id": 109,
-      "num": "109",
+      "id": 110,
+      "num": "110",
       "name": "Weezing",
       "img": "http://www.serebii.net/pokemongo/pokemon/110.png",
       "height": "1.19 m",
@@ -1368,8 +1381,8 @@
       "spawn_time": "12:17"
     },
     {
-      "id": 110,
-      "num": "110",
+      "id": 111,
+      "num": "111",
       "name": "Rhyhorn",
       "img": "http://www.serebii.net/pokemongo/pokemon/111.png",
       "height": "0.99 m",
@@ -1381,8 +1394,8 @@
       "spawn_time": "03:21"
     },
     {
-      "id": 111,
-      "num": "111",
+      "id": 112,
+      "num": "112",
       "name": "Rhydon",
       "img": "http://www.serebii.net/pokemongo/pokemon/112.png",
       "height": "1.91 m",
@@ -1393,8 +1406,8 @@
       "spawn_time": "05:50"
     },
     {
-      "id": 112,
-      "num": "112",
+      "id": 113,
+      "num": "113",
       "name": "Chansey",
       "img": "http://www.serebii.net/pokemongo/pokemon/113.png",
       "height": "1.09 m",
@@ -1405,8 +1418,8 @@
       "spawn_time": "04:46"
     },
     {
-      "id": 113,
-      "num": "113",
+      "id": 114,
+      "num": "114",
       "name": "Tangela",
       "img": "http://www.serebii.net/pokemongo/pokemon/114.png",
       "height": "0.99 m",
@@ -1417,8 +1430,8 @@
       "spawn_time": "23:13"
     },
     {
-      "id": 114,
-      "num": "114",
+      "id": 115,
+      "num": "115",
       "name": "Kangaskhan",
       "img": "http://www.serebii.net/pokemongo/pokemon/115.png",
       "height": "2.21 m",
@@ -1429,8 +1442,8 @@
       "spawn_time": "02:40"
     },
     {
-      "id": 115,
-      "num": "115",
+      "id": 116,
+      "num": "116",
       "name": "Horsea",
       "img": "http://www.serebii.net/pokemongo/pokemon/116.png",
       "height": "0.41 m",
@@ -1442,8 +1455,8 @@
       "spawn_time": "02:53"
     },
     {
-      "id": 116,
-      "num": "116",
+      "id": 117,
+      "num": "117",
       "name": "Seadra",
       "img": "http://www.serebii.net/pokemongo/pokemon/117.png",
       "height": "1.19 m",
@@ -1454,8 +1467,8 @@
       "spawn_time": "03:18"
     },
     {
-      "id": 117,
-      "num": "117",
+      "id": 118,
+      "num": "118",
       "name": "Goldeen",
       "img": "http://www.serebii.net/pokemongo/pokemon/118.png",
       "height": "0.61 m",
@@ -1467,8 +1480,8 @@
       "spawn_time": "03:14"
     },
     {
-      "id": 118,
-      "num": "118",
+      "id": 119,
+      "num": "119",
       "name": "Seaking",
       "img": "http://www.serebii.net/pokemongo/pokemon/119.png",
       "height": "1.30 m",
@@ -1479,8 +1492,8 @@
       "spawn_time": "05:21"
     },
     {
-      "id": 119,
-      "num": "119",
+      "id": 120,
+      "num": "120",
       "name": "Staryu",
       "img": "http://www.serebii.net/pokemongo/pokemon/120.png",
       "height": "0.79 m",
@@ -1492,8 +1505,8 @@
       "spawn_time": "22:59"
     },
     {
-      "id": 120,
-      "num": "120",
+      "id": 121,
+      "num": "121",
       "name": "Starmie",
       "img": "http://www.serebii.net/pokemongo/pokemon/121.png",
       "height": "1.09 m",
@@ -1504,8 +1517,8 @@
       "spawn_time": "06:57"
     },
     {
-      "id": 121,
-      "num": "121",
+      "id": 122,
+      "num": "122",
       "name": "Mr. Mime",
       "img": "http://www.serebii.net/pokemongo/pokemon/122.png",
       "height": "1.30 m",
@@ -1516,8 +1529,8 @@
       "spawn_time": "01:51"
     },
     {
-      "id": 122,
-      "num": "122",
+      "id": 123,
+      "num": "123",
       "name": "Scyther",
       "img": "http://www.serebii.net/pokemongo/pokemon/123.png",
       "height": "1.50 m",
@@ -1528,8 +1541,8 @@
       "spawn_time": "05:43"
     },
     {
-      "id": 123,
-      "num": "123",
+      "id": 124,
+      "num": "124",
       "name": "Jynx",
       "img": "http://www.serebii.net/pokemongo/pokemon/124.png",
       "height": "1.40 m",
@@ -1540,8 +1553,8 @@
       "spawn_time": "05:41"
     },
     {
-      "id": 124,
-      "num": "124",
+      "id": 125,
+      "num": "125",
       "name": "Electabuzz",
       "img": "http://www.serebii.net/pokemongo/pokemon/125.png",
       "height": "1.09 m",
@@ -1552,8 +1565,8 @@
       "spawn_time": "04:28"
     },
     {
-      "id": 125,
-      "num": "125",
+      "id": 126,
+      "num": "126",
       "name": "Magmar",
       "img": "http://www.serebii.net/pokemongo/pokemon/126.png",
       "height": "1.30 m",
@@ -1564,8 +1577,8 @@
       "spawn_time": "20:36"
     },
     {
-      "id": 126,
-      "num": "126",
+      "id": 127,
+      "num": "127",
       "name": "Pinsir",
       "img": "http://www.serebii.net/pokemongo/pokemon/127.png",
       "height": "1.50 m",
@@ -1576,8 +1589,8 @@
       "spawn_time": "03:25"
     },
     {
-      "id": 127,
-      "num": "127",
+      "id": 128,
+      "num": "128",
       "name": "Tauros",
       "img": "http://www.serebii.net/pokemongo/pokemon/128.png",
       "height": "1.40 m",
@@ -1588,8 +1601,8 @@
       "spawn_time": "00:37"
     },
     {
-      "id": 128,
-      "num": "128",
+      "id": 129,
+      "num": "129",
       "name": "Magikarp",
       "img": "http://www.serebii.net/pokemongo/pokemon/129.png",
       "height": "0.89 m",
@@ -1601,8 +1614,8 @@
       "spawn_time": "14:26"
     },
     {
-      "id": 129,
-      "num": "129",
+      "id": 130,
+      "num": "130",
       "name": "Gyarados",
       "img": "http://www.serebii.net/pokemongo/pokemon/130.png",
       "height": "6.50 m",
@@ -1613,8 +1626,8 @@
       "spawn_time": "02:15"
     },
     {
-      "id": 130,
-      "num": "130",
+      "id": 131,
+      "num": "131",
       "name": "Lapras",
       "img": "http://www.serebii.net/pokemongo/pokemon/131.png",
       "height": "2.49 m",
@@ -1625,8 +1638,8 @@
       "spawn_time": "08:59"
     },
     {
-      "id": 131,
-      "num": "131",
+      "id": 132,
+      "num": "132",
       "name": "Ditto",
       "img": "http://www.serebii.net/pokemongo/pokemon/132.png",
       "height": "0.30 m",
@@ -1637,8 +1650,8 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 132,
-      "num": "132",
+      "id": 133,
+      "num": "133",
       "name": "Eevee",
       "img": "http://www.serebii.net/pokemongo/pokemon/133.png",
       "height": "0.30 m",
@@ -1650,8 +1663,8 @@
       "spawn_time": "05:32"
     },
     {
-      "id": 133,
-      "num": "133",
+      "id": 134,
+      "num": "134",
       "name": "Vaporeon",
       "img": "http://www.serebii.net/pokemongo/pokemon/134.png",
       "height": "0.99 m",
@@ -1662,8 +1675,8 @@
       "spawn_time": "10:54"
     },
     {
-      "id": 134,
-      "num": "134",
+      "id": 135,
+      "num": "135",
       "name": "Jolteon",
       "img": "http://www.serebii.net/pokemongo/pokemon/135.png",
       "height": "0.79 m",
@@ -1674,8 +1687,8 @@
       "spawn_time": "02:30"
     },
     {
-      "id": 135,
-      "num": "135",
+      "id": 136,
+      "num": "136",
       "name": "Flareon",
       "img": "http://www.serebii.net/pokemongo/pokemon/136.png",
       "height": "0.89 m",
@@ -1686,8 +1699,8 @@
       "spawn_time": "07:02"
     },
     {
-      "id": 136,
-      "num": "136",
+      "id": 137,
+      "num": "137",
       "name": "Porygon",
       "img": "http://www.serebii.net/pokemongo/pokemon/137.png",
       "height": "0.79 m",
@@ -1698,8 +1711,8 @@
       "spawn_time": "02:49"
     },
     {
-      "id": 137,
-      "num": "137",
+      "id": 138,
+      "num": "138",
       "name": "Omanyte",
       "img": "http://www.serebii.net/pokemongo/pokemon/138.png",
       "height": "0.41 m",
@@ -1711,8 +1724,8 @@
       "spawn_time": "10:23"
     },
     {
-      "id": 138,
-      "num": "138",
+      "id": 139,
+      "num": "139",
       "name": "Omastar",
       "img": "http://www.serebii.net/pokemongo/pokemon/139.png",
       "height": "0.99 m",
@@ -1723,8 +1736,33 @@
       "spawn_time": "05:04"
     },
     {
-      "id": 139,
-      "num": "139",
+      "id": 140,
+      "num": "140",
+      "name": "Kabuto",
+      "img": "http://www.serebii.net/pokemongo/pokemon/140.png",
+      "height": "0.51 m",
+      "weight": "11.5 kg",
+      "candy": "Kabuto Candy",
+      "candy_count": 50,
+      "egg": "10 km",
+      "avg_spawns": 10,
+      "spawn_time": "00:05"
+    },
+    {
+      "id": 141,
+      "num": "141",
+      "name": "Kabutops",
+      "img": "http://www.serebii.net/pokemongo/pokemon/141.png",
+      "height": "1.30 m",
+      "weight": "40.5 kg",
+      "candy": "Kabuto Candy",
+      "egg": "Not in Eggs",
+      "avg_spawns": 0.32,
+      "spawn_time": "23:40"
+    },
+    {
+      "id": 142,
+      "num": "142",
       "name": "Aerodactyl",
       "img": "http://www.serebii.net/pokemongo/pokemon/142.png",
       "height": "1.80 m",
@@ -1735,8 +1773,8 @@
       "spawn_time": "23:40"
     },
     {
-      "id": 140,
-      "num": "140",
+      "id": 143,
+      "num": "143",
       "name": "Snorlax",
       "img": "http://www.serebii.net/pokemongo/pokemon/143.png",
       "height": "2.11 m",
@@ -1747,8 +1785,8 @@
       "spawn_time": "23:40"
     },
     {
-      "id": 141,
-      "num": "141",
+      "id": 144,
+      "num": "144",
       "name": "Articuno",
       "img": "http://www.serebii.net/pokemongo/pokemon/144.png",
       "height": "1.70 m",
@@ -1759,8 +1797,8 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 142,
-      "num": "142",
+      "id": 145,
+      "num": "145",
       "name": "Zapdos",
       "img": "http://www.serebii.net/pokemongo/pokemon/145.png",
       "height": "1.60 m",
@@ -1771,8 +1809,8 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 143,
-      "num": "143",
+      "id": 146,
+      "num": "146",
       "name": "Moltres",
       "img": "http://www.serebii.net/pokemongo/pokemon/146.png",
       "height": "2.01 m",
@@ -1783,8 +1821,8 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 144,
-      "num": "144",
+      "id": 147,
+      "num": "147",
       "name": "Dratini",
       "img": "http://www.serebii.net/pokemongo/pokemon/147.png",
       "height": "1.80 m",
@@ -1796,8 +1834,8 @@
       "spawn_time": "06:41"
     },
     {
-      "id": 145,
-      "num": "145",
+      "id": 148,
+      "num": "148",
       "name": "Dragonair",
       "img": "http://www.serebii.net/pokemongo/pokemon/148.png",
       "height": "3.99 m",
@@ -1809,8 +1847,8 @@
       "spawn_time": "11:57"
     },
     {
-      "id": 146,
-      "num": "146",
+      "id": 149,
+      "num": "149",
       "name": "Dragonite",
       "img": "http://www.serebii.net/pokemongo/pokemon/149.png",
       "height": "2.21 m",
@@ -1821,8 +1859,8 @@
       "spawn_time": "23:38"
     },
     {
-      "id": 147,
-      "num": "147",
+      "id": 150,
+      "num": "150",
       "name": "Mewtwo",
       "img": "http://www.serebii.net/pokemongo/pokemon/150.png",
       "height": "2.01 m",
@@ -1833,8 +1871,8 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 148,
-      "num": "148",
+      "id": 151,
+      "num": "151",
       "name": "Mew",
       "img": "http://www.serebii.net/pokemongo/pokemon/151.png",
       "height": "0.41 m",
@@ -1843,19 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": 149,
-      "num": "149",
-      "name": "simipour",
-      "img": "https://www.serebii.net/pokemongo/pokemon/516.png",
-      "height": "1 m",
-      "weight": "29 kg",
-      "candy": "",
-      "candy_count": "",
-      "egg": "",
-      "avg_spawns": "",
-      "spawn_time": ""
     }
   ]
 }
