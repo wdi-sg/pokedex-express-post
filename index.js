@@ -51,34 +51,143 @@ app.use(express.urlencoded({
 
  //if user does not have input
 
- // at the root route (GET request) / display a list of all the pokemons in the pokedex
+
 app.get('/', (request, response) => {
 
+    // Add a "Sort by name" button to the homepage (/ route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
+  var sortButton = `<form action="/" name="sort" method="get">
+                      <select name="sortby">
+                        <option value="name">Name</option>
+                        <option value="id">ID</option>
+                        <option value="height">Height</option>
+                        <option value="weight">Weight</option>
+                      </select>
+                      <input type="submit">
+                    </form>`;
+
   jsonfile.readFile(FILE, (err, obj) => {
+ // at the root route (GET request) / display a list of all the pokemons in the pokedex
+    // var displayAll="";
 
-    var displayAll="";
+    // for( let i=0; i<obj.pokemon.length; i++ ){
 
-    for( let i=0; i<obj.pokemon.length; i++ ){
+    //   // console.log(i);
 
-      // console.log(i);
+    //     let displayPokemon =  
+    //       `<p>${obj.pokemon[i].name}</p>
+    //       <p>${obj.pokemon[i].id}</p>
+    //       <img src="${obj.pokemon[i].img}">`;
 
-        let displayPokemon =  
-          `<p>${obj.pokemon[i].name}</p>
-          <p>${obj.pokemon[i].id}</p>
-          <img src="${obj.pokemon[i].img}">`;
+    //     displayAll = displayAll + displayPokemon;
 
-        displayAll = displayAll + displayPokemon;
+    // } 
+    let pokemonList = obj.pokemon;
+    var sortedPokemon = "";
 
-    } 
+    switch (request.query.sort) {
+              case "name":
+                  pokemonList.sort((name1, name2) => {
+                      if (name1.name > name2.name) return 1;
+                      if (name1.name < name2.name) return -1;
+                  });
+                  break;
+
+              case "id":
+                  pokemonList.sort((num1, num2) => {
+                      if (num1.id > num2.id) return 1;
+                      if (num1.id < num2.id) return -1;
+                  });
+                  break;
+
+              case "height":
+                  pokemonList.sort((height1, height2) => {
+                      if (parseFloat(height1.height) > parseFloat(height2.height)) return 1;
+                      if (parseFloat(height1.height) < parseFloat(height2.height)) return -1;
+                  });
+                  break;
+
+              case "weight":
+                  pokemonList.sort((weight1, weight2) => {
+                      if (parseFloat(weight1.weight) > parseFloat(weight2.weight)) return 1;
+                      if (parseFloat(weight1.weight) < parseFloat(weight2.weight)) return -1;
+                  });
+                  break;
+                  }
+
+          for (let i = 0; i < obj.pokemon.length; i++) {
+              let listPokemon =  
+                  `<p>${pokemonList[i].name}</p>
+                  <p>${pokemonList[i].id}</p>
+                  <img src="${pokemonList[i].img}">`;
+                sortedPokemon = sortedPokemon + listPokemon;
+          };
     //can't set headers after they are sent!!
     response.send(`<html>
                     <body>
                       <p>Welcome to the Pokedex!</p>
-                      ${displayAll}
+                      <p>How do you want to sort your pokemon?</p>
+                      ${sortButton}
+                      ${sortedPokemon}
                     </body>
                   </html>`);
+    // console.log(sortButton);
   })
 });
+
+
+// app.get('/sortby?Sort+Pokemon%21=name', (request, response) => {
+
+//   jsonfile.readFile(FILE, (err, obj) => {
+
+//     let pokemonList = obj.pokemon;
+//     var sortedPokemon = "";
+
+//     switch (request.query.sort) {
+//               case "name":
+//                   pokemonList.sort((name1, name2) => {
+//                       if (name1.name > name2.name) return 1;
+//                       if (name1.name < name2.name) return -1;
+//                   });
+//                   break;
+
+//               case "id":
+//                   pokemonList.sort((num1, num2) => {
+//                       if (num1.id > num2.id) return 1;
+//                       if (num1.id < num2.id) return -1;
+//                   });
+//                   break;
+
+//               case "height":
+//                   pokemonList.sort((height1, height2) => {
+//                       if (parseFloat(height1.height) > parseFloat(height2.height)) return 1;
+//                       if (parseFloat(height1.height) < parseFloat(height2.height)) return -1;
+//                   });
+//                   break;
+
+//               case "weight":
+//                   pokemonList.sort((weight1, weight2) => {
+//                       if (parseFloat(weight1.weight) > parseFloat(weight2.weight)) return 1;
+//                       if (parseFloat(weight1.weight) < parseFloat(weight2.weight)) return -1;
+//                   });
+//                   break;
+//                   }
+
+//           for (let i = 0; i < obj.pokemon.length; i++) {
+//               let listPokemon =  
+//                   `<p>${pokemonList[i].name}</p>
+//                   <p>${pokemonList[i].id}</p>
+//                   <img src="${pokemonList[i].img}">`;
+//                 sortedPokemon = sortedPokemon + listPokemon;
+//           };
+//           response.send(`<html>
+//                           <body>
+//                             <p>Welcome to the Pokedex!</p>
+//                             <p>your results are as follows:</p>
+//                             ${sortedPokemon}
+//                           </body>
+//                         </html>`);
+//   })
+// });
 
 //gives basic data for user
 app.get('/:id', (request, response) => {
