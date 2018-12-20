@@ -10,13 +10,10 @@ app.use(express.urlencoded({
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
-
 // this tells express where to look for the view files
 app.set('views', __dirname + '/views');
-
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
-
 
 app.get('pokemon/:id/edit', (request, response) => {
 
@@ -94,14 +91,9 @@ app.post('/pokemon', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
         let pokemon = obj.pokemon;
-        let newObj = {
-            "id": parseInt(request.body.id),
-            "num": request.body.num,
-            "name": request.body.name,
-            "img": request.body.img,
-            "height": request.body.height + ' m',
-            "weight":request.body.weight + ' kg'
-            };
+        let newObj = new newPokemon(request.body.id, request.body.num, request.body.name, request.body.img, request.body.height, request.body.weight);
+
+            console.log("value of newObj " + newObj);
 
         response.send(`
             New id is  ${newObj.id}<br>
@@ -121,14 +113,14 @@ app.post('/pokemon', (request, response) => {
     });
 });
 
-// function newPokemon (id,num,name,img,height,weight) {
-//     this.id = id;
-//     this.num = num;
-//     this.name = name;
-//     this.img = img;
-//     this.height = height;
-//     this.weight = weight;
-// };
+function newPokemon (newId, newNum, newName, newImg, newHeight,newWeight) {
+    this.id = newId;
+    this.num = newNum;
+    this.name = newName;
+    this.img = newImg;
+    this.height = newHeight;
+    this.weight = newWeight;
+};
 
 /**
  * ===================================
