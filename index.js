@@ -6,6 +6,7 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const pokedex = 'pokedex.json';
+const originalPokedex = 'original_pokedex.json';
 const app = express();
 const Request = require("request");
 const methodOverride = require('method-override')
@@ -31,6 +32,7 @@ app.set('view engine', 'jsx');
 //REACT REFACTORING
 //homepage. display all with sort
 app.get('/', (request, response) => {
+
     jsonfile.readFile(pokedex, (err, obj) => {
 
         let pokedexAndSort = {};
@@ -49,6 +51,21 @@ app.get('/pokemon', (request, response) => {
 
         response.render("pokemons", pokedexAndSort);
     });
+});
+
+//Reset Pokedex
+app.post('/pokemon', (request, response) => {
+    if (request.body.reset) {
+        jsonfile.readFile(originalPokedex, (err, obj) => {
+            jsonfile.writeFile(pokedex, obj, (err) => {
+                console.log(err);
+                let pokedexAndSort = {};
+                pokedexAndSort.pokedex = obj.pokemon;
+                pokedexAndSort.sortby = "num";
+                response.render("pokemons", pokedexAndSort);
+            });
+        });
+    };
 });
 
 //new pokemon form page

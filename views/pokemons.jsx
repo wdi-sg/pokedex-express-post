@@ -75,6 +75,10 @@ class Pokemons extends React.Component {
                     <form name='create' method="get" action="/pokemon/new">
                             <input value="Add New Pokemon"  type='submit' className="btn btn-primary"/>
                     </form>
+                    <form name='reset' method="POST" action="/pokemon">
+                        <input type="" name="reset" value={true} style={{display: 'none'}}/>
+                        <input value="Reset Pokedex"  type='submit' className="btn btn-primary"/>
+                    </form>
                     <div className="row">
                             {display}
                     </div>
