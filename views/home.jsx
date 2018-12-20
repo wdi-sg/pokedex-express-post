@@ -5,8 +5,8 @@ class Home extends React.Component {
     // console.log("pokemon");
     // console.log(this.props.pokemon);
 
-    const allPokemon = this.props.pokemon.map ( eachPoke => {
-        return <li> {eachPoke} </li>
+    const allPokemon = this.props.pokename.map ((eachPoke, index) => {
+        return <li key={index}> {eachPoke} </li>
     })
     return (
       <html>
@@ -21,7 +21,7 @@ class Home extends React.Component {
                     <input type="submit"></input>
             </form>
             <div>
-                <ul>
+                <ul >
                 {allPokemon}
                 </ul>
             </div>

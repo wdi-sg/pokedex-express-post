@@ -51,16 +51,13 @@ app.get('/', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
     let pokemon = obj.pokemon;
-    let allpokemon = {pokemon:[]};
-        for (let i=0; i < pokemon.length; i++) {
-            allpokemon.pokemon.push(pokemon[i].name);
-         }
-         if (request.query.sortby === "name") {
-            allpokemon.pokemon.sort();
-         }
+    let allNames = new getAllPokemonByName(pokemon);
+        if(request.query.sortby === "name" ) {
+            byName.sort();
+        }
 
-         response.render("home", allpokemon);
-         // console.log(allpokemon);
+        response.render("home", {pokename:allNames});
+
            jsonfile.writeFile(file, obj, (err) => {
 
             console.log(err);
@@ -69,22 +66,8 @@ app.get('/', (request, response) => {
 });
 
 app.get('/pokemon/new', (request, response) => {
-        let form = `
-        <html>
-        <body>
-        <form action="/pokemon" method="POST">
-            Id: <input name="id" placeholder="enter id"><br>
-            Name: <input name="name" placeholder="enter name"><br>
-            Number:<input name="num" placeholder="enter number"><br>
-            Image:<input name="img" placeholder="enter image"><br>
-            Height:<input name="height" placeholder="enter height in metre"><br>
-            Wight:<input name="weight" placeholder="enter weight in kg"><br>
-        <button type="submit"/>Submit</button>
-        </form>
-        </body>
-        </html>`;
 
-        response.send(form);
+        response.render('new');
 });
 
 app.post('/pokemon', (request, response) => {
@@ -113,6 +96,15 @@ app.post('/pokemon', (request, response) => {
     });
 });
 
+function getAllPokemonByName (pokemon){
+    let pokemonName = [];
+    for(let i = 0; i < pokemon.length; i++) {
+        pokemonName.push(pokemon[i].name);
+    }return pokemonName;
+}
+
+
+
 function newPokemon (newId, newNum, newName, newImg, newHeight,newWeight) {
     this.id = newId;
     this.num = newNum;
@@ -122,9 +114,5 @@ function newPokemon (newId, newNum, newName, newImg, newHeight,newWeight) {
     this.weight = newWeight;
 };
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
