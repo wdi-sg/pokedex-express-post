@@ -11,6 +11,23 @@ body{
 header{
   width: 100%;
 }
+tr{
+	line-height: 2;
+}
+table{
+  width: 50%;
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: left;
+  vertical-align: middle;
+}
+a{
+	margin:0;
+	padding:0;
+	text-decoration: none;
+	color:inherit;
+}
 ul{
   background-color: rgb(50,50,50);
   margin: 0;
@@ -50,12 +67,19 @@ img{
   width: 100%;
   border-radius: 5px;
 }
-
 form{
 	margin-top: 2%;
 	margin-bottom: 1%;
 }
-
+input{
+	display: block;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+h4{
+	margin-bottom: -5px;
+	font-family: "Verdana", sans-serif;
+}
 #home{
   border-bottom: 5px solid red;
 }

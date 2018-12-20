@@ -3,11 +3,14 @@ var React = require('react');
 class Homepage extends React.Component {
   render() {
     const pokemonDivs = this.props.pokemon.map(pokemon =>{
+        var pokemonLink = "/pokemon/" + pokemon.num;
         return (
                 <div>
-                    <img src={pokemon.img}/>
-                    <p>{pokemon[this.props.sortMethod]}</p>
-                    <h1>{pokemon.name}</h1>
+                    <a href={pokemonLink}>
+                        <img src={pokemon.img}/>
+                        <p>{pokemon[this.props.sortMethod]}</p>
+                        <h1>{pokemon.name}</h1>
+                    </a>
                 </div>
             )
     });
@@ -16,7 +19,7 @@ class Homepage extends React.Component {
         <html>
         <head>
             <title>Angrylobster's Pokedex</title>
-            <link rel="stylesheet" type="text/css" href="style.css"/>
+            <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <header>
             <ul>

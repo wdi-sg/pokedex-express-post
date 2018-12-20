@@ -3,11 +3,20 @@ var React = require('react');
 class Editpage extends React.Component {
   render() {
     let formAction = "/pokemon/" + this.props.id + "?_method=PUT"
+    const pokemonKeys = ["id", "num", "name", "img", "height", "weight", "candy", "candy_count", "egg", "avg_spawns", "spawn_time"];
+    const pokemonInputs = pokemonKeys.map(key => {
+        return (
+            <React.Fragment>
+                <h4>{key}</h4>
+                <input type='text' name={key} placeholder={key.toUpperCase()} value={this.props[key]}/>
+            </React.Fragment>
+        )
+    });
     return (
         <html>
         <head>
             <title>Angrylobster's Pokedex</title>
-            <link rel="stylesheet" type="text/css" href="style.css"/>
+            <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <header>
             <ul>
@@ -18,17 +27,18 @@ class Editpage extends React.Component {
         </header>
 
         <body>
-            Edit the pokemon {this.props.name}<br/>
+            <div>
+                <img src={this.props.img}/>
+                <h1>{this.props.name}</h1>
+            </div>
+
             <form method='POST' action={formAction}>
-                <input type='text' name='name' placeholder='Name' value={this.props.name}/><br/>
-                <input type='text' name='img' placeholder='Image URL' value={this.props.img}/><br/>
-                <input type='text' name='height' placeholder='Height' value={this.props.height}/><br/>
-                <input type='text' name='weight' placeholder='Weight' value={this.props.weight}/><br/>
+                {pokemonInputs}
                 <input type='submit' value='submit'/>
             </form>
         </body>
         </html>
-    );
+    )
   }
 }
 
