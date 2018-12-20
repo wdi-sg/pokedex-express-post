@@ -50,8 +50,34 @@ app.use(express.urlencoded({
 // Form submissions with POST cannot be bookmarked
 
  //if user does not have input
+
+ // at the root route (GET request) / display a list of all the pokemons in the pokedex
 app.get('/', (request, response) => {
-  response.send("Welcome to the Pokedex!");
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    var displayAll="";
+
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      // console.log(i);
+
+        let displayPokemon =  
+          `<p>${obj.pokemon[i].name}</p>
+          <p>${obj.pokemon[i].id}</p>
+          <img src="${obj.pokemon[i].img}">`;
+
+        displayAll = displayAll + displayPokemon;
+
+    } 
+    //can't set headers after they are sent!!
+    response.send(`<html>
+                    <body>
+                      <p>Welcome to the Pokedex!</p>
+                      ${displayAll}
+                    </body>
+                  </html>`);
+  })
 });
 
 //gives basic data for user
@@ -100,10 +126,10 @@ app.get('/pokemon/new', (request, response) => {
 
       let form =`<html>
                   <body>
-                    <form action="/pokemon" method="post">
-                      <input id="id" type="text" name="id" placeholder="Please enter ID Number.">
-                      <input id="num" type="text" name="num" placeholder="Please enter a number.">
-                      <input id="name" type="text" name="name" placeholder="Please enter a name.">
+                    <form action="/pokemon" method="post">`+
+                      // <input id="id" type="text" name="id" placeholder="Please enter ID Number.">
+                      // <input id="num" type="text" name="num" placeholder="Please enter a number.">
+                      `<input id="name" type="text" name="name" placeholder="Please enter a name.">
                       <input id="img" type="text" name="img" placeholder="What is the img src url?">
                       <input id="height" type="text" name="height" placeholder="What is the pokemon's height?">
                       <input id="weight" type="text" name="weight" placeholder="What is the pokemon's weight?">
@@ -124,8 +150,8 @@ app.post('/pokemon/', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
 
     newPokemon = {
-            "id":  request.body.id,
-            "num": request.body.num,
+            "id":  obj.pokemon.length+1,
+            "num": obj.pokemon.length+1,
             "name": request.body.name,
             "img": request.body.img,
             "height": request.body.height,
