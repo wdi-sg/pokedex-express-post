@@ -19,6 +19,18 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
 /**
  * ===================================
  * Routes
@@ -32,12 +44,12 @@ app.get('/pokemon/new', (request, response) => {
     "<body>"+
     "<h1>Create a new Pokemon:</h1><br/>"+
         "<form method='POST' action='/pokemon'>"+
-        "ID: <input type='text' name='id'><br />"+
-        "Num: <input type='text' name='num'><br />"+
-        "Name: <input type='text' name='name'><br />"+
-        "IMG: <input type='text' value='insert image link' name='img'></br />"+
-        "Height: <input type='text' name='height'><br />"+
-        "Weight: <input type='text' name='weight'><br />"+
+        "ID: <input name='id'><br />"+
+        "Num: <input name='num'><br />"+
+        "Name: <input name='name'><br />"+
+        "IMG: <input placeholder='insert image link' name='img'></br />"+
+        "Height: <input name='height'><br />"+
+        "Weight: <input name='weight'><br />"+
         "<input type='submit'/>"+
     "</body>"+
     "</html>";
@@ -122,7 +134,7 @@ app.get('/', (request, response) => {
         // names += "- " + obj.pokemon[i].name + "<br />";
         names += `- ${obj.pokemon[i].name} <br />`;
     }
-    console.log(names);
+    // console.log(names);
 
     response.send(names);
 
@@ -138,6 +150,15 @@ app.get('/', (request, response) => {
     // response.send(sortByForm);
 
 });
+
+app.get('/pokemon/:id/edit', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('home')
+})
+
+app.put('/pokemon/:id', (req, res) => {
+    res.send("hihiihihiihhi")
+})
 
 /**
  * ===================================
