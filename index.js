@@ -157,7 +157,7 @@ app.get('/pokemon/type', (request, response) => {
 });
 
 app.post('/pokemon/addtype', (request, response) => {
-  let addType = request.body.poketype;
+  let addType = request.body.poketype.charAt(0).toUpperCase() + request.body.poketype.slice(1);
   let pokeName = request.body.pokename.charAt(0).toUpperCase() + request.body.pokename.slice(1);
   console.log(pokeName);
   jsonfile.readFile(FILE, (err, obj) => {
@@ -216,15 +216,37 @@ app.get('/pokemon/:id/edit', (request, response) => {
                 pokeObj.pokemon.push(obj.pokemon[n]);
             }
         }
-
         response.render('pokeedit', pokeObj);
     });
 });
 
-// app.get("/greet/:name/:lastname", (request, response) => {
-//   response.send("Hello " + request.params.name + " " + request.params.lastname)
-//   console.log(request);
-// });
+app.get('/pokemon/:id/detail', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeDetail = {};
+        pokeDetail.pokemon = [];
+        pokeDetail.input = parseInt(request.params.id);
+        for(let d = 0; d < obj.pokemon.length; d++){
+            if(parseInt(request.params.id) === obj.pokemon[d].id){
+                pokeDetail.pokemon.push(obj.pokemon[d]);
+            }
+        }
+    response.render('pokedetail', pokeDetail);
+    });
+});
+
+app.get('/pokemon/:type/typedetail', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeTDetail = {};
+        pokeTDetail.pokemon = [];
+        pokeTDetail.input = request.params.type;
+        for(let t = 0; t < obj.pokemon.length; t++){
+            if(request.params.type === obj.pokemon[t].type){
+                pokeTDetail.pokemon.push(obj.pokemon[t]);
+            }
+        }
+    response.render('poketypedetail', pokeTDetail);
+    });
+});
 
 /**
  * ===================================

@@ -11,7 +11,8 @@
       "candy_count": "25",
       "egg": "2 km",
       "avg_spawns": "69",
-      "spawn_time": "20:00"
+      "spawn_time": "20:00",
+      "type": "Grass"
     },
     {
       "id": 2,
@@ -24,7 +25,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 4.2,
-      "spawn_time": "07:00"
+      "spawn_time": "07:00",
+      "type": "Grass"
     },
     {
       "id": 3,
@@ -36,7 +38,8 @@
       "candy": "Bulbasaur Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.7,
-      "spawn_time": "11:30"
+      "spawn_time": "11:30",
+      "type": "Grass"
     },
     {
       "id": 4,
@@ -49,7 +52,8 @@
       "candy_count": 25,
       "egg": "2 km",
       "avg_spawns": 25.3,
-      "spawn_time": "08:45"
+      "spawn_time": "08:45",
+      "type": "Fire"
     },
     {
       "id": 5,
@@ -62,7 +66,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 1.2,
-      "spawn_time": "19:00"
+      "spawn_time": "19:00",
+      "type": "Fire"
     },
     {
       "id": 6,
@@ -74,7 +79,8 @@
       "candy": "Charmander Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.31,
-      "spawn_time": "13:34"
+      "spawn_time": "13:34",
+      "type": "Flying"
     },
     {
       "id": 7,
@@ -87,7 +93,8 @@
       "candy_count": 25,
       "egg": "2 km",
       "avg_spawns": 58,
-      "spawn_time": "04:25"
+      "spawn_time": "04:25",
+      "type": "Water"
     },
     {
       "id": 8,
@@ -100,7 +107,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 3.4,
-      "spawn_time": "07:02"
+      "spawn_time": "07:02",
+      "type": "Water"
     },
     {
       "id": 9,
@@ -112,7 +120,8 @@
       "candy": "Squirtle Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.67,
-      "spawn_time": "00:06"
+      "spawn_time": "00:06",
+      "type": "Water"
     },
     {
       "id": 10,
@@ -125,7 +134,8 @@
       "candy_count": 12,
       "egg": "2 km",
       "avg_spawns": 303.2,
-      "spawn_time": "16:35"
+      "spawn_time": "16:35",
+      "type": "Bug"
     },
     {
       "id": 11,
@@ -138,7 +148,8 @@
       "candy_count": 50,
       "egg": "Not in Eggs",
       "avg_spawns": 18.7,
-      "spawn_time": "02:11"
+      "spawn_time": "02:11",
+      "type": "Bug"
     },
     {
       "id": 12,
@@ -150,7 +161,8 @@
       "candy": "Caterpie Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2.2,
-      "spawn_time": "05:23"
+      "spawn_time": "05:23",
+      "type": "Flying"
     },
     {
       "id": 13,
@@ -163,7 +175,8 @@
       "candy_count": 12,
       "egg": "2 km",
       "avg_spawns": 712,
-      "spawn_time": "02:21"
+      "spawn_time": "02:21",
+      "type": "Bug"
     },
     {
       "id": 14,
@@ -176,7 +189,8 @@
       "candy_count": 50,
       "egg": "Not in Eggs",
       "avg_spawns": 44,
-      "spawn_time": "02:30"
+      "spawn_time": "02:30",
+      "type": "Bug"
     },
     {
       "id": 15,
@@ -188,7 +202,8 @@
       "candy": "Weedle Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 5.1,
-      "spawn_time": "04:50"
+      "spawn_time": "04:50",
+      "type": "Flying"
     },
     {
       "id": 16,
@@ -201,7 +216,8 @@
       "candy_count": 12,
       "egg": "2 km",
       "avg_spawns": 1.598,
-      "spawn_time": "01:34"
+      "spawn_time": "01:34",
+      "type": "Flying"
     },
     {
       "id": 17,
@@ -214,7 +230,8 @@
       "candy_count": 50,
       "egg": "Not in Eggs",
       "avg_spawns": 102,
-      "spawn_time": "01:30"
+      "spawn_time": "01:30",
+      "type": "Flying"
     },
     {
       "id": 18,
@@ -226,7 +243,8 @@
       "candy": "Pidgey Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 13,
-      "spawn_time": "01:50"
+      "spawn_time": "01:50",
+      "type": "Flying"
     },
     {
       "id": 19,
@@ -239,7 +257,8 @@
       "candy_count": 25,
       "egg": "2 km",
       "avg_spawns": 1.305,
-      "spawn_time": "01:55"
+      "spawn_time": "01:55",
+      "type": "Normal"
     },
     {
       "id": 20,
@@ -251,7 +270,8 @@
       "candy": "Rattata Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 41,
-      "spawn_time": "01:56"
+      "spawn_time": "01:56",
+      "type": "Normal"
     },
     {
       "id": 21,
@@ -264,7 +284,8 @@
       "candy_count": 50,
       "egg": "2 km",
       "avg_spawns": 473,
-      "spawn_time": "12:25"
+      "spawn_time": "12:25",
+      "type": "Flying"
     },
     {
       "id": 22,
@@ -276,7 +297,8 @@
       "candy": "Spearow Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 15,
-      "spawn_time": "01:11"
+      "spawn_time": "01:11",
+      "type": "Flying"
     },
     {
       "id": 23,
@@ -289,7 +311,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 227,
-      "spawn_time": "12:20"
+      "spawn_time": "12:20",
+      "type": "Poison"
     },
     {
       "id": 24,
@@ -301,7 +324,8 @@
       "candy": "Ekans Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 7.2,
-      "spawn_time": "01:50"
+      "spawn_time": "01:50",
+      "type": "Poison"
     },
     {
       "id": 25,
@@ -314,7 +338,8 @@
       "candy_count": 50,
       "egg": "2 km",
       "avg_spawns": 21,
-      "spawn_time": "04:00"
+      "spawn_time": "04:00",
+      "type": "Electric"
     },
     {
       "id": 26,
@@ -326,7 +351,8 @@
       "candy": "Pikachu Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.76,
-      "spawn_time": "23:58"
+      "spawn_time": "23:58",
+      "type": "Electric"
     },
     {
       "id": 27,
@@ -339,7 +365,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 111,
-      "spawn_time": "01:58"
+      "spawn_time": "01:58",
+      "type": "Ground"
     },
     {
       "id": 28,
@@ -351,7 +378,8 @@
       "candy": "Sandshrew Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 3.7,
-      "spawn_time": "12:34"
+      "spawn_time": "12:34",
+      "type": "Ground"
     },
     {
       "id": 29,
@@ -364,7 +392,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 138,
-      "spawn_time": "01:51"
+      "spawn_time": "01:51",
+      "type": "Fighting"
     },
     {
       "id": 30,
@@ -377,7 +406,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 8.8,
-      "spawn_time": "07:22"
+      "spawn_time": "07:22",
+      "type": "Fighting"
     },
     {
       "id": 31,
@@ -389,7 +419,8 @@
       "candy": "Nidoran ♀ (Female) Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.2,
-      "spawn_time": "12:35"
+      "spawn_time": "12:35",
+      "type": "Fighting"
     },
     {
       "id": 32,
@@ -402,7 +433,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 131,
-      "spawn_time": "01:12"
+      "spawn_time": "01:12",
+      "type": "Fighting"
     },
     {
       "id": 33,
@@ -415,7 +447,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 8.3,
-      "spawn_time": "09:02"
+      "spawn_time": "09:02",
+      "type": "Fighting"
     },
     {
       "id": 34,
@@ -427,7 +460,8 @@
       "candy": "Nidoran ♂ (Male) Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.7,
-      "spawn_time": "12:16"
+      "spawn_time": "12:16",
+      "type": "Fighting"
     },
     {
       "id": 35,
@@ -440,7 +474,8 @@
       "candy_count": 50,
       "egg": "2 km",
       "avg_spawns": 92,
-      "spawn_time": "03:30"
+      "spawn_time": "03:30",
+      "type": "Normal"
     },
     {
       "id": 36,
@@ -452,7 +487,8 @@
       "candy": "Clefairy Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.2,
-      "spawn_time": "03:29"
+      "spawn_time": "03:29",
+      "type": "Normal"
     },
     {
       "id": 37,
@@ -465,7 +501,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 22,
-      "spawn_time": "13:43"
+      "spawn_time": "13:43",
+      "type": "Fire"
     },
     {
       "id": 38,
@@ -477,7 +514,8 @@
       "candy": "Vulpix Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.77,
-      "spawn_time": "01:32"
+      "spawn_time": "01:32",
+      "type": "Fire"
     },
     {
       "id": 39,
@@ -490,7 +528,8 @@
       "candy_count": 50,
       "egg": "2 km",
       "avg_spawns": 39,
-      "spawn_time": "08:46"
+      "spawn_time": "08:46",
+      "type": "Normal"
     },
     {
       "id": 40,
@@ -502,7 +541,8 @@
       "candy": "Jigglypuff Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.8,
-      "spawn_time": "12:28"
+      "spawn_time": "12:28",
+      "type": "Normal"
     },
     {
       "id": 41,
@@ -515,7 +555,8 @@
       "candy_count": 50,
       "egg": "2 km",
       "avg_spawns": 652,
-      "spawn_time": "12:28"
+      "spawn_time": "12:28",
+      "type": "Poison"
     },
     {
       "id": 42,
@@ -527,7 +568,8 @@
       "candy": "Zubat Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 42,
-      "spawn_time": "02:15"
+      "spawn_time": "02:15",
+      "type": "Psychic"
     },
     {
       "id": 43,
@@ -540,7 +582,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 102,
-      "spawn_time": "03:58"
+      "spawn_time": "03:58",
+      "type": "Grass"
     },
     {
       "id": 44,
@@ -553,7 +596,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 6.4,
-      "spawn_time": "11:33"
+      "spawn_time": "11:33",
+      "type": "Grass"
     },
     {
       "id": 45,
@@ -565,7 +609,8 @@
       "candy": "Oddish Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.97,
-      "spawn_time": "23:58"
+      "spawn_time": "23:58",
+      "type": "Grass"
     },
     {
       "id": 46,
@@ -578,7 +623,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 236,
-      "spawn_time": "01:42"
+      "spawn_time": "01:42",
+      "type": "Bug"
     },
     {
       "id": 47,
@@ -590,7 +636,8 @@
       "candy": "Paras Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 7.4,
-      "spawn_time": "01:22"
+      "spawn_time": "01:22",
+      "type": "Bug"
     },
     {
       "id": 48,
@@ -603,7 +650,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 228,
-      "spawn_time": "02:31"
+      "spawn_time": "02:31",
+      "type": "Bug"
     },
     {
       "id": 49,
@@ -615,7 +663,8 @@
       "candy": "Venonat Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 7.2,
-      "spawn_time": "23:40"
+      "spawn_time": "23:40",
+      "type": "Bug"
     },
     {
       "id": 50,
@@ -628,7 +677,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 40,
-      "spawn_time": "02:22"
+      "spawn_time": "02:22",
+      "type": "Ground"
     },
     {
       "id": 51,
@@ -640,7 +690,8 @@
       "candy": "Dugtrio",
       "egg": "Not in Eggs",
       "avg_spawns": 1.4,
-      "spawn_time": "12:37"
+      "spawn_time": "12:37",
+      "type": "Ground"
     },
     {
       "id": 52,
@@ -653,7 +704,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 86,
-      "spawn_time": "02:54"
+      "spawn_time": "02:54",
+      "type": "Normal"
     },
     {
       "id": 53,
@@ -665,7 +717,8 @@
       "candy": "Meowth Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2.2,
-      "spawn_time": "02:44"
+      "spawn_time": "02:44",
+      "type": "Normal"
     },
     {
       "id": 54,
@@ -678,7 +731,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 254,
-      "spawn_time": "03:41"
+      "spawn_time": "03:41",
+      "type": "Water"
     },
     {
       "id": 55,
@@ -690,7 +744,8 @@
       "candy": "Psyduck Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 8.7,
-      "spawn_time": "23:06"
+      "spawn_time": "23:06",
+      "type": "Water"
     },
     {
       "id": 56,
@@ -703,7 +758,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 92,
-      "spawn_time": "12:52"
+      "spawn_time": "12:52",
+      "type": "Fighting"
     },
     {
       "id": 57,
@@ -715,7 +771,8 @@
       "candy": "Mankey Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 3.1,
-      "spawn_time": "12:33"
+      "spawn_time": "12:33",
+      "type": "Fighting"
     },
     {
       "id": 58,
@@ -728,7 +785,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 92,
-      "spawn_time": "03:57"
+      "spawn_time": "03:57",
+      "type": "Fire"
     },
     {
       "id": 59,
@@ -740,7 +798,8 @@
       "candy": "Growlithe Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.7,
-      "spawn_time": "03:11"
+      "spawn_time": "03:11",
+      "type": "Fire"
     },
     {
       "id": 60,
@@ -753,7 +812,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 219,
-      "spawn_time": "03:40"
+      "spawn_time": "03:40",
+      "type": "Water"
     },
     {
       "id": 61,
@@ -766,7 +826,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 13,
-      "spawn_time": "09:14"
+      "spawn_time": "09:14",
+      "type": "Water"
     },
     {
       "id": 62,
@@ -778,7 +839,8 @@
       "candy": "Poliwag Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.1,
-      "spawn_time": "01:32"
+      "spawn_time": "01:32",
+      "type": "Fighting"
     },
     {
       "id": 63,
@@ -791,7 +853,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 42,
-      "spawn_time": "04:30"
+      "spawn_time": "04:30",
+      "type": "Psychic"
     },
     {
       "id": 64,
@@ -804,7 +867,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 2.7,
-      "spawn_time": "11:25"
+      "spawn_time": "11:25",
+      "type": "Psychic"
     },
     {
       "id": 65,
@@ -816,7 +880,8 @@
       "candy": "Abra Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.73,
-      "spawn_time": "12:33"
+      "spawn_time": "12:33",
+      "type": "Psychic"
     },
     {
       "id": 66,
@@ -829,7 +894,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 49,
-      "spawn_time": "01:55"
+      "spawn_time": "01:55",
+      "type": "Fighting"
     },
     {
       "id": 67,
@@ -842,7 +908,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 3.4,
-      "spawn_time": "10:32"
+      "spawn_time": "10:32",
+      "type": "Fighting"
     },
     {
       "id": 68,
@@ -854,7 +921,8 @@
       "candy": "Machop Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.68,
-      "spawn_time": "02:55"
+      "spawn_time": "02:55",
+      "type": "Fighting"
     },
     {
       "id": 69,
@@ -867,7 +935,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 115,
-      "spawn_time": "04:10"
+      "spawn_time": "04:10",
+      "type": "Grass"
     },
     {
       "id": 70,
@@ -880,7 +949,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 7.2,
-      "spawn_time": "09:45"
+      "spawn_time": "09:45",
+      "type": "Grass"
     },
     {
       "id": 71,
@@ -892,7 +962,8 @@
       "candy": "Bellsprout Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.59,
-      "spawn_time": "12:19"
+      "spawn_time": "12:19",
+      "type": "Grass"
     },
     {
       "id": 72,
@@ -905,7 +976,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 81,
-      "spawn_time": "03:20"
+      "spawn_time": "03:20",
+      "type": "Poison"
     },
     {
       "id": 73,
@@ -917,7 +989,8 @@
       "candy": "Tentacool Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 8.2,
-      "spawn_time": "23:36"
+      "spawn_time": "23:36",
+      "type": "Psychic"
     },
     {
       "id": 74,
@@ -930,7 +1003,8 @@
       "candy_count": 25,
       "egg": "2 km",
       "avg_spawns": 119,
-      "spawn_time": "12:40"
+      "spawn_time": "12:40",
+      "type": "Ground"
     },
     {
       "id": 75,
@@ -943,7 +1017,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 7.1,
-      "spawn_time": "04:53"
+      "spawn_time": "04:53",
+      "type": "Ground"
     },
     {
       "id": 76,
@@ -955,7 +1030,8 @@
       "candy": "Geodude Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.47,
-      "spawn_time": "12:16"
+      "spawn_time": "12:16",
+      "type": "Ground"
     },
     {
       "id": 77,
@@ -968,7 +1044,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 51,
-      "spawn_time": "02:50"
+      "spawn_time": "02:50",
+      "type": "Fire"
     },
     {
       "id": 78,
@@ -980,7 +1057,8 @@
       "candy": "Ponyta Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.1,
-      "spawn_time": "04:00"
+      "spawn_time": "04:00",
+      "type": "Fire"
     },
     {
       "id": 79,
@@ -993,7 +1071,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 105,
-      "spawn_time": "07:12"
+      "spawn_time": "07:12",
+      "type": "Psychic"
     },
     {
       "id": 80,
@@ -1005,7 +1084,8 @@
       "candy": "Slowpoke Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 3.6,
-      "spawn_time": "02:56"
+      "spawn_time": "02:56",
+      "type": "Psychic"
     },
     {
       "id": 81,
@@ -1018,7 +1098,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 71,
-      "spawn_time": "04:04"
+      "spawn_time": "04:04",
+      "type": "Electric"
     },
     {
       "id": 82,
@@ -1030,7 +1111,8 @@
       "candy": "Magnemite Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2.3,
-      "spawn_time": "15:25"
+      "spawn_time": "15:25",
+      "type": "Electric"
     },
     {
       "id": 83,
@@ -1042,7 +1124,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 2.12,
-      "spawn_time": "01:09"
+      "spawn_time": "01:09",
+      "type": "Electric"
     },
     {
       "id": 84,
@@ -1055,7 +1138,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 52,
-      "spawn_time": "05:10"
+      "spawn_time": "05:10",
+      "type": "Normal"
     },
     {
       "id": 85,
@@ -1067,7 +1151,8 @@
       "candy": "Doduo Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 22,
-      "spawn_time": "02:12"
+      "spawn_time": "02:12",
+      "type": "Normal"
     },
     {
       "id": 86,
@@ -1080,7 +1165,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 28,
-      "spawn_time": "06:46"
+      "spawn_time": "06:46",
+      "type": "Water"
     },
     {
       "id": 87,
@@ -1092,7 +1178,8 @@
       "candy": "Seel Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.3,
-      "spawn_time": "06:04"
+      "spawn_time": "06:04",
+      "type": "Water"
     },
     {
       "id": 88,
@@ -1105,7 +1192,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 5.2,
-      "spawn_time": "15:11"
+      "spawn_time": "15:11",
+      "type": "Poison"
     },
     {
       "id": 89,
@@ -1117,7 +1205,8 @@
       "candy": "Grimer Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.31,
-      "spawn_time": "01:28"
+      "spawn_time": "01:28",
+      "type": "Poison"
     },
     {
       "id": 90,
@@ -1130,7 +1219,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 52,
-      "spawn_time": "07:39"
+      "spawn_time": "07:39",
+      "type": "Water"
     },
     {
       "id": 91,
@@ -1142,7 +1232,8 @@
       "candy": "Shellder Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.5,
-      "spawn_time": "02:33"
+      "spawn_time": "02:33",
+      "type": "Water"
     },
     {
       "id": 92,
@@ -1155,7 +1246,8 @@
       "candy_count": 25,
       "egg": "5 km",
       "avg_spawns": 79,
-      "spawn_time": "04:21"
+      "spawn_time": "04:21",
+      "type": "Ghost"
     },
     {
       "id": 93,
@@ -1168,7 +1260,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 5.2,
-      "spawn_time": "00:10"
+      "spawn_time": "00:10",
+      "type": "Ghost"
     },
     {
       "id": 94,
@@ -1180,7 +1273,8 @@
       "candy": "Gastly Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.67,
-      "spawn_time": "03:55"
+      "spawn_time": "03:55",
+      "type": "Ghost"
     },
     {
       "id": 95,
@@ -1192,7 +1286,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 10,
-      "spawn_time": "01:18"
+      "spawn_time": "01:18",
+      "type": "Rock"
     },
     {
       "id": 96,
@@ -1205,7 +1300,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 321,
-      "spawn_time": "01:51"
+      "spawn_time": "01:51",
+      "type": "Psychic"
     },
     {
       "id": 97,
@@ -1217,7 +1313,8 @@
       "candy": "Drowzee Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 10,
-      "spawn_time": "02:17"
+      "spawn_time": "02:17",
+      "type": "Psychic"
     },
     {
       "id": 98,
@@ -1230,7 +1327,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 212,
-      "spawn_time": "03:33"
+      "spawn_time": "03:33",
+      "type": "Water"
     },
     {
       "id": 99,
@@ -1242,7 +1340,8 @@
       "candy": "Krabby Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 6.2,
-      "spawn_time": "03:44"
+      "spawn_time": "03:44",
+      "type": "Water"
     },
     {
       "id": 100,
@@ -1255,7 +1354,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 65,
-      "spawn_time": "04:36"
+      "spawn_time": "04:36",
+      "type": "Electric"
     },
     {
       "id": 101,
@@ -1267,7 +1367,8 @@
       "candy": "Voltorb Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2,
-      "spawn_time": "04:10"
+      "spawn_time": "04:10",
+      "type": "Electric"
     },
     {
       "id": 102,
@@ -1280,7 +1381,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 78,
-      "spawn_time": "09:09"
+      "spawn_time": "09:09",
+      "type": "Grass"
     },
     {
       "id": 103,
@@ -1292,7 +1394,8 @@
       "candy": "Exeggcute Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.4,
-      "spawn_time": "12:34"
+      "spawn_time": "12:34",
+      "type": "Psychic"
     },
     {
       "id": 104,
@@ -1305,7 +1408,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 61,
-      "spawn_time": "01:51"
+      "spawn_time": "01:51",
+      "type": "Fighting"
     },
     {
       "id": 105,
@@ -1317,7 +1421,8 @@
       "candy": "Cubone Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2,
-      "spawn_time": "03:59"
+      "spawn_time": "03:59",
+      "type": "Fighting"
     },
     {
       "id": 106,
@@ -1329,7 +1434,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 2,
-      "spawn_time": "03:59"
+      "spawn_time": "03:59",
+      "type": "Fighting"
     },
     {
       "id": 107,
@@ -1341,7 +1447,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 2.2,
-      "spawn_time": "05:58"
+      "spawn_time": "05:58",
+      "type": "Fighting"
     },
     {
       "id": 108,
@@ -1353,7 +1460,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 1.1,
-      "spawn_time": "02:46"
+      "spawn_time": "02:46",
+      "type": "Normal"
     },
     {
       "id": 109,
@@ -1366,7 +1474,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 20,
-      "spawn_time": "08:16"
+      "spawn_time": "08:16",
+      "type": "Poison"
     },
     {
       "id": 110,
@@ -1378,7 +1487,8 @@
       "candy": "Koffing Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.6,
-      "spawn_time": "12:17"
+      "spawn_time": "12:17",
+      "type": "Poison"
     },
     {
       "id": 111,
@@ -1391,7 +1501,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 63,
-      "spawn_time": "03:21"
+      "spawn_time": "03:21",
+      "type": "Ground"
     },
     {
       "id": 112,
@@ -1403,7 +1514,8 @@
       "candy": "Rhyhorn Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 2.2,
-      "spawn_time": "05:50"
+      "spawn_time": "05:50",
+      "type": "Ground"
     },
     {
       "id": 113,
@@ -1415,7 +1527,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 1.3,
-      "spawn_time": "04:46"
+      "spawn_time": "04:46",
+      "type": "Normal"
     },
     {
       "id": 114,
@@ -1427,7 +1540,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 22.8,
-      "spawn_time": "23:13"
+      "spawn_time": "23:13",
+      "type": "Normal"
     },
     {
       "id": 115,
@@ -1439,7 +1553,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 0.86,
-      "spawn_time": "02:40"
+      "spawn_time": "02:40",
+      "type": "Fighting"
     },
     {
       "id": 116,
@@ -1452,7 +1567,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 113,
-      "spawn_time": "02:53"
+      "spawn_time": "02:53",
+      "type": "Water"
     },
     {
       "id": 117,
@@ -1464,7 +1580,8 @@
       "candy": "Horsea Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 3.4,
-      "spawn_time": "03:18"
+      "spawn_time": "03:18",
+      "type": "Water"
     },
     {
       "id": 118,
@@ -1477,7 +1594,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 218,
-      "spawn_time": "03:14"
+      "spawn_time": "03:14",
+      "type": "Water"
     },
     {
       "id": 119,
@@ -1489,7 +1607,8 @@
       "candy": "Goldeen Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 8,
-      "spawn_time": "05:21"
+      "spawn_time": "05:21",
+      "type": "Water"
     },
     {
       "id": 120,
@@ -1502,7 +1621,8 @@
       "candy_count": 50,
       "egg": "5 km",
       "avg_spawns": 195,
-      "spawn_time": "22:59"
+      "spawn_time": "22:59",
+      "type": "Water"
     },
     {
       "id": 121,
@@ -1514,7 +1634,8 @@
       "candy": "Staryu Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 3.4,
-      "spawn_time": "06:57"
+      "spawn_time": "06:57",
+      "type": "Water"
     },
     {
       "id": 122,
@@ -1526,7 +1647,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 0.31,
-      "spawn_time": "01:51"
+      "spawn_time": "01:51",
+      "type": "Psychic"
     },
     {
       "id": 123,
@@ -1538,7 +1660,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 14,
-      "spawn_time": "05:43"
+      "spawn_time": "05:43",
+      "type": "Grass"
     },
     {
       "id": 124,
@@ -1550,7 +1673,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 35,
-      "spawn_time": "05:41"
+      "spawn_time": "05:41",
+      "type": "Psychic"
     },
     {
       "id": 125,
@@ -1562,7 +1686,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 7.4,
-      "spawn_time": "04:28"
+      "spawn_time": "04:28",
+      "type": "Electric"
     },
     {
       "id": 126,
@@ -1574,7 +1699,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 10,
-      "spawn_time": "20:36"
+      "spawn_time": "20:36",
+      "type": "Fire"
     },
     {
       "id": 127,
@@ -1586,7 +1712,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 99,
-      "spawn_time": "03:25"
+      "spawn_time": "03:25",
+      "type": "Bug"
     },
     {
       "id": 128,
@@ -1598,7 +1725,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 12,
-      "spawn_time": "00:37"
+      "spawn_time": "00:37",
+      "type": "Normal"
     },
     {
       "id": 129,
@@ -1611,7 +1739,8 @@
       "candy_count": 400,
       "egg": "2 km",
       "avg_spawns": 478,
-      "spawn_time": "14:26"
+      "spawn_time": "14:26",
+      "type": "Water"
     },
     {
       "id": 130,
@@ -1623,7 +1752,8 @@
       "candy": "Magikarp Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.32,
-      "spawn_time": "02:15"
+      "spawn_time": "02:15",
+      "type": "Water"
     },
     {
       "id": 131,
@@ -1635,7 +1765,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 0.6,
-      "spawn_time": "08:59"
+      "spawn_time": "08:59",
+      "type": "Water"
     },
     {
       "id": 132,
@@ -1647,7 +1778,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Normal"
     },
     {
       "id": 133,
@@ -1660,7 +1792,8 @@
       "candy_count": 25,
       "egg": "10 km",
       "avg_spawns": 275,
-      "spawn_time": "05:32"
+      "spawn_time": "05:32",
+      "type": "Normal"
     },
     {
       "id": 134,
@@ -1672,7 +1805,8 @@
       "candy": "Eevee Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.4,
-      "spawn_time": "10:54"
+      "spawn_time": "10:54",
+      "type": "Water"
     },
     {
       "id": 135,
@@ -1684,7 +1818,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 1.2,
-      "spawn_time": "02:30"
+      "spawn_time": "02:30",
+      "type": "Electric"
     },
     {
       "id": 136,
@@ -1696,7 +1831,8 @@
       "candy": "Eevee Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 1.7,
-      "spawn_time": "07:02"
+      "spawn_time": "07:02",
+      "type": "Fire"
     },
     {
       "id": 137,
@@ -1708,7 +1844,8 @@
       "candy": "None",
       "egg": "5 km",
       "avg_spawns": 1.2,
-      "spawn_time": "02:49"
+      "spawn_time": "02:49",
+      "type": "Psychic"
     },
     {
       "id": 138,
@@ -1721,7 +1858,8 @@
       "candy_count": 50,
       "egg": "10 km",
       "avg_spawns": 14,
-      "spawn_time": "10:23"
+      "spawn_time": "10:23",
+      "type": "Water"
     },
     {
       "id": 139,
@@ -1733,7 +1871,8 @@
       "candy": "None",
       "egg": "Omanyte Candy",
       "avg_spawns": 0.61,
-      "spawn_time": "05:04"
+      "spawn_time": "05:04",
+      "type": "Water"
     },
     {
       "id": 140,
@@ -1746,7 +1885,8 @@
       "candy_count": 50,
       "egg": "10 km",
       "avg_spawns": 10,
-      "spawn_time": "00:05"
+      "spawn_time": "00:05",
+      "type": "Fighting"
     },
     {
       "id": 141,
@@ -1758,7 +1898,8 @@
       "candy": "Kabuto Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.32,
-      "spawn_time": "23:40"
+      "spawn_time": "23:40",
+      "type": "Fighting"
     },
     {
       "id": 142,
@@ -1770,7 +1911,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 1.8,
-      "spawn_time": "23:40"
+      "spawn_time": "23:40",
+      "type": "Flying"
     },
     {
       "id": 143,
@@ -1782,7 +1924,8 @@
       "candy": "None",
       "egg": "10 km",
       "avg_spawns": 1.6,
-      "spawn_time": "23:40"
+      "spawn_time": "23:40",
+      "type": "Normal"
     },
     {
       "id": 144,
@@ -1794,7 +1937,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Water"
     },
     {
       "id": 145,
@@ -1806,7 +1950,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Electric"
     },
     {
       "id": 146,
@@ -1818,7 +1963,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Fire"
     },
     {
       "id": 147,
@@ -1831,7 +1977,8 @@
       "candy_count": 25,
       "egg": "10 km",
       "avg_spawns": 30,
-      "spawn_time": "06:41"
+      "spawn_time": "06:41",
+      "type": "Dragon"
     },
     {
       "id": 148,
@@ -1844,7 +1991,8 @@
       "candy_count": 100,
       "egg": "Not in Eggs",
       "avg_spawns": 2,
-      "spawn_time": "11:57"
+      "spawn_time": "11:57",
+      "type": "Dragon"
     },
     {
       "id": 149,
@@ -1856,7 +2004,8 @@
       "candy": "Dratini Candy",
       "egg": "Not in Eggs",
       "avg_spawns": 0.11,
-      "spawn_time": "23:38"
+      "spawn_time": "23:38",
+      "type": "Dragon"
     },
     {
       "id": 150,
@@ -1868,7 +2017,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Psychic"
     },
     {
       "id": 151,
@@ -1880,7 +2030,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "type": "Psychic"
     },
     {
       "id": 152,
@@ -1888,7 +2039,8 @@
       "name": "Shit",
       "img": "http://www.serebii.net/pokemongo/pokemon/252.png",
       "height": "0.3 m",
-      "weight": "100kg"
+      "weight": "100kg",
+      "type": "Bug"
     },
     {
       "id": 153,
@@ -1896,7 +2048,8 @@
       "name": "Joker",
       "img": "http://www.serebii.net/pokemongo/pokemon/173.png",
       "height": "5.1 m",
-      "weight": "50kg"
+      "weight": "50kg",
+      "type": "Dragon"
     },
     {
       "id": 154,
@@ -1904,7 +2057,8 @@
       "name": "Real",
       "img": "http://www.serebii.net/pokemongo/pokemon/164.png",
       "height": "10.2 m",
-      "weight": "100kg"
+      "weight": "100kg",
+      "type": "Fire"
     },
     {
       "id": 155,
@@ -1912,7 +2066,8 @@
       "name": "Sean",
       "img": "http://www.serebii.net/pokemongo/pokemon/165.png",
       "height": "1.82 m",
-      "weight": "100 kg"
+      "weight": "100 kg",
+      "type": "Normal"
     }
   ]
 }

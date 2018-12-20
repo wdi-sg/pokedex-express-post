@@ -20,6 +20,10 @@ class Pokehome extends React.Component{
             <input type="submit" value="sort" />
         </form>
         <br />
+        <form method="GET" action="/pokemon/new">
+            <input type="submit" value="Create new Pokemon" />
+        </form>
+        <br />
             Pokemon Name :- {pokemon}
       </div>
     );
@@ -29,7 +33,23 @@ class Pokehome extends React.Component{
 class Pokelist extends React.Component{
     render(){
         return(
-            <ul><img src={this.props.list.img} /><br />{this.props.list.name}</ul>
+            <ul>
+                <img src={this.props.list.img} />
+                <br />
+                {this.props.list.name}
+                <br />
+                <form method="GET" action={"/pokemon/" + this.props.list.id + "/edit"}>
+                    <input type="submit" value="Edit" />
+                </form>
+                <br />
+                <form method="GET" action={"/pokemon/" + this.props.list.id + "/detail"}>
+                    <input type="submit" value="Details" />
+                </form>
+                <br />
+                <form method="GET" action={"/pokemon/" + this.props.list.type + "/typedetail"}>
+                    <input type="submit" value={this.props.list.type}/>
+                </form>
+            </ul>
             );
     }
 }
