@@ -2,7 +2,12 @@ const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
 const express = require('express');
 const app = express();
-var listOfOptions = [];
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
 
 // tell your app to use the module
 app.use(express.json());
@@ -10,132 +15,93 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-// Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-// Point the form to submit data to the (/pokemon) route using POST method
+var listOfOptions = [];
+
+//create new pokemon Part1 - page on browser
 app.get('/pokemon/new', (request, response) => {
-      // render a template form here
-    let form =
-        "<html>" +
-        "<body>" +
-            "<form method='POST' action='/pokemon'>" +
-            "ID:<br><input type='text' name='id'><br><br>" +
-            "Num:<br><input type='text' name='num'><br><br>" +
-            "Name:<br><input type='text' name='name'><br><br>" +
-            "Img:<br><input type='text' name='img'><br><br>" +
-            "Height:<br><input type='text' name='height'><br><br>" +
-            "Weight:<br><input type='text' name='weight'><br><br>" +
-            "<input type='submit' value='Submit'>" +
-        "</form>" +
-        "</body>" +
-        "</html>"
-    response.send(form);
+    jsonfile.readFile(file, (err, obj) => {
+        let attributesObj = {
+        attributes : Object.keys(obj.pokemon[0])
+        }
+        response.render('createPokemon', attributesObj);
+        });
 });
 
-// Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
+//create new pokemon Part2 - POST requests to /pokemon
 app.post('/pokemon', function(request, response) {
-    //debug code (output request body)
-    console.log(request.body);
-
     jsonfile.readFile(file, (err, obj) => {
         let newPokemon = {
-              "id": obj.pokemon.length+1,
-              "num": (obj.pokemon.length+1).toString(),
-              "name": request.body.name,
-              "img": request.body.img,
-              "height": request.body.height,
-              "weight": request.body.weight,
+            "id": obj.pokemon.length+1,
+            "num": (obj.pokemon.length+1).toString(),
+            "name": request.body.name,
+            "img": request.body.img,
+            "height": request.body.height,
+            "weight": request.body.weight,
+            "candy": null,
+            "candy_count": null,
+            "egg": null,
+            "avg_spawns": null,
+            "spawn_time": null
         }
         obj.pokemon.push(newPokemon);
-        // save the request body
         jsonfile.writeFile(file, obj, (err) => {
-         console.error(err)
-        // now look inside your json file
+         console.error(err);
         response.send(newPokemon);
         });
     });
 });
 
-//// At the root route (GET request) / display a list of all the pokemons in the pokedex
-//// Add a "Sort by name" button to the homepage (/ route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
-//// Implement this sort functionality as a drop down (select input) of all the sorting fields the user can choose to sort by.
+//home page for full list of pokemons, including the ability to sort
 app.get('/', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
-        let htmlHome =
-            "<!DOCTYPE html>" +
-            "<html>" +
-                "<body>" +
-                    "<form action='/' method='GET'>" +
-                    "<select name='sortby' style='font-size: 20px; padding: 10px 50px; margin-left: 20px;'>" +
-                    // listOfOptions.join("") +
-                ////manual key in of option value for this assignment instead of using listOfOptions array.
-                    "<option value='numasc' style='font-size:15px;'>Id # (ascending)</option>" +
-                    "<option value='numdesc' style='font-size:15px;'>Id # (descending)</option>" +
-                    "<option value='nameasc' style='font-size:15px;'>Name (ascending)</option>" +
-                    "<option value='namedesc' style='font-size:15px;'>Name (descending)</option>" +
-                    "</select>" +
-                    "<input type='submit' value='Sort' id='sort' style='background-color: DeepSkyBlue; padding: 5px 25px; margin-left: 10px; display: inline-block; border-radius: 5px; color: white; font-size: 15px'>" +
-                    "</form><br>";
-
-    ////sort objects based on drop-down selected
-        console.log(request.query.sortby);
-        switch (request.query.sortby) {
-            case "numasc":
-            obj.pokemon.sort((numA, numB) =>{
-                if (numA.num > numB.num) {
-                    return 1;
-                } else if (numA.num < numB.num) {
-                    return -1;
-                }
-            })
-            break;
-            case "numdesc":
-            obj.pokemon.sort((numA, numB) =>{
-                if (numA.num > numB.num) {
-                    return -1;
-                } else if (numA.num < numB.num) {
-                    return 1;
-                }
-            })
-            break;
-            case "nameasc":
-            obj.pokemon.sort((nameA, nameB) =>{
-                if (nameA.name > nameB.name) {
-                    return 1;
-                } else if (nameA.name < nameB.name) {
-                    return -1;
-                }
-            })
-            break;
-            case "namedesc":
-            obj.pokemon.sort((nameA, nameB) =>{
-                if (nameA.name > nameB.name) {
-                    return -1;
-                } else if (nameA.name < nameB.name) {
-                    return 1;
-                }
-            })
-            break;
-            }
-
-    ////create html for list of Pokemons
-        for (i = 0; i < obj.pokemon.length; i ++) {
-        htmlHome = htmlHome +
-            "<div id=" + obj.pokemon[i].num + " style='display: inline-block; margin: 20px; float: left;'>" +
-            "<img src=" + obj.pokemon[i].img +  " style = 'background-color: gainsboro; width: 200px;''>" +
-            "<p style='text-align: center'>#" + obj.pokemon[i].num + "</p>" +
-            "<h1 style='font-size: 25px; text-align: center'>" + obj.pokemon[i].name + "</h1>" +
-            "</div>"
-        };
-        // let listOfKeys = Object.keys(obj.pokemon[0]);
-        // for (j = 0; j < listOfKeys.length; j++) {
-        //     listOfOptions.push("<option value='" + listOfKeys[j] + "' style='font-size:20px;'>" + listOfKeys[j] + "</option>")
-        // }
-////create html for home page
-    htmlHome = htmlHome + "</body>" + "</html>"
-    response.send(htmlHome);
+        let pokedex = {};
+        pokedex.list= obj.pokemon;
+        pokedex.sortby = request.query.sortby;
+        response.render('home', pokedex);
     })
 })
 
+//edit pokemon Part1 - page on browser
+app.get('/pokemon/:id/edit', (request, response) => {
+    jsonfile.readFile(file, (err, obj) => {
+        let pokemonInfo = obj.pokemon[parseInt(request.params.id)-1];
+        response.render('editPokemon', pokemonInfo);
+    });
+});
+
+
+//edit pokemon Part1 - PUT requests into /pokemon/:id
+app.put('/pokemon/:id', (request, response) => {
+    console.log("app.put('/pokemon/:id' works!");
+    jsonfile.readFile(file, (err, obj) => {
+
+            if (err){
+                console.log("an error happened!!!!");
+                console.log(err);
+            }
+        obj.pokemon[parseInt(request.params.id) - 1] = {
+            "id": parseInt(request.body.id),
+            "num": request.body.num,
+            "name": request.body.name,
+            "img": request.body.img,
+            "height": request.body.height,
+            "weight": request.body.weight,
+            "candy": request.body.candy,
+            "candy_count": request.body.candy_count,
+            "egg": request.body.egg,
+            "avg_spawns": request.body.avg_spawns,
+            "spawn_time": request.body.spawn_time
+        }
+        jsonfile.writeFile(file, obj, (err) => {
+            console.error(err)
+            response.send("edit successful!");
+        })
+    })
+
+})
 
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+
+//obj[pokemon][id]
