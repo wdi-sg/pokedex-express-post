@@ -2,142 +2,113 @@ const express = require('express');
 const app = express();
 const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
-
-const newPokemonForm =  "<html>" +
-                            "<body>" +
-                                "<form method='POST' action='/pokemon'>" +
-                                    "<input type='text' name='name' placeholder='Name'><br/><br/>" +
-                                    "<input type='text' name='img' placeholder='Image URL'><br/><br/>" +
-                                    "<input type='text' name='height' placeholder='Height'><br/><br/>" +
-                                    "<input type='text' name='weight' placeholder='Weight'><br/><br/>" +
-                                    "<input type='submit'><br/><br/>" +
-                                "</form>" +
-                            "</body>" +
-                        "</html>";
-
-const dropdownMenu =    "<form method='GET' action='/'>" +
-                            "<select name='sortby'>" +
-                                "<option>Number</option>" +
-                                "<option value='name'>Name</option>" +
-                                "<option value='height'>Height</option>" +
-                                "<option value='weight'>Weight</option>" +
-                            "</select>" +
-                            "<input type='submit'>" +
-                        "</form>";
-
-const cssString =   `<style>
-                        div{
-                            display: inline-block;
-                            width: 120px;
-                            height: 120px;
-                            text-align:center;
-                            margin: 10px 20px 10px 20px;
-                        }
-                        h1{
-                            font-family: "Verdana", sans-serif;
-                            font-size: 16pt;
-                            margin: 3px auto;
-                        }
-                        img{
-                            width: 100%;
-                            height: 100%;
-                        }
-                        p{
-                            font-family: "Arial", sans-serif;
-                            font-size: 12pt;
-                            margin: 3px auto;
-                        }
-                    </style>`
-
+const editpage = 'editpage.jsx';
+const homepage = 'homepage.jsx';
+const pokemonpage = 'pokemonpage.jsx';
+const reactEngine = require('express-react-views').createEngine();
 var pokedex = [];
 
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.use('/', express.static('public'))
 app.use(express.json());
 
 app.use(express.urlencoded({
   extended: true
 }));
 
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
-
-app.get('/pokemon/new', (request, response) => {
-    jsonfile.readFile(file, (err,obj) => {
-        initializeRead(err, obj);
-        response.send(newPokemonForm);
-    });
-});
-
 app.get('/', (request, response) => {
     let sortMethod = request.query.sortby;
     jsonfile.readFile(file, (err,obj) => {
-        initializeRead(err, obj);
-        response.send(dropdownMenu + cssString + sortPokedex(sortMethod));
+        err ? console.error(err) : 0;
+        response.render(homepage, sortObject(sortMethod, obj));
     });
 });
 
-function sortPokedex(sortMethod){
+app.get('/pokemon/:id/edit', (request, response) => {
+    jsonfile.readFile(file, (err,obj) => {
+        err ? console.error(err) : 0;
+        response.render(editpage, getPokemonByID(parseInt(request.params.id), obj.pokemon));
+    });
+})
+
+app.get('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(file, (err,obj) =>{
+        err ? console.error(err) : 0;
+        response.render(pokemonpage, getPokemonByID(parseInt(request.params.id), obj.pokemon));
+    });
+});
+
+app.post('/pokemon/:id', (request, response) => {
+    console.log(request.params);
+});
+
+function getPokemonByID(pokemonID, pokedex){
+    //Iterate through the Pokedex. If the Pokemon exists in the Pokedex, return the Pokemon object.
+    return pokedex.find(pokemon => {
+        return pokemon.id === pokemonID;
+    });
+}
+
+
+// app.get('/pokemon/new', (request, response) => {
+//     jsonfile.readFile(file, (err,obj) => {
+//         initializeRead(err, obj);
+//         response.send(newPokemonForm);
+//     });
+// });
+
+app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+function sortObject(sortMethod, obj){
     switch(sortMethod){
         case "name":
-            return getHTMLString(pokedex.sort(stringComparator));
+            return {"pokemon": obj.pokemon.sort(nameComparator), "sortMethod": "num"};
         case "weight":
-            return getHTMLString(numberComparator(pokedex, "weight"));
+            return {"pokemon": obj.pokemon.sort(weightComparator), "sortMethod": sortMethod};
         case "height":
-            return getHTMLString(numberComparator(pokedex, "height"));
+            return {"pokemon": obj.pokemon.sort(heightComparator), "sortMethod": sortMethod};
         default:
-            return getHTMLString(pokedex);
+            obj["sortMethod"] = "num";
+            return obj;
     }
 }
 
-function getHTMLString(array){
-    let resultString =  "";
-    array.forEach(pokemon => {
-        resultString+= `
-            <div>
-                <img src="${pokemon.img}">
-                <h1>${pokemon.name}</h1>
-                <p>#${pokemon.num}</p>
-            </div>
-            `
-    });
-    return resultString;
-}
-
-function stringComparator(first,second){
-    if (first.name < second.name){
+function comparatorWork(first, second, type){
+    if (first[type] < second[type]){
         return -1;
-    } else if (first.name > second.name){
+    } else if (first[type] > second[type]){
         return 1;
     } else {
         return 0;
     }
 }
 
-function numberComparator(array, category){
-    return array.sort((first, second) => {
-        return (parseFloat(first[category]) > parseFloat(second[category])) ? 1 : -1;
-    });
+function nameComparator(first,second){
+    return comparatorWork(first, second, "name");
 }
 
-app.post('/pokemon', (request, response) => {
-    jsonfile.readFile(file, (err, obj) => {
-        initializeRead(err, obj);
-        let userInput = request.body;
-        let newPokemon = generateNewPokemon(userInput);
-        pokedex.push(newPokemon);
-        jsonfile.writeFile(file, obj, (err) => {
-            if (err) { console.error(err) };
-            response.send(dropdownMenu + cssString + sortPokedex("default"));
-        });
-    });
-});
-
-function initializeRead(err, obj){
-    if (err) { console.error(err) };
-    pokedex = obj.pokemon;
+function weightComparator(first, second){
+    return comparatorWork(first, second, "weight");
 }
 
-function getPokemonName(pokemon){
-    return pokemon.name;
+function heightComparator(first, second){
+    return comparatorWork(first, second, "height");
 }
+
+// app.post('/pokemon', (request, response) => {
+//     jsonfile.readFile(file, (err, obj) => {
+//         initializeRead(err, obj);
+//         let userInput = request.body;
+//         let newPokemon = generateNewPokemon(userInput);
+//         pokedex.push(newPokemon);
+//         jsonfile.writeFile(file, obj, (err) => {
+//             if (err) { console.error(err) };
+//             response.send(dropdownMenu + cssString + sortObject("default"));
+//         });
+//     });
+// });
 
 function generateNewPokemon(userInput){
     let obj = {
