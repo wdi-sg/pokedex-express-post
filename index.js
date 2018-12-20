@@ -185,8 +185,14 @@ app.delete('/pokemon/:id', (request, response) => {
 
         for (let i = 0; i < deletedPokedex.length; i++) {
                 deletedPokedex[i].id = i+1;
-                deletedPokedex[i].num = i+1;
-        }
+                if (i < 9) {
+                    deletedPokedex[i].num = `00${i+1}`;
+                } else if (i < 99) {
+                    deletedPokedex[i].num = `0${i+1}`;
+                } else {
+                    deletedPokedex[i].num = `${i+1}`;
+                };
+        };
 
         deletedPokedex = {
             'newPokedex': {'pokemon': deletedPokedex},
