@@ -84,7 +84,7 @@ app.get('/', (request, response) => {
     let pokemonList = obj.pokemon;
     var sortedPokemon = "";
 
-    switch (request.query.sort) {
+    switch (request.query.sortby) {
               case "name":
                   pokemonList.sort((name1, name2) => {
                       if (name1.name > name2.name) return 1;
@@ -116,9 +116,11 @@ app.get('/', (request, response) => {
 
           for (let i = 0; i < obj.pokemon.length; i++) {
               let listPokemon =  
-                  `<p>${pokemonList[i].name}</p>
-                  <p>${pokemonList[i].id}</p>
-                  <img src="${pokemonList[i].img}">`;
+                  `<p>Name: ${pokemonList[i].name}</p>
+                  <p>ID: ${pokemonList[i].id}</p>
+                  <img src="${pokemonList[i].img}">
+                  <p>Weight: ${pokemonList[i].weight}</p>
+                  <p>Height: ${pokemonList[i].height}</p>`;
                 sortedPokemon = sortedPokemon + listPokemon;
           };
     //can't set headers after they are sent!!
@@ -133,61 +135,6 @@ app.get('/', (request, response) => {
     // console.log(sortButton);
   })
 });
-
-
-// app.get('/sortby?Sort+Pokemon%21=name', (request, response) => {
-
-//   jsonfile.readFile(FILE, (err, obj) => {
-
-//     let pokemonList = obj.pokemon;
-//     var sortedPokemon = "";
-
-//     switch (request.query.sort) {
-//               case "name":
-//                   pokemonList.sort((name1, name2) => {
-//                       if (name1.name > name2.name) return 1;
-//                       if (name1.name < name2.name) return -1;
-//                   });
-//                   break;
-
-//               case "id":
-//                   pokemonList.sort((num1, num2) => {
-//                       if (num1.id > num2.id) return 1;
-//                       if (num1.id < num2.id) return -1;
-//                   });
-//                   break;
-
-//               case "height":
-//                   pokemonList.sort((height1, height2) => {
-//                       if (parseFloat(height1.height) > parseFloat(height2.height)) return 1;
-//                       if (parseFloat(height1.height) < parseFloat(height2.height)) return -1;
-//                   });
-//                   break;
-
-//               case "weight":
-//                   pokemonList.sort((weight1, weight2) => {
-//                       if (parseFloat(weight1.weight) > parseFloat(weight2.weight)) return 1;
-//                       if (parseFloat(weight1.weight) < parseFloat(weight2.weight)) return -1;
-//                   });
-//                   break;
-//                   }
-
-//           for (let i = 0; i < obj.pokemon.length; i++) {
-//               let listPokemon =  
-//                   `<p>${pokemonList[i].name}</p>
-//                   <p>${pokemonList[i].id}</p>
-//                   <img src="${pokemonList[i].img}">`;
-//                 sortedPokemon = sortedPokemon + listPokemon;
-//           };
-//           response.send(`<html>
-//                           <body>
-//                             <p>Welcome to the Pokedex!</p>
-//                             <p>your results are as follows:</p>
-//                             ${sortedPokemon}
-//                           </body>
-//                         </html>`);
-//   })
-// });
 
 //gives basic data for user
 app.get('/:id', (request, response) => {
@@ -216,9 +163,49 @@ app.get('/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-
-      response.send(pokemon);
+      let showPokemon = `<p>Name: ${pokemon.name}</p>
+                          <p>ID: ${pokemon.id}</p>
+                          <img src="${pokemon.img}">
+                          <p>Weight: ${pokemon.weight}</p>
+                          <p>Height: ${pokemon.height}</p>
+                          <p>What type is this pokemon?</p>
+                          <form action="/pokemon/${pokemon.id}" name="type" method="post">
+                            <select name="makeType">
+                              <option value="your">your</option>
+                              <option value="my">my</option>
+                              <option value="best">best</option>
+                              <option value="not-my">Not my</option>
+                            </select>
+                            <input type="submit">
+                          </form>`;
+      response.send(showPokemon);
     }
+  });
+});
+
+app.post('/pokemon/:id', (request, response) => {
+
+  //debug code (output request body)
+  // console.log(request.body);
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let updatePokemon =  obj.pokemon[request.params.id -1];
+
+    updatePokemon.type= request.body.makeType;
+
+  // save the request body
+  jsonfile.writeFile(FILE, obj, (err) => {
+    console.error(err)
+    let showPokemon = `<p>Name: ${updatePokemon.name}</p>
+                          <p>ID: ${updatePokemon.id}</p>
+                          <img src="${updatePokemon.img}">
+                          <p>Weight: ${updatePokemon.weight}</p>
+                          <p>Height: ${updatePokemon.height}</p>
+                          <p>Type: : ${updatePokemon.type}</p>`
+    response.send(showPokemon);
+    // now look inside your json file
+    });
   });
 });
 
