@@ -2,6 +2,8 @@ const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
 const express = require('express');
 const app = express();
+app.use(express.static(__dirname+'/public/'));
+
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 const reactEngine = require('express-react-views').createEngine();
@@ -14,8 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-
-var listOfOptions = [];
 
 //create new pokemon Part1 - page on browser
 app.get('/pokemon/new', (request, response) => {
@@ -70,9 +70,8 @@ app.get('/pokemon/:id/edit', (request, response) => {
 });
 
 
-//edit pokemon Part1 - PUT requests into /pokemon/:id
+//edit pokemon Part2 - PUT requests into /pokemon/:id
 app.put('/pokemon/:id', (request, response) => {
-    console.log("app.put('/pokemon/:id' works!");
     jsonfile.readFile(file, (err, obj) => {
 
             if (err){

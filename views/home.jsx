@@ -47,8 +47,8 @@ class Home extends React.Component {
 
 let pokeList = this.props.list;
 let pokemonHTML = pokeList.map(pokemon => {
-        return  <div id={pokemon.num} style={{display: 'inline-block', margin: '20px', float: 'left', textAlign: 'center'}}>
-                    <img src={pokemon.img} style = {{backgroundColor: 'gainsboro', width: '200px'}}/>
+        return  <div className="pokemons" id={pokemon.num}>
+                    <img src={pokemon.img}/>
                     <p>#{pokemon.num}</p>
                     <h1>{pokemon.name}</h1>
                     <a href={'/pokemon/'+pokemon.id+'/edit'}>edit</a>
@@ -59,18 +59,19 @@ let pokemonHTML = pokeList.map(pokemon => {
 
             <html>
             <head>
+                <link rel="stylesheet" type="text/css" href="/style.css"/>
             </head>
             <body>
                 <form action='/' method='GET'>
-                    <select name='sortby' style={{fontSize: '20px', padding: '10px 50px', marginLeft: '20px'}}>
-                        <option value='numasc' style={{fontSize: '15px'}}>Id # (ascending)</option>
-                        <option value='numdesc' style={{fontSize: '15px'}}>Id # (descending)</option>
-                        <option value='nameasc' style={{fontSize: '15px'}}>Name (ascending)</option>
-                        <option value='namedesc' style={{fontSize: '15px'}}>Name (descending)</option>
+                    <select className="sort" id="sortSelect" name="sortby">
+                        <option className = "sort" value='numasc'>Id # (ascending)</option>
+                        <option className = "sort" value='numdesc'>Id # (descending)</option>
+                        <option className = "sort" value='nameasc'>Name (ascending)</option>
+                        <option className = "sort" value='namedesc'>Name (descending)</option>
                     </select>
-            <input type='submit' value='Sort' id='sort' style={{backgroundColor: 'DeepSkyBlue', padding: '5px 25px', marginLeft: '10px', display: 'inline-block', borderRadius: '5px', color: 'white', fontSize: '15px'}}/>
+            <input type='submit' value='Sort' className = "sort" id='sortSubmit'/>
                 </form>
-                <div classname="all">
+                <div className="all">
                     {pokemonHTML}
                 </div>
             </body>

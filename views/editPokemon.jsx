@@ -4,13 +4,11 @@ class createPokemon extends React.Component {
 
     render() {
 
-
-
-
-
-
         return (
         <html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="/style.css"/>
+        </head>
         <body>
         <h1>Edit Pokemon</h1>
         <form action={'/pokemon/' + this.props.id + '?_method=PUT'} method='POST'>

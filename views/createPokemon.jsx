@@ -14,6 +14,7 @@ class createPokemon extends React.Component {
 
         <html>
         <head>
+            <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <body>
             <h1>Edit Pokemon Details</h1>
