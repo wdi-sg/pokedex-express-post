@@ -5,7 +5,7 @@ class ListItem extends React.Component {
 
     render() {
         return (
-          <div>
+          <div className = "box">
           <p> {this.props.pokemon.name} # {this.props.pokemon.num} </p>
           <img src={this.props.pokemon.img}/>
           <p> weight: {this.props.pokemon.weight} </p>
@@ -25,9 +25,16 @@ class List extends React.Component {
         let itemsElements = this.props.listOfPokemon.map(createDiv);
 
         return (
-            <div>
+        <html>
+        <head>
+            <link rel="stylesheet" href="/style.css"/>
+        </head>
+            <body>
+            <div className = "containerOfBox">
             {itemsElements}
             </div>
+            </body>
+        </html>
         );
     }
 }

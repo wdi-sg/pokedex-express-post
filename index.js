@@ -15,6 +15,8 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+app.use(express.static(__dirname));
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -224,6 +226,8 @@ app.get('/sortedPokemon', (request, response) => {
 app.get('/', (request, response) => {
 
     let form = `<html>
+                <head>
+                </head>
                 <body>
                 <h1> Pokemon Sort By </h1>
                 <form method="GET" action="/sortedPokemon">
