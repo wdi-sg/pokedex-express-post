@@ -10,7 +10,7 @@ class Pokenew extends React.Component{
                 Pokemon Num:
                 <input type="text" name="num" placeholder="Auto generated" /><br />
                 Pokemon Name:
-                <input type="text" name="name" /><br />
+                <input type="text" name="name" required="required" minlength="5" pattern="[a-zA-Z]*$" placeholder="No special char and numbers"/><br />
                 Pokemon Img:
                 <input type="text" name="img" /><br />
                 Pokemon Height:
