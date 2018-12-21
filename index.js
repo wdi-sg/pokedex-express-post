@@ -1,62 +1,51 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
+const express = require("express");
 const app = express();
+const http = require('http').Server(app)
+const io = require('socket.io')(http);
+const path = require("path");
+const jsonfile = require('jsonfile');
+const file = 'pokedex.json'
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+app.use(express.static('public'))
 
-app.get('/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname + '/public/main/index.html'));
+});
+io.on('connection', function (socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+  socket.on('search query', function (query) {
+    //  searchPokedex(query);
+    //   console.log(query)
+    queryResult(`${query}`)
+    //io.emit('search result', msg);
   });
 });
-
-app.get('/', (request, response) => {
-  response.send("yay");
+http.listen(3001, function () {
+  console.log('listening on *:3001');
 });
+let result;
+const searchPokedex = (query) => {
+  jsonfile.readFile(file, (err, obj) => {
+    const pokemons = obj['pokemon'];
+    for (let poke in pokemons) {
+      if (pokemons[poke].name.toLowerCase() == query) {
+        result = pokemons[poke];
+      }
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+    }
+      io.emit('search result', result)
+    console.log(result)
+
+    // jsonfile.writeFile(file, obj, (err) => {
+    // });
+  }); //  console.log(result)
+
+}
+
+const queryResult = (query) => {
+  let result = searchPokedex(`${query}`);
+}

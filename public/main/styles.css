@@ -1,0 +1,95 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    background-image: url('images/poke-background2.png')
+}
+
+#container {
+    margin: auto;
+    width: 80%;
+    background-color: white;
+}
+
+
+.main-content {
+    background-color: white
+}
+
+.poke-page-turner {
+    display: flex;
+}
+
+.poke-page-turner .prev,
+.next {
+    background-color: rgb(162, 162, 162);
+    width: 50%;
+    color: white;
+}
+
+.poke-page-turner .prev {
+    border-right: 2px solid white;
+
+}
+
+.poke-page-turner .next {
+    border-left: 2px solid white;
+
+}
+
+.page-turner-text {
+    color: rgb(97, 97, 97)
+}
+
+.pokemon-main-container {
+    margin: auto;
+    width: 80%
+}
+
+.pokemon-name {
+    text-align: center;
+    background-color: white;
+    background-size: 80%;
+}
+
+.pokemon-main-data {
+    display: flex;
+    border-bottom: 5px solid white;
+}
+
+.pokemon-img-stats {
+    width: 49%;
+    display: flex;
+    flex-wrap: wrap;
+    border-right: 5px solid white;
+}
+
+.pokemon-descriptions {
+    width: 50%;
+}
+
+.pokemon-stats .placeholder {
+    width: 100%;
+    height: 100px;
+    background-color: grey;
+}
+
+.pokemon-img {
+    width: 100%;
+    text-align: center;
+}
+.pokemon-stats{
+    width:100%;
+}
+
+.pokemon-descriptions .placeholder {
+    width: 100%;
+    height: 100%    ;
+    background-color: blue
+}
+
+.pokemon-evolution {
+    width: 100%;
+    height: 200px;
+    background-image: url('images/poke-background2.png');
+    border-bottom: 10px solid white;
+}
