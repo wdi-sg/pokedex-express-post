@@ -25,70 +25,58 @@ app.use(express.urlencoded({
 // Routes
 // ===================================
 
-app.get('*', (request, response) => {
+app.get('/', (request,response)=>{
 
-        jsonfile.readFile(file,(err,obj) => {
+    response.send("Welcome to Pokedex!");
 
-            for (i = 0; i < obj.pokemon.length; i ++){
-
-                if (request.path == "/" ){
-
-                    response.send("Welcome to Pokedex!");
-
-                } else if (request.path.substring(1) == obj.pokemon[i].name.toLowerCase()){
-
-                    response.send("This is " + obj.pokemon[i].name + ". It's weight is " + obj.pokemon[i].weight + ". His favourite candy is " +  obj.pokemon[i].candy + ". His next evoluation is " + obj.pokemon[i].next_evolution[0].name + " !");
-
-                }
-
-                // else if ( request.path.substring(6) == obj.pokemon[i].type[0].toLowerCase() ){
-
-                //         //response.send('yo');
-
-                // }
-
-                else if (request.path == "/pokemon/new"){
-
-                    let form =
-                    '<html>' +
-                    '<body>' + '<h1>Create a New Pokemon!</h1>' +
-                    '<form action = "/pokemon" method= "POST">' +
-                    'ID : <input type="number" name="id"> <br><br>' +
-                    'Number : <input type="number" name="num"> <br><br>' +
-                    'Name : <input type="text" name="name"> <br><br>' +
-                    'Img URL : <input type="text" name="img"> <br><br>' +
-                    'Height : <input type="text" name="height"> <br><br>' +
-                    'Weight :<input type="text" name="weight"> <br><br>' +
-                    '<input type="submit" value="Submit">' +
-
-                    '</form>' +
-                    '</body>' +
-                    '</html>'
-
-                    response.send(form);
-                }
-
-                else {response.send("Could not find information about pokemon " + request.path.substring(1) + ". Is that a new pokemon? Gotta catch em' all!" );}
-                //what is set status code??
-            }
-        });
 });
 
-app.post('/pokemon', function(request, response) {
+app.get('/newpokemon',(request,response)=>{
 
-  //debug code (output request body)
-  console.log(request.body);
+    let form =
+        '<html>' +
+        '<body>' + '<h1>Create a New Pokemon!</h1>' +
+        '<form action = "/pokemon" method= "POST">' +
+        'ID : <input type="number" name="id"> <br><br>' +
+        'Number : <input type="number" name="num"> <br><br>' +
+        'Name : <input type="text" name="name"> <br><br>' +
+        'Img URL : <input type="text" name="img"> <br><br>' +
+        'Height : <input type="text" name="height"> <br><br>' +
+        'Weight :<input type="text" name="weight"> <br><br>' +
+        '<input type="submit" value="Submit">' +
 
-    jsonfile.readFile(file,(err,obj) => {
+        '</form>' +
+        '</body>' +
+        '</html>'
 
-      // save the request body
-      jsonfile.writeFile('pokedex.json', obj.pokemon, (err) => {
-        console.error(err)
+        response.send(form);
 
-        // now look inside your json file
-        response.send(request.body);
-      });
+});
 
+app.get('/pokemon/:search',(request,response)=>{
+
+    //remove case sensitivity
+    var search = request.params.search.toLowerCase();
+
+    jsonfile.readFile(file,(err,obj)=>{
+        for (i = 0; i < obj.pokemon.length; i ++){
+            if (obj.pokemon[i].name.toLowerCase() == search){
+                var pokemon = obj.pokemon[i];
+                response.send("This is " + pokemon.name + ". It's weight is " + pokemon.weight + ". His favorite candy is " +  pokemon.candy + ". His next evolution is " + pokemon.next_evolution[0].name + " !");
+                break;
+            }
+        }
+        response.send("Not found");
+    })
+});
+
+app.post('/pokemon', (request, response) => {
+    jsonfile.readFile(file,(err,obj)=>{
+        obj.pokemon.push(request.body);
+
+        jsonfile.writeFile(file, obj, { spaces: 1 }, (err)=>{
+            response.send("saved");
+        })
     });
 });
 
