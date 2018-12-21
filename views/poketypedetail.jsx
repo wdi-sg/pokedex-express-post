@@ -5,9 +5,6 @@ class Poketypedetail extends React.Component{
         const pokemon = this.props.pokemon.map( pokes => {
             return <Poketypelist list={pokes}></Poketypelist>;
         });
-        const pokemonType = this.props.pokemon.map( poketype => {
-            return poketype
-        });
         return(
             <div>
             <h3>Pokemon of {this.props.pokemon[0].type} type</h3>

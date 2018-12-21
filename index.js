@@ -159,7 +159,6 @@ app.get('/pokemon/type', (request, response) => {
 app.post('/pokemon/addtype', (request, response) => {
   let addType = request.body.poketype.charAt(0).toUpperCase() + request.body.poketype.slice(1);
   let pokeName = request.body.pokename.charAt(0).toUpperCase() + request.body.pokename.slice(1);
-  console.log(pokeName);
   jsonfile.readFile(FILE, (err, obj) => {
     for(let t = 0; t < obj.pokemon.length; t++){
       if(obj.pokemon[t].name == pokeName){
@@ -245,6 +244,24 @@ app.get('/pokemon/:type/typedetail', (request, response) => {
             }
         }
     response.render('poketypedetail', pokeTDetail);
+    });
+});
+
+app.delete('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeDel = {};
+        pokeDel.pokemon = [];
+        pokeDel.input = parseInt(request.params.id);
+        for(let t = 0; t < obj.pokemon.length; t++){
+            if(parseInt(request.params.id) === obj.pokemon[t].id){
+                pokeDel.pokemon.push(obj.pokemon[t]);
+                obj.pokemon.splice(parseInt(obj.pokemon[t].id) - 1, 1);
+            }
+        }
+        response.render('pokedel', pokeDel);
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log(err);
+        });
     });
 });
 

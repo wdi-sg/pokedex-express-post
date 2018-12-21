@@ -53,6 +53,10 @@ class Pokelist extends React.Component{
                 <form method="GET" action={"/pokemon/" + this.props.list.type + "/typedetail"}>
                     <input type="submit" value={this.props.list.type}/>
                 </form>
+                <br />
+                <form method="POST" action={"/pokemon/" + this.props.list.id + "?_method=delete"}>
+                    <input type="submit" value="Delete"/>
+                </form>
             </ul>
             );
     }
