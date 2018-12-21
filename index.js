@@ -124,34 +124,32 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 var displayByName = function (response) {
-    let message = "";
     let listOfName = [];
+    let sortPokemon = [];
 
     jsonfile.readFile(FILE, (err, obj) => {
-        for(var i = 0; i < obj.pokemon.length; i++) {
+        for(let i = 0; i < obj.pokemon.length; i++) {
             listOfName.push(obj.pokemon[i].name);
         }
 
         listOfName.sort();
 
-        for(var j = 0; j < listOfName.length; j++) {
-            message = message + listOfName[j] + ", ";
+        for(let j = 0; j < listOfName.length; j++) {
+           for (let k = 0; k < obj.pokemon.length; k++) {
+            if (listOfName[j] === obj.pokemon[k].name) {
+                    sortPokemon.push(obj.pokemon[k]);
+                    obj.pokemon.slice(k, 1);
+                    break;
+                }
+           }
         }
-
-        let form1 =
-            `<html>
-            <body>
-            <h1> List of Pokemon Sort By Name </h1>
-            ${message}
-            </body>
-            </html>`
-        response.send(form1);
+        response.render("pokemonSort", {listOfPokemon: sortPokemon});
     });
 }
 
 var displayByHeight = function (response) {
-    var message = "";
     var listOfHeight = [];
+    let sortPokemon = [];
 
     jsonfile.readFile(FILE, (err, obj) => {
         for(let i = 0; i < obj.pokemon.length; i++) {
@@ -169,27 +167,20 @@ var displayByHeight = function (response) {
             let heightString = listOfHeight[j] + " m";
            for (let k = 0; k < obj.pokemon.length; k++) {
                 if(heightString === obj.pokemon[k].height) {
-                    message = message + obj.pokemon[k].name + "(" + obj.pokemon[k].height + "), ";
+                    sortPokemon.push(obj.pokemon[k]);
                     obj.pokemon.slice(k, 1);
                     break;
                 }
            }
         }
 
-        let form1 =
-            `<html>
-            <body>
-            <h1> List of Pokemon Sort By Height </h1>
-            ${message}
-            </body>
-            </html>`
-        response.send(form1);
+        response.render("pokemonSort", {listOfPokemon: sortPokemon});
     });
 }
 
 var displayByWeight = function (response) {
-    var message = "";
     var listOfWeight = [];
+    let sortPokemon = [];
 
     jsonfile.readFile(FILE, (err, obj) => {
         for(let i = 0; i < obj.pokemon.length; i++) {
@@ -200,29 +191,18 @@ var displayByWeight = function (response) {
 
         listOfWeight.sort(function(a, b){return a-b});
 
-        for(let i = 0; i < listOfWeight.lenght; i++) {
-            console.log("weight: " + listOfWeight);
-        }
-
         for(let j = 0; j < listOfWeight.length; j++) {
             let weightString = listOfWeight[j] + " kg";
            for (let k = 0; k < obj.pokemon.length; k++) {
                 if(weightString === obj.pokemon[k].weight) {
-                    message = message + obj.pokemon[k].name + "(" + obj.pokemon[k].weight + "), ";
+                    sortPokemon.push(obj.pokemon[k]);
                     obj.pokemon.slice(k, 1);
                     break;
                 }
            }
         }
 
-        let form1 =
-            `<html>
-            <body>
-            <h1> List of Pokemon Sort By Height </h1>
-            ${message}
-            </body>
-            </html>`
-        response.send(form1);
+        response.render("pokemonSort", {listOfPokemon: sortPokemon});
     });
 }
 
@@ -267,7 +247,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
     jsonfile.readFile(FILE, function (err, obj) {
         let searchedPokemon = obj.pokemon[(id - 1)];
 
-        response.render("pokemon", searchedPokemon);
+        response.render("pokemonEdit", searchedPokemon);
     });
 });
 
