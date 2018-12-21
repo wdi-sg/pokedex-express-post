@@ -14,7 +14,7 @@ var port = process.env.PORT || 3000;
 
 // Init express app
 const app = express();
-// app.use(express.static(publicPath));
+app.use(express.static(publicPath));
 
 // tell your app to use the module
 app.use(express.json());
@@ -34,8 +34,12 @@ app.set('view engine', 'jsx');
 
 // Functions
 
+var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+  if (err) console.error(err);
+});
+
 function getPokemon(id, obj) {
-  var pokemon;
+  var pokemonItem;
 
   // find pokemon by id from the pokedex json file
   for (let i = 0; i < obj.pokemon.length; i++) {
@@ -43,19 +47,19 @@ function getPokemon(id, obj) {
     let currentPokemon = obj.pokemon[i];
 
     if (parseInt(currentPokemon.id) === parseInt(id)) {
-      pokemon = currentPokemon;
+      pokemonItem = currentPokemon;
       break;
     }
   }
 
-  return pokemon
+  return pokemonItem
 }
 
 function sortByName() {
 
-  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-    if (err) console.error(err);
-  });
+  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+  //   if (err) console.error(err);
+  // });
 
   pokemon = pokemon.pokemon;
   
@@ -76,9 +80,9 @@ function sortByName() {
 
 function sortByHeight() {
 
-  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-    if (err) console.error(err);
-  });
+  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+  //   if (err) console.error(err);
+  // });
 
   pokemon = pokemon.pokemon;
   
@@ -101,9 +105,9 @@ function sortByHeight() {
 
 function sortByWeight() {
 
-  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-    if (err) console.error(err);
-  });
+  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+  //   if (err) console.error(err);
+  // });
 
   pokemon = pokemon.pokemon;
   
@@ -133,33 +137,49 @@ function sortByWeight() {
 
 app.get('/', (request, response) => {
 
-  var html = "";
+  
   var pokemonList;
   if (request.query.choice) {
       if (request.query.choice === "name") {
-        var pokemon = sortByName();
+        var pokemonList = sortByName();
       } else if (request.query.choice === "height") {
-        var pokemon = sortByHeight();
+        var pokemonList = sortByHeight();
       } else {
-        var pokemon = sortByWeight();
+        var pokemonList = sortByWeight();
       }
 
       // html = getPokemnoDetail(pokemon);
-      pokemonList = pokemon;
+      // pokemonList = pokemon;
         // response.send(html);
   } else {
  
-      var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-        if (err) console.error(err);
-      });
+      // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+      //   if (err) console.error(err);
+      // });
 
       // html = getPokemnoDetail(pokemon.pokemon);
       pokemonList = pokemon.pokemon;
   }
 
   // response.send(html);
-  response.render('Pokemon', {pokemonList: pokemonList});
+  response.render('PokemonDetails', {pokemonList: pokemonList});
 
+});
+
+app.get("/pokemon/:id/edit", (request, response) => {
+  
+
+  var pokemonItem = getPokemon(request.params.id, pokemon)
+
+  // //read the file in and write out to it
+  response.render('PokemonEdit', {pokemonItem: pokemonItem});
+  
+});
+
+app.put("/pokemon/:id", (request, response) => {
+  
+  //read the file in and write out to it
+  response.send("i waz ere")
 });
 
 app.get('/pokemon/new', (request, response) => {
@@ -227,22 +247,24 @@ app.post('/pokemon', (request, response) => {
 app.get('/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+  // jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = parseInt(request.params.id);
 
-    let pokemon = getPokemon(inputId, obj);
+    let pokemonItem = getPokemon(inputId, pokemon);
 
-    if (pokemon === undefined) {
+    if (pokemonItem === undefined) {
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
-      response.send(pokemon);
+      response.send(pokemonItem);
     }
-  });
+  // });
 });
+
+
 
 // app.get('/', (request, response) => {
 //   response.send("yay");

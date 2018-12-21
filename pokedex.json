@@ -1,6 +1,7 @@
 {
-    "index" : {
-        "lastKey": "151"
+    "index": {
+        "lastKey": "151",
+        "lastkey": null
     },
     "pokemon": [{
         "id": 1,

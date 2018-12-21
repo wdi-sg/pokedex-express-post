@@ -1,6 +1,76 @@
-body {
-    width: 80%;
+.body {
+    width: 85%;
     margin: auto;
-    background-color: rgb(194, 236, 245);
+    background: linear-gradient(0.25turn, #56b3da, #ebf8e1, #f26be9);
 }
 
+.header {
+    text-align: center;
+}
+
+.h1 {
+    /* width: 800px; */
+    text-align: center;
+    color: red;
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+.Sort-Form {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.choice {
+    font-size: 20px;
+}
+
+.submit {
+    padding: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 30px;
+    outline: none;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    width: 70px;
+}
+
+.poke-section {
+    display: inline-block;
+    width: 380px;
+    border: 1px solid blue;
+    background: linear-gradient(135deg, rgb(170, 220, 134), rgb(237, 192, 179) 60%, rgb(150, 228, 228));
+    padding-top: 10px;
+}
+
+.poke-href {
+
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 24px;
+    text-decoration: none;
+    color: red;
+    padding-left: 30px;
+    padding-top: 20px;
+}
+
+.poke-image-section {
+    padding: 10px;
+    display: inline-block;
+    width: 120px;
+}
+
+.poke-image {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+}
+
+.poke-detail {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+    width: 200px;
+}
