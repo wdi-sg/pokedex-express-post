@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pokedex</title>
+    <link rel="stylesheet" type="text/css" href="/main/styles.css">
+
+</head>
+
+<body>
+    <input type="text" id="search">
+
+    <div id="container">
+        <div class="main-content">
+            <div class='poke-page-turner'>
+                <div class='prev'>
+                    <div class='page-turner-number'>119</div>
+                    <div class='page-turner-text'>prev poke</div>
+                </div>
+                <div class='next'>
+                    <div class='page-turner-number'>121</div>
+                    <div class='page-turner-text'> next poke</div>
+                </div>
+            </div>
+            <div class='pokemon-wrapper'>
+                <div class='pokemon-main-container'>
+                    <div class='pokemon-name'> poke name</div>
+                    <div class='pokemon-main-data'>
+                        <div class='pokemon-img-stats'>
+                            <div class='pokemon-img'>
+                            </div>
+                            <div class='pokemon-stats'>
+                                <div class='placeholder'></div>
+                            </div>
+                        </div>
+                        <div class='pokemon-descriptions'>
+                            <div class='height-weight-egg'></div>
+                            <div class='pokemon-types'></div>
+                            <div class='pokemon-weaknesses'></div>
+
+                        </div>
+                    </div>
+
+                    <div class='pokemon-evolution'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/main/script.js"> </script>
+</body>
+
+</html>
