@@ -30,7 +30,7 @@ class Homepage extends React.Component {
         </header>
 
         <body>
-            <form method='GET' action='/'>
+            <form method='GET' action='/pokemon'>
                 <select name='sortby'>
                     <option value='num'>Number</option>
                     <option value='name'>Name</option>
