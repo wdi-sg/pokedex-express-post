@@ -1,0 +1,39 @@
+body {
+/*	background-color: pink;
+*/}
+
+.pokeImage {
+	height:300px;
+	background-color: rgb(242,242,242);
+	border-radius: 10px;
+}
+
+.pokemon-attribute {
+/*	background-color: green;*/
+/* 	border: 2px solid black; */
+	position: relative;
+	width: 800px;
+	margin: 0 auto;
+	top: 170px;
+}
+
+ul {
+	width: 200px;
+/* 	background-color: green; */
+	position: absolute;
+	display: inline-block;
+	list-style-type: none;
+	list-style-position: outside;
+	top: 50px;
+	padding: 0;
+	right: 200px;
+}
+
+li {
+	margin: 10px 0;
+	font-family: 'Exo 2', sans-serif;
+}
+
+input {
+	float: right;
+}
