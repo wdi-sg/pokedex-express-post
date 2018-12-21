@@ -15,6 +15,9 @@ class Pokedetail extends React.Component{
                 <h5>Average spawn: {this.props.pokemon[0].avg_spawns}</h5>
                 <h5>Spawn time: {this.props.pokemon[0].spawn_time}</h5>
                 <h5>Type: {this.props.pokemon[0].type}</h5>
+                <form method="GET" action={"/pokemon/"}>
+                    <input type="submit" value="Home" />
+                </form>
             </div>
             );
     }

@@ -24,6 +24,10 @@ class Pokehome extends React.Component{
             <input type="submit" value="Create new Pokemon" />
         </form>
         <br />
+        <form method="GET" action={"/pokemon/type"}>
+            <input type="submit" value="Add Type" />
+        </form>
+        <br />
             Pokemon Name :- {pokemon}
       </div>
     );

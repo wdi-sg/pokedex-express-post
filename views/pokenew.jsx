@@ -19,6 +19,10 @@ class Pokenew extends React.Component{
                 <input type="text" name="weight" /><br />
                 <input type="submit" value="Submit" />
                 </form>
+                <br />
+                <form method="GET" action={"/pokemon/"}>
+                    <input type="submit" value="Home" />
+                </form>
             </div>
             );
     }

@@ -27,6 +27,10 @@ class Poketypelist extends React.Component{
                 <form method="GET" action={"/pokemon/" + this.props.list.id + "/detail"}>
                     <input type="submit" value="Details" />
                 </form>
+                <br />
+                <form method="GET" action={"/pokemon/"}>
+                    <input type="submit" value="Home" />
+                </form>
             </ul>
             );
     }

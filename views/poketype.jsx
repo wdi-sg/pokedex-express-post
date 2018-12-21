@@ -21,6 +21,10 @@ class Poketype extends React.Component{
                 <span> </span>
                 <input type="submit" value="Add" />
                 </form>
+                <br />
+                <form method="GET" action="/pokemon">
+                    <input type="submit" value="Home" />
+                </form>
             </div>
             );
     }
