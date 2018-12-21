@@ -1,0 +1,46 @@
+<% include partials/header %>
+<% const pokemonId = parseInt(addOn.req.params.id) - 1  %>
+<!-- show pokemon -->
+    <div>
+        <img src="<%= pokemon[pokemonId].img %>">
+        <h4>NAME:   <%= pokemon[pokemonId].name %></h4>
+        <h4>ID:     <%= pokemon[pokemonId].id %></h4>
+        <h4>HEIGHT: <%= pokemon[pokemonId].height %></h4>
+        <h4>WEIGHT: <%= pokemon[pokemonId].weight %></h4>
+    </div>
+    <a href="/">(((HOME)))</a><br/><br/><br/>
+    <!-- edit current pokemon -->
+    <div>
+            <form method=POST action="/pokemon/<%=addOn.req.params.id %>/edit?_method=PUT">
+                <fieldset>
+                    <legend>EDIT POKEMON</legend>
+                <label>name</label><br/>
+                <input type="text" name="name"><br/>
+                <label>id</label><br/>
+                <input type="text" name="id"><br/>
+                <label>height</label><br/>
+                <input type="text" name="height"><br/>
+                <label>weight</label><br/>
+                <input type="text" name="weight"><br/>
+                <input type=submit>
+                </fieldset>
+            </form>
+        </div>
+<!-- create new pokemon -->
+    <div>
+        <form method=POST action="/pokemon/<%=addOn.req.params.id %>/add">
+            <fieldset>
+                <legend>ADD POKEMON</legend>
+            <label>name</label><br/>
+            <input type="text" name="name"><br/>
+            <label>id</label><br/>
+            <input type="text" name="id" required><br/>
+            <label>height</label><br/>
+            <input type="text" name="height"><br/>
+            <label>weight</label><br/>
+            <input type="text" name="weight"><br/>
+            <input type=submit>
+            </fieldset>
+        </form>
+    </div>
+<% include partials/footer %>

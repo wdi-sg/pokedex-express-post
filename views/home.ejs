@@ -1,0 +1,25 @@
+<% include partials/header %>
+    <form method=GET action="/sort">
+    <fieldset>
+        <legend>SORT POKEMONS</legend>
+        <select name="sort">
+            <option value="id">ID</option>
+            <option value="name">NAME</option>
+            <option value="height">HEIGHT</option>
+        </select>
+        <input type="submit" value="submit">
+    </fieldset>
+</form>
+        <div class="pokeContainer">
+            
+            <% pokemon.forEach((ele,num)=>{ %>
+                <a href="/pokemon/<%= ele.id %>">
+                <div class="pokeDiv">
+                    <img src="<%=ele.img %>"/>
+                    <p>POKEMON:<%= ele.name%><br/>
+                    POKEMON ID:<%= ele.id%></p>
+                </div>
+                </a>
+            <% });  %>
+        </div>
+<% include partials/footer %>     

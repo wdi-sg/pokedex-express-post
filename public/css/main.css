@@ -1,0 +1,10 @@
+.pokeContainer{
+    width: 800px;
+    margin: 0 auto;
+    display: block;
+}
+.pokeDiv{
+    display: inline-flex;
+    align-self: space-between;
+    padding: 20px;
+}
