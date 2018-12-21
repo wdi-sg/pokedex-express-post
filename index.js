@@ -294,7 +294,8 @@ app.get('/pokemon/edit/:id', (request, response) => {
           let currentPokemon = obj.pokemon[i];
 
           if( currentPokemon.id === inputId ){
-            pokemon = currentPokemon; 
+            pokemon = currentPokemon;
+            console.log(pokemon);
           };
         }
 
@@ -303,26 +304,8 @@ app.get('/pokemon/edit/:id', (request, response) => {
           response.status(404);
           response.send("not found");
           } else {
-            let showPokemon = `<html>
-                                <body>
-                                  <form action="/pokemon/updated/${inputId}" method="post">`+
-                                    // <input id="id" type="text" name="id" placeholder="Please enter ID Number.">
-                                    // <input id="num" type="text" name="num" placeholder="Please enter a number.">
-                                    `<input id="name" type="text" name="name" placeholder="${pokemon.name}">
-                                    <input id="img" type="text" name="img" placeholder="${pokemon.img}">
-                                    <input id="height" type="text" name="height" placeholder="{${pokemon.height}">
-                                    <input id="weight" type="text" name="weight" placeholder="{${pokemon.weight}">
-                                    <select name="makeType">
-                                      <option value="your">your</option>
-                                      <option value="my">my</option>
-                                      <option value="best">best</option>
-                                      <option value="not-my">Not my</option>
-                                    </select>
-                                    <input type="submit">
-                                  </form>
-                                </body>
-                              </html>`
-            response.send(showPokemon);
+            console.log(pokemon.id);
+            response.render('edit', pokemon);
           }  
     })
 });
@@ -341,8 +324,6 @@ app.post('/pokemon/updated/:id', (request, response) => {
     updatePokemon.height= request.body.height
     updatePokemon.weight= request.body.weight;
     updatePokemon.type= request.body.makeType;
-
-    console.log("updated pokemon!");
 
   // save the request body
   jsonfile.writeFile(FILE, obj, (err) => {
