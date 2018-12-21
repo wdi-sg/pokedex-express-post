@@ -13,19 +13,19 @@ const FILE = 'pokedex.json';
 const app = express();
 const methodOverride = require('method-override');
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-
-// // this line below, sets a layout look to your express project
-// const reactEngine = require('express-react-views').createEngine();
-// app.engine('jsx', reactEngine);
-// // this tells express where to look for the view files
-// app.set('views', __dirname + '/views');
-// // this line sets react to be the default view engine
-// app.set('view engine', 'jsx');
 
 
 /**
@@ -153,7 +153,7 @@ app.get('/:id', (request, response) => {
       let currentPokemon = obj.pokemon[i];
 
       if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
+        pokemon = currentPokemon; 
       }
     }
 
@@ -169,7 +169,7 @@ app.get('/:id', (request, response) => {
                           <p>Weight: ${pokemon.weight}</p>
                           <p>Height: ${pokemon.height}</p>
                           <p>What type is this pokemon?</p>
-                          <form action="/pokemon/${pokemon.id}" name="type" method="post">
+                          <form action="/pokemon/type/${pokemon.id}" name="type" method="post">
                             <select name="makeType">
                               <option value="your">your</option>
                               <option value="my">my</option>
@@ -183,7 +183,7 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.post('/pokemon/:id', (request, response) => {
+app.post('/pokemon/type/:id', (request, response) => {
 
   //debug code (output request body)
   // console.log(request.body);
@@ -265,6 +265,95 @@ app.post('/pokemon/', (request, response) => {
   jsonfile.writeFile(FILE, obj, (err) => {
     console.error(err)
     response.send("You have a new Pokemon!");
+    // now look inside your json file
+    });
+  });
+});
+
+// add the ability to edit the data for a given pokemon
+// install react templates for your app
+// add a form at the path: /pokemon/:id/edit
+// add each field as an input and pre-populate the current data for that pokemon
+// the form should make a request ( the form action ) to the correct route ( a PUT request to /pokemon/:id )
+
+app.get('/pokemon/edit/:id', (request, response) => {
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt(request.params.id);
+
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+          let currentPokemon = obj.pokemon[i];
+
+          if( currentPokemon.id === inputId ){
+            pokemon = currentPokemon; 
+          };
+        }
+
+          if (pokemon === undefined) {
+          // send 404 back
+          response.status(404);
+          response.send("not found");
+          } else {
+            let showPokemon = `<html>
+                                <body>
+                                  <form action="/pokemon/updated/${inputId}" method="post">`+
+                                    // <input id="id" type="text" name="id" placeholder="Please enter ID Number.">
+                                    // <input id="num" type="text" name="num" placeholder="Please enter a number.">
+                                    `<input id="name" type="text" name="name" placeholder="${pokemon.name}">
+                                    <input id="img" type="text" name="img" placeholder="${pokemon.img}">
+                                    <input id="height" type="text" name="height" placeholder="{${pokemon.height}">
+                                    <input id="weight" type="text" name="weight" placeholder="{${pokemon.weight}">
+                                    <select name="makeType">
+                                      <option value="your">your</option>
+                                      <option value="my">my</option>
+                                      <option value="best">best</option>
+                                      <option value="not-my">Not my</option>
+                                    </select>
+                                    <input type="submit">
+                                  </form>
+                                </body>
+                              </html>`
+            response.send(showPokemon);
+          }  
+    })
+});
+
+app.post('/pokemon/updated/:id', (request, response) => {
+
+  //debug code (output request body)
+  // console.log(request.body);
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let updatePokemon =  obj.pokemon[request.params.id-1];
+
+    updatePokemon.name= request.body.name;
+    updatePokemon.img= request.body.img;
+    updatePokemon.height= request.body.height
+    updatePokemon.weight= request.body.weight;
+    updatePokemon.type= request.body.makeType;
+
+    console.log("updated pokemon!");
+
+  // save the request body
+  jsonfile.writeFile(FILE, obj, (err) => {
+    console.error(err)
+    let showPokemon = `<p>Name: ${updatePokemon.name}</p>
+                          <p>ID: ${updatePokemon.id}</p>
+                          <img src="${updatePokemon.img}">
+                          <p>Weight: ${updatePokemon.weight}</p>
+                          <p>Height: ${updatePokemon.height}</p>
+                          <p>Type: : ${updatePokemon.type}</p>`
+    response.send(showPokemon);
     // now look inside your json file
     });
   });
