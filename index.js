@@ -112,8 +112,8 @@ function sortByWeight() {
   pokemon = pokemon.pokemon;
   
   return pokemon.sort(function(a, b) {
-    var weightA = parseFloat(a.weight.replace("m","").trim()); // ignore upper and lowercase
-    var weightB = parseFloat(b.weight.replace("m","").trim()); // ignore upper and lowercase
+    var weightA = parseFloat(a.weight.replace("kg","").trim()); // ignore upper and lowercase
+    var weightB = parseFloat(b.weight.replace("kg","").trim()); // ignore upper and lowercase
     
     if (weightA < weightB) {
       return -1;
