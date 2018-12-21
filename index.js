@@ -65,7 +65,7 @@ app.get('/', (request, response) => {
 app.get('/pokemon/:id/edit', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
         let pokemonInfo = obj.pokemon[parseInt(request.params.id)-1];
-        response.render('editPokemon', pokemonInfo);
+        response.render('editPokemon', {pokemonInfo});
     });
 });
 
