@@ -1,62 +1,58 @@
 const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+const jsonfile = require('jsonfile');
+const file = './pokedex.json';
 
-app.get('/:id', (request, response) => {
+const methodOverride = require('method-override');
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+//method override
+app.use(methodOverride('_method'));
 
-    var pokemon;
+//static files
+app.use(express.static(__dirname + '/public'));
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+//urlEncoded
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-      let currentPokemon = obj.pokemon[i];
+//view enngine
+app.set("view engine", "ejs");
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
+//HOMEPAGE
+app.get('/', (req, res) =>{
+    jsonfile.readFile(file, (err, obj) =>{
+        res.render('home', obj);
+    })
+})
+//SORT POKEMONS
+app.get('/sort', (req, res) =>{
+    console.log(req.body)
+    res.redirect(`/`)
+})
+//EDIT PAGE
+app.get('/pokemon/:id', (req, res) =>{
+    jsonfile.readFile(file, (err, obj) =>{
+        objAddOn = obj;
+        objAddOn.addOn = {req};
+        res.render('edit', objAddOn);
+    })
 });
-
-app.get('/', (request, response) => {
-  response.send("yay");
+//ADD POKEMONS
+app.post('/pokemon/:id/add', (req, res)=>{
+    console.log(req.body);
+    jsonfile.readFile(file, (err, obj) =>{
+        console.log(obj);
+        // obj.push(req.body)
+        jsonfile.writeFile(file, obj, (err)=>{
+            if(err){console.log(err)};
+        });
+    });
+    res.redirect(`/pokemon/${req.params.id}`)
 });
-
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+//EDIT POKEMONS
+app.put('/pokemon/:id/edit', (req, res)=>{
+    console.log(req.body);
+    res.redirect(`/pokemon/${req.params.id}`)
+});
+app.listen(3000, ()=>{console.log('PORT 3000 PORT 3000 PORT 3000 PORT 3000')})
