@@ -5,9 +5,24 @@ class Home extends React.Component {
     // console.log("pokemon");
     // console.log(this.props.pokemon);
 
-    const allPokemon = this.props.pokename.map ((eachPoke, index) => {
-        return <li key={index}> {eachPoke} </li>
-    })
+    var compare = function(a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+        };
+
+        let sortByNames = this.props.test.sort(compare);
+        console.log(sortByNames);
+
+    const pokemonSortName = this.props.test.map ((obj, index)  => {
+        console.log(obj.img);
+        return <div key = {index}> {obj.num} {obj.name} <img src={obj.img}></img> </div>
+    });
     return (
       <html>
         <body>
@@ -21,9 +36,9 @@ class Home extends React.Component {
                     <input type="submit"></input>
             </form>
             <div>
-                <ul >
-                {allPokemon}
-                </ul>
+
+                {pokemonSortName}
+
             </div>
         </body>
       </html>

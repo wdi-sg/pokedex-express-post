@@ -50,14 +50,20 @@ app.get('pokemon/:id/edit', (request, response) => {
 app.get('/', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
+
     let pokemon = obj.pokemon;
-    let allNames = new getAllPokemonByName(pokemon);
-        if(request.query.sortby === "name" ) {
-            byName.sort();
-        }
+    // let allNames = new getAllByName(pokemon);
+        // if(request.query.sortby === "name" ) {
+        //     allNames.sort();
+        // } //else if ()
 
-        response.render("home", {pokename:allNames});
 
+
+        // console.log(sortByNames);
+
+        // console.log(obj);
+       // response.send(allNames);
+        response.render('home', {test:pokemon});
            jsonfile.writeFile(file, obj, (err) => {
 
             console.log(err);
@@ -67,14 +73,15 @@ app.get('/', (request, response) => {
 
 app.get('/pokemon/new', (request, response) => {
 
-        response.render('new');
+    response.render('new');
 });
 
 app.post('/pokemon', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
         let pokemon = obj.pokemon;
-        let newObj = new newPokemon(request.body.id, request.body.num, request.body.name, request.body.img, request.body.height, request.body.weight);
+        let body = request.body;
+        let newObj = new newPokemon(body.id, body.num, body.name, body.img, body.height, body.weight);
 
             console.log("value of newObj " + newObj);
 
@@ -86,7 +93,6 @@ app.post('/pokemon', (request, response) => {
             New Height is ${newObj.height}<br>
             New Weight is ${newObj.weight}`);
 
-        // console.log(newObj);
         pokemon.push(newObj);
 
         jsonfile.writeFile(file, obj, (err) => {
@@ -96,10 +102,18 @@ app.post('/pokemon', (request, response) => {
     });
 });
 
-function getAllPokemonByName (pokemon){
+function getAllPokemonObj (obj) {
+    return obj.pokemon;
+}
+
+function getAllByName (pokemon){
     let pokemonName = [];
     for(let i = 0; i < pokemon.length; i++) {
-        pokemonName.push(pokemon[i].name);
+        let tempArray = {}
+        tempArray.push(pokemon[i].num);
+        tempArray.push(pokemon[i].name);
+        tempArray.push(pokemon[i].img);
+        pokemonName.push(tempArray);
     }return pokemonName;
 }
 
@@ -114,5 +128,14 @@ function newPokemon (newId, newNum, newName, newImg, newHeight,newWeight) {
     this.weight = newWeight;
 };
 
+function getByType (pokemon, element) {
+    let typeArray = [];
+
+    for(let i = 0; i < pokemon.length; i++) {
+        for(let j=0; j < pokemon[i].type.length; i ++) {
+                typeArray.push(pokemon[i].name);
+        }
+    } return typeArray;
+}
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
