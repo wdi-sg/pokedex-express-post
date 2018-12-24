@@ -1,6 +1,8 @@
 var React = require('react');
 
-class Pokemon extends React.Component {
+
+class PokemonDetails extends React.Component {
+
 
   render() {
 
@@ -15,7 +17,7 @@ class Pokemon extends React.Component {
                 <h1 className = "h1"> Welcome to Pokedex</h1>
             </header>
             <div className = "Sort-Form">
-            <form  method="get" action="/">
+            <form  method="GET" action="/">
                 <label className="choice" htmlFor="choice">Choose your sorting option : </label>
                 <select className="choice" name="choice" id="choice">
                   <option className="choice" value="">--Please choose your option--</option>
@@ -56,4 +58,4 @@ class Pokemon extends React.Component {
 
 }
 
-module.exports = Pokemon;
+module.exports = PokemonDetails;

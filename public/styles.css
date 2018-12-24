@@ -39,7 +39,8 @@
 
 .poke-section {
     display: inline-block;
-    width: 380px;
+    width: 400px;
+    height: 200px;
     border: 1px solid blue;
     background: linear-gradient(135deg, rgb(170, 220, 134), rgb(237, 192, 179) 60%, rgb(150, 228, 228));
     padding-top: 10px;

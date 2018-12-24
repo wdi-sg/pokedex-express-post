@@ -57,9 +57,9 @@ function getPokemon(id, obj) {
 
 function sortByName() {
 
-  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-  //   if (err) console.error(err);
-  // });
+  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+    if (err) console.error(err);
+  });
 
   pokemon = pokemon.pokemon;
   
@@ -80,9 +80,9 @@ function sortByName() {
 
 function sortByHeight() {
 
-  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-  //   if (err) console.error(err);
-  // });
+  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+    if (err) console.error(err);
+  });
 
   pokemon = pokemon.pokemon;
   
@@ -105,9 +105,9 @@ function sortByHeight() {
 
 function sortByWeight() {
 
-  // var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
-  //   if (err) console.error(err);
-  // });
+  var pokemon = jsonfile.readFileSync(FILE, (err, pokemon) => {
+    if (err) console.error(err);
+  });
 
   pokemon = pokemon.pokemon;
   
@@ -183,10 +183,9 @@ app.put("/pokemon/:id", (request, response) => {
 });
 
 app.get('/pokemon/new', (request, response) => {
+  
+  response.render('PokemonEdit');
 
-  response.statusCode = 200;
-  response.setHeader('Content-Type', 'text/html');
-  response.sendFile(publicPath + '/index.html');
 });
 
 app.post('/pokemon', (request, response) => {
@@ -203,8 +202,8 @@ app.post('/pokemon', (request, response) => {
         num: 0,
         name: "",
         img: "",
-        height: "",
-        weight: "g",
+        height: "m",
+        weight: "kg",
         candy: "",
         egg: "",
         avg_spawns: 0,
