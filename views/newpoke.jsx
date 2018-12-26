@@ -1,6 +1,6 @@
 var React = require('react');
 
-class New extends React.Component {
+class newPoke extends React.Component {
     render() {
 
         return (
@@ -22,4 +22,4 @@ class New extends React.Component {
     }
 }
 
-module.exports = New;
+module.exports = newPoke;

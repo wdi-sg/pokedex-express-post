@@ -1,22 +1,22 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-const file = 'pokedex.json';
+const File = 'pokedex.json';
 const app = express();
+const reactEngine = require('express-react-views').createEngine();
+const methodOverride = require('method-override');
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
+app.use(methodOverride('_method'));
+app.use(express.static(__dirname+'/public/'));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-// this line below, sets a layout look to your express project
-const reactEngine = require('express-react-views').createEngine();
-app.engine('jsx', reactEngine);
-// this tells express where to look for the view files
-app.set('views', __dirname + '/views');
-// this line sets react to be the default view engine
-app.set('view engine', 'jsx');
+
 
 app.get('pokemon/:id/edit', (request, response) => {
-
   // get json from specified file
   jsonfile.readFile(file, (err, obj) => {
     // obj is the object from the pokedex json file
@@ -48,32 +48,27 @@ app.get('pokemon/:id/edit', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-
+const file = 'pokedex.json';
     jsonfile.readFile(file, (err, obj) => {
 
-    let pokemon = obj.pokemon;
-    // let allNames = new getAllByName(pokemon);
-        // if(request.query.sortby === "name" ) {
-        //     allNames.sort();
-        // } //else if ()
+        if (request.query.sortby === "name" ) {
+            response.render('sortname', obj);
+        } else if (request.query.sortby === "weight") {
+            response.render('sortweight', obj);
+        } else if (request.query.sortby === "height"){
+            response.render('sortheight', obj);
+        } else {
+            response.render('home', obj);
+        }
 
-
-
-        // console.log(sortByNames);
-
-        // console.log(obj);
-       // response.send(allNames);
-        response.render('home', {test:pokemon});
-           jsonfile.writeFile(file, obj, (err) => {
-
-            console.log(err);
-        });
     });
 });
 
 app.get('/pokemon/new', (request, response) => {
-
-    response.render('new');
+const file = 'pokedex.json';
+    jsonfile.readFile(file, (err, obj) => {
+        response.render('newpoke', obj);
+    });
 });
 
 app.post('/pokemon', (request, response) => {
