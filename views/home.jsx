@@ -1,5 +1,6 @@
 var React = require ('react');
 var DefaultLayout = require('./default');
+var Form = require('./form');
 
 class home extends React.Component {
     render() {
@@ -14,9 +15,10 @@ class home extends React.Component {
             })
         return(
                 <DefaultLayout>
-                        <div className = "container">
+                    <Form></Form>
+                    <div className = "container">
                             {listofPokemons}
-                        </div>
+                    </div>
                 </DefaultLayout>
         );
     }

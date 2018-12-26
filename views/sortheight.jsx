@@ -1,5 +1,6 @@
 var React = require ('react');
 var DefaultLayout = require ('./default');
+var Form = require ('./form');
 
 class sortHeight extends React.Component {
     render(){
@@ -24,9 +25,10 @@ class sortHeight extends React.Component {
         });
         return(
             <DefaultLayout>
-                <div className = "container">
-                    {pokemonSortHeight}
-                </div>
+                <Form></Form>
+                    <div className = "container">
+                        {pokemonSortHeight}
+                    </div>
             </DefaultLayout>
         )
     }

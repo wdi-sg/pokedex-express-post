@@ -1,5 +1,6 @@
 var React = require ('react');
 var DefaultLayout = require ('./default');
+var Form = require ('./form');
 
 class sortWeight extends React.Component {
     render(){
@@ -13,7 +14,6 @@ class sortWeight extends React.Component {
             }
         }
         let sortByWeight = this.props.pokemon.sort(compare);
-
         const pokemonSortWeight = sortByWeight.map ((obj,index) => {
             return <div key={index} className = "box-contain">
                         <div className = "poke-name"> {obj.name} </div>
@@ -24,9 +24,10 @@ class sortWeight extends React.Component {
         });
         return(
             <DefaultLayout>
-                <div className = "container">
-                    {pokemonSortWeight}
-                </div>
+                <Form></Form>
+                    <div className = "container">
+                        {pokemonSortWeight}
+                    </div>
             </DefaultLayout>
         )
     }

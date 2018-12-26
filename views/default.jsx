@@ -10,14 +10,6 @@ class Default extends React.Component {
                 </head>
                 <body>
                     <h1> Welcome to the pokedex!</h1>
-                        <form action="/" method="GET">
-                            <select name="sortby">
-                                <option value="name">sort by name</option>
-                                <option value="height">sort by height</option>
-                                <option value="weight">sort by weight</option>
-                                </select>
-                                <input type="submit" value = "submit"/>
-                        </form>
                     {this.props.children}
                 </body>
             </html>

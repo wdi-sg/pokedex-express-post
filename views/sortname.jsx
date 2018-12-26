@@ -1,5 +1,6 @@
 var React = require('react');
 var DefaultLayout = require('./default');
+var Form = require('./form');
 
 class sortName extends React.Component {
   render() {
@@ -12,9 +13,7 @@ class sortName extends React.Component {
             return 0;
         }
     }
-
         let sortByNames = this.props.pokemon.sort(compare);
-
         const pokemonSortName = sortByNames.map ((obj, index)  => {
 
         return <div key = {index} className ="box-contain">
@@ -27,6 +26,7 @@ class sortName extends React.Component {
     });
     return (
         <DefaultLayout>
+            <Form></Form>
                 <div className = "container">
                     {pokemonSortName}
                 </div>
