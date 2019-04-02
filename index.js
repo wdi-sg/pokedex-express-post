@@ -54,7 +54,7 @@ var addZero = function(n) {
 // ===================================
 var homeRequestHandler = function (request, response) {
     let pokemonNames = "";
-    let htmlPage = `<form>
+    let htmlForm = `<form>
                         <select name="sortby">
                             <option value="id">id</option>
                             <option value="name">name</option>
@@ -96,7 +96,7 @@ var getPokemonByIdRequestHandler = function (request, response) {
 }
 
 var newPokemonRequestHandler = function (request, response) {
-    let htmlPage = `<form method="POST" action="/pokemon">
+    let htmlForm = `<form method="POST" action="/pokemon">
                         <h1>Add New Pokemon</h1>
                         Name: <input name="name"/><br>
                         Image: <input name="img"/><br>
