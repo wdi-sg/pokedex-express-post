@@ -59,13 +59,21 @@ app.get('/:id', (request, response) => {
 
 app.get('/', (request, response) => {
     jsonfile.readFile(FILE, (err,obj) => {
+        // response.send(req.query);
         let pokeList = [];
         for( let i=0; i<obj.pokemon.length; i++ ) {
             pokeList.push(obj.pokemon[i].name);
         }
-        response.send(pokeList);
+        let pokeListSorted = pokeList.sort();
+        response.send('<form action="/search/name">' + '<select>' + '<option value="name">alpabetical</option>' + '<option value="id">id</option>' + '<input type="submit" value="sort">' + '</form>' + pokeList);
     })
 });
+//have the drop down, but how to implement??
+
+// app.get('/search/name', (request,response)=>{
+//     response.send(pokeList);
+// })
+
 
 app.post('/pokemon', (request,response) => {
     console.log(request.body);
