@@ -83,7 +83,19 @@ app.post('/pokemon', function(request, response) {
     response.send(newPokemon);
 });
 
+//at the root route (GET request) / display a list of all the pokemons in the pokedex
+app.get("/", (request, response) => {
 
+    let allPokemonArr = [];
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            allPokemonArr.push(`<li>${JSON.stringify(obj.pokemon[i].name)}</li>`);
+        }
+
+        response.send("All Pokemon:" + allPokemonArr.join("") + ".");
+    });
+});
 
 //Listen to requests on port 3000
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
