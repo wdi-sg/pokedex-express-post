@@ -97,7 +97,16 @@ app.get("/", (request, response) => {
         }
         //we now have a pokemon Name list
         pokemonNameList.sort();
-        response.send(pokemonNameList);
+        let pokemonListSorted = [];
+        for (let i = 0; i < pokemonNameList.length; i++) {
+          const pokemonName = pokemonNameList[i];
+          pokemonList.forEach(pokemonObject => {
+            if (pokemonName === pokemonObject.name) {
+              pokemonListSorted.push(pokemonObject);
+            }
+          });
+        }
+        response.send(pokemonListSorted);
       }
     } else {
       response.sendFile(path.join(__dirname + "/homepage.html"));
