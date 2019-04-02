@@ -32,32 +32,27 @@ app.get('/:id', (request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = parseInt( request.params.id );
-
     var pokemon;
 
     // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
-
       let currentPokemon = obj.pokemon[i];
-
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
       }
     }
 
     if (pokemon === undefined) {
-
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
-
       response.send(pokemon);
     }
   });
 });
 
-// responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
+// respond with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 app.get('/pokemon/new', (request, response) => {
     let  newForm =  "<h1>Let's create a new Pokemon!</h1>"+
                   '<form method="POST" action="/pokemon">'+
@@ -79,8 +74,7 @@ app.get('/pokemon/new', (request, response) => {
 // parse the form data and save the new pokemon data into pokedex.json
 app.post('/pokemon', function(request, response) {
 
-    //debug code (output request body)
-    console.log(request.body);
+    // console.log(request.body);
     let newPokemon = request.body;
     // change id from string to integer
     newPokemon.id = parseInt(newPokemon.id, 10)
@@ -93,24 +87,36 @@ app.post('/pokemon', function(request, response) {
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) { console.log(err) };
         });
-
     });
-
-  // save the request body
-  // jsonfile.writeFile(FILE, request.body, (err) => {
-    // console.error(err)
 
     // now look inside your json file
     response.send(newPokemon);
-  // });
 });
 
 // default
 app.get('/', (request, response) => {
-    let  respond =  '<h1>Welcome to the online Pokedex!</h1>'+
-                  "<p>If you know the ID of the pokemon you're looking for, key in '/(the pokemon's ID)' in the address bar after the website address!</p>";
 
-    response.send(respond);
+    let pokemonList = [];
+
+    // get list of pokemon
+    jsonfile.readFile(FILE, (err, obj) => {
+        // create new list item for each pokemon
+        for (let pokemon of obj.pokemon){
+            pokemonList.push(`<li>${pokemon.name}</li>`);
+        }
+        // removes comma between each list item
+        pokemonList = pokemonList.join('');
+
+        let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
+                  <h3>Pokemon List:</h3>
+                  ${pokemonList}`;
+
+        console.log(pokemonList);
+
+        response.send(respondMessage);
+    });
+
+
 });
 
 /**
