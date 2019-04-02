@@ -29,6 +29,9 @@ app.get('/', (request, response) => {
                   '<br>' +
                   `<img src="https://pics.me.me/via-9gag-com-14050435.png">`+
                   '<h2> LIST OF CURRENT POKEMON </h2>'+
+                  '<form method="post" action="/pokemon/sort">' +
+                  'SORT THAT THANG BY NAME! <input type="submit" value="submit">'+
+                  '</form>'+
                   pokemonList
                   );
 
@@ -88,6 +91,23 @@ app.post('/pokemon/new/creation', function(request, response) {
     console.log(err)
   });
 
+
+});
+
+app.post('/pokemon/sort', function(request, response) {
+
+//Comparer Function
+function GetSortOrder(prop) {
+    return function(a, b) {
+        if (a[prop] > b[prop]) {
+            return 1;
+        } else if (a[prop] < b[prop]) {
+            return -1;
+        }
+        return 0;
+    }
+}
+    response.send(json.pokemon.sort(GetSortOrder("name")));
 
 });
 
