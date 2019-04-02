@@ -53,32 +53,30 @@ var addZero = function(n) {
 // Request Handlers
 // ===================================
 var homeRequestHandler = function (request, response) {
-    if (request.query.sortby !== undefined) {
-        let pokemonNames = "";
+    let pokemonNames = "";
+    let htmlPage = `<form>
+                        <select name="sortby">
+                            <option value="id">id</option>
+                            <option value="name">name</option>
+                        </select>
+                        <input type="submit" value="Sort Pokemon by Name"/>
+                    </form>`;
 
-        if (request.query.sortby === "name") {
-            _.sortBy(data.pokemon, ['name']).forEach((o) => {
-                pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
-            });
-        } else if (request.query.sortby === "id"){
-            _.sortBy(data.pokemon, ['id']).forEach((o) => {
-                pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
-            });
-        }
-
-        response.send(pokemonNames);
-
+    if (request.query.sortby === "name") {
+        _.sortBy(data.pokemon, ['name']).forEach((o) => {
+            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
+        });
+    } else if (request.query.sortby === "id"){
+        _.sortBy(data.pokemon, ['id']).forEach((o) => {
+            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
+        });
     } else {
-        let htmlPage = `<form>
-                            <select name="sortby">
-                                <option value="id">id</option>
-                                <option value="name">name</option>
-                            </select>
-                            <input type="submit" value="Sort Pokemon by Name"/>
-                        </form>`;
-
-        response.send(htmlPage);
+        _.forEach(data.pokemon, (o) => {
+            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
+        });
     }
+
+    response.send(htmlPage + pokemonNames);
 }
 
 var getPokemonByIdRequestHandler = function (request, response) {
