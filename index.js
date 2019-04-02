@@ -55,7 +55,8 @@ app.use(express.urlencoded({
 //     }
 //   });
 // });
-//
+
+//two form methods. one is text based. the other drop down select
 app.get('/pokemon/:id', (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -66,6 +67,17 @@ app.get('/pokemon/:id', (request, response) => {
                             'ID:     <input type="text" name="id" value="'+ inputId +'">'+ '<br>' +
                             '<input type="submit" value="Submit">'+ '<br>' +
                             '</form>';
+
+    let chooseTypeDrop = '<form method="POST" action="/pokemon/test2"> '+
+                    '<select name="addType">' +
+                    '<option value="">Choose an Option</option>' +
+                    '<option value="fire">Fire</option>' +
+                    '<option value="water">Water</option>'+
+                    '<option value="ghost">Ghost</option>'+
+                    '</select>'+ '<br>' +
+                    'ID:     <input type="text" name="id" value="'+ inputId +'">'+ '<br>' +
+                    '<input type="submit" value="Choose a type">'+
+                    '</form>';
     // obj is the object from the pokedex json file
     // extract input data from request
 
@@ -89,7 +101,7 @@ app.get('/pokemon/:id', (request, response) => {
       response.send("not found");
     } else {
         console.log(pokemon.id);
-      response.send(chooseType + '<br>'+ 'Name: '+pokemon.name +'<br>' +'id: '+pokemon.id);
+      response.send(chooseTypeDrop+ '<br>'+ 'Name: '+pokemon.name +'<br>' +'id: '+pokemon.id);
       // chooseType + '<br>' +
     }
   });
@@ -115,6 +127,26 @@ app.post('/pokemon/test', (request,response)=>{
         });
     });
 })
+
+app.post('/pokemon/test2', (request,response)=>{
+    console.log(request.body);
+    jsonfile.readFile(FILE, (err,obj)=>{
+        let pokemonId = parseInt(request.body.id)-1;
+        let target = obj.pokemon[pokemonId];
+        console.log(target);
+        if(target === undefined){
+            response.send('Id not found. Is this a new pokemon?');
+        }
+        obj.pokemon[pokemonId].type = request.body.addType;
+        response.send('Added type:' + request.body.addType + '. To ' + obj.pokemon[pokemonId].name +'. Guess you gotta catch some more....');
+    jsonfile.writeFile(FILE, obj, (err)=>{
+            if(err !== null){
+                console.log(err);
+            }
+        });
+    });
+})
+
 //intercepts a GET request. responses with a form. User fills inputs. Submits to /pokemon
 app.get('/pokemon/new', (request,response)=>{
     let newRespondForm  = '<h1>Fake PokeDex</h1>'+
@@ -163,8 +195,6 @@ app.post('/pokemon', (request,response)=>{
         });
     });
 })
-
-
 
 // not too efficient on root path. readfile in each conditional. Could look into having readfile first, conditionals all inside.
 app.get('/', (request, response) => {
@@ -219,8 +249,6 @@ app.get('/', (request, response) => {
         }
     });
 });
-
-
 
 /**
  * ===================================
