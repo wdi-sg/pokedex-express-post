@@ -80,16 +80,27 @@ app.get('/pokemon/new', (request, response) => {
 //   });
 // });
 
+//Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
 app.post('/pokemon', (request, response) => {
   // we are recieving data
   console.log("this is request body:",request.body);
   // save the request body
-  
-  jsonfile.writeFile('data.json', request.body, (err) => {
-    console.error(err)
-    console.log(request.body);
+jsonfile.readFile(FILE, (err, obj) => {
+
+  console.log("reading file now");
+  console.error(err);
+  console.log(request.body);
+  console.log("done reading file");
+  obj.pokemon.push(request.body);
+
+  jsonfile.writeFile(FILE, obj, { spaces: 2 }, (err) => {
+    console.log("writing file now");
+    console.error(err);
     // now look inside your json file
-    response.send(request.body);
+    response.send(obj);
+    console.log("done writing file");
+    console.log(obj);
+    });
   });
 });
 
