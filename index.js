@@ -49,9 +49,19 @@ app.get('/:id', (request, response) => {
     }
   });
 });
-
+//Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 app.get('/pokemon/new', (request, response) => {
-  response.send("yay");
+  let  respond =  '<h1>New Pokemon</h1>'+
+                  '<form method="GET" action="/animals">'+ //this action ideally will point to another app.get or app.post function that has
+                  'Pokemon ID: <input type="text" id="id">'+
+                  'Pokemon Num: <input type="text" num="num">'+
+                  'Pokemon Name: <input type="text" name="name">'+
+                  'Pokemon Image: <input type="text" img="img">'+
+                  'Height: <input type="data" height="height">'+
+                  'Weight: <input type="data" weight="weight">'+
+                  '<input type="submit" value="Submit">'+
+                  '</form>';
+  response.send(respond);
 });
 
 // app.get('/', (request, response) => {
