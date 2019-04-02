@@ -12,7 +12,8 @@ app.use(express.urlencoded({
 }));
 
 
-app.post("/pokemon/new", function(request, response) {
+//Get user input and add it into pokedex.json
+app.post("/pokemon", function(request, response) {
 
     jsonfile.readFile(FILE, function(err, obj) {
           userInput = request.body;
@@ -30,10 +31,10 @@ app.post("/pokemon/new", function(request, response) {
 });
 
 
-
+//Accessing to /pokemon/new receive several forms to fill out
 app.get("/pokemon/new", function(request, response) {
 
-    let respond = '<form method="POST" action="/pokemon/new">'+
+    let respond = '<form method="POST" action="/pokemon">'+
                   'id: <input type="text" name="id">'+
                   'num: <input type="text" name="num">'+
                   'name: <input type="text" name="name">'+
@@ -44,6 +45,28 @@ app.get("/pokemon/new", function(request, response) {
                   '</form>';
                   response.send(respond);
 });
+
+
+//Accessing to the root route receive all the pokemon info
+app.get('/', (request, response) => {
+    let buttons = '<select method="POST" action="/">'+
+                  '<option value="id">id</option>'+
+                  '<option value="name">name</option>'+
+                  '<input type="submit" value="Submit">'+
+                  '</select>';
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokemonList = [];
+        // obj.sort()
+        for (i = 0; i < obj.pokemon.length; i++) {
+            let currentPokemon = obj.pokemon[i].name;
+            pokemonList.push("<li>" + currentPokemon + "</li>");
+        }
+        let respond = pokemonList.join("");
+        response.send(buttons + respond);
+    });
+});
+
+
 
 
 // app.get('/:id', (request, response) => {
@@ -77,10 +100,6 @@ app.get("/pokemon/new", function(request, response) {
 //   });
 // });
 
-
-// app.get('/', (request, response) => {
-//   response.send("yay");
-// });
 
 
  //Listen to requests on port 3000
