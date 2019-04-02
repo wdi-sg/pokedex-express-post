@@ -1,7 +1,8 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
+const json = require('./pokedex.json');
+console.log(json.pokemon[0]);
 
 /**
  * ===================================
@@ -17,6 +18,12 @@ const app = express();
  * Routes
  * ===================================
  */
+
+ // tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.get('/:id', (request, response) => {
 
@@ -51,8 +58,44 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+    response.send('<h1>Pokemon</h1>'+
+                  '<form method="post" action="/pokemon/new">'+
+                  'ID:<input type="text" name="id">'+
+                  'Num:<input type="text" name="num">'+
+                  'Name:<input type="text" name="name">'+
+                  'IMG:<input type="text" name="img">'+
+                  'Height:<input type="text" name="height">'+
+                  'Weight:<input type="text" name="weight">'+
+                  '<input type="submit" value="Submit">'+
+                  '</form>');
+
+    // response.send(json.pokemon);
+
 });
+
+// app.get('/pokemon/new', (request, response) => {
+//     response.send("herro")
+// });
+
+app.post('/pokemon/new', function(req, res) {
+  //debug code (output request body)
+  console.log(req.body.id);
+  let pokemonId = req.body.id;
+  pokemonId = parseInt(pokemonId - 1);
+  res.send(json.pokemon[pokemonId]);
+  console.log(pokemonId);
+});
+
+// app.get('/get', (request, response) => {
+//   // render a template form here
+//   response.send('<h1>SAMBAL KANG KONG</h1>'+
+//                   '<form method="GET" action="/plants">'+
+//                   'PLANT Name:<input type="text" name="animalname">'+
+//                   '<input type="text" name="weight">'+
+//                   '<input type="submit" value="Submit">'+
+//                   '</form>');
+// });
+
 
 /**
  * ===================================
