@@ -3,6 +3,11 @@ const jsonfile = require('jsonfile');
 const app = express();
 const FILE = 'pokedex.json';
 
+//tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 /**
  * ===================================
  * Configurations and set up
@@ -17,7 +22,7 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+ app.get('/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -52,40 +57,43 @@ app.get('/:id', (request, response) => {
 
 
 
-app.get('/pokemon/new', (request, response)=>{
+ app.get('/pokemon/new', (request, response)=>{
 
 
   let respond =   '<form method="POST" action="/pokemon">'+
-                  'pokemon:<input type="text" name="pokemonname" placeholder="Pokemon name">'+
-                  '<input type="text" name="height" placeholder="Height">'+
-                  '<input type="text" name="weight" placeholder="Weight">'+
-                  '<input type="text" name="id" placeholder="id">'+ 
-                  '<input type="text" name="num" placeholder="Num">'+
-                  '<input type="text" name="img" placeholder="Img">'+
-                  '<input type="submit" value="Submit">'+
-                  '</form>';
-                  
+  'pokemon:<input type="text" name="name" placeholder="Pokemon name">'+
+  '<input type="text" name="height" placeholder="Height">'+
+  '<input type="text" name="weight" placeholder="Weight">'+
+  '<input type="text" name="id" placeholder="id">'+ 
+  '<input type="text" name="num" placeholder="Num">'+
+  '<input type="text" name="img" placeholder="Img">'+
+  '<input type="submit" value="Submit">'+
+  '</form>';
+  
 
   response.send(respond);
 });
 
-app.post('/pokemon',(request, response)=>{
+ app.post('/pokemon', function(request, response) {
 
   // we are recieving data
-  console.log( "this is request body:",request.body );
+  console.log( "this is request body:", request.body );
+  let newPokemon = request.body;
+  newPokemon.id = parseInt(newPokemon.id, 10)
 
-    jsonfile.readFile(FILE, (err, obj) => {
+  jsonfile.readFile(FILE, (err, obj) => {
         // create new list item
         obj.pokemon.push(newPokemon);
 
         jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) { console.log(err) };
+          if (err) { console.log(err) };
         });
-
-    })});
+      });
+  response.send(newPokemon);
+});
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+ app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
