@@ -1881,6 +1881,30 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Godzilla",
+      "img": "N/A",
+      "height": "100.0 m",
+      "weight": "90.0 kg",
+      "candy": "None",
+      "egg": "Not in Eggs",
+      "avg_spawns": 0,
+      "spawn_time": "N/A"
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "Godzilla X2",
+      "img": "N/A",
+      "height": "100.0 m",
+      "weight": "90.0 kg",
+      "candy": "None",
+      "egg": "Not in Eggs",
+      "avg_spawns": 0,
+      "spawn_time": "N/A"
     }
   ]
 }
