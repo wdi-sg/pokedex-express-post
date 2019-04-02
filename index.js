@@ -56,9 +56,9 @@ app.get('/pokemon/new', (request, response) => {
                   'Pokemon ID: <input type="text" id="id">'+
                   'Pokemon Num: <input type="text" num="num">'+
                   'Pokemon Name: <input type="text" name="name">'+
-                  'Pokemon Image: <input type="text" img="img">'+
-                  'Height: <input type="data" height="height">'+
-                  'Weight: <input type="data" weight="weight">'+
+                  'Pokemon Image: <input type="image" img="img">'+
+                  'Height: <input type="number" height="height">'+
+                  'Weight: <input type="number" weight="weight">'+
                   '<input type="submit" value="Submit">'+
                   '</form>';
   response.send(respond);
