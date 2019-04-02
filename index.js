@@ -12,12 +12,19 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+// get a specified pokemon's details by ID
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -50,8 +57,60 @@ app.get('/:id', (request, response) => {
   });
 });
 
+// responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
+app.get('/pokemon/new', (request, response) => {
+    let  newForm =  "<h1>Let's create a new Pokemon!</h1>"+
+                  '<form method="POST" action="/pokemon">'+
+                  'Pokemon Details:'+'<br>'+
+                  '<br>'+
+                  'ID: <input type="text" name="id">'+'<br>'+
+                  'Num: <input type="text" name="num" placeholder="enter a 3-digit number">'+'<br>'+
+                  'Name: <input type="text" name="name">'+'<br>'+
+                  'Image link: <input type="text" name="img">'+'<br>'+
+                  'Height: <input type="text" name="height">'+'<br>'+
+                  'Weight: <input type="text" name="weight">'+'<br>'+
+                  '<br>' +
+                  '<input type="submit" value="Submit">'+
+                  '</form>';
+
+    response.send(newForm);
+});
+
+// parse the form data and save the new pokemon data into pokedex.json
+app.post('/pokemon', function(request, response) {
+
+    //debug code (output request body)
+    console.log(request.body);
+    let newPokemon = request.body;
+    // change id from string to integer
+    newPokemon.id = parseInt(newPokemon.id, 10)
+
+    // save the request body
+    jsonfile.readFile(FILE, (err, obj) => {
+        // create new list item
+        obj.pokemon.push(newPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) { console.log(err) };
+        });
+
+    });
+
+  // save the request body
+  // jsonfile.writeFile(FILE, request.body, (err) => {
+    // console.error(err)
+
+    // now look inside your json file
+    response.send(newPokemon);
+  // });
+});
+
+// default
 app.get('/', (request, response) => {
-  response.send("yay");
+    let  respond =  '<h1>Welcome to the online Pokedex!</h1>'+
+                  "<p>If you know the ID of the pokemon you're looking for, key in '/(the pokemon's ID)' in the address bar after the website address!</p>";
+
+    response.send(respond);
 });
 
 /**
