@@ -1,6 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
+const app = express();
 const FILE = 'pokedex.json';
 
 /**
@@ -10,7 +10,6 @@ const FILE = 'pokedex.json';
  */
 
 // Init express app
-const app = express();
 
 /**
  * ===================================
@@ -50,10 +49,40 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
+
+
+
+app.get('/pokemon/new', (request, response)=>{
+
+
+  let respond =   '<form method="POST" action="/pokemon">'+
+                  'pokemon:<input type="text" name="pokemonname" placeholder="Pokemon name">'+
+                  '<input type="text" name="height" placeholder="Height">'+
+                  '<input type="text" name="weight" placeholder="Weight">'+
+                  '<input type="text" name="id" placeholder="id">'+ 
+                  '<input type="text" name="num" placeholder="Num">'+
+                  '<input type="text" name="img" placeholder="Img">'+
+                  '<input type="submit" value="Submit">'+
+                  '</form>';
+                  
+
+  response.send(respond);
 });
 
+app.post('/pokemon',(request, response)=>{
+
+  // we are recieving data
+  console.log( "this is request body:",request.body );
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        // create new list item
+        obj.pokemon.push(newPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) { console.log(err) };
+        });
+
+    })});
 /**
  * ===================================
  * Listen to requests on port 3000
