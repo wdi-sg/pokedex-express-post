@@ -1,25 +1,10 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-const FILE = 'pokedex.json';
+const file = 'pokedex.json';
 const json = require('./pokedex.json');
 console.log(json.pokemon[0]);
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
-
- // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -60,6 +45,47 @@ app.get('/:id', (request, response) => {
 app.get('/', (request, response) => {
     response.send('<h1>Pokemon</h1>'+
                   '<form method="post" action="/pokemon/new">'+
+                  'Create New Pokemon'+
+                  '<input type="submit" value="Submit">'+
+                  '</form>' +
+                  '<h2> Search Pokemon</h2>'+
+                  '<form method="post" action="/pokemon/search">'+
+                  'ID:<input type="text" name="id">' +
+                  '<input type="submit" value="Submit">' +
+                  '<br>' +
+                  'Name:<input type="text" name="name">' +
+                  '<input type="submit" value="Submit">' +
+                  '</form>'
+                  );
+
+    // response.send(json.pokemon);
+});
+
+app.post('/pokemon/search', (request, response) => {
+      // console.log(request.body);
+      // response.send(request.body.id);
+  let pokemonId = request.body.id;
+  pokemonId = parseInt(pokemonId - 1);
+  let pokemonName = request.body.name;
+  for (i = 0; i < json.pokemon.length; i++) {
+    if(json.pokemon[i].name === pokemonName) {
+        response.send(json.pokemon[i])
+    } else {
+        response.send(json.pokemon[pokemonId]);
+    }
+  }
+// response.send(json.pokemon[pokemonId]);
+  // console.log(pokemonId);
+
+    // response.send(json.pokemon);
+});
+
+
+
+app.post('/pokemon/new', function(req, response) {
+  //debug code (output request body)
+      response.send('<h1>Pokemon</h1>'+
+                  '<form method="post" action="/pokemon/new/creation">'+
                   'ID:<input type="text" name="id">'+
                   'Num:<input type="text" name="num">'+
                   'Name:<input type="text" name="name">'+
@@ -69,21 +95,25 @@ app.get('/', (request, response) => {
                   '<input type="submit" value="Submit">'+
                   '</form>');
 
-    // response.send(json.pokemon);
-
 });
 
-// app.get('/pokemon/new', (request, response) => {
-//     response.send("herro")
-// });
-
-app.post('/pokemon/new', function(req, res) {
+app.post('/pokemon/new/creation', function(request, response) {
   //debug code (output request body)
-  console.log(req.body.id);
-  let pokemonId = req.body.id;
-  pokemonId = parseInt(pokemonId - 1);
-  res.send(json.pokemon[pokemonId]);
-  console.log(pokemonId);
+    // let pokeStats = JSON.stringify(request.body);
+    //   response.send("HELLO" + '<br>' + pokeStats);
+    //   console.log(json.pokemon[150]);
+    let pokeStats = request.body;
+    response.send(pokeStats);
+    json.pokemon.push(pokeStats);
+    console.log(json.pokemon[json.pokemon.length-1]);
+
+
+  jsonfile.writeFile(file, json, (err) => {
+    console.log(err)
+  });
+
+      // json.pokemon
+
 });
 
 // app.get('/get', (request, response) => {
@@ -103,3 +133,12 @@ app.post('/pokemon/new', function(req, res) {
  * ===================================
  */
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+
+console.log(json.pokemon[152])
+
+  //     console.log(req.body.id);
+  // let pokemonId = req.body.id;
+  // pokemonId = parseInt(pokemonId - 1);
+  // res.send(json.pokemon[pokemonId]);
+  // console.log(pokemonId);
