@@ -1881,6 +1881,22 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "again",
+      "num": "again",
+      "name": "again",
+      "img": "again",
+      "height": "again",
+      "weight": "again2"
+    },
+    {
+      "id": "155",
+      "num": "155",
+      "name": "MyNewPokemon",
+      "img": "http://somethingsomething",
+      "height": "100m",
+      "weight": "1000kg"
     }
   ]
 }
