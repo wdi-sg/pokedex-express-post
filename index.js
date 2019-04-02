@@ -54,19 +54,16 @@ app.get('/:id', (request, response) => {
 
 // respond with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 app.get('/pokemon/new', (request, response) => {
-    let  newForm =  "<h1>Let's create a new Pokemon!</h1>"+
-                  '<form method="POST" action="/pokemon">'+
-                  'Pokemon Details:'+'<br>'+
-                  '<br>'+
-                  'ID: <input type="text" name="id">'+'<br>'+
-                  'Num: <input type="text" name="num" placeholder="enter a 3-digit number">'+'<br>'+
-                  'Name: <input type="text" name="name">'+'<br>'+
-                  'Image link: <input type="text" name="img">'+'<br>'+
-                  'Height: <input type="text" name="height">'+'<br>'+
-                  'Weight: <input type="text" name="weight">'+'<br>'+
-                  '<br>' +
-                  '<input type="submit" value="Submit">'+
-                  '</form>';
+    let  newForm =`<h1>Let's create a new Pokemon!</h1>
+                  <form method="POST" action="/pokemon">
+                  <h4>Provide your new pokemon's details here:</h4>
+                  Name: <input type="text" name="name">
+                  Image link: <input type="text" name="img">
+                  Height: <input type="text" name="height">
+                  Weight: <input type="text" name="weight">
+                  <p></p>
+                  <input type="submit" value="Submit">
+                  </form>`;
 
     response.send(newForm);
 });
@@ -74,23 +71,43 @@ app.get('/pokemon/new', (request, response) => {
 // parse the form data and save the new pokemon data into pokedex.json
 app.post('/pokemon', function(request, response) {
 
-    // console.log(request.body);
-    let newPokemon = request.body;
-    // change id from string to integer
-    newPokemon.id = parseInt(newPokemon.id, 10)
-
     // save the request body
     jsonfile.readFile(FILE, (err, obj) => {
+        let newPokemon = {};
+        var num=0;
         // create new list item
+        newPokemon.id = obj.lastKey+1;
+        console.log(newPokemon.id);
+        if (newPokemon.id < 10){
+            num = ('00' + newPokemon.id);
+            console.log('pokemon num is ' + num);
+        }
+        else if (newPokemon.id > 9 && newPokemon.id < 100){
+            num = ('0' + newPokemon.id);
+            console.log('pokemon num is ' + num);
+        }
+        else {
+            num = newPokemon.id.toString();
+            console.log('pokemon num is ' + num);
+        }
+        newPokemon.num = num;
+
+        newPokemon.name = request.body.name;
+        newPokemon.img = request.body.img;
+        newPokemon.height = request.body.height;
+        newPokemon.weight = request.body.weight;
+
         obj.pokemon.push(newPokemon);
+
+        // update total number of pokemon
+        obj.lastKey = obj.lastKey+1;
 
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) { console.log(err) };
         });
-    });
 
-    // now look inside your json file
-    response.send(newPokemon);
+        response.send(newPokemon);
+    });
 });
 
 // default
@@ -109,6 +126,12 @@ app.get('/', (request, response) => {
                   </form>`;
                   // http://expressjs.com/en/api.html#req.query
                   // console.log(request.query.sortby)
+
+    // redirects to /pokemon/new
+    let newPokeButton = `<form method="get" action="/pokemon/new">
+                  Want to create a custom pokemon?
+                  <input type="submit" value="Create new Pokemon">
+                  </form>`;
 
     // get list of pokemon
     jsonfile.readFile(FILE, (err, obj) => {
@@ -136,7 +159,10 @@ app.get('/', (request, response) => {
         pokemonList = pokemonList.join('');
 
         let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
+        ${newPokeButton}
+        <br>
         ${selectSort}
+        <br>
         <h3>Pokemon List:</h3>
         ${pokemonList}`;
 
