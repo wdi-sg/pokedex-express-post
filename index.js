@@ -11,6 +11,8 @@ app.use(express.urlencoded({
 }));
 
 app.get('/', (request, response) => {
+
+    let pokemonList = JSON.stringify(json.pokemon, null, 2)
     response.send('<h1>Pokemon</h1>'+
                   '<form method="post" action="/pokemon/new">'+
                   'Create New Pokemon'+
@@ -23,7 +25,11 @@ app.get('/', (request, response) => {
                   '<br>' +
                   'Name:<input type="text" name="name">' +
                   '<input type="submit" value="Submit">' +
-                  '</form>'
+                  '</form>' +
+                  '<br>' +
+                  `<img src="https://pics.me.me/via-9gag-com-14050435.png">`+
+                  '<h2> LIST OF CURRENT POKEMON </h2>'+
+                  pokemonList
                   );
 
     // response.send(json.pokemon);
@@ -34,14 +40,18 @@ app.post('/pokemon/search', (request, response) => {
       // response.send(request.body.id);
   let pokemonId = request.body.id;
   pokemonId = parseInt(pokemonId - 1);
-  let pokemonName = request.body.name;
+  let pokemonName = request.body.name.toLowerCase();
+  let pokemon = 0;
   for (i = 0; i < json.pokemon.length; i++) {
-    if(json.pokemon[i].name === pokemonName) {
-        response.send(json.pokemon[i])
-    } else {
-        response.send(json.pokemon[pokemonId]);
+    if(json['pokemon'][i]['name'].toLowerCase() === pokemonName) {
+         response.send(json.pokemon[i]);
     }
   }
+
+  response.send(json.pokemon[pokemonId]);
+
+  // console.log(pokemonName);
+  // console.log(json.pokemon[0].name.toLowerCase())
 // response.send(json.pokemon[pokemonId]);
   // console.log(pokemonId);
 
