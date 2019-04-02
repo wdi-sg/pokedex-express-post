@@ -50,9 +50,13 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
+app.get('/pokemon/new', (request, response) => {
   response.send("yay");
 });
+
+// app.get('/', (request, response) => {
+//   response.send("yay");
+// });
 
 /**
  * ===================================
