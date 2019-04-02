@@ -11,6 +11,9 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.use(express.urlencoded({ //use this so that we can do request.body later
+  extended: true
+}));
 
 /**
  * ===================================
@@ -52,17 +55,45 @@ app.get('/:id', (request, response) => {
 //Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 app.get('/pokemon/new', (request, response) => {
   let  respond =  '<h1>New Pokemon</h1>'+
-                  '<form method="GET" action="/animals">'+ //this action ideally will point to another app.get or app.post function that has
-                  'Pokemon ID: <input type="text" id="id">'+
-                  'Pokemon Num: <input type="text" num="num">'+
-                  'Pokemon Name: <input type="text" name="name">'+
-                  'Pokemon Image: <input type="image" img="img">'+
-                  'Height: <input type="number" height="height">'+
-                  'Weight: <input type="number" weight="weight">'+
-                  '<input type="submit" value="Submit">'+
+                  '<form method="POST" action="/pokemon">'+ //this action ideally will point to another app.get or app.post function that has
+                  'Pokemon ID: <input type= "number" name = "id">'+
+                  'Pokemon Num: <input type= "text" name = "num">'+
+                  'Pokemon Name: <input type= "text" name = "name">'+
+                  'Pokemon Image: <input type= "image" name = "img">'+
+                  'Height: <input type= "number" name = "height">'+
+                  'Weight: <input type= "number" name = "weight">'+
+                  '<input type= "submit" value= "Submit">'+
                   '</form>';
   response.send(respond);
 });
+
+//Point the form to submit data to the (/pokemon) route using POST method;
+// app.post('/pokemon', (request, response) => {
+//   // we are recieving data
+//   console.log("this is request body:",request.body);
+//   // save the request body
+//   jsonfile.writeFile('data.json', request.body, (err) => {
+//     console.error(err)
+//     console.log(request.body);
+//     // now look inside your json file
+//     response.send(request.body);
+//   });
+// });
+
+app.post('/pokemon', (request, response) => {
+  // we are recieving data
+  console.log("this is request body:",request.body);
+  // save the request body
+  
+  jsonfile.writeFile('data.json', request.body, (err) => {
+    console.error(err)
+    console.log(request.body);
+    // now look inside your json file
+    response.send(request.body);
+  });
+});
+
+
 
 // app.get('/', (request, response) => {
 //   response.send("yay");
