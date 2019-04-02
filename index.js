@@ -28,6 +28,10 @@ var startServer = function () {
         })
         .then(() => {
             app.listen(3000);
+        })
+        .catch((err) => {
+            response.send("Error reading file! Please try again.");
+            console.log(err);
         });
 }
 
@@ -44,7 +48,6 @@ var addZero = function(n) {
   }
   return str;
 }
-
 
 // ===================================
 // Request Handlers
@@ -139,7 +142,6 @@ app.get('/', homeRequestHandler);
 app.get('/:id', getPokemonByIdRequestHandler);
 app.get('/pokemon/new', newPokemonRequestHandler);
 app.post('/pokemon', pokemonRequestHandler);
-
 
 // ===================================
 // Start Server
