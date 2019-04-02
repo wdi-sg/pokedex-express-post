@@ -9,9 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <form action="/" method="GET">
-      <button type="submit" value="name" name="sort">Sort By Name</button>
-      <button type="submit" value="none" name="sort">No Sort</button>
+    <form id="main-form" action="/" method="GET">
+        <select form="main-form" name="sort" id="select-sort">
+            <option type="submit" value="none">None</option>
+            <option type="submit" value="name">Name</option>
+            <input type="submit">
+        </select>
+      <!-- <button type="submit" value="name" name="sort">Sort By Name</button>
+      <button type="submit" value="none" name="sort">No Sort</button> -->
     </form>
   </body>
 </html>
