@@ -105,19 +105,23 @@ jsonfile.readFile(FILE, (err, obj) => {
 });
 
 //at the root route (GET request) / display a list of all the pokemons in the pokedex
-app.get('', (request, response) => {
+app.get('/', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     console.log("Begin reading file");
     let array = [];
+    let string = "";
     for (let i =0; i<obj.pokemon.length; i++){
       console.log(obj.pokemon[i].name);
-      array.push(obj.pokemon[i].name);
+      array.push(obj.pokemon[i].name); ////ideally should try to put each pokemon id, num and name into an object with three pairs of key-values. Then each pokemon details will be an object element in the array.
     }
-    console.table(array);
-    let respond = array.join("\n ");
     console.error(err);
+    console.table(array);
+    for (i in array){
+      string = string + array[i] + '<br>'+ " ";
+    }
+    let respond = string;
     console.log(respond);
-    response.send(`Welcome to the online Pokedex! ${respond}`);
+    response.send(`${respond}`);
     console.log("End reading file");
   });
 });
