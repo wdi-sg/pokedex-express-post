@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const express = require('express');
 const jsonfile = require('jsonfile');
 
@@ -56,7 +57,55 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send('Hello......');
+    console.log(request.query.sortby);
+    let sortButton = ' <form method="GET" > '+
+                    '<select name="sortby">' +
+                    '<option value="id">id</option>' + '<option value="name">name</option></select><input type="submit" value="Sort by"></form>';
+    let pokemonListArr = [];
+    let stringList = "";
+
+    if(request.query.sortby == undefined){
+        console.log('dude wtf');
+        response.send(sortButton + 'hello. Choose an option.');
+
+    } else if(request.query.sortby === 'id'){
+
+        console.log('dude wtf over here');
+        jsonfile.readFile(FILE, (err,obj)=>{
+        for(i=0; i<obj.pokemon.length;i++){
+            pokemonListArr.push(obj.pokemon[i].id + '. ' + obj.pokemon[i].name);
+        }
+        console.log(pokemonListArr);
+        for(let i=0; i<pokemonListArr.length;i++){
+            stringList = stringList + pokemonListArr[i] + '<br>' + " " ;
+        }
+        response.send(sortButton + '<br>' + stringList);
+
+    });
+    } else if(request.query.sortby === 'name'){
+        jsonfile.readFile(FILE, (err,obj)=>{
+        for(i=0; i<obj.pokemon.length ;i++){
+            let pokemonListObj = {};
+            pokemonListObj.id = obj.pokemon[i].id;
+            pokemonListObj.name = obj.pokemon[i].name;
+            pokemonListArr.push(pokemonListObj);
+        }
+
+        pokemonListArr.sort(function(a, b) {
+          return a.name.localeCompare(b.name);
+        });
+        console.log(pokemonListArr);
+        for(let i=0; i<pokemonListArr.length;i++){
+            stringList = stringList + 'Name: ' + pokemonListArr[i].name + "(" + 'Id. '+ pokemonListArr[i].id + ')' + '<br>' + " " ;
+        }
+        response.send(sortButton + '<br>' + stringList);
+    });
+    }
+});
+
+app.get("/search", (request, response) => {
+  console.log( "request QUERY", request.query);
+  response.send("you're looking for: "+request.query.q);
 });
 
 //intercepts a GET request. responses with a form. User fills inputs. Submits to /pokemon
@@ -107,6 +156,9 @@ app.post('/pokemon', (request,response)=>{
         });
     });
 })
+
+
+
 
 /**
  * ===================================
