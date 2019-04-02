@@ -12,11 +12,170 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+//tell your app to use the module
+app.use(express.json());
+
+app.use(express.urlencoded({
+  extended: true
+}));
+
+/**
+ * ===================================
+ * Helper Functions
+ * ===================================
+ */
+
+ var zeroPadding = function(input) {
+    var inputString = input.toString();
+    if(inputString.length == 1) {
+        inputString = "00" + inputString;
+        return inputString;
+    } else if(inputString.length == 2) {
+        inputString = "0" + inputString;
+        return inputString;
+    } else {
+        return inputString;
+    }
+ }
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+
+ app.get('/', function(request, response) {
+
+    if(request.query.sortby === undefined) {
+        response.send(`<form>
+                        <select name="sortby">
+                            <option value="id">id</option>
+                            <option value="name">name</option>
+                        </select>
+                        <input type="submit" value="Sort">
+                        </form>
+                        <br>`);
+    } else if(request.query.sortby === "name") {
+        jsonfile.readFile(FILE, (err, obj) => {
+        let pokemonArray = [];
+        let sortedPokemonArray = [];
+        let pokemonString = "";
+
+        for(let i=0; i<obj.pokemon.length; i++) {
+            let pokemonObject = {};
+            pokemonObject.id = obj.pokemon[i].id;
+            pokemonObject.name = obj.pokemon[i].name;
+            pokemonArray.push(pokemonObject);
+        }
+        pokemonArray.sort(function(a, b) {
+           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+       });
+
+        for(let i=0; i<pokemonArray.length; i++) {
+            pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+        }
+
+        response.send(pokemonString);
+    });
+
+    } else if(request.query.sortby === "id") {
+        jsonfile.readFile(FILE, (err, obj) => {
+        let pokemonArray = [];
+        let sortedPokemonArray = [];
+        let pokemonString = "";
+
+        for(let i=0; i<obj.pokemon.length; i++) {
+            let pokemonObject = {};
+            pokemonObject.id = obj.pokemon[i].id;
+            pokemonObject.name = obj.pokemon[i].name;
+            pokemonArray.push(pokemonObject);
+        }
+        pokemonArray.sort(function(a, b) {
+           return a.id - b.id;
+       });
+
+        for(let i=0; i<pokemonArray.length; i++) {
+            pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+        }
+
+        response.send(pokemonString);
+    });
+
+    }
+
+//closing brace for line 30
+ });
+
+ app.get('/pokemon/new', function(request, response) {
+
+    let respond = '<h1>Form</h1><form method="POST" action="/pokemon">Enter name: <input type="text" name="name"><br>Enter img: <input type="text" name="img"><br>Enter height: <input type="text" name="height"><br>Enter weight: <input type="text" name="weight"><br><input type="submit" value="Submit"></form>'
+
+
+    response.send(respond);
+
+ });
+
+
+ app.post('/pokemon', function(request, response) {
+
+    response.send("Received!");
+    console.log(request.body);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+     let newPokemon = request.body;
+
+     newPokemon.id = obj.pokemon.length + 1;
+     newPokemon.num = zeroPadding(obj.pokemon.length + 1);
+     newPokemon.candy = "None ";
+     newPokemon.candy_count = 0;
+     newPokemon.egg = "Not in Eggs";
+     newPokemon.avg_spawns = 0;
+     newPokemon.spawn_time = "N/A";
+
+     console.log(newPokemon);
+
+     obj.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+
+        console.log("JSON updated with new data!");
+    });
+});
+
+ })
+
+
+app.get('/delete/:id', (request, response) => {
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    var inputId = parseInt( request.params.id );
+
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      var currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        obj.pokemon.splice(i,1);
+      }
+    }
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+
+        response.send(`${currentPokemon.name} removed!`);
+        console.log("JSON updated! Pokemon removed!");
+    });
+
+  });
+});
+
+
 
 app.get('/:id', (request, response) => {
 
@@ -50,9 +209,6 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
 
 /**
  * ===================================
