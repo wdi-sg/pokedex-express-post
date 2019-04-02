@@ -58,7 +58,13 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+    jsonfile.readFile(FILE, (err,obj) => {
+        let pokeList = [];
+        for( let i=0; i<obj.pokemon.length; i++ ) {
+            pokeList.push(obj.pokemon[i].name);
+        }
+        response.send(pokeList);
+    })
 });
 
 app.post('/pokemon', (request,response) => {
