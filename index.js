@@ -98,21 +98,49 @@ app.get('/', (request, response) => {
 
     let pokemonList = [];
 
+    // checks how user wants list of pokemon sorted
+    let selectSort = `<form method="get" action="/?">
+                  Sort pokemon by:
+                  <select name="sortby">
+                  <option value="name">Name</option>
+                  <option value="id">ID</option>
+                  </select>
+                  <input type="submit" value="Submit">
+                  </form>`;
+                  // http://expressjs.com/en/api.html#req.query
+                  // console.log(request.query.sortby)
+
     // get list of pokemon
     jsonfile.readFile(FILE, (err, obj) => {
         // create new list item for each pokemon
-        for (let pokemon of obj.pokemon){
-            pokemonList.push(`<li>${pokemon.name}</li>`);
+        if (request.query.sortby === "name"){
+            for (let pokemon of obj.pokemon){
+                pokemonList.push(`<li>${pokemon.name}</li>`);
+                // default sort will arrange by UTF-16 code units order
+                pokemonList.sort();
+            }
+        }
+        else if (request.query.sortby === "id"){
+            for (let pokemon of obj.pokemon){
+                pokemonList.push(`<li>${pokemon.id}: ${pokemon.name}</li>`);
+                // To compare numbers instead of strings, the compare function can simply subtract b from a. The following function will sort the array ascending (if it doesn't contain Infinity and NaN)
+                pokemonList.sort((a, b) => a - b);
+            }
+        }
+        else {
+            for (let pokemon of obj.pokemon){
+                pokemonList.push(`<li>${pokemon.name}</li>`);
+            }
         }
         // removes comma between each list item
         pokemonList = pokemonList.join('');
 
         let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
-                  <h3>Pokemon List:</h3>
-                  ${pokemonList}`;
+        ${selectSort}
+        <h3>Pokemon List:</h3>
+        ${pokemonList}`;
 
-        console.log(pokemonList);
-
+        // console.log(pokemonList);
         response.send(respondMessage);
     });
 
