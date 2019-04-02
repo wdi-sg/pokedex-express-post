@@ -104,7 +104,23 @@ jsonfile.readFile(FILE, (err, obj) => {
   });
 });
 
-
+//at the root route (GET request) / display a list of all the pokemons in the pokedex
+app.get('', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    console.log("Begin reading file");
+    let array = [];
+    for (let i =0; i<obj.pokemon.length; i++){
+      console.log(obj.pokemon[i].name);
+      array.push(obj.pokemon[i].name);
+    }
+    console.table(array);
+    let respond = array.join("\n ");
+    console.error(err);
+    console.log(respond);
+    response.send(`Welcome to the online Pokedex! ${respond}`);
+    console.log("End reading file");
+  });
+});
 
 // app.get('/', (request, response) => {
 //   response.send("yay");
