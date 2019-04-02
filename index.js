@@ -90,7 +90,7 @@ app.get("/", (request, response) => {
 
     jsonfile.readFile(FILE, (err, obj) => {
         for (let i = 0; i < obj.pokemon.length; i++) {
-            allPokemonArr.push(`<li>${JSON.stringify(obj.pokemon[i].name)}</li>`);
+            allPokemonArr.push(`<li>${obj.pokemon[i].name}</li>`);
         }
 
         response.send("All Pokemon:" + allPokemonArr.join("") + ".");
