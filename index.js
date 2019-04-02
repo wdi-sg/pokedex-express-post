@@ -12,6 +12,13 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+app.use(express.json());
+
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -53,6 +60,20 @@ app.get('/:id', (request, response) => {
 app.get('/', (request, response) => {
   response.send("yay");
 });
+
+app.post('/pokemon', (request,response) => {
+    console.log(request.body);
+    jsonfile.readFile(FILE, (err,obj) => {
+        obj.pokemon.push(request.body);
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        });
+    });
+})
+
+app.get('/pokemon/new', (request,response) => {
+    response.send('<h1>Add a new pokemon entry</h1>' + '<form method="POST" action="/pokemon">' + '<input type="text" name="id" placeholder="id">' +'<input type="text" name="num" placeholder="num">' + '<input type="text" name="name" placeholder="name">' + '<input type="text" name="img" placeholder="img">' +'<input type="text" name="height" placeholder="height">' + '<input type="text" name="weight" placeholder="weight">' + '<input type="submit" value="submit">' + '</form>');
+})
 
 /**
  * ===================================
