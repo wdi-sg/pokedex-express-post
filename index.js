@@ -9,14 +9,78 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
-// Init express app
+
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+app.get('/pokemon/new', function(request, response) {
+    let  newForm =`<h1>Input new pokemon</h1>
+                  <form method="POST" action="/pokemon">
+                  <label for="ID">ID</label>
+                  <input type="number" name="ID" step="1">
+                  <br>
+                  <br>
+                  <label for="Num">Num</label>
+                  <input type="number" name="Num" step="1">
+                  <br>
+                  <br>
+                  <label for="Name">Name</label>
+                  <input type="text" name="name">
+                  <br>
+                  <br>
+                  <label for="Img">Image</label>
+                  <input type="text" name="img">
+                  <br>
+                  <br>
+                  <label for="Height">Height</label>
+                  <input type="text" name="height">
+                  <br>
+                  <br>
+                  <label for="Weight">Weight</label>
+                  <input type="text" name="weight">
+                  <br>
+                  <br>
+                  <input type="submit" value="Submit">
+                  </form>`;
+
+    console.log(request.body);
+
+  jsonfile.writeFile('data.json', request.body, (err) => {
+    console.error(err)
+
+    // console.log(request.body);
+    response.send(newForm);
+  });
+});
+
+// /**
+//  * ===================================
+//  * Routes
+//  * ===================================
+//  */
+
+// app.post('/pokemon/new', function(request, response) {
+
+//   //debug code (output request body)
+//   console.log(request.body);
+
+
+//   // save the request body
+//   jsonfile.writeFile('data.json', request.body, (err) => {
+//     console.error(err)
+
+//     // now look inside your json file
+//     response.send(request.body);
+//   });
+// });
+
+
+
 
 app.get('/:id', (request, response) => {
 
@@ -49,6 +113,22 @@ app.get('/:id', (request, response) => {
     }
   });
 });
+
+// app.post('/pokemon/new', function(request, response) {
+
+//   //debug code (output request body)
+//   console.log(request.body);
+//     jsonfile.readFile('data.json', (err, obj) => {
+//         obj.pokemon.push(request.body);
+
+//   // save the request body
+//   jsonfile.writeFile('data.json', obj, (err) => {
+//     console.error(err)
+
+//     // now look inside your json file
+//     response.send(request.body);
+//   });
+// });
 
 app.get('/', (request, response) => {
   response.send("yay");
