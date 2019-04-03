@@ -2,20 +2,32 @@
 // Configurations and set up
 //===================================
 const _ = require('lodash');
+const express = require('express');
 const promise = require("bluebird");
+const methodOverride = require('method-override')
 const jsonfile = promise.promisifyAll(require('jsonfile'));
 
-const express = require('express');
 const app = express();
+app.use(methodOverride('_method'));
 
-// tell your app to use the module
+let data;
+let file = 'pokedex.json';
+
+// tell your app to use the module. This is to enable request.body for post request
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
 
-let data;
-const file = 'pokedex.json';
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 //===================================
 // Server And Data Loader Function
@@ -53,30 +65,13 @@ var addZero = function(n) {
 // Request Handlers
 // ===================================
 var homeRequestHandler = function (request, response) {
-    let pokemonNames = "";
-    let htmlForm = `<form>
-                        <select name="sortby">
-                            <option value="id">id</option>
-                            <option value="name">name</option>
-                        </select>
-                        <input type="submit" value="Sort Pokemon by Name"/>
-                    </form>`;
-
-    if (request.query.sortby === "name") {
-        _.sortBy(data.pokemon, ['name']).forEach((o) => {
-            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
-        });
+    if (request.query.sortby === 'name') {
+        response.render('home', { pokemon: _.sortBy(data.pokemon, ['name']) } );
     } else if (request.query.sortby === "id"){
-        _.sortBy(data.pokemon, ['id']).forEach((o) => {
-            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
-        });
+        response.render('home', { pokemon: _.sortBy(data.pokemon, ['id']) } );
     } else {
-        _.forEach(data.pokemon, (o) => {
-            pokemonNames += `<li>${ o.id } - ${ o.name }</li>`;
-        });
+        response.render('home', { pokemon: data.pokemon } );
     }
-
-    response.send(htmlForm + pokemonNames);
 }
 
 var getPokemonByIdRequestHandler = function (request, response) {
@@ -96,19 +91,10 @@ var getPokemonByIdRequestHandler = function (request, response) {
 }
 
 var newPokemonRequestHandler = function (request, response) {
-    let htmlForm = `<form method="POST" action="/pokemon">
-                        <h1>Add New Pokemon</h1>
-                        Name: <input name="name"/><br>
-                        Image: <input name="img"/><br>
-                        Height: <input name="height"/><br>
-                        Weight: <input name="weight"/><br><br>
-                        <input type="submit" value="Add new Pokemon"/>
-                    </form>`;
-
-    response.send(htmlForm);
+    response.render('add');
 }
 
-var pokemonRequestHandler = function (request, response) {
+var addNewPokemonRequestHandler = function (request, response) {
     let newPokemon = {
         id: data.pokemon.length + 1,
         num: addZero(data.pokemon.length + 1),
@@ -116,19 +102,84 @@ var pokemonRequestHandler = function (request, response) {
         img: request.body.img,
         height: request.body.height,
         weight: request.body.weight,
-        candy: "None",
-        egg: "Not in Eggs",
+        candy: 'None',
+        egg: 'Not in Eggs',
         avg_spawns: 0,
-        spawn_time: "N/A"
+        spawn_time: 'N/A'
     };
 
     data.pokemon.push(newPokemon);
 
     jsonfile.writeFileAsync(file, data)
         .then(() => {
-            response.send("Added new Pokemon!");
+            response.redirect(`/pokemon/${ newPokemon.id }`);
         }).catch((err) => {
-            response.send("Error writing file! Please try again.");
+            response.send('There is an error adding a new Pokemon! Please try again.');
+            console.log(err);
+        });;
+}
+
+var editPokemonRequestHandler = function (request, response) {
+    let pokemon;
+
+    _.forEach(data.pokemon, (o) => {
+        if (o.id === Number(request.params.id)) {
+            pokemon = o;
+        }
+    });
+
+    if (pokemon !== undefined) {
+        response.render('edit', pokemon);
+    } else {
+        response.send(404, 'Not found!');
+    }
+}
+
+var editExistingPokemonRequestHandler = function (request, response) {
+    _.forEach(data.pokemon, (o) => {
+        if (o.id === Number(request.params.id)) {
+            o.name = request.body.name;
+            o.img = request.body.img;
+            o.height = request.body.height;
+            o.weight = request.body.weight;
+        }
+    });
+
+    jsonfile.writeFileAsync(file, data)
+        .then(() => {
+            response.redirect(`/pokemon/${ request.params.id }`);
+        }).catch((err) => {
+            response.send('There is an error updating the Pokemon! Please try again.');
+            console.log(err);
+        });;
+}
+
+var deletePokemonRequestHandler = function (request, response) {
+    let pokemon;
+
+    _.forEach(data.pokemon, (o) => {
+        if (o.id === Number(request.params.id)) {
+            pokemon = o;
+        }
+    });
+
+    if (pokemon !== undefined) {
+        response.render('delete', pokemon);
+    } else {
+        response.send(404, 'Not found!');
+    }
+}
+
+var deleteExistingPokemonRequestHandler = function (request, response) {
+    _.remove(data.pokemon, (o) => {
+        return o.id === Number(request.params.id);
+    });
+
+    jsonfile.writeFileAsync(file, data)
+        .then(() => {
+            response.send('You have deleted the Pokemon!');
+        }).catch((err) => {
+            response.send('There is an error updating the Pokemon! Please try again.');
             console.log(err);
         });;
 }
@@ -136,10 +187,18 @@ var pokemonRequestHandler = function (request, response) {
 // ===================================
 // Routes
 // ===================================
-app.get('/', homeRequestHandler);
-app.get('/:id', getPokemonByIdRequestHandler);
 app.get('/pokemon/new', newPokemonRequestHandler);
-app.post('/pokemon', pokemonRequestHandler);
+app.post('/pokemon', addNewPokemonRequestHandler);
+
+app.get('/pokemon/:id/edit', editPokemonRequestHandler);
+app.put('/pokemon/:id', editExistingPokemonRequestHandler);
+
+app.get('/pokemon/:id/delete', deletePokemonRequestHandler);
+app.delete('/pokemon/:id', deleteExistingPokemonRequestHandler);
+
+app.get('/', homeRequestHandler);
+app.get('/pokemon', homeRequestHandler);
+app.get('/pokemon/:id', getPokemonByIdRequestHandler);
 
 // ===================================
 // Start Server
