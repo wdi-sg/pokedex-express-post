@@ -4,6 +4,7 @@ const jsonfile = require("jsonfile");
 const path = require("path");
 
 const FILE = "pokedex.json";
+const pokedexCompleteFile = "pokedex-complete.json";
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -11,22 +12,44 @@ app.use(
   })
 );
 
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
-// Init express app
+app.use(express.static(path.join(__dirname, "public")));
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
+app.set("views", __dirname + "/views");
+app.set("view engine", "jsx");
 
 app.get("/pokemon/new", (request, response) => {
   response.sendFile(path.join(__dirname + "/pokemon-new.html"));
+});
+
+app.get("/pokemon/:id/edit", (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+    }
+    let pokemonArray = obj['pokemon'];
+    let chosenOne;
+    console.log(pokemonArray[0].id)
+    console.log(typeof pokemonArray[0].id)
+    console.log(request.params.id);
+    console.log(typeof request.params.id);
+
+    for (let i = 0; i < pokemonArray.length; i++) {
+      const pokemonObject = pokemonArray[i];
+      if (pokemonObject.id === parseInt(request.params.id)) {
+        chosenOne = pokemonObject;
+      }
+    }
+    response.render("edit-pokemon", chosenOne);
+  });
+});
+
+app.put("/pokemon/:id/edit", (request, response) => {
+  console.log(request.params.id + " has been read with a package of " + request.body);
 });
 
 app.post("/pokemon", (request, response) => {
@@ -74,6 +97,26 @@ app.get("/:id", (request, response) => {
     } else {
       response.send(pokemon);
     }
+  });
+});
+
+app.get("/pokemon/name/:pokemonName", (request, response) => {
+  jsonfile.readFile(pokedexCompleteFile, (err, pokedexJSON) => {
+    if (err) {
+      console.log(err);
+    }
+    let pokemonList = pokedexJSON["pokemon"];
+    let pokemonNameList = [];
+    for (let i = 0; i < pokemonList.length; i++) {
+      const pokemon = pokemonList[i];
+      // pokemonNameList.push(pokemon.name);
+      if (
+        pokemon.name.toLowerCase() === request.params.pokemonName.toLowerCase()
+      ) {
+        // response.send(pokemon.name.toLowerCase() + " found!");
+      }
+    }
+    response.sendFile(path.join(__dirname + "/pokemon-display.html"));
   });
 });
 
