@@ -1881,6 +1881,18 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "asdfasdf",
+      "img": "sdfasf",
+      "hight": "0.00 m",
+      "weight": "0.0 kg",
+      "candy": "None",
+      "egg": "Not in Eggs",
+      "avg_spawns": 0,
+      "spawn_time": "N/A"
     }
   ]
 }
