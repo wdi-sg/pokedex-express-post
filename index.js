@@ -109,8 +109,7 @@ app.use(express.urlencoded({
 
  app.get('/pokemon/new', function(request, response) {
 
-    let respond = '<h1>Form</h1><form method="POST" action="/pokemon">Enter name: <input type="text" name="name"><br>Enter img: <input type="text" name="img"><br>Enter height: <input type="text" name="height"><br>Enter weight: <input type="text" name="weight"><br><input type="submit" value="Submit"></form>'
-
+    let respond = '<html><h1>Create a new pokemon!</h1><br><h1>Please enter the pokemon details</h1><form method="POST" action="/pokemon">Enter id: <input type="text" name="id"><br> Enter num: <input type="text" name="num"><br> Enter name: <input type="text" name="name"><br>Enter img: <input type="text" name="img"><br>Enter height: <input type="text" name="height"><br>Enter weight: <input type="text" name="weight"><br><input type="submit" value="Submit"></form></html>'
 
     response.send(respond);
 
@@ -119,7 +118,6 @@ app.use(express.urlencoded({
 
  app.post('/pokemon', function(request, response) {
 
-    response.send("Received!");
     console.log(request.body);
 
     jsonfile.readFile(FILE, (err, obj) => {
@@ -139,6 +137,7 @@ app.use(express.urlencoded({
      obj.pokemon.push(newPokemon);
 
     jsonfile.writeFile(FILE, obj, (err) => {
+        response.send(`<h1>A new pokemon ${request.body.name} was added!</h1>`);
 
         console.log("JSON updated with new data!");
     });
