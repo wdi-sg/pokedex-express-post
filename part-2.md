@@ -23,8 +23,8 @@
   - if you have types, the type page should link to each single pokemon page
   - a single pokemon page should link to the type pages
 
-- upon creation of a new pokemon, redirect the user to that single pokemon page
-- upon successful edit of a pokemon, redirect the user to that single pokemon page
+- upon creation of a new pokemon, redirect the user to that single pokemon page ( use `response.redirect` )
+- upon successful edit of a pokemon, redirect the user to that single pokemon page ( use `response.redirect` )
  
 
 - how could the ability to change the id of a pokemon screw up your app?
