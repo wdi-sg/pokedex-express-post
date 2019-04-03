@@ -55,21 +55,49 @@ app.get('/:id', (request, response) => {
   });
 });
 
-// app.get('/', (request, response) => {
-//   response.send("yay");
-// });
-
-app.get('/?sortby=name', (request, response) => {
+app.get('/', (request, response) => {
+  // response.send("yay");
   jsonfile.readFile(FILE, (err, obj) => {
-    let sortBy = '<form>'+'<select name="sortby">'+'</select>'+'<input type="submit" value="Submit">'+'</form>';
-    if (request.query.sortby === 'name') {
-    obj.pokemon.sort(function(a,b) {
-      return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
-    });
-    response.send(obj.pokemon);
+  let sortBy = '<form>' + '<select name="sortby">' +
+                '<option value="none">Sort by</option>' +
+                '<option value="name">Name</option>' +
+                '<option value="id">Id</option>' +
+                '<option value="num">Number</option>' +
+                '</select>'+
+                '<input type="submit" value="Submit">'+
+                '</form>';
+    if (request.query.sortBy == undefined) {
+      response.send(sortBy);
+    } else if (request.query.sortBy == "name") {
+        obj.pokemon.sort(function(a,b) {
+          return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+        });
+        response.send(obj.pokemon)
+    } else if (request.query.sortBy == "id") {
+        obj.pokemon.sort(function(a, b) {
+          return a.id - b.id;
+        });
+        response.send(obj.pokemon);
+    } else if (request.query.sortBy == "num") {
+      obj.pokemon.sort(function(a,b) {
+        return a.num.toLowerCase().localecomapre(b.num.toLowerCase());
+      });
+      response.send(obj.pokemon);
     }
   })
 })
+
+// app.get('/?sortby=name', (request, response) => {
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     let sortBy = '<form>'+'<select name="sortby">'+'</select>'+'<input type="submit" value="Submit">'+'</form>';
+//     if (request.query.sortby === 'name') {
+//     obj.pokemon.sort(function(a,b) {
+//       return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+//     });
+//     response.send(obj.pokemon);
+//     }
+//   })
+// })
 
 app.get('/pokemon/new', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
