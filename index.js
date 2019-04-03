@@ -8,6 +8,11 @@ const methodOverride = require('method-override')
 const jsonfile = promise.promisifyAll(require('jsonfile'));
 
 const app = express();
+
+// use to serve static files using express
+app.use(express.static('public'))
+
+// use to overcome HTML issue with sending PUT and DELETE request
 app.use(methodOverride('_method'));
 
 let data;
@@ -84,7 +89,7 @@ var getPokemonByIdRequestHandler = function (request, response) {
     });
 
     if (pokemon !== undefined) {
-        response.send(pokemon);
+        response.render('view', pokemon);
     } else {
         response.send(404, 'Not found!');
     }

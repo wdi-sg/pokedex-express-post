@@ -1,0 +1,64 @@
+/* General */
+body {
+	margin: 10px;
+}
+
+h1 {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+nav {
+	width: 42.5%;
+	margin: auto;
+}
+
+/* Home Page*/
+form {
+	margin: 0px 20px 20px 0px;
+	display: inline-block;
+}
+
+.table {
+	width: 90%;
+	margin: auto;
+	text-align: center;
+}
+
+.btn {
+	margin-right: 5px;
+}
+
+/*View Pokemon Page*/
+h1 > span {
+	color: #5A5A5A;
+}
+
+.main-content {
+	width: 60%;
+}
+
+.pokemonImage {
+	border-radius: 10px;
+	background-color: #F2F2F2;
+}
+
+.pokemonImage > img {
+	width: 330px;
+}
+
+.stats {
+	border-radius: 10px;
+	background-color: #289AC6;
+	padding: 20px 20px 2px 30px;
+}
+
+.detail {
+	padding-bottom: 20px;
+}
+
+.detail > h5 {
+	font-weight: 300;
+	color: white;
+	margin-bottom: 0px;
+}
