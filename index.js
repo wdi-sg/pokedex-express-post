@@ -27,8 +27,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 app.get('/', (req, res) => {
-  // running this will let express to run home.handlebars file in your views folder
-  res.render('home')
+    // running this will let express to run home.handlebars file in your views folder
+    res.render('home')
 })
 
 //---------------------------------------
@@ -125,6 +125,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.error(err);
 
         let pokemonIndex = parseInt(request.params.id) - 1;
         let selectedPokemon = obj.pokemon[pokemonIndex];
@@ -135,11 +136,73 @@ app.get('/pokemon/:id/edit', (request, response) => {
 });
 
 app.put('/pokemon/:id', (request, response) => {
-    response.send("YES!");
 
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.error(err);
+
+        let pokeIndex = parseInt(request.params.id);
+        let selectedPokemon = obj.pokemon[pokeIndex];
+
+        obj.pokemon[pokeIndex].id = request.body.id;
+        obj.pokemon[pokeIndex].num = request.body.num;
+        obj.pokemon[pokeIndex].name = request.body.name;
+        obj.pokemon[pokeIndex].img = request.body.img;
+        obj.pokemon[pokeIndex].height = request.body.height;
+        obj.pokemon[pokeIndex].weight = request.body.weight;
+        obj.pokemon[pokeIndex].candy = request.body.candy;
+        obj.pokemon[pokeIndex].candy_count = request.body.candy_count;
+        obj.pokemon[pokeIndex].egg = request.body.egg;
+        obj.pokemon[pokeIndex].avg_spawns = request.body.avg_spawns;
+        obj.pokemon[pokeIndex].spawn_time = request.body.spawn_time;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) console.error(err);
+
+            response.send("Pokémon updated")
+        });
+    });
 });
 
+//---------------------------------------
+// add a new page with a form ( it will be a form with only a single button )
+// make the path for this page /pokemon/:id/delete
+// submit the form to /pokemon/:id with method DELETE
 
+app.get('/pokemon/:id/delete', (request, response) => {
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.error(err);
+
+        let pokemonIndex = parseInt(request.params.id) - 1;
+        let selectedPokemon = obj.pokemon[pokemonIndex];
+
+        response.render("further1", selectedPokemon)
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) console.error(err);
+
+            response.send("Pokémon updated")
+        });
+    });
+});
+
+app.delete('/pokemon/:id', (request, response) => {
+
+    let pokeId = parseInt(request.params.id) - 1;
+    console.log(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.error(err);
+        obj.pokemon.splice(pokeId, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) console.error(err);
+
+            response.send(request.body);
+        });
+    });
+});
 
 //Listen to requests on port 3000
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
