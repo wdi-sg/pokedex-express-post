@@ -34,23 +34,12 @@ app.set('view engine', 'jsx');
 
 /**
  * ===================================
- * Routes
+ * Function Declarations For Routes
  * ===================================
  */
 
- /*
- * Available routes:
- /pokemon/:id/edit
- /pokemon/:id/ (put)
- /pokemon/:id/delete
- /id
- /pokemon/new
- /pokemon
- / -> default/home
- */
-
 // send request to edit the data for a given pokemon
-app.get('/pokemon/:id/edit', (request, response) => {
+let sendPokemonEditRequest = (request, response) => {
     let pokemonId = parseInt( request.params.id );
     let arrayIndex = (pokemonId - 1);
 
@@ -67,30 +56,10 @@ app.get('/pokemon/:id/edit', (request, response) => {
         response.render('editpokemon', {action: `/pokemon/${pokemonId}?_method=PUT`, name: record.name, id: record.id, num: record.num, img: record.img, height: record.height, weight: record.weight, candy: record.candy, candy_count: record.candy_count, egg: record.egg, avg_spawns: record.avg_spawns, spawn_time: record.spawn_time});
         }
     });
-});
-
-// send request to delete a given pokemon
-app.get('/pokemon/:id/delete', (request, response) => {
-    let pokemonId = parseInt( request.params.id );
-    let arrayIndex = (pokemonId - 1);
-
-    jsonfile.readFile(FILE, (err, obj) => {
-        const record = obj.pokemon[arrayIndex];
-        // console.log(record);
-
-        if (pokemonId === undefined) {
-        // send 404 back
-        response.status(404);
-        response.send("not found");
-        } else {
-        // render form
-        response.render('deletepokemon', {action: `/pokemon/${pokemonId}?_method=DELETE`, name: record.name});
-        }
-    });
-});
+};
 
 // edit the data for a given pokemon
-app.put('/pokemon/:id', (request, response) => {
+let editPokemon = (request, response) => {
     console.log( "this is request body:",request.body );
     // get the current contents of the file
     jsonfile.readFile(FILE, (err, obj) => {
@@ -119,10 +88,30 @@ app.put('/pokemon/:id', (request, response) => {
             response.send(request.body);
         });
     });
-});
+};
+
+// send request to delete a given pokemon
+let sendPokemonDeleteRequest = (request, response) => {
+    let pokemonId = parseInt( request.params.id );
+    let arrayIndex = (pokemonId - 1);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        const record = obj.pokemon[arrayIndex];
+        // console.log(record);
+
+        if (pokemonId === undefined) {
+        // send 404 back
+        response.status(404);
+        response.send("not found");
+        } else {
+        // render form
+        response.render('deletepokemon', {action: `/pokemon/${pokemonId}?_method=DELETE`, name: record.name});
+        }
+    });
+};
 
 // delete a given pokemon
-app.delete('/pokemon/:id', (request, response) => {
+let deletePokemon = (request, response) => {
     console.log( "this is request body:",request.body );
     // get the current contents of the file
     jsonfile.readFile(FILE, (err, obj) => {
@@ -143,11 +132,10 @@ app.delete('/pokemon/:id', (request, response) => {
             response.send(request.body);
         });
     });
-});
+};
 
 // get a specified pokemon's details by ID
-app.get('/:id', (request, response) => {
-
+let lookupPokemonById = (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
@@ -171,10 +159,10 @@ app.get('/:id', (request, response) => {
       response.send(pokemon);
     }
   });
-});
+};
 
-// respond with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-app.get('/pokemon/new', (request, response) => {
+// send request to create a new custom pokemon
+let sendPokemonNewRequest = (request, response) => {
     let  newForm =`<h1>Let's create a new Pokemon!</h1>
                   <form method="POST" action="/pokemon">
                   <h4>Provide your new pokemon's details here:</h4>
@@ -187,11 +175,10 @@ app.get('/pokemon/new', (request, response) => {
                   </form>`;
 
     response.send(newForm);
-});
+};
 
-// parse the form data and save the new pokemon data into pokedex.json
-app.post('/pokemon', function(request, response) {
-
+// create a new custom pokemon: parse the form data and save the new pokemon data into pokedex.json
+let createNewPokemon = (request, response) => {
     // save the request body
     jsonfile.readFile(FILE, (err, obj) => {
         let newPokemon = {};
@@ -229,10 +216,10 @@ app.post('/pokemon', function(request, response) {
 
         response.send(newPokemon);
     });
-});
+}
 
-// default
-app.get('/', (request, response) => {
+// default index page
+let homepage = (request, response) => {
 
     let pokemonList = [];
 
@@ -297,7 +284,35 @@ app.get('/', (request, response) => {
         // console.log(pokemonList);
         response.send(respondMessage);
     });
-});
+}
+
+/**
+ * ===================================
+ * Routes
+ * ===================================
+ */
+
+// send request to edit the data for a given pokemon
+app.get('/pokemon/:id/edit', sendPokemonEditRequest);
+// edit the data for a given pokemon
+app.put('/pokemon/:id', editPokemon);
+
+// send request to delete a given pokemon
+app.get('/pokemon/:id/delete', sendPokemonDeleteRequest);
+// delete a given pokemon
+app.delete('/pokemon/:id', deletePokemon);
+
+// send request to create a new custom pokemon
+app.get('/pokemon/new', sendPokemonNewRequest);
+// create a new custom pokemon
+app.post('/pokemon', createNewPokemon);
+
+
+// get a specified pokemon's details by ID
+app.get('/pokemon/:id', lookupPokemonById);
+
+// default index page
+app.get('/', homepage);
 
 /**
  * ===================================
