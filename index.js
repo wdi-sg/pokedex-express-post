@@ -55,9 +55,21 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+// app.get('/', (request, response) => {
+//   response.send("yay");
+// });
+
+app.get('/?sortby=name', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let sortBy = '<form>'+'<select name="sortby">'+'</select>'+'<input type="submit" value="Submit">'+'</form>';
+    if (request.query.sortby === 'name') {
+    obj.pokemon.sort(function(a,b) {
+      return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+    });
+    response.send(obj.pokemon);
+    }
+  })
+})
 
 app.get('/pokemon/new', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
