@@ -1883,12 +1883,12 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 152,
-      "num": "152",
-      "name": "Mewtant",
+      "id": 1,
+      "num": "1",
+      "name": "Mew",
       "img": "",
-      "height": "0.41 m",
-      "weight": "4.0 kg"
+      "height": "12",
+      "weight": "23"
     }
   ]
 }
