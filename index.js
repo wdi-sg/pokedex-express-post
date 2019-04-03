@@ -2,7 +2,6 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 const file = 'pokedex.json';
 const json = require('./pokedex.json');
-console.log(json.pokemon[0]);
 const app = express();
 
 app.use(express.json());
@@ -10,8 +9,17 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+app.set('views', __dirname + '/views');
+
+app.set('view engine', 'jsx');
+
 app.get('/', (request, response) => {
 
+    // response.render('home');
     let pokemonList = JSON.stringify(json.pokemon, null, 2)
     response.send('<h1>Pokemon</h1>'+
                   '<form method="post" action="/pokemon/new">'+
@@ -64,7 +72,7 @@ app.post('/pokemon/search', (request, response) => {
 app.post('/pokemon/new', function(req, response) {
   //debug code (output request body)
       response.send('<h1>Pokemon</h1>'+
-                  '<form method="post" action="/pokemon/new/creation">'+
+                  '<form method="post" action="/pokemon/:id/new">'+
                   'ID:<input type="text" name="id">'+
                   'Num:<input type="text" name="num">'+
                   'Name:<input type="text" name="name">'+
@@ -112,10 +120,18 @@ function GetSortOrder(prop) {
 });
 
 
+
+app.get('/pokemon/:id/edit', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  let pokeId = req.params.id;
+  let pokemonStats = json.pokemon[pokeId];
+  res.render('home', pokemonStats);
+})
+
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
-
-console.log(json.pokemon[152])
+console.log(json.pokemon[0]);
 
 
 // app.get('/:id', (request, response) => {
