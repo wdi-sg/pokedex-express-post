@@ -2,11 +2,8 @@
 //https://github.com/wdi-sg/pokedex-express-post/blob/b5dd03d949531d682955e20ca927ba12c980a8d8/index.js
 // http://expressjs.com/en/api.html#req.query
 
-
-
 const express = require('express');
 const jsonfile = require('jsonfile');
-const 
 
 const FILE = 'pokedex.json';
 
@@ -21,6 +18,17 @@ const app = express();
 app.use(express.urlencoded({ //use this so that we can do request.body later
   extended: true
 }));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 
 /**
  * ===================================
@@ -136,6 +144,19 @@ app.get('/', (request, response) => {
 // app.get('/', (request, response) => {
 //   response.send("yay");
 // });
+
+//technically, supposed to do the sort button, under the further sections...
+//end of Pokedex-express-post Part 1
+
+//beginning of Pokedex-express-post part 2
+
+app.get('/pokemon/:id/edit', (request, response)=>{
+  let respond = '<form method="GET" action ="/animals">'+
+                'Animal Name: <input type = "text" name ="animalname">'+
+                '<input type ="submit" value ="Submit">'+
+                '</form>';
+  response.send(respond);
+});
 
 /**
  * ===================================
