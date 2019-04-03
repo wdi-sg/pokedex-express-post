@@ -1,16 +1,24 @@
 const express = require('express');
+const app = express();
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
-// Init express app
-const app = express();
-
-// Tell your App to use module..
+// For body-parser?
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+app.set('views', __dirname + '/views');
+
+app.set('view engine', 'jsx');
 
 app.get('/:id', (request, response) => {
   // get json from specified file
@@ -71,21 +79,78 @@ app.post('/pokemon', (request, response) => {
     });
 })
 
-// app.get('/?sortby=name', (request, response) => {
-//     let htmlContent = '<h1>List of Pokemon in Ascending Order</h1>';
-//     jsonfile.readFile(FILE, (err, obj) => {
-//         const arr = obj["pokemon"];
-//         const nameArr = [];
-//         for (let i = 0; i < arr.length; i++) {
-//             nameArr.push(arr[i]["name"]); // ["Bulbasaur","Ivysaur",...]
-//         }
-//         nameArr.sort();
-//         for (let i = 0; i < nameArr.length; i++) {
-//             htmlContent += `<li>${nameArr[i]["name"]}</li>`;
-//         }
-//         response.send(htmlContent);
-//     })
-// });
+app.get('/pokemon/:id/edit', (request, response) => {
+    const id = parseInt(request.params.id); // 1
+    jsonfile.readFile(FILE, (err, json) => {
+        const arr = json["pokemon"];
+        let data; // is an {}
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i]["id"] === id) {
+                data = arr[i];
+            }
+        }
+        response.render('home', data);
+    })
+})
+
+app.put('/pokemon/:id', (request, response) => {
+    // console.log(request.body);
+    //get the current contents of the file
+    jsonfile.readFile(FILE, (err, json) => {
+        // get the location in the array we are requesting
+        let arrayIndex = parseInt( request.params.id ) - 1;
+        console.log(arrayIndex);
+        // individually edit each value in the animal *object*
+        json.pokemon[arrayIndex].name = request.body.name;
+        json.pokemon[arrayIndex].img = request.body.img;
+        json.pokemon[arrayIndex].height = request.body.height;
+        json.pokemon[arrayIndex].weight = request.body.weight;
+        json.pokemon[arrayIndex].candy = request.body.candy;
+        json.pokemon[arrayIndex]["candy_count"] = parseFloat(request.body["candy_count"]);
+        json.pokemon[arrayIndex].egg = request.body.egg;
+        json.pokemon[arrayIndex]["avg_spawns"] = parseFloat(request.body["avg_spawns"]);
+        json.pokemon[arrayIndex]["spawn_time"] = request.body["spawn_time"];
+        // we dont need to reassign this, but lets be explicit about the change
+        // const changedObj = contentsOfFile;
+        jsonfile.writeFile(FILE, json, (err) => {
+            // console.error(err)
+            response.send(request.body);
+        });
+    });
+})
+
+app.get('/pokemon/:id/delete', (request, response) => {
+    let id = parseInt( request.params.id );
+    jsonfile.readFile(FILE, (err, json) => {
+        const arr = json["pokemon"];
+        let data; // is an {}
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i]["id"] === id) {
+                data = arr[i];
+            }
+        }
+        response.render('delete', data);
+    })
+})
+
+app.delete('/pokemon/:id', (request, response) => {
+    let id = parseInt( request.params.id ) - 1;
+
+    //get the current contents of the file
+    jsonfile.readFile(FILE, (err, json) => {
+        const nameOfDeleted = json.pokemon[id].name;
+        // change the current contents of the file
+        json.pokemon.splice(id, 1);
+
+        jsonfile.writeFile(FILE, json, (err) => {
+        // console.error(err)
+        // now look inside your json file
+        response.send(`You deleted ${nameOfDeleted}..`);
+    });
+  });
+})
+
+
 
 app.get('/', (request, response) => {
     let htmlContent = '<h1>List of Pokemon</h1>';
