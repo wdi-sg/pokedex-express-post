@@ -12,8 +12,8 @@ app.use(
   })
 );
 
-const methodOverride = require('method-override')
-app.use(methodOverride('_method'));
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -31,10 +31,10 @@ app.get("/pokemon/:id/edit", (request, response) => {
     if (err) {
       console.log(err);
     }
-    let pokemonArray = obj['pokemon'];
+    let pokemonArray = obj["pokemon"];
     let chosenOne;
-    console.log(pokemonArray[0].id)
-    console.log(typeof pokemonArray[0].id)
+    console.log(pokemonArray[0].id);
+    console.log(typeof pokemonArray[0].id);
     console.log(request.params.id);
     console.log(typeof request.params.id);
 
@@ -48,8 +48,37 @@ app.get("/pokemon/:id/edit", (request, response) => {
   });
 });
 
-app.put("/pokemon/:id/edit", (request, response) => {
-  console.log(request.params.id + " has been read with a package of " + request.body);
+app.put("/pokemon/:id", (request, response) => {
+  console.log(
+    request.params.id + " has been read with a package of " + request.body.name
+  );
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+    }
+    let pokemonList = obj["pokemon"];
+    let chosenOne;
+    for (let i = 0; i < pokemonList.length; i++) {
+      let pokemon = pokemonList[i];
+      if (pokemon.id === parseInt(request.params.id)) {
+        for (const key in request.body) {
+          if (request.body[key] === undefined) {
+          } else {
+            const property = request.body[key];
+
+            pokemon[key] = property;
+            console.log(pokemon[key]);
+            console.log(property);
+          }
+        }
+      }
+    }
+    jsonfile.writeFile(FILE, obj, err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
 });
 
 app.post("/pokemon", (request, response) => {

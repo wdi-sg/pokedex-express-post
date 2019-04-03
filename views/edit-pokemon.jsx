@@ -8,13 +8,12 @@ class Home extends React.Component {
         let img = this.props.img;
         let height = this.props.height;
         let weight = this.props.weight;
-        let actionString = '/pokemon/' + id + '/edit?_method=PUT'
+        let actionString = '/pokemon/' + id + '?_method=PUT'
         return (
             <div>
                 <h1>Hello</h1>
                 <form method="POST" action={actionString}>
                 <div className="pokemon-attribute">
-                {id}<input type="text" name="id" id="input-id"/>
                 {name}<input type="text" name="name" id="input-id"/>
                 {img}<input type="text" name="img" id="input-id"/>
                 {height}<input type="text" name="height" id="input-id"/>
