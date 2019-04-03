@@ -18,11 +18,85 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+ /*
+ * Available routes:
+ /pokemon/:id/edit
+ /id
+ /pokemon/new
+ /pokemon
+ / -> default/home
+ */
+
+// edit the data for a given pokemon
+app.get('/pokemon/:id/edit', (request, response) => {
+    let pokemonId = parseInt( request.params.id );
+    let arrayIndex = (pokemonId - 1);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        const record = obj.pokemon[arrayIndex];
+        // console.log(record);
+
+        if (pokemonId === undefined) {
+        // send 404 back
+        response.status(404);
+        response.send("not found");
+        } else {
+        // render form
+        response.render('editpokemon', {action: `/pokemon/${pokemonId}?_method=PUT`, name: record.name, id: record.id, num: record.num, img: record.img, height: record.height, weight: record.weight, candy: record.candy, candy_count: record.candy_count, egg: record.egg, avg_spawns: record.avg_spawns, spawn_time: record.spawn_time});
+        }
+    });
+});
+
+app.put('/pokemon/:id', (request, response) => {
+    console.log( "this is request body:",request.body );
+    // get the current contents of the file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        // get the location in the array we are requesting
+        let pokemonId = parseInt( request.params.id );
+        let arrayIndex = (pokemonId - 1);
+
+        // individually edit each value in the object
+        obj.pokemon[arrayIndex].name = request.body.name;
+        obj.pokemon[arrayIndex].img = request.body.img;
+        obj.pokemon[arrayIndex].height = request.body.height;
+        obj.pokemon[arrayIndex].weight = request.body.weight;
+        obj.pokemon[arrayIndex].candy = request.body.candy;
+        obj.pokemon[arrayIndex].candy_count = request.body.candy_count;
+        obj.pokemon[arrayIndex].egg = request.body.egg;
+        obj.pokemon[arrayIndex].avg_spawns = request.body.avg_spawns;
+        obj.pokemon[arrayIndex].spawn_time = request.body.spawn_time;
+
+        // we dont need to reassign this, but lets be explicit about the change
+        const changedObj = obj;
+
+        jsonfile.writeFile(FILE, changedObj, (err) => {
+            console.error(err)
+
+            response.send(request.body);
+        });
+    });
+});
 
 // get a specified pokemon's details by ID
 app.get('/:id', (request, response) => {
@@ -116,7 +190,7 @@ app.get('/', (request, response) => {
     let pokemonList = [];
 
     // checks how user wants list of pokemon sorted
-    let selectSort = `<form method="get" action="/?">
+    let selectSort = `<form method="get" action="/">
                   Sort pokemon by:
                   <select name="sortby">
                   <option value="name">Name</option>
@@ -131,6 +205,13 @@ app.get('/', (request, response) => {
     let newPokeButton = `<form method="get" action="/pokemon/new">
                   Want to create a custom pokemon?
                   <input type="submit" value="Create new Pokemon">
+                  </form>`;
+
+    // redirects to /pokemon/id/edit
+    let editPokeButton = `<form method="get" action="/pokemon/:id/edit">
+                  Want to edit a pokemon?
+                  <input type="text">
+                  <input type="submit" value="Edit Pokemon">
                   </form>`;
 
     // get list of pokemon
@@ -160,6 +241,7 @@ app.get('/', (request, response) => {
 
         let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
         ${newPokeButton}
+        ${editPokeButton}
         <br>
         ${selectSort}
         <br>
@@ -169,8 +251,6 @@ app.get('/', (request, response) => {
         // console.log(pokemonList);
         response.send(respondMessage);
     });
-
-
 });
 
 /**
