@@ -55,7 +55,7 @@ class View extends React.Component {
                             </div>
                             <br/>
 
-                            <a className="btn btn-info" href="/pokemon">Back to Pokedex</a>
+                            <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
                         </div>
 
                     </div>

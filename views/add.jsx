@@ -6,7 +6,7 @@ class Add extends React.Component {
     return (
             <html>
                 <head>
-                    <meta charset="utf-8"/>
+                    <meta charSet="utf-8"/>
                     <title>Add new Pokemon</title>
                     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous"/>
                     <link rel="stylesheet" href="/css/style.css"/>
@@ -19,8 +19,9 @@ class Add extends React.Component {
                             Image: <input name="img"/><br/>
                             Height: <input name="height"/><br/>
                             Weight: <input name="weight"/><br/><br/>
-                            <input type="submit" value="Add new Pokemon"/>
+                            <input className="btn btn-success" type="submit" value="Add new Pokemon"/>
                     </form>
+                    <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
                 </body>
             </html>
     );
