@@ -149,14 +149,28 @@ app.get('/', (request, response) => {
 //end of Pokedex-express-post Part 1
 
 //beginning of Pokedex-express-post part 2
+//this is just for testing, and it works...
+
+// app.get('/pokemon/:id/edit', (request, response)=>{
+//   let respond = '<form method="GET" action ="/animals">'+
+//                 'Animal Name: <input type = "text" name ="animalname">'+
+//                 '<input type ="submit" value ="Submit">'+
+//                 '</form>';
+//   response.send(respond);
+// });
 
 app.get('/pokemon/:id/edit', (request, response)=>{
-  let respond = '<form method="GET" action ="/animals">'+
-                'Animal Name: <input type = "text" name ="animalname">'+
-                '<input type ="submit" value ="Submit">'+
-                '</form>';
-  response.send(respond);
+  let pokemonId = parseInt(request.params.id);
+  let arrayIndex = parseInt(request.params.id)-1; //because say Bulbasaur is id of 1, but index of zero in the array
+  jsonfile.readFile('pokedex.json', (err, obj) => {
+
+  let respond = obj.pokemon[arrayIndex];
+
+  response.render('thisPokemon',{ respondKey: respond, idKey: pokemonId} );
+  });
 });
+
+app.put('pokemon/:id')
 
 /**
  * ===================================
