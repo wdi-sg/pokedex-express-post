@@ -76,7 +76,7 @@ var homeRequestHandler = function (request, response) {
         });
     }
 
-    response.send(htmlPage + pokemonNames);
+    response.send(htmlForm + pokemonNames);
 }
 
 var getPokemonByIdRequestHandler = function (request, response) {
@@ -105,22 +105,22 @@ var newPokemonRequestHandler = function (request, response) {
                         <input type="submit" value="Add new Pokemon"/>
                     </form>`;
 
-    response.send(htmlPage);
+    response.send(htmlForm);
 }
 
 var pokemonRequestHandler = function (request, response) {
-    let newPokemon = {};
-
-    newPokemon["id"] = data.pokemon.length + 1;
-    newPokemon["num"] = addZero(data.pokemon.length + 1);
-    newPokemon["name"] = request.body.name;
-    newPokemon["img"] = request.body.img;
-    newPokemon["height"] = request.body.height;
-    newPokemon["weight"] = request.body.weight;
-    newPokemon["candy"] = "None";
-    newPokemon["egg"] = "Not in Eggs";
-    newPokemon["avg_spawns"] = 0;
-    newPokemon["spawn_time"] = "N/A";
+    let newPokemon = {
+        id: data.pokemon.length + 1,
+        num: addZero(data.pokemon.length + 1),
+        name: request.body.name,
+        img: request.body.img,
+        height: request.body.height,
+        weight: request.body.weight,
+        candy: "None",
+        egg: "Not in Eggs",
+        avg_spawns: 0,
+        spawn_time: "N/A"
+    };
 
     data.pokemon.push(newPokemon);
 
