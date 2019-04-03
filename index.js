@@ -3,13 +3,35 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
-
 // Init express app
 const app = express();
 app.use(express.json());
+
 app.use(express.urlencoded({
   extended: true
 }));
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+
+// this line below, sets a layout look to your express project
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
+
+
+// this tells express where to look for the view files
+app.set("views", __dirname + "/views");
+
+// this line sets react to be the default view engine
+app.set("view engine", "jsx");
+
+
+app.get("/", (request, response) => {
+    response.render("home")
+});
+
+
 
 
 //Get user input and add it into pokedex.json
@@ -65,6 +87,38 @@ app.get('/', (request, response) => {
         response.send(buttons + respond);
     });
 });
+
+
+app.get("/pokemon/:id/edit", (request, response) => {
+    //pokemonId = 2
+    let pokemonId = parseInt(request.params.id);
+    //pokemonIndex = 1
+    let pokemonIndex = pokemonId -1;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+       let data = obj.pokemon[pokemonIndex]
+
+       response.render("home", {dataKey: data, idKey: pokemonId});
+    });
+});
+
+
+app.put("/pokemon/:id", (request, response) => {
+    // response.send("YES!!!");
+    // console.log(request.body);
+    jsonfile.readFile(FILE, (err, obj) => {
+        userInput = request.body;
+        // console.log(userInput);
+         obj.pokemon.push(userInput);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err)
+
+        response.send(obj);
+    });
+    });
+});
+
 
 
 
