@@ -1,3 +1,9 @@
+//Swee Chin's work:
+//https://github.com/wdi-sg/pokedex-express-post/blob/b5dd03d949531d682955e20ca927ba12c980a8d8/index.js
+// http://expressjs.com/en/api.html#req.query 
+
+
+
 const express = require('express');
 const jsonfile = require('jsonfile');
 
