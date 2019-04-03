@@ -12,12 +12,33 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 //tell your app to use the module
 app.use(express.json());
 
 app.use(express.urlencoded({
   extended: true
 }));
+
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
+app.get('/hello', (request, response) => {
+
+  response.render('hello');
+
+});
 
 /**
  * ===================================
@@ -36,7 +57,7 @@ app.use(express.urlencoded({
     } else {
         return inputString;
     }
- }
+}
 
 /**
  * ===================================
@@ -49,63 +70,63 @@ app.use(express.urlencoded({
 
     if(request.query.sortby === undefined) {
         response.send(`<form>
-                        <select name="sortby">
-                            <option value="id">id</option>
-                            <option value="name">name</option>
-                        </select>
-                        <input type="submit" value="Sort">
-                        </form>
-                        <br>`);
+            <select name="sortby">
+            <option value="id">id</option>
+            <option value="name">name</option>
+            </select>
+            <input type="submit" value="Sort">
+            </form>
+            <br>`);
     } else if(request.query.sortby === "name") {
         jsonfile.readFile(FILE, (err, obj) => {
-        let pokemonArray = [];
-        let sortedPokemonArray = [];
-        let pokemonString = "";
+            let pokemonArray = [];
+            let sortedPokemonArray = [];
+            let pokemonString = "";
 
-        for(let i=0; i<obj.pokemon.length; i++) {
-            let pokemonObject = {};
-            pokemonObject.id = obj.pokemon[i].id;
-            pokemonObject.name = obj.pokemon[i].name;
-            pokemonArray.push(pokemonObject);
-        }
-        pokemonArray.sort(function(a, b) {
-           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-       });
+            for(let i=0; i<obj.pokemon.length; i++) {
+                let pokemonObject = {};
+                pokemonObject.id = obj.pokemon[i].id;
+                pokemonObject.name = obj.pokemon[i].name;
+                pokemonArray.push(pokemonObject);
+            }
+            pokemonArray.sort(function(a, b) {
+               return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+           });
 
-        for(let i=0; i<pokemonArray.length; i++) {
-            pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
-        }
+            for(let i=0; i<pokemonArray.length; i++) {
+                pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+            }
 
-        response.send(pokemonString);
-    });
+            response.send(pokemonString);
+        });
 
     } else if(request.query.sortby === "id") {
         jsonfile.readFile(FILE, (err, obj) => {
-        let pokemonArray = [];
-        let sortedPokemonArray = [];
-        let pokemonString = "";
+            let pokemonArray = [];
+            let sortedPokemonArray = [];
+            let pokemonString = "";
 
-        for(let i=0; i<obj.pokemon.length; i++) {
-            let pokemonObject = {};
-            pokemonObject.id = obj.pokemon[i].id;
-            pokemonObject.name = obj.pokemon[i].name;
-            pokemonArray.push(pokemonObject);
-        }
-        pokemonArray.sort(function(a, b) {
-           return a.id - b.id;
-       });
+            for(let i=0; i<obj.pokemon.length; i++) {
+                let pokemonObject = {};
+                pokemonObject.id = obj.pokemon[i].id;
+                pokemonObject.name = obj.pokemon[i].name;
+                pokemonArray.push(pokemonObject);
+            }
+            pokemonArray.sort(function(a, b) {
+               return a.id - b.id;
+           });
 
-        for(let i=0; i<pokemonArray.length; i++) {
-            pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
-        }
+            for(let i=0; i<pokemonArray.length; i++) {
+                pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+            }
 
-        response.send(pokemonString);
-    });
+            response.send(pokemonString);
+        });
 
     }
 
 //closing brace for line 30
- });
+});
 
  app.get('/pokemon/new', function(request, response) {
 
@@ -113,7 +134,7 @@ app.use(express.urlencoded({
 
     response.send(respond);
 
- });
+});
 
 
  app.post('/pokemon', function(request, response) {
@@ -136,43 +157,43 @@ app.use(express.urlencoded({
 
      obj.pokemon.push(newPokemon);
 
-    jsonfile.writeFile(FILE, obj, (err) => {
+     jsonfile.writeFile(FILE, obj, (err) => {
         response.send(`<h1>A new pokemon ${request.body.name} was added!</h1>`);
 
         console.log("JSON updated with new data!");
     });
-});
+ });
 
- })
+})
 
-
-app.get('/delete/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    var inputId = parseInt( request.params.id );
+// app.get('/delete/:id', (request, response) => {
 
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+//   // get json from specified file
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     // obj is the object from the pokedex json file
+//     // extract input data from request
+//     var inputId = parseInt( request.params.id );
 
-      var currentPokemon = obj.pokemon[i];
 
-      if( currentPokemon.id === inputId ){
-        obj.pokemon.splice(i,1);
-      }
-    }
+//     // find pokemon by id from the pokedex json file
+//     for( let i=0; i<obj.pokemon.length; i++ ){
 
-    jsonfile.writeFile(FILE, obj, (err) => {
+//       var currentPokemon = obj.pokemon[i];
 
-        response.send(`${currentPokemon.name} removed!`);
-        console.log("JSON updated! Pokemon removed!");
-    });
+//       if( currentPokemon.id === inputId ){
+//         obj.pokemon.splice(i,1);
+//       }
+//     }
 
-  });
-});
+//     jsonfile.writeFile(FILE, obj, (err) => {
+
+//         response.send(`${currentPokemon.name} removed!`);
+//         console.log("JSON updated! Pokemon removed!");
+//     });
+
+//   });
+// });
 
 
 
@@ -193,25 +214,165 @@ app.get('/:id', (request, response) => {
 
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
-      }
     }
+}
 
-    if (pokemon === undefined) {
+if (pokemon === undefined) {
 
       // send 404 back
       response.status(404);
       response.send("not found");
-    } else {
+  } else {
 
       response.send(pokemon);
+  }
+});
+});
+
+app.get('/pokemon/:id/edit', (request, response) => {
+    let pokemonId = parseInt(request.params.id);
+    let pokemonIndex;
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+
+    if(pokemonIndex === -1) {
+        response.status(404);
+        response.send("not found");
+    } else {
+
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if(pokemonId === obj.pokemon[i].id) {
+                pokemonIndex = i;
+            }
+        }
+        const record = obj.pokemon[pokemonIndex];
+
+        response.render("edit",{ recordKey: record, idKey: pokemonId} );
+
     }
+
+});
+});
+
+
+app.put('/pokemon/:id', (request, response) => {
+    console.log("Hello");
+    console.log( request.body );
+    console.log( "this is request body:",request.body );
+
+    let pokemonId = parseInt(request.params.id);
+    let pokemonIndex;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+
+     for(let i=0; i<obj.pokemon.length; i++) {
+        if(pokemonId === obj.pokemon[i].id) {
+            pokemonIndex = i;
+        }
+    }
+
+
+    let originalPokemonName = obj.pokemon[pokemonIndex].name;
+
+    // individually edit each value in the animal *object*
+    obj.pokemon[pokemonIndex].num = request.body.num;
+    obj.pokemon[pokemonIndex].name = request.body.name;
+    obj.pokemon[pokemonIndex].img = request.body.img;
+    obj.pokemon[pokemonIndex].height = request.body.height;
+    obj.pokemon[pokemonIndex].weight = request.body.weight;
+    obj.pokemon[pokemonIndex].candy = request.body.candy;
+    obj.pokemon[pokemonIndex].candy_count = request.body.candy_count;
+    obj.pokemon[pokemonIndex].egg = request.body.egg;
+    obj.pokemon[pokemonIndex].avg_spawns = request.body.avg_spawns;
+    obj.pokemon[pokemonIndex].spawn_time = request.body.spawn_time;
+
+
+    // we dont need to reassign this, but lets be explicit about the change
+    const changedObj = obj;
+
+    jsonfile.writeFile(FILE, changedObj, (err) => {
+      console.error(err)
+
+      response.send("Pokemon " + originalPokemonName + " has been edited!");
   });
 });
 
+});
+
+app.get('/pokemon/:id/delete',(request, response) => {
+
+    let pokemonId = parseInt(request.params.id);
+    let pokemonIndex;
+    let idArray = [];
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+
+    for(let i=0; i<obj.pokemon.length; i++) {
+        idArray.push(obj.pokemon[i].id);
+    }
+
+    if(idArray.includes(pokemonId) === false) {
+        response.status(404);
+        response.send("not found");
+        return;
+    } else {
+
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if(pokemonId === obj.pokemon[i].id) {
+                pokemonIndex = i;
+            }
+        }
+
+        const record = obj.pokemon[pokemonIndex];
+
+        response.render("delete",{ recordKey: record, idKey: pokemonId} );
+    }
+
+});
+
+
+});
+
+
+app.delete('/pokemon/:id', (request, response) => {
+
+  let pokemonId = parseInt( request.params.id );
+  let pokemonIndex;
+
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+     for(let i=0; i<obj.pokemon.length; i++) {
+        if(pokemonId === obj.pokemon[i].id) {
+            pokemonIndex = i;
+        }
+    }
+
+    let originalPokemonName = obj.pokemon[pokemonIndex].name;
+
+    obj.pokemon.splice( pokemonIndex, 1);
+
+    const changedObj = obj;
+
+    jsonfile.writeFile(FILE, changedObj, (err) => {
+      console.error(err)
+
+      response.send("Pokemon " + originalPokemonName + " has been deleted!");
+  });
+});
+
+
+});
 
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+ app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
