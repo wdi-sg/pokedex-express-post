@@ -1,6 +1,9 @@
 const _ = require('lodash');
 const express = require('express');
 const jsonfile = require('jsonfile');
+const reactEngine = require('express-react-views').createEngine();
+
+const methodOverride = require('method-override');
 
 const FILE = 'pokedex.json';
 
@@ -9,7 +12,6 @@ const FILE = 'pokedex.json';
  * Configurations and set up
  * ===================================
  */
-
 // Init express app
 const app = express();
 
@@ -17,45 +19,18 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(methodOverride('_method'));
 
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets handlebars to be the default view engine
+app.set('view engine', 'jsx');
 /**
  * ===================================
  * Routes
  * ===================================
  */
-
-// app.get('/:id', (request, response) => {
-
-//   // get json from specified file
-//   jsonfile.readFile(FILE, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = parseInt( request.params.id );
-
-//     var pokemon;
-
-//     // find pokemon by id from the pokedex json file
-//     for( let i=0; i<obj.pokemon.length; i++ ){
-
-//       let currentPokemon = obj.pokemon[i];
-
-//       if( currentPokemon.id === inputId ){
-//         pokemon = currentPokemon;
-//       }
-//     }
-
-//     if (pokemon === undefined) {
-
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
-
-//       response.send(pokemon);
-//     }
-//   });
-// });
-
 //two form methods. one is text based. the other drop down select
 app.get('/pokemon/:id', (request, response) => {
   // get json from specified file
@@ -249,6 +224,71 @@ app.get('/', (request, response) => {
         }
     });
 });
+
+
+// add each field as an input and pre-populate the current data for that pokemon
+// the form should make a request ( the form action ) to the correct route ( a PUT request to /pokemon/:id )
+//set a get /edit to a put /:id
+app.get('/pokemon/:id/edit', (request,response)=>{
+
+    let arrayIndex = parseInt(request.params.id);
+    jsonfile.readFile(FILE, (err, obj)=>{
+
+    let pokemonObjList = obj.pokemon[arrayIndex-1];
+
+    response.render('edit', pokemonObjList);
+    });
+})
+
+// add a new page with a form ( it will be a form with only a single button )
+// make the path for this page /pokemon/:id/delete
+// submit the form to /pokemon/:id with method DELETE
+app.get('/pokemon/:id/delete', (request,response)=>{
+    let arrayIndex = parseInt( request.params.id );
+    jsonfile.readFile(FILE, (err, obj)=>{
+
+    let pokemonObjList = obj.pokemon[arrayIndex-1];
+
+    response.render('delete', pokemonObjList);
+    });
+})
+//exposes a put path to change pokemon details
+app.put('/pokemon/:id', (request,response)=>{
+
+    let arrayIndex = parseInt( request.params.id );
+
+    jsonfile.readFile(FILE, (err,obj)=>{
+    let pokemonObjList = obj.pokemon[arrayIndex-1];
+
+        pokemonObjList.name = request.body.pokeName;
+        pokemonObjList.num = request.body.pokeName;
+        pokemonObjList.img = request.body.pokeImg;
+        pokemonObjList.weight = request.body.pokeWeight;
+        pokemonObjList.height = request.body.pokeHeight;
+        pokemonObjList.egg = request.body.pokeEgg;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err)
+      response.send(request.body);
+    });
+    });
+})
+
+app.delete('/pokemon/:id', (request, response) => {
+
+  let arrayIndex = parseInt( request.params.id );
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.splice( arrayIndex -1 , 1);
+
+    const changedObj = obj.pokemon;
+
+    jsonfile.writeFile(FILE, changedObj, (err) => {
+      console.error(err)
+      response.send(request.body);
+    });
+  });
+});
+
 
 /**
  * ===================================
