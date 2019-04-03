@@ -8,15 +8,15 @@ class editpokemon extends React.Component {
         <p>Pokemon ID: {this.props.id}</p>
         <p>Pokemon Number: {this.props.num}</p>
         <form method="POST" action={this.props.action}>
-            Name: <input type="text" name="name" value={this.props.name}/>
-            Image Link: <input type="text" name="img" value={this.props.img}/>
-            Height: <input type="text" name="height" value={this.props.height}/>
-            Weight: <input type="text" name="weight" value={this.props.weight}/>
-            Candy: <input type="text" name="candy" value={this.props.candy}/>
-            Candy Count: <input type="text" name="candy_count" value={this.props.candy_count}/>
-            Egg: <input type="text" name="egg" value={this.props.egg}/>
-            Average Spawns: <input type="text" name="avg_spawns" value={this.props.avg_spawns}/>
-            Spawn Time: <input type="text" name="spawn_time" value={this.props.spawn_time}/>
+            Name: <input type="text" name="name" defaultValue={this.props.name}/>
+            Image Link: <input type="text" name="img" defaultValue={this.props.img}/>
+            Height: <input type="text" name="height" defaultValue={this.props.height}/>
+            Weight: <input type="text" name="weight" defaultValue={this.props.weight}/>
+            Candy: <input type="text" name="candy" defaultValue={this.props.candy}/>
+            Candy Count: <input type="text" name="candy_count" defaultValue={this.props.candy_count}/>
+            Egg: <input type="text" name="egg" defaultValue={this.props.egg}/>
+            Average Spawns: <input type="text" name="avg_spawns" defaultValue={this.props.avg_spawns}/>
+            Spawn Time: <input type="text" name="spawn_time" defaultValue={this.props.spawn_time}/>
             <input type="submit" value="Submit"/>
         </form>
       </div>
@@ -25,10 +25,3 @@ class editpokemon extends React.Component {
 }
 
 module.exports = editpokemon;
-
-// let  respond =  '<h1>EDIT banan '+ pokemonId+'</h1>'+
-        //                 '<form method="POST" action="/animals/'+pokemonId+'?_method=PUT">'+
-        //                 'Animal Name:<input type="text" name="animalname" value="'+record.name+'">'+
-        //                 '<input type="text" name="weight" value="'+record.weight+'">'+
-        //                 '<input type="submit" value="Submit">'+
-        //                 '</form>';

@@ -41,13 +41,15 @@ app.set('view engine', 'jsx');
  /*
  * Available routes:
  /pokemon/:id/edit
+ /pokemon/:id/ (put)
+ /pokemon/:id/delete
  /id
  /pokemon/new
  /pokemon
  / -> default/home
  */
 
-// edit the data for a given pokemon
+// send request to edit the data for a given pokemon
 app.get('/pokemon/:id/edit', (request, response) => {
     let pokemonId = parseInt( request.params.id );
     let arrayIndex = (pokemonId - 1);
@@ -67,6 +69,27 @@ app.get('/pokemon/:id/edit', (request, response) => {
     });
 });
 
+// send request to delete a given pokemon
+app.get('/pokemon/:id/delete', (request, response) => {
+    let pokemonId = parseInt( request.params.id );
+    let arrayIndex = (pokemonId - 1);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        const record = obj.pokemon[arrayIndex];
+        // console.log(record);
+
+        if (pokemonId === undefined) {
+        // send 404 back
+        response.status(404);
+        response.send("not found");
+        } else {
+        // render form
+        response.render('deletepokemon', {action: `/pokemon/${pokemonId}?_method=DELETE`, name: record.name});
+        }
+    });
+});
+
+// edit the data for a given pokemon
 app.put('/pokemon/:id', (request, response) => {
     console.log( "this is request body:",request.body );
     // get the current contents of the file
@@ -88,6 +111,30 @@ app.put('/pokemon/:id', (request, response) => {
         obj.pokemon[arrayIndex].spawn_time = request.body.spawn_time;
 
         // we dont need to reassign this, but lets be explicit about the change
+        const changedObj = obj;
+
+        jsonfile.writeFile(FILE, changedObj, (err) => {
+            console.error(err)
+
+            response.send(request.body);
+        });
+    });
+});
+
+// delete a given pokemon
+app.delete('/pokemon/:id', (request, response) => {
+    console.log( "this is request body:",request.body );
+    // get the current contents of the file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        // get the location in the array we are requesting
+        let pokemonId = parseInt( request.params.id );
+        let arrayIndex = (pokemonId - 1);
+
+        // change the current contents of the file
+        obj.pokemon.splice( arrayIndex, 1);
+
+        // we don't need to reassign this, but lets be explicit about the change
         const changedObj = obj;
 
         jsonfile.writeFile(FILE, changedObj, (err) => {
@@ -207,10 +254,10 @@ app.get('/', (request, response) => {
                   <input type="submit" value="Create new Pokemon">
                   </form>`;
 
-    // redirects to /pokemon/id/edit
-    let editPokeButton = `<form method="get" action="/pokemon/:id/edit">
+    // redirects to /pokemon/id/edit - needs fixing
+    let editPokeButton = `<form method="get" action="/pokemon/edit">
                   Want to edit a pokemon?
-                  <input type="text">
+                  <input type="number" min="1" name="id">
                   <input type="submit" value="Edit Pokemon">
                   </form>`;
 
@@ -241,7 +288,6 @@ app.get('/', (request, response) => {
 
         let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
         ${newPokeButton}
-        ${editPokeButton}
         <br>
         ${selectSort}
         <br>
