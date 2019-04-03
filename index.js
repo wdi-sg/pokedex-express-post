@@ -11,6 +11,26 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+app.get('/', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('home')
+})
+
 //---------------------------------------
 app.get('/:id', (request, response) => {
 
@@ -96,6 +116,30 @@ app.get("/", (request, response) => {
         response.send("All Pokemon:" + allPokemonArr.join("") + ".");
     });
 });
+
+//POST part 2
+//---------------------------------------
+//add the ability to edit the data for a given pokemon
+
+app.get('/pokemon/:id/edit', (request, response) => {
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        let pokemonIndex = parseInt(request.params.id) - 1;
+        let selectedPokemon = obj.pokemon[pokemonIndex];
+
+        response.render("home", selectedPokemon)
+
+    });
+});
+
+app.put('/pokemon/:id', (request, response) => {
+    response.send("YES!");
+
+});
+
+
 
 //Listen to requests on port 3000
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
