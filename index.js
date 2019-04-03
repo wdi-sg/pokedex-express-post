@@ -85,7 +85,8 @@ let editPokemon = (request, response) => {
         jsonfile.writeFile(FILE, changedObj, (err) => {
             console.error(err)
 
-            response.send(request.body);
+            // response.send(request.body);
+            response.redirect(`/pokemon/${pokemonId}`);
         });
     });
 };
@@ -214,7 +215,8 @@ let createNewPokemon = (request, response) => {
             if (err) { console.log(err) };
         });
 
-        response.send(newPokemon);
+        // response.send(newPokemon);
+        response.redirect(`/pokemon/${newPokemon.id}`);
     });
 }
 
@@ -253,21 +255,21 @@ let homepage = (request, response) => {
         // create new list item for each pokemon
         if (request.query.sortby === "name"){
             for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li>${pokemon.name}</li>`);
+                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.name}</a></li>`);
                 // default sort will arrange by UTF-16 code units order
                 pokemonList.sort();
             }
         }
         else if (request.query.sortby === "id"){
             for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li>${pokemon.id}: ${pokemon.name}</li>`);
+                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.id}: ${pokemon.name}</a></li>`);
                 // To compare numbers instead of strings, the compare function can simply subtract b from a. The following function will sort the array ascending (if it doesn't contain Infinity and NaN)
                 pokemonList.sort((a, b) => a - b);
             }
         }
         else {
             for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li>${pokemon.name}</li>`);
+                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.name}</a></li>`);
             }
         }
         // removes comma between each list item
@@ -285,6 +287,11 @@ let homepage = (request, response) => {
         response.send(respondMessage);
     });
 }
+
+// redirects /pokemon to default index page
+let redirectToHomepage = (request, response) => {
+    response.redirect('/');
+};
 
 /**
  * ===================================
@@ -307,12 +314,13 @@ app.get('/pokemon/new', sendPokemonNewRequest);
 // create a new custom pokemon
 app.post('/pokemon', createNewPokemon);
 
-
 // get a specified pokemon's details by ID
 app.get('/pokemon/:id', lookupPokemonById);
 
 // default index page
 app.get('/', homepage);
+// redirects /pokemon to default index page
+app.get('/pokemon', redirectToHomepage);
 
 /**
  * ===================================
