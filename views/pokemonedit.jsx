@@ -8,7 +8,6 @@ class Home extends React.Component {
     //console.log(pokemon);
 
     var valueAttribute = `/pokemon/${pokemon.id}?_method=PUT`
-    //console.log("pokemon id is" + pokemon.id)
 
     return (
         <html>

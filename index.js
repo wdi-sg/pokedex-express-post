@@ -40,6 +40,42 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
+
+app.get('/pokemon/:id/delete', function(request, response) {
+
+
+    let index = parseInt(request.params.id);
+    console.log(index);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    const pokemon = obj["pokemon"];
+    //console.log(pokemon);
+
+    let currMon = obj["pokemon"][index -1];
+
+        response.render('delete', currMon);
+
+  })
+
+});
+
+app.delete('/pokemon/:id', (request, response) => {
+  response.send("thx for deleting");
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+        let index = parseInt(request.params.id -1);
+        console.log(index);
+        obj["pokemon"].splice([index], 1)
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+        console.log(err)
+         });
+    });
+
+});
+
+
 app.get('/pokemon/:id/edit', function(request, response) {
 
 
@@ -53,27 +89,6 @@ app.get('/pokemon/:id/edit', function(request, response) {
     let currMon = obj["pokemon"][index -1];
 
         response.render('pokemonedit', currMon);
-
-        // response.send(
-        //     '<h1>Edit Pokémon</h1>' +
-        //         '<form method="POST" action="/pokemon/'+index+'?_method=PUT"">'+
-
-        //           'Id:<input type="number" name="id" value='+currMon["id"]+'>'+
-        //           'Num:<input type="text" name="num" value='+currMon["num"]+'>'+
-        //           'Name: <input type="text" name="name" value='+currMon["name"]+'>'+
-        //           'Image: <input type="text" name="img" value='+currMon["img"]+'>'+
-        //           'Height: <input type="text" name="height" value='+currMon["height"]+'>'+
-        //           'Weight: <input type="text" name="weight" value='+currMon["weight"]+'>'+
-
-        //           '<input type="submit" value="Submit">'+
-
-        //           '</form>'
-
-        //     )
-
-  //    jsonfile.writeFile(FILE, obj, (err) => {
-  //   console.log(err)
-  // });
 
   })
 
@@ -95,13 +110,11 @@ app.put('/pokemon/:id', (request, response) => {
         obj["pokemon"][index]["height"] = request.body.height;
         obj["pokemon"][index]["weight"] = request.body.weight;
 
-     jsonfile.writeFile(FILE, obj, (err) => {
-    console.log(err)
-  });
-
-  })
-
-})
+        jsonfile.writeFile(FILE, obj, (err) => {
+        console.log(err)
+         });
+    });
+});
 
 app.post('/pokemon', function(request, response) {
 
