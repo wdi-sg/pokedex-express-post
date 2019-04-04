@@ -72,7 +72,7 @@ app.post('/pokemon/search', (request, response) => {
 app.post('/pokemon/new', function(req, response) {
   //debug code (output request body)
       response.send('<h1>Pokemon</h1>'+
-                  '<form method="post" action="/pokemon/:id/new">'+
+                  '<form method="post" action="/pokemon/new/creation">'+
                   'ID:<input type="text" name="id">'+
                   'Num:<input type="text" name="num">'+
                   'Name:<input type="text" name="name">'+
@@ -124,44 +124,78 @@ function GetSortOrder(prop) {
 app.get('/pokemon/:id/edit', (req, res) => {
   // running this will let express to run home.handlebars file in your views folder
   let pokeId = req.params.id;
+  pokeId--;
   let pokemonStats = json.pokemon[pokeId];
   res.render('home', pokemonStats);
 })
 
 
+app.post('/pokemon/:id', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  let body = req.body.id;
+  let pokeId = req.body.id[0];
+  pokeId--;
+  let pokemonStats = json.pokemon[pokeId]
+  // res.send(body)
+  // res.render('test', body)
+  json.pokemon[pokeId].name = body[2];
+  json.pokemon[pokeId].img = body[3];
+  json.pokemon[pokeId].height = body[4];
+  json.pokemon[pokeId].weight = body[5];
+
+  console.log(pokeId);
+  console.log(body);
+  console.log(json.pokemon[pokeId]);
+  res.render('home', pokemonStats);
+})
+
+
+            // <input type="text" name="id" value={this.props.id}/> <br/>
+            // <input type="text" name="id" value={this.props.num}/> <br/>
+            // <input type="text" name="id" value={this.props.name}/> <br/>
+            // <input type="text" name="id" value={this.props.img}/> <br/>
+            // <input type="text" name="id" value={this.props.height}/> <br/>
+            // <input type="text" name="id" value={this.props.weight}/> <br/>
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
-console.log(json.pokemon[0]);
+// console.log(json.pokemon[0]);
 
 
-// app.get('/:id', (request, response) => {
+app.get('/:id', (request, response) => {
 
-//   // get json from specified file
-//   jsonfile.readFile(FILE, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = parseInt( request.params.id );
+  let pokeId = request.params.id;
+  pokeId--;
+  let pokemonStats = json.pokemon[pokeId];
+  response.send(pokemonStats);
 
-//     var pokemon;
 
-//     // find pokemon by id from the pokedex json file
-//     for( let i=0; i<obj.pokemon.length; i++ ){
+  // get json from specified file
+  // jsonfile.readFile(FILE, (err, obj) => {
+  //   // obj is the object from the pokedex json file
+  //   // extract input data from request
+  //   let inputId = parseInt( request.params.id );
 
-//       let currentPokemon = obj.pokemon[i];
+  //   var pokemon;
 
-//       if( currentPokemon.id === inputId ){
-//         pokemon = currentPokemon;
-//       }
-//     }
+  //   // find pokemon by id from the pokedex json file
+  //   for( let i=0; i<obj.pokemon.length; i++ ){
 
-//     if (pokemon === undefined) {
+  //     let currentPokemon = obj.pokemon[i];
 
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
+  //     if( currentPokemon.id === inputId ){
+  //       pokemon = currentPokemon;
+  //     }
+  //   }
 
-//       response.send(pokemon);
-//     }
-//   });
-// });
+  //   if (pokemon === undefined) {
+
+  //     // send 404 back
+  //     response.status(404);
+  //     response.send("not found");
+  //   } else {
+
+  //     response.send(pokemon);
+  //   }
+  // });
+});
