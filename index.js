@@ -16,6 +16,21 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+app.get('/', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('home')
+})
+
+
 /**
  * ===================================
  * Routes
@@ -55,48 +70,65 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/pokemon/new', (request, response) => {
-
-  let newForm =    '<h1>New Pokemon</h1>'+
-                '<form method="POST" action="/pokemon">'+
-                'Pokemon:<h3>ID</h3><input type="text" name="id">'+
-                '<h3>Num (same as id)</h3><input type="text" name="num">'+
-                '<h3>Name</h3><input type="text" name="name">'+
-                '<h3>Img</h3><input type="src" name="img">'+
-                '<h3>Height</h3><input type="text" name="height">'+
-                '<h3>Weight</h3><input type="text" name="weight">'+
+app.get('/', (request, response) => {
+  // response.send("yay");
+  jsonfile.readFile(FILE, (err, obj) => {
+  let sortBy = '<form>' + '<select name="sortby">' +
+                '<option value="none">Sort by</option>' +
+                '<option value="name">Name</option>' +
+                '<option value="id">Id</option>' +
+                '<option value="num">Number</option>' +
+                '</select>'+
                 '<input type="submit" value="Submit">'+
                 '</form>';
-
-    response.send(newForm);
+    if (request.query.sortBy == undefined) {
+      response.send(sortBy);
+    } else if (request.query.sortBy == "name") {
+        obj.pokemon.sort(function(a,b) {
+          return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+        });
+        response.send(obj.pokemon)
+    } else if (request.query.sortBy == "id") {
+        obj.pokemon.sort(function(a, b) {
+          return a.id - b.id;
+        });
+        response.send(obj.pokemon);
+    } else if (request.query.sortBy == "num") {
+      obj.pokemon.sort(function(a,b) {
+        return a.num.toLowerCase().localecomapre(b.num.toLowerCase());
+      });
+      response.send(obj.pokemon);
+    }
+  })
+})
+app.get('/pokemon/new', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let oldId = obj.pokemon[obj.pokemon.length -1].id;
+    let newId = oldId + 1;
+    let newPokemon = '<h1>New pokemon found!</h1>' + '<form method="POST" action="/pokemon/added">'+
+                          'ID:<input type="text" name="id" value="'+newId+'"><br>'+
+                          'Number:<input type="text" name="num" value="'+newId+'"><br>'+
+                          'Pokemon Name:<input type="text" name="name"><br>'+
+                          'Image:<input type="text" name="img"><br>'+
+                          'Height:<input type="text" name="hight" value="0.00 m"><br>'+
+                          'Weight:<input type="text" name="weight" value="0.0 kg"><br>' +
+                          '<input type="submit" value="Submit">'
+                          '</form>';
+    response.send(newPokemon);
+  });
 });
 
-app.post('/pokemon', function(request, response) {
-//debug code (output request body)
-    console.log(request.body);
-    let newPokemon = request.body;
-    newPokemon.id = parseInt(newPokemon.id, 10)
-
-    jsonfile.readFile(FILE, (err, obj) => {
-        obj.pokemon.push(newPokemon);
- // save the request body
-        jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) {
-                console.log(err)
-            };
-// now look inside your json file
+app.post('/pokemon/added',(request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let newId = parseInt(request.body.id);
+    request.body.id = newId;
+    obj.pokemon.push(request.body);
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.log(err);
+      response.send(request.body);
     });
-});
-
-response.send(newPokemon);
-
-});
-
-app.get('/', (request, response) => {
-    let  respond =  '<h1>Welcome to the online Pokedex!</h1>';
-
-    response.send(respond);
-});
+  });
+})
 
 
  // * ===================================
