@@ -7,8 +7,8 @@ class Home extends React.Component {
     let allPokemon = this.props.pokemon.map((o) => {
         return <tr>
                     <td>{ o.num }</td>
+                    <td><img src={ o.img }/></td>
                     <td>{ o.name }</td>
-                    <td>{ o.img }</td>
                     <td>
                         <a className="btn btn-primary" href={`/pokemon/${ o.id }`}>view</a>
                         <a className="btn btn-info"href={`/pokemon/${ o.id }/edit`}>edit</a>

@@ -8,7 +8,7 @@ class Edit extends React.Component {
 
     return (
             <DefaultLayout title="Edit Existing Pokemon">
-                <form method="POST" action={ formAttribute }>
+                <form class="edit form-group" method="POST" action={ formAttribute }>
                     <h1>Edit Existing Pokemon - { this.props.name } </h1>
                     Name: <input name="name" value= { this.props.name } /><br/>
                     Height: <input name="height" value= { this.props.height } /><br/>

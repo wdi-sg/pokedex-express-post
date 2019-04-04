@@ -49,6 +49,7 @@ var startServer = function () {
         });
 }
 
+
 //===================================
 // Helper Function
 //===================================
@@ -257,6 +258,7 @@ var deleteExistingPokemonRequestHandler = function (request, response) {
         });;
 }
 
+
 // ===================================
 // Routes
 // ===================================
@@ -272,6 +274,7 @@ app.delete('/pokemon/:id', deleteExistingPokemonRequestHandler);
 app.get('/', homeRequestHandler);
 app.get('/pokemon', homeRequestHandler);
 app.get('/pokemon/:id', getPokemonByIdRequestHandler);
+
 
 // ===================================
 // Start Server

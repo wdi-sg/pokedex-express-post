@@ -83,8 +83,8 @@ class View extends React.Component {
                             <br/>
 
                             <div className="footer">
-                                <a className="btn btn-warning back" href="/pokemon">Back to Pokedex</a>
-                                <a className="btn btn-info next" href={`/pokemon/${ pokemon.id + 1 }`}>Next Pokemon</a>
+                                <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
+                                <a className="btn btn-primary next" href={`/pokemon/${ pokemon.id + 1 }`}>Next Pokemon</a>
                             </div>
                         </div>
                     </div>

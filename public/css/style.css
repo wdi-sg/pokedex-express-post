@@ -1,6 +1,6 @@
 /* General */
 body {
-	margin: 10px;
+	margin: 20px;
 }
 
 h1 {
@@ -11,13 +11,14 @@ h1 {
 nav {
 	width: 42.5%;
 	margin: auto;
+	display: flex;
+	flex-direction: row;
 }
 
 .back {
 	width: 150px;
 	display: block;
 }
-
 
 /* Pokedex Page*/
 form {
@@ -31,8 +32,23 @@ form {
 	text-align: center;
 }
 
+.table> tbody > tr > td {
+	vertical-align: middle;
+}
+
 .btn {
 	margin-right: 5px;
+}
+
+
+/* Add new Pokemon Page*/
+.add > span > label > input {
+	margin-right: 5px;
+	transform: scale(1.1)
+}
+
+.add > span > label {
+	margin-right: 18px;
 }
 
 
@@ -148,20 +164,18 @@ h1 > span {
 	background-color: #B8D7E9;
 }
 
+.dark {
+	background-color: #001E3E;
+}
+
+.fairy {
+	background-color: #FFA8EA;
+}
+
 .footer  {
 	display: flex;
 	flex-direction: row;
 	padding-top: 15px;
 	border-top: 3px solid #F2F2F2;
 	justify-content: space-between;
-}
-
-/* Add new Pokemon Page*/
-.add > span > label > input {
-	margin-right: 5px;
-	transform: scale(1.1)
-}
-
-.add > span > label {
-	margin-right: 18px;
 }
