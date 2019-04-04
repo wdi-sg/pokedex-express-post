@@ -14,7 +14,7 @@ const FILE = 'pokedex.json';
  */
 // Init express app
 const app = express();
-
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -129,8 +129,6 @@ app.post('/pokemon/test2', (request,response)=>{
     });
 })
 
-
-
 //intercepts a GET request. responses with a form. User fills inputs. Submits to /pokemon
 //accepts a POST request. Takes in request.body. Read and write into a json file. Saves add request into json file.
 app.post('/pokemon/added', (request,response)=>{
@@ -172,10 +170,10 @@ app.get('/', (request, response) => {
     jsonfile.readFile(FILE, (err,obj)=>{
         let pokemonObjList = obj.pokemon;
         if(request.query.sortby == undefined){
-            response.render('home', {obj: pokemonObjList});
+            response.render('home', {obj: []});
         }else if(request.query.sortby == 'id') {
             response.render('home', {obj: pokemonObjList});
-        }else if(request.query.sortby =='name'){
+        }else if(request.query.sortby =='name') {
 
             let pokemonObjList = obj.pokemon;
             let pokemonListArr =[];
@@ -184,6 +182,7 @@ app.get('/', (request, response) => {
                 let pokemonListObj = {};
                 pokemonListObj.id = obj.pokemon[i].id;
                 pokemonListObj.name = obj.pokemon[i].name;
+                pokemonListObj.type = obj.pokemon[i].type;
                 pokemonListObj.img = obj.pokemon[i].img;
                 // pushes object into arr.
                 pokemonListArr.push(pokemonListObj);
