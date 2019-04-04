@@ -28,7 +28,7 @@ app.set('view engine', 'jsx');
 
 app.get('/', (req, res) => {
   // running this will let express to run home.handlebars file in your views folder
-  res.render('home')
+  res.render('home',)
 })
 
 /**
@@ -142,6 +142,29 @@ app.post('/pokemon/added',(request, response) => {
   });
 })
 
+app.get('/pokemon/:id/edit', (request,response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let index = parseInt(request.params.id - 1);
+    obj['paramsKey'] = index;
+    response.render('edit', obj);
+  })
+})
+
+app.put('/pokemon/:id/edit', (request, response) =>{
+  jsonfile.readFile(FILE, (err, obj) => {
+    let index = request.body.id - 1;
+        obj.pokemon[index].id = parseInt(request.body.id);
+        obj.pokemon[index].num = request.body.num;
+        obj.pokemon[index].name = request.body.name;
+        obj.pokemon[index].img = request.body.img;
+        obj.pokemon[index].height = request.body.height;
+        obj.pokemon[index].weight = request.body.weight;
+        obj.pokemon[index].candy = request.body.candy;
+        obj.pokemon[index].egg = request.body.egg;
+        obj.pokemon[index].avg_spawns = parseInt(request.body.avg_spawns);
+        obj.pokemon[index].spawn_time = request.body.spawn_time;
+  })
+})
 /**
  * ===================================
  * Listen to requests on port 3000
