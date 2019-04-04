@@ -3,6 +3,13 @@ const jsonfile = require('jsonfile');
 
 const file = 'pokedex.json';
 
+let data;
+
+jsonfile.readFile(file, (err, obj) => {
+    console.log(err);
+    data = obj.pokemon;
+});
+
 /**
  * ===================================
  * Configurations and set up
@@ -22,6 +29,8 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
@@ -40,56 +49,32 @@ app.set('view engine', 'jsx');
  */
 
 app.get("/pokemon/:id/edit", (request, response) => {
-    let arrayIndex = parseInt( request.params.id );
-    console.log(arrayIndex);
-
-    jsonfile.readFile(file, (err,obj) => {
-        console.log(err);
-
-        const pokemonRequested = {"pokemon": obj.pokemon[arrayIndex]};
-        console.log(pokemonRequested);
-
-        response.render('home',pokemonRequested);
-
-    });
+    let id = parseInt( request.params.id );
+    let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
+    response.render('home',pokemonRequested);
 });
+
 
 app.put('/pokemon/:id', (request, response)=>{
+
+    let id = parseInt( request.params.id );
+    let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
     let editedPokemonObj = request.body;
-    let arrayIndex = parseInt( request.params.id );
 
-    jsonfile.readFile(file, (err, obj) => {
-        console.log(err);
+    const objectKeysArray = Object.keys(pokemonRequested);
 
-        const pokemonInPokedex = obj.pokemon.arrayIndex;
-        const objectKeysArray = Object.keys(pokemonInPokedex);
-        objectKeysArray.forEach(key => {
-            pokemonInPokedex.key = editedPokemonObj.key;
-        })
-
-        jsonfile.writeFile(file, obj, (err) => {
-          console.error(err);
-
-          // now look inside your json file
-          response.send(request.body);
-        });
+    objectKeysArray.forEach(item => {
+        pokemonRequested.item = editedPokemonObj.item;
     });
+
+    jsonfile.writeFile(file, pokemonRequested, (err) => {
+        console.error(err);
+        // response.send(request.body);
+    });
+    response.send("hello");
 });
 
 
-
-                        // <input type="number" name="id" value="">
-                        // <input type="text" name="num" value="">
-                        // <input type="text" name="name" value="">
-                        // <input type="text" name="img" value="">
-                        // <input type="text" name="height" value="">
-                        // <input type="text" name="weight" value="">
-                        // <input type="text" name="candy" value="">
-                        // <input type="text" name="candy_count" value="">
-                        // <input type="text" name="egg" value="">
-                        // <input type="text" name="avg-spawns" value="">
-                        // <input type="text" name="spawn_time" value="">
-                        // <input type="submit" value ="submit">
 
 // app.get('/pokemon/new', (request, response) => {
 
@@ -241,7 +226,7 @@ app.put('/pokemon/:id', (request, response)=>{
 
 
 
-/**
+/*
  * ===================================
  * Listen to requests on port 3000
  * ===================================
