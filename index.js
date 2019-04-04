@@ -21,6 +21,21 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// method-override
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
 /**
  * ===================================
  * Routes
@@ -110,7 +125,6 @@ app.post('/newPokemon', (request, response) => {
 
         pokemonArray.push(request.body);
 
-
         // save request body
         jsonfile.writeFile(FILE, obj, (err) => {
             console.log(err);
@@ -122,6 +136,57 @@ app.post('/newPokemon', (request, response) => {
 
 })
 
+
+app.get('/pokemon/:id/edit', (request, response) => {
+    const pokemonId = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        const pokemonName = obj["pokemon"][pokemonId-1]["name"]
+
+        response.render('home', obj["pokemon"][pokemonId-1])
+
+
+/*        let html = `<form method="POST" action="/putrequest?_method=put">
+        <input name="id" type="text" value="${pokemonName}"/>
+        <input type="submit" value="edit this" />
+        </form>`;*/
+
+       //response.send(pokemonName);
+
+    }) // end of read file
+
+})   // end of get pokemon id edit
+
+app.put("/pokemon/:id", (request, response) => {
+    console.log(request.body);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokemonId = parseInt(request.params.id);
+
+        let editedPokemon = obj["pokemon"][pokemonId-1];
+
+        editedPokemon.name = request.body.name;
+        editedPokemon.img = request.body.img;
+        editedPokemon.height = request.body.height;
+        editedPokemon.weight = request.body.weight;
+
+
+        jsonfile.writeFile(FILE, editedPokemon, (err) => {
+            console.error(err);
+
+            response.send("Done editing");
+        })
+
+    }) // end of readfile
+})  // end of put request
+
+
+/*app.get("/pokemon/:id/delete", (request, response) => {
+    let pokemonId = parseInt(request.params.id);
+
+    let html = ``
+
+})  // end of get delete*/
 /**
  * ===================================
  * Listen to requests on port 3000
