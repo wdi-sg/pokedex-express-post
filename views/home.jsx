@@ -10,7 +10,7 @@ class Home extends React.Component {
         <body>
             <h1>Edit Pokémon Details</h1>
                 <form method="POST" action={putAction}>
-                ID: <input name="id" type="text" value={this.props.id}/><br/>
+                ID: <span>{this.props.id}</span><br/>
                 NUMBER: <input name="num" type="text" value={this.props.num}/><br/>
                 NAME: <input name="name" type="text" value={this.props.name}/><br/>
                 IMAGE: <input name="img" type="text" value={this.props.img}/><br/>
