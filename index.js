@@ -1,9 +1,7 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const reactEngine = require('express-react-views').createEngine();
 const methodOverride = require('method-override')
-
 const FILE = 'pokedex.json';
 
 /**
@@ -14,24 +12,16 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
-
 app.engine('jsx', reactEngine);
-
 // this tells express where to look for the view files
 app.set('views', __dirname + '/views');
-
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 app.use(express.json());
-
 app.use(express.urlencoded({
   extended: true
 }));
-
 app.use(methodOverride('_method'));
-
-
-
 
 /**
  * ===================================
@@ -39,7 +29,24 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+//home, list of all routes, list of all pokemon, links to individual pages
+
+app.get('/', (request, response) => {
+    jsonfile.readFile(FILE, (err,obj) => {
+        let pokeList = obj.pokemon;
+        if (request.query.sortby === 'name') {
+            let pokeListName = pokeList;
+            pokeListName.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+            response.render('home', {obj:pokeListName});
+        } else {
+            response.render('home', {obj: pokeList});
+        }
+    });
+});
+
+app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -71,42 +78,8 @@ app.get('/:id', (request, response) => {
   });
 });
 
-//list
-app.get('/', (request, response) => {
-    let indexList = '<h2>Welcome to the online pokedex</h2><br>' +
 
-                'add a new entry <br>' +
-                'modify existing data <br>' +
-                'delete existing entry <br>' +
 
-                '<h3>List of pokemon (click to access details)</h3>'
-                // '<form method="GET" action="/">Sort Pokemon by<select name="sortby">' +
-                // '<option value="name">Name</option>' +
-                // '<option value="id">ID</option>' +
-                // '<input type="submit" value="sort">' +
-                // '</form>'
-
-    // jsonfile.readFile(FILE, (err,obj) => {
-    //     if (request.query.sortby === "name") {
-    //         for (let element in obj.pokemon) {
-    //             pokeList.push('<li>${element}${element.name}</li>');
-    //         }
-    //         response.send(pokeList);
-    //         console.log(pokeList);
-    //     }
-    //     // }
-    // })
-    var pokeList  = [];
-    jsonfile.readFile(FILE, (err,obj)=> {
-        console.log("reading");
-        for (let i=0; i<obj.pokemon.length; i++) {
-            pokeList.push('<li>' + [i+1] + " - " + obj.pokemon[i].name + '</li>');
-        }
-    let thingsToDisplay = indexList + '<br>' + pokeList;
-
-    response.send(thingsToDisplay);
-    })
-});
 
 
 

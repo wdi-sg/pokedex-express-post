@@ -1,45 +1,45 @@
 var React = require('react');
 
 class Home extends React.Component {
+    render() {
 
-  render() {
+        const list = this.props.obj.map( item => {
+          return <tr>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td><a href={'/pokemon/${item.id}'}><img src={item.img}/></a></td>
+                </tr>
+        });
 
-    let message = <h1>welcome!</h1>;
-
-    if( this.props.name.length > 5 ){
-      message = <h6>welcome! What a long name you have!</h6>;
+        return (
+            <html>
+                <head>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+                </head>
+                <body>
+                    <h1>Welcome to the Online Pokedex</h1>
+                    <h3>Add a new entry</h3>
+                    <form method="GET" action="/">Sort Pokemon by
+                    <select name="sortby">
+                        <option value="id">ID</option>
+                        <option value="name">Name</option>
+                    </select>
+                    <input type="submit" value="sort"/>
+                    </form>
+                    <br/>
+                    <h3>List of pokemon</h3>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Image (click for details) </th>
+                        </tr>
+                        {list}
+                    </table>
+                </body>
+            </html>
+        );
     }
-
-    const myPeopleArray = this.props.people;
-
-    const people = myPeopleArray.map( person => {
-      return <li>** {person}</li>
-    });
-
-    people.push(<li>STUFF</li>);
-
-    let imageSource = "https://media1.tenor.com/images/88ef9ac3daebdb9e244bfc35fc8a5740/tenor.gif?itemid=5279221";
-
-
-      return (
-        <html>
-            <body>
-              <p>
-                    <img src={imageSource}  />
-              </p>
-              <div>
-                <div>banana: {message} : {this.props.name}</div>
-              </div>
-              <ul>
-                {people}
-              </ul>
-            </body>
-        </html>
-    );
-
-  }
-
-
 }
 
 module.exports = Home;
