@@ -1,6 +1,34 @@
 var React = require('react');
 var DefaultLayout = require('./layouts/default');
 
+class Type extends React.Component {
+  render() {
+    let typeElements = this.props.types.map((o) => {
+        return <div className={o.toLowerCase()}>{o}</div>
+    });
+
+    return (
+        <div className="type">
+            {typeElements}
+        </div>
+    );
+  }
+}
+
+class Weakness extends React.Component {
+  render() {
+    let weaknessElements = this.props.weaknesses.map((o) => {
+        return <div className={o.toLowerCase()}>{o}</div>
+    });
+
+    return (
+        <div className="weakness">
+            {weaknessElements}
+        </div>
+    );
+  }
+}
+
 class View extends React.Component {
   render() {
 
@@ -21,8 +49,6 @@ class View extends React.Component {
                             <p>
                                 Bulbsaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.
                             </p>
-
-                            <br/>
 
                             <div className="container stats">
                                 <div className="row">
@@ -48,9 +74,19 @@ class View extends React.Component {
                             </div>
                             <br/>
 
-                            <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
-                        </div>
+                            <h4>Type</h4>
+                            <Type types={pokemon.type}/>
+                            <br/>
 
+                            <h4>Weakness</h4>
+                            <Weakness weaknesses={pokemon.weaknesses}/>
+                            <br/>
+
+                            <div className="footer">
+                                <a className="btn btn-warning back" href="/pokemon">Back to Pokedex</a>
+                                <a className="btn btn-info next" href={`/pokemon/${ pokemon.id + 1 }`}>Next Pokemon</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </DefaultLayout>

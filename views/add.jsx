@@ -1,15 +1,15 @@
 var React = require('react');
 var DefaultLayout = require('./layouts/default');
 
-class PokemonType extends React.Component {
+class Type extends React.Component {
   render() {
-    let itemsElements = this.props.types.map((o) => {
+    let typeElements = this.props.types.map((o) => {
         return <label><input type="checkbox" name="type" value={o}/><span>{o}</span></label>
     });
 
     return (
         <span>
-            {itemsElements}
+            {typeElements}
         </span>
     );
   }
@@ -24,7 +24,7 @@ class Add extends React.Component {
                         Name: <input name="name"/><br/>
                         Height: <input name="height"/><br/>
                         Weight: <input name="weight"/><br/>
-                        Pokemon Type: <PokemonType types={this.props.uniquePokemonType}/><br/><br/>
+                        Pokemon Type: <Type types={this.props.uniquePokemonType}/><br/><br/>
                         <input className="btn btn-success" type="submit" value="Add new Pokemon"/>
                 </form>
                 <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
