@@ -123,27 +123,44 @@ app.get("/", (request, response) => {
 
 app.get('/pokemon/:id/edit', (request, response) => {
 
+    let pokemonId = parseInt(request.params.id);
+    let selectedPokemonIndex;
+
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
         if (err) console.error(err);
 
-        let pokemonIndex = parseInt(request.params.id) - 1;
-        let selectedPokemon = obj.pokemon[pokemonIndex];
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            if (pokemonId === obj.pokemon[i].id) {
+                selectedPokemonIndex = i;
+            }
+        };
 
-        response.render("home", selectedPokemon)
+        let selectedPokemon = obj.pokemon[selectedPokemonIndex];
 
+        response.render("home", selectedPokemon);
     });
 });
 
 app.put('/pokemon/:id', (request, response) => {
+    //console.log( "this is request body:",request.body );
+    let pokemonId = parseInt(request.params.id);
+    let pokeIndex;
 
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.error(err);
 
-        let pokeIndex = parseInt(request.params.id);
-        let selectedPokemon = obj.pokemon[pokeIndex];
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            if (pokemonId === obj.pokemon[i].id) {
+                pokeIndex = i;
+            }
+        }
 
-        obj.pokemon[pokeIndex].id = request.body.id;
+        let originalPokeName = obj.pokemon[pokeIndex].name;
+
+        // individually edit each value in the animal *object*
+        // obj.pokemon[PokeIndex].id = request.body.id;
         obj.pokemon[pokeIndex].num = request.body.num;
         obj.pokemon[pokeIndex].name = request.body.name;
         obj.pokemon[pokeIndex].img = request.body.img;
@@ -155,10 +172,13 @@ app.put('/pokemon/:id', (request, response) => {
         obj.pokemon[pokeIndex].avg_spawns = request.body.avg_spawns;
         obj.pokemon[pokeIndex].spawn_time = request.body.spawn_time;
 
-        jsonfile.writeFile(FILE, obj, (err) => {
+        // we dont need to reassign this, but lets be explicit about the change
+        const changedObj = obj;
+
+        jsonfile.writeFile(FILE, changedObj, (err) => {
             if (err) console.error(err);
 
-            response.send("Pokémon updated")
+            response.send(`Pokémon ${originalPokeName} was edited.`)
         });
     });
 });
@@ -182,7 +202,7 @@ app.get('/pokemon/:id/delete', (request, response) => {
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) console.error(err);
 
-            response.send("Pokémon updated")
+            response.send("Pokémon updated");
         });
     });
 });
@@ -199,7 +219,7 @@ app.delete('/pokemon/:id', (request, response) => {
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) console.error(err);
 
-            response.send(request.body);
+            response.send("Pokémon deleted");
         });
     });
 });
