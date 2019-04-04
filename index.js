@@ -121,12 +121,18 @@ app.post('/pokemon', function(request, response) {
   //debug code (output request body)
   console.log(request.body);
 
-  response.send(request.body);
+  response.send("thx for ur submission");
 
   jsonfile.readFile(FILE, (err, obj) => {
 
-        obj["pokemon"].push(request.body);
-            // console.log(array);
+        let idAndNum = {
+            "id": obj["pokemon"].length +1,
+            "num": (obj["pokemon"].length +1).toString()
+        }
+
+        Object.assign(idAndNum, request.body);
+        console.log(idAndNum);
+        obj["pokemon"].push(idAndNum);
 
      jsonfile.writeFile(FILE, obj, (err) => {
     console.log(err)
@@ -136,30 +142,23 @@ app.post('/pokemon', function(request, response) {
 
 });
 
-app.post('/yooooo', function(request, response) {
+app.get('/pokemon', function(request, response) {
 
- response.send('thx');
 
+    jsonfile.readFile(FILE, (err, obj) => {
+
+
+    response.render('home', obj);
+
+    })
 });
 
 
 
 app.get('/pokemon/new', (request, response) => {
 
-let respond =  '<h1>New Pokémon</h1>'+
-                  '<form method="POST" action="/pokemon">'+
 
-                  'Id:<input type="number" name="id">'+
-                  'Num:<input type="text" name="num">'+
-                  'Name: <input type="text" name="name">'+
-                  'Image: <input type="text" name="img">'+
-                  'Height: <input type="text" name="height">'+
-                  'Weight: <input type="text" name="weight">'+
-
-                  '<input type="submit" value="Submit">'+
-                  '</form>';
-
-  response.send(respond);
+        response.render('newpokemon');
 
 })
 
