@@ -52,23 +52,24 @@ app.get('/pokemon/:id/edit', function(request, response) {
 
     let currMon = obj["pokemon"][index -1];
 
+        response.render('pokemonedit', currMon);
 
-        response.send(
-            '<h1>Edit Pokémon</h1>' +
-                '<form method="POST" action="/pokemon/'+index+'?_method=PUT"">'+
+        // response.send(
+        //     '<h1>Edit Pokémon</h1>' +
+        //         '<form method="POST" action="/pokemon/'+index+'?_method=PUT"">'+
 
-                  'Id:<input type="number" name="id" value='+currMon["id"]+'>'+
-                  'Num:<input type="text" name="num" value='+currMon["num"]+'>'+
-                  'Name: <input type="text" name="name" value='+currMon["name"]+'>'+
-                  'Image: <input type="text" name="img" value='+currMon["img"]+'>'+
-                  'Height: <input type="text" name="height" value='+currMon["height"]+'>'+
-                  'Weight: <input type="text" name="weight" value='+currMon["weight"]+'>'+
+        //           'Id:<input type="number" name="id" value='+currMon["id"]+'>'+
+        //           'Num:<input type="text" name="num" value='+currMon["num"]+'>'+
+        //           'Name: <input type="text" name="name" value='+currMon["name"]+'>'+
+        //           'Image: <input type="text" name="img" value='+currMon["img"]+'>'+
+        //           'Height: <input type="text" name="height" value='+currMon["height"]+'>'+
+        //           'Weight: <input type="text" name="weight" value='+currMon["weight"]+'>'+
 
-                  '<input type="submit" value="Submit">'+
+        //           '<input type="submit" value="Submit">'+
 
-                  '</form>'
+        //           '</form>'
 
-            )
+        //     )
 
   //    jsonfile.writeFile(FILE, obj, (err) => {
   //   console.log(err)
