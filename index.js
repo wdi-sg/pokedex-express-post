@@ -26,12 +26,18 @@ app.engine('jsx', reactEngine);
 app.set('views', __dirname + '/views');
 // this line sets handlebars to be the default view engine
 app.set('view engine', 'jsx');
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 //two form methods. one is text based. the other drop down select
+
+app.get('/pokemon/newentry', (request,response)=>{
+    response.render('new');
+});
+
 app.get('/pokemon/:id', (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -94,6 +100,7 @@ app.post('/pokemon/test', (request,response)=>{
         }
         obj.pokemon[pokemonId].type = request.body.type;
 
+
     response.send('Added type:' + request.body.type + '. To ' + obj.pokemon[pokemonId].name +'. Gotta catch some more?');
     jsonfile.writeFile(FILE, obj, (err)=>{
             if(err !== null){
@@ -122,25 +129,11 @@ app.post('/pokemon/test2', (request,response)=>{
     });
 })
 
+
+
 //intercepts a GET request. responses with a form. User fills inputs. Submits to /pokemon
-app.get('/pokemon/new', (request,response)=>{
-    let newRespondForm  = '<h1>Fake PokeDex</h1>'+
-                            '<form method="POST" action="/pokemon">'+
-                            'Choose your PokeMon:' + '<br>' +
-                            'Pokemon ID:     <input type="text" name="id">'+ '<br>' +
-                            'Pokemon Number: <input type="text" name="num">'+ '<br>' +
-                            'Pokemon Name:   <input type="text" name="name">'+ '<br>' +
-                            'How does it look like? (put an img link dude): <input type="text" name="img">'+ '<br>' +
-                            'Height: <input type="text" name="height">'+ '<br>' +
-                            'Weight: <input type="text" name="weight">'+ '<br>' +
-                            '<input type="submit" value="Submit">'+ '<br>' +
-                            '</form>';
-
-    response.send(newRespondForm);
-});
-
-//accepts a POST request. Dissects request to read and write into a json file. Responses to browser with input provided.
-app.post('/pokemon', (request,response)=>{
+//accepts a POST request. Takes in request.body. Read and write into a json file. Saves add request into json file.
+app.post('/pokemon/added', (request,response)=>{
     console.log(request.body);
     let returnForm  = '<div> <h1>Fake PokeDex Display</h1>'+
                             '<div>' + request.body.id + '</div>' +
@@ -172,60 +165,38 @@ app.post('/pokemon', (request,response)=>{
 })
 
 // not too efficient on root path. readfile in each conditional. Could look into having readfile first, conditionals all inside.
+// root, home path.
 app.get('/', (request, response) => {
     console.log(request.query.sortby);
 
     jsonfile.readFile(FILE, (err,obj)=>{
-        let sortButton = ' <form method="GET" > '+
-                    '<select name="sortby">' +
-                    '<option value="">Choose an Option</option>' +
-                    '<option value="id">By id</option>' +
-                    '<option value="name">By Name </option>'+
-                    '<option value="num">By num</option>'+
-                    '</select>'+
-                    '<input type="submit" value="Sort by">'+
-                    '</form>';
-        let pokemonListArr = [];
-        let stringList = "";
-
+        let pokemonObjList = obj.pokemon;
         if(request.query.sortby == undefined){
-        console.log('dude wtf');
-        response.send(sortButton + 'hello. Choose an option.');
-        }else if(request.query.sortby === 'id' || request.query.sortby === 'num'){
-        console.log('dude wtf over here');
-        for(i=0; i<obj.pokemon.length;i++){//id and name into a string, push string into array
-            pokemonListArr.push(obj.pokemon[i].id + '. ' + obj.pokemon[i].name);
-        }
-        console.log(pokemonListArr);
-        //creates empty string variable. Adds each item on the array to the string. To make a longer string.
-        for(let i=0; i<pokemonListArr.length;i++){
-            stringList = stringList + pokemonListArr[i] + '<br>' + " " ;
-        }
-        response.send(sortButton + '<br>' + stringList);
-        } else if(request.query.sortby === 'name'){
-        for(i=0; i<obj.pokemon.length ;i++){
-            //creates a new object. for id and name.
-            let pokemonListObj = {};
-            pokemonListObj.id = obj.pokemon[i].id;
-            pokemonListObj.name = obj.pokemon[i].name;
-            // pushes object into arr.
-            pokemonListArr.push(pokemonListObj);
-        }
+            response.render('home', {obj: pokemonObjList});
+        }else if(request.query.sortby == 'id') {
+            response.render('home', {obj: pokemonObjList});
+        }else if(request.query.sortby =='name'){
+
+            let pokemonObjList = obj.pokemon;
+            let pokemonListArr =[];
+            for(i=0; i<pokemonObjList.length ;i++){
+                //creates a new object. for id and name.
+                let pokemonListObj = {};
+                pokemonListObj.id = obj.pokemon[i].id;
+                pokemonListObj.name = obj.pokemon[i].name;
+                pokemonListObj.img = obj.pokemon[i].img;
+                // pushes object into arr.
+                pokemonListArr.push(pokemonListObj);
+            }
         //sorts based on alphabet
         pokemonListArr.sort(function(a, b) {
           return a.name.localeCompare(b.name);
         });
         console.log(pokemonListArr);
-        ////creates empty string variable. Adds each object key as a string to the empty string variable. To make a longer string.
-        for(let i=0; i<pokemonListArr.length;i++){
-            stringList = stringList + '~' + pokemonListArr[i].name + "<p>  </p>(" + 'Pokedex Id. '+ pokemonListArr[i].id + ')' + '<br>' + " " ;
+            response.render('home', {obj: pokemonListArr});
         }
-        response.send(sortButton + '<br>' + stringList);
-        }
-    });
+        });
 });
-
-
 // add each field as an input and pre-populate the current data for that pokemon
 // the form should make a request ( the form action ) to the correct route ( a PUT request to /pokemon/:id )
 //set a get /edit to a put /:id
@@ -239,10 +210,7 @@ app.get('/pokemon/:id/edit', (request,response)=>{
     response.render('edit', pokemonObjList);
     });
 })
-
-// add a new page with a form ( it will be a form with only a single button )
-// make the path for this page /pokemon/:id/delete
-// submit the form to /pokemon/:id with method DELETE
+//exposes a get path to post a delete request
 app.get('/pokemon/:id/delete', (request,response)=>{
     let arrayIndex = parseInt( request.params.id );
     jsonfile.readFile(FILE, (err, obj)=>{
@@ -252,7 +220,8 @@ app.get('/pokemon/:id/delete', (request,response)=>{
     response.render('delete', pokemonObjList);
     });
 })
-//exposes a put path to change pokemon details
+
+//exposes a put path to change(edit) pokemon details. Put request are Idempotent
 app.put('/pokemon/:id', (request,response)=>{
 
     let arrayIndex = parseInt( request.params.id );
@@ -274,13 +243,14 @@ app.put('/pokemon/:id', (request,response)=>{
     });
 })
 
+//picks up on delete request
 app.delete('/pokemon/:id', (request, response) => {
 
   let arrayIndex = parseInt( request.params.id );
   jsonfile.readFile(FILE, (err, obj) => {
     obj.pokemon.splice( arrayIndex -1 , 1);
 
-    const changedObj = obj.pokemon;
+    const changedObj = obj;
 
     jsonfile.writeFile(FILE, changedObj, (err) => {
       console.error(err)
