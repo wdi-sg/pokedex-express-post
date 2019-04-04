@@ -18,11 +18,87 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// React
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// Method override
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+app.get('/pokemon/:id/edit', function(request, response) {
+
+
+    let index = parseInt(request.params.id);
+    console.log(index);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    const pokemon = obj["pokemon"];
+    console.log(pokemon);
+
+    let currMon = obj["pokemon"][index -1];
+
+
+        response.send(
+            '<h1>Edit Pokémon</h1>' +
+                '<form method="POST" action="/pokemon/'+index+'?_method=PUT"">'+
+
+                  'Id:<input type="number" name="id" value='+currMon["id"]+'>'+
+                  'Num:<input type="text" name="num" value='+currMon["num"]+'>'+
+                  'Name: <input type="text" name="name" value='+currMon["name"]+'>'+
+                  'Image: <input type="text" name="img" value='+currMon["img"]+'>'+
+                  'Height: <input type="text" name="height" value='+currMon["height"]+'>'+
+                  'Weight: <input type="text" name="weight" value='+currMon["weight"]+'>'+
+
+                  '<input type="submit" value="Submit">'+
+
+                  '</form>'
+
+            )
+
+  //    jsonfile.writeFile(FILE, obj, (err) => {
+  //   console.log(err)
+  // });
+
+  })
+
+});
+
+app.put('/pokemon/:id', (request, response) => {
+    console.log(request.body);
+    response.send("thx");
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        let index = parseInt(request.params.id);
+        obj["pokemon"][index]["id"] = request.body.id;
+        obj["pokemon"][index]["num"] = request.body.num;
+        obj["pokemon"][index]["name"] = request.body.name;
+        obj["pokemon"][index]["img"] = request.body.img;
+        obj["pokemon"][index]["height"] = request.body.height;
+        obj["pokemon"][index]["weight"] = request.body.weight;
+
+     jsonfile.writeFile(FILE, obj, (err) => {
+    console.log(err)
+  });
+
+  })
+
+})
 
 app.post('/pokemon', function(request, response) {
 
@@ -44,11 +120,17 @@ app.post('/pokemon', function(request, response) {
 
 });
 
+app.post('/yooooo', function(request, response) {
+
+ response.send('thx');
+
+});
+
 
 
 app.get('/pokemon/new', (request, response) => {
 
-let  respond =  '<h1>New Pokémon</h1>'+
+let respond =  '<h1>New Pokémon</h1>'+
                   '<form method="POST" action="/pokemon">'+
 
                   'Id:<input type="number" name="id">'+
@@ -103,44 +185,45 @@ app.get('/', (request, response) => {
 
 //at the root route (GET request) `/` display a list of all the pokemons in the pokedex
 
+
+    var sort = `<form>
+                <form method="GET" action="/?">
+                <select name="sortby">
+                    <option value="">--Please choose an option--</option>
+                    <option value="name">Name</option>
+                    <option value="id">Id</option>
+                    <option value="num">Number</option>
+                    <option value="weight">Weight</option>
+                    <option value="height">Height</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>`;
+
     var pokemonNames = [];
 
-    jsonfile.readFile(FILE, (err, obj) => {
+        jsonfile.readFile(FILE, (err, obj) => {
 
-
-        for (var i = 0; i < obj["pokemon"].length; i++) {
+             for (var i = 0; i < obj["pokemon"].length; i++) {
             pokemonNames.push(obj["pokemon"][i]["name"]);
+
         }
 
-        // console.log(pokemonNames);
-        response.send(
-            'Sort Pokémon:'+
-            '<form>'+
-            '<form method="POST" action="/pokemon/?sortby=name">'+
-                '<select>'+
-                    '<option value="">--Please choose an option--</option>' +
+        if (request.query.sortby === "name") {
+            pokemonNames = pokemonNames.sort();
+        }
 
-                    '<option value="name">Name</option>' +
+        response.send(sort + pokemonNames.join(', '));
 
-                    '<option value="id">Id</option>' +
-                    '<option value="num">Number</option>' +
-                    '<option value="weight">Weight</option>' +
-                    '<option value="height">Height</option>' +
-                '<input type="submit" value="Submit">'+
-                '</select>' +
-            '</form>' +
+        });
 
 
-            "These are all the Pokémon: " + '<br>' +pokemonNames.join(', ')
-            );
     });
 
-
-});
 
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
