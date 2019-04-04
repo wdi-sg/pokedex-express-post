@@ -32,11 +32,8 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
-//two form methods. one is text based. the other drop down select
 
-app.get('/pokemon/newentry', (request,response)=>{
-    response.render('new');
-});
+
 
 app.get('/pokemon/:id', (request, response) => {
   // get json from specified file
@@ -129,41 +126,10 @@ app.post('/pokemon/test2', (request,response)=>{
     });
 })
 
-//intercepts a GET request. responses with a form. User fills inputs. Submits to /pokemon
-//accepts a POST request. Takes in request.body. Read and write into a json file. Saves add request into json file.
-app.post('/pokemon/added', (request,response)=>{
-    console.log(request.body);
-    let returnForm  = '<div> <h1>Fake PokeDex Display</h1>'+
-                            '<div>' + request.body.id + '</div>' +
-                            '<div>' + request.body.num + '</div>' +
-                            '<div>' + request.body.name + '</div>' +
-                            // '<div>' + request.body. + '</div>' +
-                            '<div>' + request.body.height + '</div>' +
-                            '<div>' + request.body.weight + '</div></div>';
 
-    response.send(returnForm);
-    jsonfile.readFile(FILE, (err,obj)=>{
-        let pokemonEntry = {};
 
-        pokemonEntry.id = request.body.id;
-        pokemonEntry.num = parseInt(request.body.num);
-        pokemonEntry.name = request.body.name;
-        pokemonEntry.img = request.body.img;
-        pokemonEntry.height = request.body.height;
-        pokemonEntry.weight = request.body.weight;
 
-        obj.pokemon.push(pokemonEntry);
-
-        jsonfile.writeFile(FILE, obj, (err)=>{
-            if(err !== null){
-                console.log(err);
-            }
-        });
-    });
-})
-
-// not too efficient on root path. readfile in each conditional. Could look into having readfile first, conditionals all inside.
-// root, home path.
+// root, home path. Retrieves render, handles sorting logic
 app.get('/', (request, response) => {
     console.log(request.query.sortby);
 
@@ -196,9 +162,39 @@ app.get('/', (request, response) => {
         }
         });
 });
-// add each field as an input and pre-populate the current data for that pokemon
-// the form should make a request ( the form action ) to the correct route ( a PUT request to /pokemon/:id )
-//set a get /edit to a put /:id
+app.get('/pokemon/newentry', (request,response)=>{
+
+    response.render('new');
+});
+//post: stores new pokemon entry
+app.post('/pokemon/added', (request,response)=>{
+
+    let postArrReqBody =[];
+    postArrReqBody.push(request.body);
+
+    response.render('home', {obj: postArrReqBody});
+
+    jsonfile.readFile(FILE, (err,obj)=>{
+        let pokemonEntry = {};
+
+        pokemonEntry.id = request.body.id;
+        pokemonEntry.num = parseInt(request.body.num);
+        pokemonEntry.name = request.body.name;
+        pokemonEntry.img = request.body.img;
+        pokemonEntry.height = request.body.height;
+        pokemonEntry.weight = request.body.weight;
+        pokemonEntry.Type = request.body.type;
+
+        obj.pokemon.push(pokemonEntry);
+
+        jsonfile.writeFile(FILE, obj, (err)=>{
+            if(err !== null){
+                console.log(err);
+            }
+        });
+    });
+})
+//set a get /edit to a put /:id &&& ////exposes a put path to change(edit) pokemon details. Put request are Idempotent
 app.get('/pokemon/:id/edit', (request,response)=>{
 
     let arrayIndex = parseInt(request.params.id);
@@ -209,18 +205,6 @@ app.get('/pokemon/:id/edit', (request,response)=>{
     response.render('edit', pokemonObjList);
     });
 })
-//exposes a get path to post a delete request
-app.get('/pokemon/:id/delete', (request,response)=>{
-    let arrayIndex = parseInt( request.params.id );
-    jsonfile.readFile(FILE, (err, obj)=>{
-
-    let pokemonObjList = obj.pokemon[arrayIndex-1];
-
-    response.render('delete', pokemonObjList);
-    });
-})
-
-//exposes a put path to change(edit) pokemon details. Put request are Idempotent
 app.put('/pokemon/:id', (request,response)=>{
 
     let arrayIndex = parseInt( request.params.id );
@@ -237,23 +221,35 @@ app.put('/pokemon/:id', (request,response)=>{
 
         jsonfile.writeFile(FILE, obj, (err) => {
       console.error(err)
+      // response.render('')
       response.send(request.body);
     });
     });
 })
 
-//picks up on delete request
+//exposes a get path to post a delete request && //picks up on delete request
+app.get('/pokemon/:id/delete', (request,response)=>{
+    let arrayIndex = parseInt( request.params.id )-1;
+    jsonfile.readFile(FILE, (err, obj)=>{
+
+    let pokemonObjList = obj.pokemon[arrayIndex];
+
+    response.render('delete', pokemonObjList);
+    });
+})
 app.delete('/pokemon/:id', (request, response) => {
 
   let arrayIndex = parseInt( request.params.id );
+  console.log("in the delete thinggg: " + arrayIndex);
   jsonfile.readFile(FILE, (err, obj) => {
     obj.pokemon.splice( arrayIndex -1 , 1);
 
     const changedObj = obj;
-
+    console.log(changedObj);
     jsonfile.writeFile(FILE, changedObj, (err) => {
       console.error(err)
-      response.send(request.body);
+      // response.send(request.body);
+      response.render('home', {obj: []});
     });
   });
 });

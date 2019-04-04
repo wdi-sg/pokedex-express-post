@@ -7,7 +7,7 @@ class Head extends React.Component{
                 <meta charSet="utf-8"/>
                 <title>Welcome to Pokedex</title>
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous"/>
-                <link rel="stylesheet" href="style.css"/>
+                <link rel="stylesheet" href="/style.css"/>
             </head>
         );
     }
@@ -20,13 +20,13 @@ class Navigation extends React.Component{
         return (
                 <nav class="nav nav-tabs rows">
                     <li class="nav-item col">
-                        <form>
+                        <form method="GET" action="/?sortby=id">
                             <input type="hidden" name="sortby" value="id"/>
                             <input className="btn btn-info" type="submit" value="Sort Pokemon by ID"/>
                         </form>
                     </li>
                     <li class="nav-item col">
-                        <form>
+                        <form method="GET" action="/?sortby=name">
                             <input type="hidden" name="sortby" value="name"/>
                             <input className="btn btn-info" type="submit" value="Sort Pokemon by Name"/>
                         </form>
@@ -91,7 +91,7 @@ class MainGrid extends React.Component{
       return    <div class="col-lg-4">
                     <h4>{item.id}</h4>
                     <h3>{item.name}</h3>
-                    <img src={item.img}/>
+                    <h3>{item.img}</h3>
                     <div class="row">
                         <a className="btn btn-primary" href={`/pokemon/${item.id}`}>view</a>
                         <a className="btn btn-info"href={`/pokemon/${ item.id }/edit`}>edit</a>
@@ -139,3 +139,5 @@ class Home extends React.Component {
 }
 
 module.exports = Home;
+
+//rework to card arrangement for mainGrid

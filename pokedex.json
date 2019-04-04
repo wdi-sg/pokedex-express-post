@@ -1893,10 +1893,47 @@
     {
       "id": "153",
       "num": 153,
-      "name": "TesTesTes",
-      "img": "asdasd",
-      "height": "1234 m ",
-      "weight": "4123kg"
+      "name": "Hello",
+      "img": "asdf",
+      "height": "3m",
+      "weight": "455kg"
+    },
+    {
+      "id": "154",
+      "num": 154,
+      "name": "Nightmare on Wax",
+      "img": "qr",
+      "height": "1.83m",
+      "weight": "75kg",
+      "Type": "normal"
+    },
+    {
+      "id": "155",
+      "num": 155,
+      "name": "HotFugde Machine ",
+      "img": "nujabes",
+      "height": "455m",
+      "weight": "1234kg",
+      "Type": "rock"
+    },
+    {
+      "id": "156",
+      "num": 156,
+      "name": "HotFugde Machine 12341234",
+      "img": "nujabesqqqqq",
+      "height": "455m",
+      "weight": "1234kg",
+      "Type": "rock",
+      "egg": ""
+    },
+    {
+      "id": "157",
+      "num": 157,
+      "name": "shiowdgo",
+      "img": "abrcadrba",
+      "height": "123m",
+      "weight": "3333kg",
+      "Type": "poison"
     }
   ]
 }
