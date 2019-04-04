@@ -12,6 +12,9 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// tell app to use public folder for css files
+app.use(express.static('public'))
+
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
@@ -130,7 +133,7 @@ let deletePokemon = (request, response) => {
         jsonfile.writeFile(FILE, changedObj, (err) => {
             console.error(err)
 
-            response.send(request.body);
+            response.redirect('/');
         });
     });
 };
@@ -157,13 +160,14 @@ let lookupPokemonById = (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-      response.send(pokemon);
+      response.render('Viewpokemon', {pokemon: pokemon});
     }
   });
 };
 
 // send request to create a new custom pokemon
 let sendPokemonNewRequest = (request, response) => {
+    // to convert to newform.jsx
     let  newForm =`<h1>Let's create a new Pokemon!</h1>
                   <form method="POST" action="/pokemon">
                   <h4>Provide your new pokemon's details here:</h4>
