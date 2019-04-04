@@ -55,18 +55,32 @@ app.get('/', (request, response) => {
 
     const nameArrayJoin = nameArray.join(", ")
 
-    //response.send(nameArray);
-    response.send('<html><h1>Welcome to the online Pokdex!</h1><body>'+nameArrayJoin+'<br><form method="GET" action="/sortby=name"><input type="submit" value="Sort"></form></body></html>')
+    let sort = `<form method="GET" action="/">
+                <select name="sortby">
+                <option value="">Please choose an option</option>
+                <option value="name">Name</option>
+                </select>
+                <input type="submit" value="Submit">
+                </form>`
+
+    if (request.query.sortby === "name") {
+        console.log("yes")
+        const sortedNameArray = nameArray.sort();
+        response.send(`<html>
+        <h1>Welcome to the online Pokdex!</h1>
+        <body>${sortedNameArray.join(", ")}<br><br>${sort}</body>
+        </html>`);
+
+        // if no sort
+    } else {
+        response.send(`<html>
+        <h1>Welcome to the online Pokdex!</h1>
+        <body>${nameArrayJoin}<br><br>${sort}</body>
+        </html>`);
+    }
+
   })   // end of / readfile
-});  // end of / request
-
-    /// sortby using query
-
-app.get("/sortby=name", (request, response) => {
-    nameArray.sort();
-    console.log(nameArray);
-/*      console.log( "request QUERY", request.query);*/
-});
+});  // end of / and form request
 
 app.get('/:id', (request, response) => {
 
@@ -101,23 +115,49 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/pokemon/new', (request, response) => {
-    let respond = '<h1>New Pokemon</h1>' +
-                  '<form method="POST" action="/newPokemon">' +
-                  'ID: <input type="text" name="id"><br><br>' +
-                  'Num: <input type="text" name="num"><br><br>' +
-                  'Name: <input type="text" name="name"><br><br>' +
-                  'Image: <input type="text" name="img"><br><br>' +
-                  'Height: <input type="text" name="height"><br><br>' +
-                  'Weight: <input type="text" name="weight"><br><br>' +
-                  '<input type="submit" value="Submit"><br><br>' +
-                  '</form>';
+    //read file to get the last key
+    jsonfile.readFile(FILE, (err, pokemonObj) => {
+        const pokemonArray = pokemonObj["pokemon"];
+
+        // get last element
+        var lastElement = pokemonArray[pokemonArray.length - 1].id;
+        console.log(lastElement)
+
+        let newLastElement = lastElement + 1;
+
+        let newLastNum = "";
+        if (newLastElement.toString().length < 3) {
+            newLastNum = "0" + newLastElement;
+        } else {
+            newLastNum = newLastElement;
+        }
+
+
+
+
+    let respond = `<h1>New Pokemon</h1>
+                  <form method="POST" action="/newPokemon">
+                  ID: <input type="text" name="id" value="${newLastElement}" disabled><br><br>
+                  Num: <input type="text" name="num" value="${newLastNum}" disabled><br><br>
+                  Name: <input type="text" name="name"><br><br>
+                  Image: <input type="text" name="img"><br><br>
+                  Height: <input type="text" name="height"><br><br>
+                  Weight: <input type="text" name="weight"><br><br>
+                  <input type="submit" value="Submit"><br><br>
+                  </form>`;
 
     response.send(respond)
+    })  // end of readfile
 })
 
 app.post('/newPokemon', (request, response) => {
+
     // receiving the data
     console.log("this is the request body: ",request.body);
+
+    //console.log(request.query.newPokemon)
+    // get data
+    //let id =
 
     response.send(request.body)
     jsonfile.readFile(FILE, (err, obj) => {
@@ -143,35 +183,29 @@ app.get('/pokemon/:id/edit', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         const pokemonName = obj["pokemon"][pokemonId-1]["name"]
 
-        response.render('home', obj["pokemon"][pokemonId-1])
+        response.render('edit', obj["pokemon"][pokemonId-1])
 
-
-/*        let html = `<form method="POST" action="/putrequest?_method=put">
-        <input name="id" type="text" value="${pokemonName}"/>
-        <input type="submit" value="edit this" />
-        </form>`;*/
-
-       //response.send(pokemonName);
 
     }) // end of read file
 
 })   // end of get pokemon id edit
 
 app.put("/pokemon/:id", (request, response) => {
-    console.log(request.body);
+    //console.log(request.body);
 
     jsonfile.readFile(FILE, (err, obj) => {
         let pokemonId = parseInt(request.params.id);
 
         let editedPokemon = obj["pokemon"][pokemonId-1];
 
+        console.log(editedPokemon)
+
         editedPokemon.name = request.body.name;
         editedPokemon.img = request.body.img;
         editedPokemon.height = request.body.height;
-        editedPokemon.weight = request.body.weight;
+        editedPokemon.weight = request.body.weight
 
-
-        jsonfile.writeFile(FILE, editedPokemon, (err) => {
+        jsonfile.writeFile(FILE, obj, (err) => {
             console.error(err);
 
             response.send("Done editing");
@@ -181,12 +215,33 @@ app.put("/pokemon/:id", (request, response) => {
 })  // end of put request
 
 
-/*app.get("/pokemon/:id/delete", (request, response) => {
-    let pokemonId = parseInt(request.params.id);
+app.get('/pokemon/:id/delete', (request, response) => {
+    const pokemonId = parseInt(request.params.id);
 
-    let html = ``
+    jsonfile.readFile(FILE, (err, obj) => {
+        const pokemonName = obj["pokemon"][pokemonId-1]["name"]
 
-})  // end of get delete*/
+        let deleteButton = `<form method="POST" action="/pokemon/${pokemonId}?_method=delete" />
+                            <input type="submit" value="Delete" />`;
+
+        response.send(deleteButton);
+
+    }) // end of read file
+})   // end of get pokemon id delete
+
+app.delete("/pokemon/:id", (request, response) => {
+    const pokemonId = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj["pokemon"].splice(pokemonId-1, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+            response.send("Deleted!")
+        })  // enf of writefile
+    })//  end of readfile
+});  //  end of app.delete
+
 /**
  * ===================================
  * Listen to requests on port 3000
