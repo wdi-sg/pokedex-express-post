@@ -1,6 +1,5 @@
 let React = require('react');
 
-
 class Home extends React.Component {
     render() {
         let id = this.props.id;

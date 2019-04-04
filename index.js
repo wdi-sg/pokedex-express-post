@@ -1,5 +1,12 @@
 const express = require("express");
 const app = express();
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
+app.set("views", __dirname + "/views");
+app.set("view engine", "jsx");
+
 const jsonfile = require("jsonfile");
 const path = require("path");
 
@@ -12,15 +19,25 @@ app.use(
   })
 );
 
-const methodOverride = require("method-override");
-app.use(methodOverride("_method"));
-
 app.use(express.static(path.join(__dirname, "public")));
 
-const reactEngine = require("express-react-views").createEngine();
-app.engine("jsx", reactEngine);
-app.set("views", __dirname + "/views");
-app.set("view engine", "jsx");
+let pokedex = [];
+
+jsonfile.readFile(FILE, (err, obj) => {
+  if (err) {
+    console.log(err);
+  }
+  pokedex = obj;
+});
+
+app.get("/pokemon", (request, response) => {
+  console.log(request.query);
+  let query = request.query;
+  if (!(query.sort === undefined)) {
+    
+  } 
+  response.render("homepage",pokedex);
+});
 
 app.get("/pokemon/new", (request, response) => {
   response.sendFile(path.join(__dirname + "/pokemon-new.html"));
@@ -81,26 +98,6 @@ app.put("/pokemon/:id", (request, response) => {
   });
 });
 
-app.post("/pokemon", (request, response) => {
-  console.log(request.body);
-  response.sendFile(path.join(__dirname + "/pokemon-new.html"));
-  jsonfile.readFile(FILE, (err, pokedexJSON) => {
-    if (err) {
-      console.log(err);
-    }
-    let pokemonList = pokedexJSON["pokemon"];
-    //add the data from the post request
-    pokemonList.push(request.body);
-
-    jsonfile.writeFile(FILE, pokedexJSON, err => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
-  // response.send(request.body);
-});
-
 app.get("/:id", (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -139,9 +136,7 @@ app.get("/pokemon/name/:pokemonName", (request, response) => {
     for (let i = 0; i < pokemonList.length; i++) {
       const pokemon = pokemonList[i];
       // pokemonNameList.push(pokemon.name);
-      if (
-        pokemon.name.toLowerCase() === request.params.pokemonName.toLowerCase()
-      ) {
+      if (pokemon.name.toLowerCase() === request.params.pokemonName.toLowerCase()) {
         // response.send(pokemon.name.toLowerCase() + " found!");
       }
     }
@@ -192,6 +187,4 @@ app.get("/", (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () =>
-  console.log("~~~ Tuning in to the waves of port 3000 ~~~")
-);
+app.listen(3000, () => console.log("~~~ Tuning in to the waves of port 3000 ~~~"));
