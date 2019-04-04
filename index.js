@@ -29,8 +29,7 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
-//home, list of all routes, list of all pokemon, links to individual pages
-
+//index
 app.get('/', (request, response) => {
     jsonfile.readFile(FILE, (err,obj) => {
         let pokeList = obj.pokemon;
@@ -46,37 +45,30 @@ app.get('/', (request, response) => {
     });
 });
 
+//individual pages
 app.get('/pokemon/:id', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let inputId = parseInt( request.params.id );
+        let indivPoke = obj.pokemon[inputId-1]
+        response.render('indiv',indivPoke);
+    });
+})
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-});
+//     var pokemon;
+//     for( let i=0; i<obj.pokemon.length; i++ ){
+//       let currentPokemon = obj.pokemon[i];
+//       if( currentPokemon.id === inputId ){
+//         pokemon = currentPokemon;
+//       }
+//     }
+//     if (pokemon === undefined) {
+//       response.status(404);
+//       response.send("not found");
+//     } else {
+//       response.render('indiv', pokemon);
+//     }
+//   });
+// });
 
 
 
