@@ -25,7 +25,7 @@ class Viewpokemon extends React.Component {
     return (
 <html>
 <head>
-    <title>Pokedex</title>
+    <title>{pokemon.name}</title>
     <link rel="stylesheet" type="text/css" href="/style.css"></link>
 </head>
 <body>
@@ -75,6 +75,9 @@ class Viewpokemon extends React.Component {
                                 {pokemon.egg}
                             </div>
                         </li>
+                </div>
+                <div className="back">
+                    <button className="button" id="edit"><a href={"/"}>Back</a></button>
                 </div>
             </div>
         </div>

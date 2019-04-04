@@ -227,68 +227,23 @@ let createNewPokemon = (request, response) => {
 // default index page
 let homepage = (request, response) => {
 
-    let pokemonList = [];
-
-    // checks how user wants list of pokemon sorted
-    let selectSort = `<form method="get" action="/">
-                  Sort pokemon by:
-                  <select name="sortby">
-                  <option value="name">Name</option>
-                  <option value="id">ID</option>
-                  </select>
-                  <input type="submit" value="Submit">
-                  </form>`;
-                  // http://expressjs.com/en/api.html#req.query
-                  // console.log(request.query.sortby)
-
-    // redirects to /pokemon/new
-    let newPokeButton = `<form method="get" action="/pokemon/new">
-                  Want to create a custom pokemon?
-                  <input type="submit" value="Create new Pokemon">
-                  </form>`;
-
-    // redirects to /pokemon/id/edit - needs fixing
-    let editPokeButton = `<form method="get" action="/pokemon/edit">
-                  Want to edit a pokemon?
-                  <input type="number" min="1" name="id">
-                  <input type="submit" value="Edit Pokemon">
-                  </form>`;
+    let sortOrder = request.query.sortby;
+    let pokemonSorted;
 
     // get list of pokemon
     jsonfile.readFile(FILE, (err, obj) => {
-        // create new list item for each pokemon
+
         if (request.query.sortby === "name"){
-            for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.name}</a></li>`);
-                // default sort will arrange by UTF-16 code units order
-                pokemonList.sort();
-            }
+            pokemonSorted = obj.pokemon.sort((a, b) => a.name.localeCompare(b.name, undefined,))
         }
         else if (request.query.sortby === "id"){
-            for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.id}: ${pokemon.name}</a></li>`);
-                // To compare numbers instead of strings, the compare function can simply subtract b from a. The following function will sort the array ascending (if it doesn't contain Infinity and NaN)
-                pokemonList.sort((a, b) => a - b);
-            }
+            pokemonSorted = obj.pokemon.sort((a, b) => a - b);
         }
         else {
-            for (let pokemon of obj.pokemon){
-                pokemonList.push(`<li><a href="/pokemon/${pokemon.id}">${pokemon.name}</a></li>`);
-            }
+            pokemonSorted = obj.pokemon;
         }
-        // removes comma between each list item
-        pokemonList = pokemonList.join('');
 
-        let respondMessage = `<h1>Welcome to the online Pokedex!</h1>
-        ${newPokeButton}
-        <br>
-        ${selectSort}
-        <br>
-        <h3>Pokemon List:</h3>
-        ${pokemonList}`;
-
-        // console.log(pokemonList);
-        response.send(respondMessage);
+        response.render('home', {pokemonArray: pokemonSorted});
     });
 }
 
@@ -296,6 +251,7 @@ let homepage = (request, response) => {
 let redirectToHomepage = (request, response) => {
     response.redirect('/');
 };
+
 
 /**
  * ===================================
