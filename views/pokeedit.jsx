@@ -12,15 +12,6 @@ class Pokeedit extends React.Component {
             <input type="submit" value="Submit"/>
             <br/>
           </form>
-
-          <form method="POST" action="/pokemon/pokeeditform">
-            <label for="name">Search By Name</label>
-            <br/>
-            <input type="text" name="name"/>
-            <input type="submit" value="Submit"/>
-            <br/>
-          </form>
-
         </div>
     );
   }

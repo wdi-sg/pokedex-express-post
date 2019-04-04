@@ -67,7 +67,34 @@ app.post('/pokemon/new/creation', function(req, res) {
 
 app.post('/pokemon/pokeeditform', function(req, res) {
   //debug code (output request body)
-  res.send("HARRO");
+  let pokeId = parseInt(req.body.id);
+  let pokemon = json.pokemon[pokeId - 1];
+  console.log(pokemon);
+  res.render("pokeeditform", pokemon);
+
+})
+
+app.post('/pokemon/pokeeditnew', function(req, res) {
+  //debug code (output request body)
+  // let pokeId = parseInt(req.body.id);
+  // let pokemon = json.pokemon[pokeId - 1];
+  // console.log(pokemon);
+  // res.render("pokeeditform", pokemon);
+  console.log(req.body);
+  let pokeNumber = req.body.id[0];
+  pokeNumber--;
+  console.log(pokeNumber);
+
+
+  json.pokemon[pokeNumber].name = req.body.name;
+  console.log(json.pokemon[pokeNumber].name)
+
+  res.render('pokestat', json.pokemon[pokeNumber]);
+
+
+  jsonfile.writeFile(file, json, (err) => {
+    console.log(err)
+  });
 
 })
 
@@ -90,33 +117,33 @@ function GetSortOrder(prop) {
 
 
 
-app.get('/pokemon/:id/edit', (req, res) => {
-  // running this will let express to run home.handlebars file in your views folder
-  let pokeId = req.params.id;
-  pokeId--;
-  let pokemonStats = json.pokemon[pokeId];
-  res.render('home', pokemonStats);
-})
+// app.get('/pokemon/:id/edit', (req, res) => {
+//   // running this will let express to run home.handlebars file in your views folder
+//   let pokeId = req.params.id;
+//   pokeId--;
+//   let pokemonStats = json.pokemon[pokeId];
+//   res.render('home', pokemonStats);
+// })
 
 
-app.post('/pokemon/:id', (req, res) => {
-  // running this will let express to run home.handlebars file in your views folder
-  let body = req.body.id;
-  let pokeId = req.body.id[0];
-  pokeId--;
-  let pokemonStats = json.pokemon[pokeId]
-  // res.send(boxdy)
-  // res.render('test', body)
-  json.pokemon[pokeId].name = body[2];
-  json.pokemon[pokeId].img = body[3];
-  json.pokemon[pokeId].height = body[4];
-  json.pokemon[pokeId].weight = body[5];
+// app.post('/pokemon/:id', (req, res) => {
+//   // running this will let express to run home.handlebars file in your views folder
+//   let body = req.body.id;
+//   let pokeId = req.body.id[0];
+//   pokeId--;
+//   let pokemonStats = json.pokemon[pokeId]
+//   // res.send(boxdy)
+//   // res.render('test', body)
+//   json.pokemon[pokeId].name = body[2];
+//   json.pokemon[pokeId].img = body[3];
+//   json.pokemon[pokeId].height = body[4];
+//   json.pokemon[pokeId].weight = body[5];
 
-  console.log(pokeId);
-  console.log(body);
-  console.log(json.pokemon[pokeId]);
-  res.render('pokemon', pokemonStats);
-})
+//   console.log(pokeId);
+//   console.log(body);
+//   console.log(json.pokemon[pokeId]);
+//   res.render('pokemon', pokemonStats);
+// })
 
 
             // <input type="text" name="id" value={this.props.id}/> <br/>

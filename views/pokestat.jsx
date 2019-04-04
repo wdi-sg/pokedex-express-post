@@ -3,6 +3,11 @@ var React = require('react');
 class Pokestat extends React.Component {
   render() {
     return (
+    <html>
+        <header>
+          <title> POKEDEX </title>
+          <link rel="stylesheet" href="/style.css"></link>
+        </header>
         <div>
           <h2> Pokemon Detail </h2>
           <h3> ID: {this.props.id}</h3>
@@ -17,6 +22,7 @@ class Pokestat extends React.Component {
           <h3> Spawn Time: {this.props.spawn_time}</h3>
           <img src={this.props.img}/>
         </div>
+    </html>
     );
   }
 }
