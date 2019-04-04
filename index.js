@@ -99,6 +99,15 @@ app.get('/pokemon/:id/edit', (req, res) =>{
 })
 
 app.put('/pokemon/:id', (req, res) =>{
+  // console.log(req.body);
+  // let form = '<form method="POST" action="/pokemon/'+pokemon.id+'?_method=PUT">'+
+  //             '<div class="pokemon-attribute">'+
+  //             'id: <input name="id" type="text" value="'+pokemon.id+'"/>'+
+  //             'name: <input name="name" type="text" value="'+pokemon.name+'"/>'+
+  //             '</div>'+
+  //             '</form>';
+  // res.send(form);
+  
   let arrayIndex = parseInt(req.params.id);
     jsonfile.readFile(FILE, (err, obj)=>{
     let pokemonObjList = obj.pokemon[arrayIndex-1];
@@ -110,12 +119,14 @@ app.put('/pokemon/:id', (req, res) =>{
       pokemonObjList.height = req.body.pokeHeight;
       pokemonObjList.egg = req.body.pokeEgg;
 
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.log(err)
+      const chagedObj = obj;
+
+    jsonfile.writeFile(FILE, changedObj, (err) => {
+      console.error(err)
       res.send(req.body);
     });
   });
-})
+});
 
 
   
