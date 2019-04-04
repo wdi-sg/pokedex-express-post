@@ -1,4 +1,5 @@
 var React = require('react');
+var DefaultLayout = require('./layouts/default');
 
 class View extends React.Component {
   render() {
@@ -6,15 +7,7 @@ class View extends React.Component {
     let pokemon = this.props;
 
     return (
-        <html>
-            <head>
-                <meta charSet="utf-8"/>
-                <title>View Pokemon</title>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous"/>
-                <link rel="stylesheet" href="/css/style.css"/>
-            </head>
-
-            <body>
+            <DefaultLayout title={ `${pokemon.name} - #${pokemon.num}` }>
                 <h1>{pokemon.name} - <span>#{pokemon.num}</span></h1>
 
                 <div className="container main-content">
@@ -60,8 +53,7 @@ class View extends React.Component {
 
                     </div>
                 </div>
-            </body>
-        </html>
+            </DefaultLayout>
     );
   }
 }

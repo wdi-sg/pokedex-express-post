@@ -1,4 +1,5 @@
 var React = require('react');
+var DefaultLayout = require('./layouts/default');
 
 class Edit extends React.Component {
   render() {
@@ -6,15 +7,7 @@ class Edit extends React.Component {
     let formAttribute = `/pokemon/${this.props.id}?_method=PUT`;
 
     return (
-        <html>
-            <head>
-                <meta charSet="utf-8"/>
-                <title>Edit Pokemon</title>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous"/>
-                <link rel="stylesheet" href="/css/style.css"/>
-            </head>
-
-            <body>
+            <DefaultLayout title="Edit Existing Pokemon">
                 <form method="POST" action={ formAttribute }>
                     <h1>Edit Existing Pokemon - { this.props.name } </h1>
                     Name: <input name="name" value= { this.props.name } /><br/>
@@ -23,8 +16,7 @@ class Edit extends React.Component {
                     <input className="btn btn-success" type="submit" value="Edit existing Pokemon"/>
                 </form>
                 <a className="btn btn-info back" href="/pokemon">Back to Pokedex</a>
-            </body>
-        </html>
+            </DefaultLayout>
     );
   }
 }
