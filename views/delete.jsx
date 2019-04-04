@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Further1 extends React.Component {
+class Delete extends React.Component {
 
   render() {
 
@@ -20,4 +20,4 @@ class Further1 extends React.Component {
     }
 }
 
-module.exports = Further1;
+module.exports = Delete;

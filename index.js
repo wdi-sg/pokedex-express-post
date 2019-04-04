@@ -26,10 +26,10 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
-app.get('/', (req, res) => {
-    // running this will let express to run home.handlebars file in your views folder
-    res.render('home')
-})
+// app.get('/', (req, res) => {
+//     // running this will let express to run home.handlebars file in your views folder
+//     res.render('home')
+// })
 
 //---------------------------------------
 app.get('/:id', (request, response) => {
@@ -178,7 +178,7 @@ app.put('/pokemon/:id', (request, response) => {
         jsonfile.writeFile(FILE, changedObj, (err) => {
             if (err) console.error(err);
 
-            response.send(`Pokémon ${originalPokeName} was edited.`)
+            response.send(`Edited Pokémon ${originalPokeName}.`)
         });
     });
 });
@@ -190,36 +190,42 @@ app.put('/pokemon/:id', (request, response) => {
 
 app.get('/pokemon/:id/delete', (request, response) => {
 
+    let inputId = parseInt(request.params.id);
+    let deletePokeIndex;
+
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.error(err);
 
-        let pokemonIndex = parseInt(request.params.id) - 1;
-        let selectedPokemon = obj.pokemon[pokemonIndex];
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            if (inputId === obj.pokemon[i].id) {
+                deletePokeIndex = i;
+            }
+        }
 
-        response.render("further1", selectedPokemon)
+        let selectedPokemon = obj.pokemon[deletePokeIndex];
 
-        jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) console.error(err);
+        response.render("delete", selectedPokemon)
 
-            response.send("Pokémon updated");
-        });
     });
 });
 
 app.delete('/pokemon/:id', (request, response) => {
 
-    let pokeId = parseInt(request.params.id) - 1;
-    console.log(request.params.id);
+    let pokeIndex = parseInt(request.params.id) - 1;
+    // console.log(request.params.id);
 
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.error(err);
-        obj.pokemon.splice(pokeId, 1);
+
+        let deletePokeName = obj.pokemon[pokeIndex].name;
+
+        obj.pokemon.splice(pokeIndex, 1);
 
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) console.error(err);
 
-            response.send("Pokémon deleted");
+            response.send(`Deleted Pokémon ${deletePokeName}.`);
         });
     });
 });
