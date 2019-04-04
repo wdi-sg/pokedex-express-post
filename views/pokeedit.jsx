@@ -5,6 +5,22 @@ class Pokeedit extends React.Component {
     return (
         <div>
           <h2> Edit Pokemon</h2>
+            <form method="POST" action="/pokemon/pokeeditform">
+            <label for="id">Search By Id</label>
+            <br/>
+            <input type="text" name="id"/>
+            <input type="submit" value="Submit"/>
+            <br/>
+          </form>
+
+          <form method="POST" action="/pokemon/pokeeditform">
+            <label for="name">Search By Name</label>
+            <br/>
+            <input type="text" name="name"/>
+            <input type="submit" value="Submit"/>
+            <br/>
+          </form>
+
         </div>
     );
   }

@@ -48,12 +48,12 @@ app.post('/pokemon/searchname', (req, res) => {
 
 app.post('/pokemon/new/creation', function(req, res) {
   //debug code (output request body)
-    res.send("HARRO");
     console.log(req.body);
     let pokeStats = (req.body);
     console.log(pokeStats);
     json.pokemon.push(pokeStats);
     console.log(json.pokemon[json.pokemon.length-1]);
+    let newPokemon = json.pokemon[json.pokemon.length-1];
 
       jsonfile.readFile(file, (err, obj) => {
 
@@ -62,8 +62,14 @@ app.post('/pokemon/new/creation', function(req, res) {
   });
 });
 
-// not working???
+      res.render('pokestat', newPokemon);
 });
+
+app.post('/pokemon/pokeeditform', function(req, res) {
+  //debug code (output request body)
+  res.send("HARRO");
+
+})
 
 app.post('/pokemon/sort', function(request, response) {
 
