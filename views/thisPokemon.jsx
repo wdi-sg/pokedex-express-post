@@ -25,7 +25,7 @@ class thisPokemon extends React.Component {
         Pokemon Name: <br/>
         <input type = "text" name = "pokemon_name" value = {this.props.respondKey.name}/><br/>
         Pokemon Image: <br/>
-        <input type = "image" name = "pokemon_img" value = {this.props.respondKey.img}/><br/>
+        <img type = "image" name = "pokemon_img" src = {this.props.respondKey.img}/><br/>
         Pokemon Height: <br/>
         <input type = "text" name = "pokemon_height" value = {this.props.respondKey.height}/><br/>
         Pokemon Weight: <br/>
