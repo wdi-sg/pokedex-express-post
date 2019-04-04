@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(express.static('public'));
+
 
 
 const reactEngine = require('express-react-views').createEngine();
@@ -19,49 +21,14 @@ app.set('view engine', 'jsx');
 
 app.get('/', (req, res) => {
 
-    // response.render('home');
     let pokemonList = JSON.stringify(json.pokemon, null, 2)
-    // response.send('<h1>Pokemon</h1>'+
-    //               '<form method="post" action="/pokemon/new">'+
-    //               'Create New Pokemon'+
-    //               '<input type="submit" value="Submit">'+
-    //               '</form>' +
-    //               '<h2> Search Pokemon</h2>'+
-    //               '<form method="post" action="/pokemon/search">'+
-    //               'ID:<input type="text" name="id">' +
-    //               '<input type="submit" value="Submit">' +
-    //               '<br>' +
-    //               'Name:<input type="text" name="name">' +
-    //               '<input type="submit" value="Submit">' +
-    //               '</form>' +
-    //               '<br>' +
-    //               `<img src="https://pics.me.me/via-9gag-com-14050435.png">`+
-    //               '<h2> LIST OF CURRENT POKEMON </h2>'+
-    //               '<form method="post" action="/pokemon/sort">' +
-    //               'SORT THAT THANG BY NAME! <input type="submit" value="submit">'+
-    //               '</form>'+
-    //               pokemonList
-    //               );
     res.render('homepage')
-
-    // response.send(json.pokemon);
 });
 
 app.post('/pokemon/searchid', (req, res) => {
-      // console.log(req.body);
-  //     response.send(request.body.id);
   let pokemonId = req.body.id;
   pokemonId = parseInt(pokemonId - 1);
-  // console.log(pokemonId);
   let pokestat = json.pokemon[pokemonId];
-  // console.log(pokestat);
-  // let pokemonName = request.body.name.toLowerCase();
-  // let pokemon = 0;
-  // for (i = 0; i < json.pokemon.length; i++) {
-  //   if(json['pokemon'][i]['name'].toLowerCase() === pokemonName) {
-  //        response.send(json.pokemon[i]);
-  //   }
-  // }
   res.render('pokestat', pokestat);
 
 });
@@ -76,42 +43,26 @@ app.post('/pokemon/searchname', (req, res) => {
            res.render('pokestat', pokestat);
     }
   }
-  // res.render('pokestat',);
 
 });
 
-
-app.post('/pokemon/new', function(req, response) {
+app.post('/pokemon/new/creation', function(req, res) {
   //debug code (output request body)
-      response.send('<h1>Pokemon</h1>'+
-                  '<form method="post" action="/pokemon/new/creation">'+
-                  'ID:<input type="text" name="id">'+
-                  'Num:<input type="text" name="num">'+
-                  'Name:<input type="text" name="name">'+
-                  'IMG:<input type="text" name="img">'+
-                  'Height:<input type="text" name="height">'+
-                  'Weight:<input type="text" name="weight">'+
-                  '<input type="submit" value="Submit">'+
-                  '</form>');
-
-});
-
-app.post('/pokemon/new/creation', function(request, response) {
-  //debug code (output request body)
-    // let pokeStats = JSON.stringify(request.body);
-    //   response.send("HELLO" + '<br>' + pokeStats);
-    //   console.log(json.pokemon[150]);
-    let pokeStats = request.body;
-    response.send(pokeStats);
+    res.send("HARRO");
+    console.log(req.body);
+    let pokeStats = (req.body);
+    console.log(pokeStats);
     json.pokemon.push(pokeStats);
     console.log(json.pokemon[json.pokemon.length-1]);
 
+      jsonfile.readFile(file, (err, obj) => {
 
   jsonfile.writeFile(file, json, (err) => {
     console.log(err)
   });
+});
 
-
+// not working???
 });
 
 app.post('/pokemon/sort', function(request, response) {

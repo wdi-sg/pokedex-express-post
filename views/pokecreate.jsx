@@ -1,4 +1,8 @@
 var React = require('react');
+const json = require('../pokedex.json');
+
+// console.log(json.pokemon.length);
+
 
 class Pokecreate extends React.Component {
   render() {
@@ -6,6 +10,14 @@ class Pokecreate extends React.Component {
         <div>
           <h2> Create Your Own Pokemon </h2>
           <form method="post" action="/pokemon/new/creation">
+            <label for="id">id</label>
+            <input type="text" name="id" value={json.pokemon.length + 1} readonly="readonly"/>
+
+            <label for="num">num</label>
+            <input type="text" name="num" value={json.pokemon.length + 1} readonly="readonly"/>
+
+            <br/> <br/>
+
             <label for="name">name</label>
             <input type="text" name="name"/>
 
