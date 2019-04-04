@@ -9,6 +9,11 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
+ // <select name="sortby">
+ //            <option value="id" class="btn btn-primary">id</option>
+ //            <option value="name" class="btn btn-primary">name</option>
+ //            </select>
+
 // Init express app
 const app = express();
 
@@ -21,6 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+//use to serve static files using express
+app.use(express.static("public"))
 
 
 // this line below, sets a layout look to your express project
