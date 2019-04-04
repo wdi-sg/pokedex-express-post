@@ -88,7 +88,7 @@ app.get('/pokemon/:id/edit', function(request, response) {
 
     let currMon = obj["pokemon"][index -1];
 
-        response.render('pokemonedit', currMon);
+        response.render('edit', currMon);
 
   })
 
