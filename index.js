@@ -27,7 +27,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-//use to serve static files using express
+//use to serve static files using express, public folder created, any files within the folder will be accessed by express e.g style.css
 app.use(express.static("public"))
 
 
@@ -73,6 +73,13 @@ app.get('/hello', (request, response) => {
  * ===================================
  */
 
+  app.get('/hello', function(request, response) {
+
+
+    response.render('hello');
+
+  });
+
 
  app.get('/', function(request, response) {
 
@@ -83,6 +90,14 @@ app.get('/hello', (request, response) => {
             response.render("home", allPokemonData);
 
         });
+
+        // <form>
+        //     <select name="sortby">
+        //     <option value="id">id</option>
+        //     <option value="name">name</option>
+        //     </select>
+        //     <input type="submit" value="Sort">
+        //     </form>
 
 
     } else if(request.query.sortby === "name") {
@@ -163,7 +178,11 @@ app.get('/hello', (request, response) => {
        obj.pokemon.push(newPokemon);
 
        jsonfile.writeFile(FILE, obj, (err) => {
-        response.send(`<h1>A new pokemon ${request.body.name} was added!</h1>`);
+
+        var pokemonId = request.body.id;
+
+        //refer to line 193-223
+        response.redirect(`/pokemon/${pokemonId}`)
 
         console.log("JSON updated with new data!");
     });
@@ -273,7 +292,8 @@ if (pokemon === undefined) {
     jsonfile.writeFile(FILE, changedObj, (err) => {
       console.error(err)
 
-      response.send("Pokemon " + originalPokemonName + " has been edited!");
+      //refer to line 193-223
+      response.redirect(`/pokemon/${pokemonId}`);
   });
 });
 
