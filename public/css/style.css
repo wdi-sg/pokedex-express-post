@@ -18,7 +18,7 @@ nav {
 	display: block;
 }
 
-/* Home Page*/
+/* Pokedex Page*/
 form {
 	margin: 0px 20px 20px 0px;
 	display: inline-block;
@@ -34,7 +34,7 @@ form {
 	margin-right: 5px;
 }
 
-/*View Pokemon Page*/
+/*View Single Pokemon Page*/
 h1 > span {
 	color: #5A5A5A;
 }
@@ -66,4 +66,14 @@ h1 > span {
 	font-weight: 300;
 	color: white;
 	margin-bottom: 0px;
+}
+
+/* Add new Pokemon Page*/
+.add > span > label > input {
+	margin-right: 5px;
+	transform: scale(1.1)
+}
+
+.add > span > label {
+	margin-right: 18px;
 }

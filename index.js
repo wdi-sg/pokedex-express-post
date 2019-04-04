@@ -6,17 +6,14 @@ const express = require('express');
 const promise = require("bluebird");
 const methodOverride = require('method-override')
 const jsonfile = promise.promisifyAll(require('jsonfile'));
+const file = 'pokedex.json';
 
 const app = express();
 
-// use to serve static files using express
-app.use(express.static('public'))
-
-// use to overcome HTML issue with sending PUT and DELETE request
-app.use(methodOverride('_method'));
-
 let data;
-let file = 'pokedex.json';
+
+app.use(express.static('public')) // use to serve static files using express
+app.use(methodOverride('_method')); // use to overcome HTML issue with sending PUT and DELETE request
 
 // tell your app to use the module. This is to enable request.body for post request
 app.use(express.json());
@@ -66,6 +63,69 @@ var addZero = function(n) {
   return str;
 }
 
+var getUniquePokemonType = function () {
+    let uniqueTypes = [];
+
+    _.forEach(data.pokemon, (p) => {
+        _.forEach(p.type, (t) => {
+            if (_.includes(uniqueTypes, t) === false) {
+                uniqueTypes.push(t)
+            }
+        })
+    });
+
+    return uniqueTypes;
+}
+
+var getPokemonType = function (t) {
+    let result = [];
+
+    if (typeof t === "string") {
+        result.push(t);
+    } else {
+        result = t;
+    }
+
+    return result;
+}
+
+var getPokemonWeakness = function (t) {
+    let weakness = [];
+
+    let weaknessMatrix = {
+        "Normal": ["Fighting"],
+        "Fighting": ["Flying", "Psychic"],
+        "Flying": ["Rock", "Electric", "Ice"],
+        "Poison": ["Ground", "Psychic"],
+        "Ground": ["Water", "Grass", "Ice"],
+        "Rock": ["Fighting", "Ground", "Water", "Grass"],
+        "Bug": ["Flying", "Rock", "Fire"],
+        "Ghost": ["Ghost", "Dark"],
+        "Fire": ["Ground", "Rock", "Water"],
+        "Water": ["Grass", "Electric"],
+        "Grass": ["Fire", "Flying", "Poison", "Bug", "Ice"],
+        "Electric": ["Ground"],
+        "Psychic": ["Bug", "Ghost"],
+        "Ice": ["Fighting", "Rock", "Fire"],
+        "Dragon": ["Ice", "Dragon"]
+    };
+
+    // get weakness based on Pokemon type
+    _.forEach(t, (o) => {
+        weakness = _.uniq(weakness.concat(weaknessMatrix[o]));
+    });
+
+    // remove Pokemon type resistance. Example Grass Poison Pokemon should not have weakness against Poison
+     _.forEach(t, (o) => {
+        _.remove(weakness, function(n) {
+            return o === n;
+        });
+    });
+
+    return weakness;
+}
+
+
 // ===================================
 // Request Handlers
 // ===================================
@@ -96,21 +156,30 @@ var getPokemonByIdRequestHandler = function (request, response) {
 }
 
 var newPokemonRequestHandler = function (request, response) {
-    response.render('add');
+    let uniquePokemonType = getUniquePokemonType();
+
+    response.render('add', {'uniquePokemonType': uniquePokemonType});
 }
 
 var addNewPokemonRequestHandler = function (request, response) {
+
+    getPokemonWeakness(getPokemonType(request.body.type));
+
     let newPokemon = {
         id: data.pokemon.length + 1,
         num: addZero(data.pokemon.length + 1),
         name: request.body.name,
-        img: request.body.img,
+        img: `http://www.serebii.net/pokemongo/pokemon/${addZero(data.pokemon.length + 1)}.png` ,
+        type: getPokemonType(request.body.type),
         height: request.body.height,
         weight: request.body.weight,
         candy: 'None',
         egg: 'Not in Eggs',
         avg_spawns: 0,
-        spawn_time: 'N/A'
+        spawn_time: 'N/A',
+        multipliers: [],
+        weaknesses: getPokemonWeakness(getPokemonType(request.body.type)),
+        next_evolution: []
     };
 
     data.pokemon.push(newPokemon);
@@ -181,7 +250,7 @@ var deleteExistingPokemonRequestHandler = function (request, response) {
 
     jsonfile.writeFileAsync(file, data)
         .then(() => {
-            response.send('You have deleted the Pokemon!');
+            response.redirect('/pokemon');
         }).catch((err) => {
             response.send('There is an error updating the Pokemon! Please try again.');
             console.log(err);

@@ -4,7 +4,7 @@ var DefaultLayout = require('./layouts/default');
 class Home extends React.Component {
   render() {
 
-    let allPokemon = this.props.pokemon.map( (o) => {
+    let allPokemon = this.props.pokemon.map((o) => {
         return <tr>
                     <td>{ o.num }</td>
                     <td>{ o.name }</td>
