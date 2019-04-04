@@ -144,7 +144,6 @@ var editExistingPokemonRequestHandler = function (request, response) {
     _.forEach(data.pokemon, (o) => {
         if (o.id === Number(request.params.id)) {
             o.name = request.body.name;
-            o.img = request.body.img;
             o.height = request.body.height;
             o.weight = request.body.weight;
         }
