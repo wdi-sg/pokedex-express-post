@@ -8,6 +8,7 @@ class Home extends React.Component {
         <h1>id is {this.props.id}</h1>
         <h1>num is {this.props.num}</h1>
         <h1>name is {this.props.name}</h1>
+
       </div>
     );
   }
