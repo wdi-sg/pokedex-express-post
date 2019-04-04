@@ -6,8 +6,10 @@ class Home extends React.Component {
 
   render() {
 
+
+
     let mons = this.props.pokemon.map(mon => {
-      return <Cards card={mon.name}/>
+      return <Cards card={mon.name} Cards img={mon.img} Cards id={mon.id}/>
     });
 
 
@@ -18,11 +20,13 @@ class Home extends React.Component {
             </head>
             <body>
                 <h1>Pokédex</h1>
-                    <div class="row">
-                        <div class="col-12">
-                            {mons}
-                        </div>
-                    </div>
+
+
+                            <div class="card-group">
+                                {mons}
+                            </div>
+
+
 
             </body>
         </html>
