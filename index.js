@@ -48,7 +48,7 @@ app.get('/pokemon/:id/edit', function(request, response) {
 
     jsonfile.readFile(FILE, (err, obj) => {
     const pokemon = obj["pokemon"];
-    console.log(pokemon);
+    //console.log(pokemon);
 
     let currMon = obj["pokemon"][index -1];
 
@@ -83,10 +83,12 @@ app.put('/pokemon/:id', (request, response) => {
     console.log(request.body);
     response.send("thx");
 
+
     jsonfile.readFile(FILE, (err, obj) => {
 
-        let index = parseInt(request.params.id);
-        obj["pokemon"][index]["id"] = request.body.id;
+        let index = parseInt(request.params.id -1);
+        console.log(index);
+        obj["pokemon"][index]["id"] = parseInt(request.body.id);
         obj["pokemon"][index]["num"] = request.body.num;
         obj["pokemon"][index]["name"] = request.body.name;
         obj["pokemon"][index]["img"] = request.body.img;

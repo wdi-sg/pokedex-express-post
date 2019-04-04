@@ -1,7 +1,7 @@
 # Post - Part 2
 
 - add the ability to edit the data for a given pokemon
-  - install react templates for your app
+  - install react templates for your app 
   - add a form at the path: `/pokemon/:id/edit` ✅
   - add each field as an input and pre-populate the current data for that pokemon ✅
   - the form should make a request ( the form action ) to the correct route ( a PUT request to `/pokemon/:id` )
