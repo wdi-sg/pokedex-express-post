@@ -21,6 +21,9 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// use public folder
+app.use(express.static('public'))
+
 // method-override
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
@@ -42,7 +45,7 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-
+/*
 app.get('/', (request, response) => {
   //response.send("Welcome to the online Pokdex!");
   const nameArray = [];
@@ -80,7 +83,31 @@ app.get('/', (request, response) => {
     }
 
   })   // end of / readfile
-});  // end of / and form request
+});  // end of / and form request*/
+
+app.get("/", (request, response) => {
+    const pokemonArray = [];
+
+    // read file to take pokemon name
+    jsonfile.readFile(FILE, (err, pokemonObj) => {
+        for (i = 0; i < pokemonObj["pokemon"].length; i++) {
+            const pokemonName = pokemonObj["pokemon"][i]["name"];
+            const pokemonImg = pokemonObj["pokemon"][i]["img"]
+
+            // put them in an object first then push to array
+            const pokemonIndvObj = {};
+            pokemonIndvObj["name"] =  pokemonName;
+            pokemonIndvObj["img"] =  pokemonImg;
+
+            // push object into array
+            pokemonArray.push(pokemonIndvObj);
+        }  // end of for loop
+
+        //console.log(pokemonArray);
+
+        response.render('home', {pokemon: pokemonArray})
+    })  // end of readFile
+})
 
 app.get('/:id', (request, response) => {
 
@@ -132,10 +159,12 @@ app.get('/pokemon/new', (request, response) => {
             newLastNum = newLastElement;
         }
 
+        response.render('newPokemon', {lastId: newLastElement, lastNum: newLastNum})
 
 
 
-    let respond = `<h1>New Pokemon</h1>
+
+/*    let respond = `<h1>New Pokemon</h1>
                   <form method="POST" action="/newPokemon">
                   ID: <input type="text" name="id" value="${newLastElement}" disabled><br><br>
                   Num: <input type="text" name="num" value="${newLastNum}" disabled><br><br>
@@ -146,7 +175,7 @@ app.get('/pokemon/new', (request, response) => {
                   <input type="submit" value="Submit"><br><br>
                   </form>`;
 
-    response.send(respond)
+    response.send(respond)*/
     })  // end of readfile
 })
 

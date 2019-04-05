@@ -1,31 +1,29 @@
 var React = require('react');
+var Layout = require('./layout')
 
 class Home extends React.Component {
 
     render () {
 
-        const actionAttribute = `/pokemon/${this.props.id}?_method=put`;
+        const pokemonArray = this.props.pokemon; // return the pokemon name array
 
-        return (
-            <html>
-                <body>
-                    <div>
-                        <form method="POST" action={actionAttribute}>
-                            Name: <input name="name" value={this.props.name} />
 
-                            Image: <input name="img" value={this.props.img} />
+        let allPokemon = pokemonArray.map(obj => {
+            //console.log(obj.img)
+            return <div class="image-container">
+                <img src={obj.img} />
+                <h5 class="card-title">{obj.name}</h5>
+            </div>
+        });
 
-                            Height: <input name="height" value={this.props.height} />
 
-                            Weight: <input name="weight" value={this.props.weight} />
+        return (<Layout>
+            <h1>Welcome to the online Pokedex!</h1>
+            <div class="displayImg-container">
+                {allPokemon}
+            </div>
 
-                            <input type="submit" value="Edit" />
-
-                        </form>
-                    </div>
-                </body>
-            </html>
-        )  // end of return
+        </Layout>);  // end of return
 
     }  // end of render
 } // end of class home
