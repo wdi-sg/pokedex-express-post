@@ -3,10 +3,10 @@
     {
       "id": 1,
       "num": "001",
-      "name": "Bulbasaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
+      "name": "bulby",
+      "img": "",
+      "height": "",
+      "weight": "",
       "candy": "Bulbasaur Candy",
       "candy_count": "25",
       "egg": "2 km",
@@ -1881,6 +1881,22 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "again",
+      "num": "again",
+      "name": "again",
+      "img": "again",
+      "height": "again",
+      "weight": "again2"
+    },
+    {
+      "id": "155",
+      "num": "155",
+      "name": "MyNewPokemon",
+      "img": "http://somethingsomething",
+      "height": "100m",
+      "weight": "1000kg"
     }
   ]
 }
