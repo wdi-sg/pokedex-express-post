@@ -1,68 +1,103 @@
+
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
 // Init express app
-const app = express();
 
+
+const app = express();
+ 
+// const FILE = 'pokedex.json';
+
+// Tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-//What I did not do//
-// app.get('/pokemon/new', (request, response)=>{
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
 
-//   let  respond =  '<h1>Submit new Pokemon</h1>'+
-//                   '<form method="POST" action="/pokemon">'+
-//                   'Id:<input type="number" name="id" min="152" max="200">'+
-//                   '<br>'+'<br>'+
-//                   'Num:<input type="number" name="num" min="152" max="200">'+
-//                   '<br>'+'<br>'+
-//                   'Name:<input type="text" name="name">'+
-//                   '<br>'+'<br>'+
-//                   'Image:<input type="file" name="img" accept="image/*">'+
-//                   '<br>'+'<br>'+
-//                   'Height:<input type="text" name="height">'+
-//                   '<br>'+'<br>'+
-//                   'Weight:<input type="text" name="weight">'+
-//                   '<br>'+'<br>'+
-//                   '<input type="submit" value="Submit">'
-//                   '</form>';
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
 
-//   response.send(respond);
-// })
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
 
-app.post('/new/pokemon', function(request, response) {
-
-  //debug code (output request body)
-  console.log(request.body);
-
-
-  // save the request body
-  jsonfile.writeFile('data.json', request.body, (err) => {
-    console.error(err)
-
-    // now look inside your json file
-    response.send(request.body);
-  });
-});
-
-
-
-
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+// // Display a list of all pokemon
+// app.get('/', (request, response)=>{
+//     // response.send("YAY");
+//     jsonfile.readFile(FILE, (err, obj)=>{
+//         response.send(obj.pokemon);
+//     })
+// })
+
+// Submit new Pokemon
+app.get('/pokemon/:id/edit', (request, response)=>{
+
+  let arrayindex = parseInt(request.params.id);
+
+  jsonfile.readFile('pokedex.json', (err, obj) => {
+
+  response.render(obj.pokemon[1].name);
+  console.log(obj.pokemon[1].name);
+
+});
+});
+
+//   for (i=0; i<contentsofFile.pokemon.length; i++)
+//   if (request.params.id== contentsofFile.pokemon[i].id)
+//   response.render(contentsofFile.pokemon[i].name);
+//   console.log(contentsofFile.pokemon[1].name)
+//   }); 
+// });
+
+
+
+
+app.put("/putrequest", (request, response) => {
+    console.log(request.body);
+    //read the file in and write out to it
+    response.send('yes');
+});
+
+
+
+app.post('/pokemon', function(request, response) {
+
+  //debug code (output request body)
+  console.log(request.body.id);
+
+// Coverts a string into a number
+request.body.id = parseInt(request.body.id);
+
+// This will read the pokedex.json
+jsonfile.readFile(FILE, (err, obj)=>{
+
+// This will push the submitted information into an array
+    obj.pokemon.push(request.body)
+
+// This will write to the pokedex.json
+    jsonfile.writeFile(FILE, obj, (err) => {
+    console.error(err)
+
+    // now look inside your json file
+    response.send(request.body);
+  });
+})
+
+// save the request body
+
+});
 
 app.get('/:id', (request, response) => {
 
@@ -96,14 +131,6 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-// });
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3000,  () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
