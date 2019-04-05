@@ -1,4 +1,5 @@
 var React = require('react');
+var Layout = require('./layout.jsx');
 
 class Home extends React.Component {
 
@@ -10,19 +11,16 @@ class Home extends React.Component {
     var valueAttribute = `/pokemon/${pokemon.id}?_method=DELETE`
 
     return (
-        <html>
-            <body>
-                <h1>Delete Pokémon</h1>
+        <Layout>
+                <h1 class="display-4 text-center m-5">Delete {pokemon["name"]}</h1>
                     <div>
-                        Name: {pokemon["name"]}
+                        <img src={pokemon.img} style={{width: '200px'}}/>
                         <form method="POST" action={valueAttribute}>
                             <input type="submit" value="Delete"></input>
                         </form>
 
                     </div>
-
-            </body>
-        </html>
+        </Layout>
     );
   }
 }

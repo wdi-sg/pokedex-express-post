@@ -40,6 +40,7 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
+//==============Delete================//
 
 app.get('/pokemon/:id/delete', function(request, response) {
 
@@ -48,8 +49,6 @@ app.get('/pokemon/:id/delete', function(request, response) {
     console.log(index);
 
     jsonfile.readFile(FILE, (err, obj) => {
-    const pokemon = obj["pokemon"];
-    //console.log(pokemon);
 
     let currMon = obj["pokemon"][index -1];
 
@@ -60,7 +59,7 @@ app.get('/pokemon/:id/delete', function(request, response) {
 });
 
 app.delete('/pokemon/:id', (request, response) => {
-  response.send("thx for deleting");
+
 
   jsonfile.readFile(FILE, (err, obj) => {
 
@@ -71,24 +70,31 @@ app.delete('/pokemon/:id', (request, response) => {
         jsonfile.writeFile(FILE, obj, (err) => {
         console.log(err)
          });
+
     });
+
+    response.render('home', obj);
 
 });
 
+//===================================//
+
+//===============Edit================//
 
 app.get('/pokemon/:id/edit', function(request, response) {
 
-
     let index = parseInt(request.params.id);
-    console.log(index);
 
     jsonfile.readFile(FILE, (err, obj) => {
-    const pokemon = obj["pokemon"];
-    //console.log(pokemon);
 
-    let currMon = obj["pokemon"][index -1];
+        //🌟🌟🌟🌟🌟
+        //identify pokemon using request.p.id in the json file
+        //retrieve the pokemon's actual index
+        //then edit
 
-        response.render('edit', currMon);
+    let thisMon = obj["pokemon"][index -1];
+
+        response.render('edit', thisMon);
 
   })
 
@@ -96,7 +102,7 @@ app.get('/pokemon/:id/edit', function(request, response) {
 
 app.put('/pokemon/:id', (request, response) => {
     console.log(request.body);
-    response.send("thx");
+    response.render("view for pokemon (edited pokemon) goes here");
 
 
     jsonfile.readFile(FILE, (err, obj) => {
@@ -121,8 +127,6 @@ app.post('/pokemon', function(request, response) {
   //debug code (output request body)
   console.log(request.body);
 
-  response.send("thx for ur submission");
-
   jsonfile.readFile(FILE, (err, obj) => {
 
         let idAndNum = {
@@ -134,6 +138,8 @@ app.post('/pokemon', function(request, response) {
         console.log(idAndNum);
         obj["pokemon"].push(idAndNum);
 
+        response.render('home', obj);
+
      jsonfile.writeFile(FILE, obj, (err) => {
     console.log(err)
   });
@@ -142,26 +148,20 @@ app.post('/pokemon', function(request, response) {
 
 });
 
-app.get('/pokemon', function(request, response) {
+//===================================//
 
-
-    jsonfile.readFile(FILE, (err, obj) => {
-
-
-    response.render('home', obj);
-
-    })
-});
-
+//===============New=================//
 
 
 app.get('/pokemon/new', (request, response) => {
-
 
         response.render('new');
 
 })
 
+//==================================//
+
+// Pokémon's desc page
 
 app.get('/:id', (request, response) => {
 
@@ -187,7 +187,7 @@ app.get('/:id', (request, response) => {
 
       // send 404 back
       response.status(404);
-      response.send("not found");
+      response.send("Pokémon not found");
     } else {
 
       response.send(pokemon);
@@ -197,42 +197,19 @@ app.get('/:id', (request, response) => {
 
 app.get('/', (request, response) => {
 
+// at the root route (GET request) `/` display a list of all the pokemons in the pokedex
 
-//at the root route (GET request) `/` display a list of all the pokemons in the pokedex
+if (request.query.sortby === "name") {
+            response.send("hi");
+        } else {
+            jsonfile.readFile(FILE, (err, obj) => {
+        response.render('home', obj)
+    })
 
+    }
 
-    var sort = `<form>
-                <form method="GET" action="/?">
-                <select name="sortby">
-                    <option value="">--Please choose an option--</option>
-                    <option value="name">Name</option>
-                    <option value="id">Id</option>
-                    <option value="num">Number</option>
-                    <option value="weight">Weight</option>
-                    <option value="height">Height</option>
-                </select>
-                <input type="submit" value="Submit">
-            </form>`;
+});
 
-    var pokemonNames = [];
-
-        jsonfile.readFile(FILE, (err, obj) => {
-
-             for (var i = 0; i < obj["pokemon"].length; i++) {
-            pokemonNames.push(obj["pokemon"][i]["name"]);
-
-        }
-
-        if (request.query.sortby === "name") {
-            pokemonNames = pokemonNames.sort();
-        }
-
-        response.send(sort + pokemonNames.join(', '));
-
-        });
-
-
-    });
 
 
 /**

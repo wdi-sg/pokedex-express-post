@@ -19,7 +19,7 @@ class New extends React.Component {
 
                         <div class="col-4">
                             Name
-                            <input type="text" name="name" class="form-control" autofocus/>
+                            <input type="text" name="name" class="form-control" autoFocus/>
                         </div>
 
                          <div class="col-4">

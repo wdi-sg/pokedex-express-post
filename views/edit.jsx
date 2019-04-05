@@ -28,7 +28,7 @@ class Edit extends React.Component {
 
                         <div class="col-4">
                             ID
-                            <input type="text" name="id" class="form-control" placeholder="ID" value={pokemon.id}/>
+                            <input class="form-control-plaintext" type="text" placeholder={pokemon.id} readonly/>
                         </div>
 
                     </div>
@@ -37,7 +37,7 @@ class Edit extends React.Component {
 
                         <div class="col-4">
                             Num
-                            <input type="text" name="num" class="form-control" placeholder="Number" value={pokemon.num}/>
+                            <input type="text" name="num" class="form-control-plaintext" placeholder="Number" value={pokemon.num} readonly/>
                         </div>
 
                         <div class="col-4">
@@ -57,6 +57,7 @@ class Edit extends React.Component {
                         <div class="col-4">
                             Weight
                             <input type="text" name="weight" class="form-control" placeholder="Weight" value={pokemon.weight}/>
+
                         </div>
 
                     </div>
