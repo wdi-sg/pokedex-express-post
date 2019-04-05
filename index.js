@@ -12,6 +12,25 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended:true
+}));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+app.get('/', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('home',)
+})
+
 /**
  * ===================================
  * Routes
@@ -45,15 +64,107 @@ app.get('/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      response.render(pokemon);
     }
   });
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  // response.send("yay");
+  jsonfile.readFile(FILE, (err, obj) => {
+  let sortBy = '<form>' + '<select name="sortby">' +
+                '<option value="none">Sort by</option>' +
+                '<option value="name">Name</option>' +
+                '<option value="id">Id</option>' +
+                '<option value="num">Number</option>' +
+                '</select>'+
+                '<input type="submit" value="Submit">'+
+                '</form>';
+    if (request.query.sortBy == undefined) {
+      response.send(sortBy);
+    } else if (request.query.sortBy == "name") {
+        obj.pokemon.sort(function(a,b) {
+          return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+        });
+        response.send(obj.pokemon)
+    } else if (request.query.sortBy == "id") {
+        obj.pokemon.sort(function(a, b) {
+          return a.id - b.id;
+        });
+        response.send(obj.pokemon);
+    } else if (request.query.sortBy == "num") {
+      obj.pokemon.sort(function(a,b) {
+        return a.num.toLowerCase().localecomapre(b.num.toLowerCase());
+      });
+      response.send(obj.pokemon);
+    }
+  })
+})
+
+// app.get('/?sortby=name', (request, response) => {
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     let sortBy = '<form>'+'<select name="sortby">'+'</select>'+'<input type="submit" value="Submit">'+'</form>';
+//     if (request.query.sortby === 'name') {
+//     obj.pokemon.sort(function(a,b) {
+//       return a.name.toLowerCase().localecomapre(b.name.toLowerCase());
+//     });
+//     response.send(obj.pokemon);
+//     }
+//   })
+// })
+
+app.get('/pokemon/new', (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let oldId = obj.pokemon[obj.pokemon.length -1].id;
+    let newId = oldId + 1;
+    let newPokemon = '<h1>New pokemon found!</h1>' + '<form method="POST" action="/pokemon/added">'+
+                          'ID:<input type="text" name="id" value="'+newId+'"><br>'+
+                          'Number:<input type="text" name="num" value="'+newId+'"><br>'+
+                          'Pokemon Name:<input type="text" name="name"><br>'+
+                          'Image:<input type="text" name="img"><br>'+
+                          'Height:<input type="text" name="hight" value="0.00 m"><br>'+
+                          'Weight:<input type="text" name="weight" value="0.0 kg"><br>' +
+                          '<input type="submit" value="Submit">'
+                          '</form>';
+    response.send(newPokemon);
+  });
 });
 
+app.post('/pokemon/added',(request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let newId = parseInt(request.body.id);
+    request.body.id = newId;
+    obj.pokemon.push(request.body);
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.log(err);
+      response.send(request.body);
+    });
+  });
+})
+
+app.get('/pokemon/:id/edit', (request,response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    let index = parseInt(request.params.id - 1);
+    obj['paramsKey'] = index;
+    response.render('edit', obj);
+  })
+})
+
+app.put('/pokemon/:id/edit', (request, response) =>{
+  jsonfile.readFile(FILE, (err, obj) => {
+    let index = request.body.id - 1;
+        obj.pokemon[index].id = parseInt(request.body.id);
+        obj.pokemon[index].num = request.body.num;
+        obj.pokemon[index].name = request.body.name;
+        obj.pokemon[index].img = request.body.img;
+        obj.pokemon[index].height = request.body.height;
+        obj.pokemon[index].weight = request.body.weight;
+        obj.pokemon[index].candy = request.body.candy;
+        obj.pokemon[index].egg = request.body.egg;
+        obj.pokemon[index].avg_spawns = parseInt(request.body.avg_spawns);
+        obj.pokemon[index].spawn_time = request.body.spawn_time;
+  })
+})
 /**
  * ===================================
  * Listen to requests on port 3000
