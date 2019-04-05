@@ -94,9 +94,17 @@ app.get('/pokemon/:id/edit', (req, res) =>{
 
     let pokemonObjList = obj.pokemon[arrayIndex-1];
 
-    res.render('home', pokemonObjList);
+    res.render('edit', pokemonObjList);
     });
 })
+
+app.get('/pokemon/:id/delete', (req, res) =>{
+  let arrayIndex = parseInt(req.params.id);
+    jsonfile.readFile(FILE,(err, obj) =>{
+      let pokemonObjList = obj.pokemon[arrayIndex-1];
+      res.render('delete', pokemonObjList)
+    })
+});
 
 app.put('/pokemon/:id', (req, res) =>{
   // console.log(req.body);

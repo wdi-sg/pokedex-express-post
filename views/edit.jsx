@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Home extends React.Component {
+class Edit extends React.Component {
   render() {
     const id = this.props.id;
     const name = this.props.name;
@@ -29,4 +29,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+module.exports = Edit;
