@@ -1,5 +1,6 @@
-//still confuse. watching tutorials online to understand more
+//smtg
 const express = require('express');
+
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
@@ -52,7 +53,7 @@ app.get('/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send("jadi");
 });
 
 /**
