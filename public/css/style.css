@@ -1,6 +1,8 @@
 /* General */
 body {
-	margin: 20px;
+	width: 90%;
+	margin: 1px auto;
+
 }
 
 h1 {
@@ -20,6 +22,73 @@ nav {
 	display: block;
 }
 
+/* Nav */
+.siteNav {
+	width: 100%;
+	display: flex;
+	margin-bottom: 20px;
+	flex-direction: row;
+}
+
+.siteNav > div {
+	width: 14.2%;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	background-color: #313131;
+	border-left: 2px solid #222222;
+	border-right: 2px solid #222222;
+}
+
+.home, .home:hover {
+	background-color: #919191;
+	border-left: 2px solid #919191;
+	border-right: 2px solid #919191;
+	border-bottom: 4px solid #919191;
+}
+
+.pokedex, .pokedex:hover {
+	background-color: #DD330F;
+	border-left: 2px solid #DD330F;
+	border-right: 2px solid #DD330F;
+	border-bottom: 4px solid #DD330F;
+}
+
+.watchPokemonTV, .watchPokemonTV:hover {
+	background-color: #EF6B33;
+	border-left: 2px solid #EF6B33;
+	border-right: 2px solid #EF6B33;
+	border-bottom: 4px solid #EF6B33;
+}
+
+.playMinigames, .playMinigames:hover {
+	background-color: #BB9831;
+	border-left: 2px solid #BB9831;
+	border-right: 2px solid #BB9831;
+	border-bottom: 4px solid #BB9831;
+}
+
+.tradingCardGame,.tradingCardGame:hover {
+	background-color: #2BA7D6;
+	border-left: 2px solid #2BA7D6;
+	border-right: 2px solid #2BA7D6;
+	border-bottom: 4px solid #2BA7D6;
+}
+
+.videoGame, .videoGame:hover {
+	background-color: #1853B7;
+	border-left: 2px solid #1853B7;
+	border-right: 2px solid #1853B7;
+	border-bottom: 4px solid #1853B7;
+}
+
+.play, .play:hover {
+	background-color: #4DAD5F;
+	border-left: 2px solid #4DAD5F;
+	border-right: 2px solid #4DAD5F;
+	border-bottom: 4px solid #4DAD5F;
+}
+
 /* Pokedex Page*/
 form {
 	margin: 0px 20px 20px 0px;
@@ -27,7 +96,7 @@ form {
 }
 
 .table {
-	width: 90%;
+	/*width: 90%;*/
 	margin: auto;
 	text-align: center;
 }

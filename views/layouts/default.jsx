@@ -10,8 +10,19 @@ class DefaultLayout extends React.Component {
                     <link rel="stylesheet" href="/css/style.css"/>
                 </head>
 
-                <body>{this.props.children}</body>
+                <body>
+                    <nav className="siteNav">
+                        <div className="home">Home</div>
+                        <div className="pokedex">Pokedex</div>
+                        <div className="watchPokemonTV">Watch Pokemon TV</div>
+                        <div className="playMinigames">Play Minigames</div>
+                        <div className="tradingCardGame">Trading Card Game</div>
+                        <div className="videoGame">Video Game</div>
+                        <div className="play">Play! Pokemon Event</div>
+                    </nav>
 
+                    {this.props.children}
+                </body>
             </html>
     );
   }
