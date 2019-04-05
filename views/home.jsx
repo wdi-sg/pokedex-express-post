@@ -4,24 +4,31 @@ class Home extends React.Component {
 
   render() {
 
-    const pokemonRequested = this.props.pokemon;
-    const objectKeysArray = Object.keys(pokemonRequested);
-    const id = pokemonRequested.id;
+    // let pokedexArray = this.props.pokemon;
+    console.log("8");
 
-    const inputArray = objectKeysArray.map(key => {
-        return <div>{key}:&nbsp;<input type="text" name={key} value={pokemonRequested[key]} /><br></br></div>;
+    let pokemonArray = this.props.pokemon;
+    console.log("11");
+    console.log(pokemonArray);
+
+    let list = pokemonArray.map(string => {
+        return <div>{string}</div>;
+
     });
-
-    let formAttribute = `/pokemon/${id}?_method=PUT`;
 
     return (
         <html>
             <body>
-                <h1>Edit Pokemon</h1>
-                <form method="POST" action={formAttribute}>
-                        {inputArray}
-                    <input type="submit" value="submit"/>
+                <h1>Welcome to Pokedex</h1>
+                <form method="get" action="/">
+                        <select name="sortby">
+                            <option value="" name=""></option>
+                            <option name="sortByName" value="Name">Name</option>
+                            <option name="sortById" value="Id">ID</option>
+                        </select>
+                        <input type="submit" value="submit"/>
                 </form>
+                {list}
             </body>
         </html>
     );

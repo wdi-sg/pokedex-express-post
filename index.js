@@ -6,7 +6,7 @@ const file = 'pokedex.json';
 let data;
 
 jsonfile.readFile(file, (err, obj) => {
-    console.log(err);
+    console.error(err);
     data = obj.pokemon;
 });
 
@@ -16,15 +16,8 @@ jsonfile.readFile(file, (err, obj) => {
  * ===================================
  */
 
-// Init express app
 const app = express();
-
-// tell your app to use the module
-
-// for parsing application/json
 app.use(express.json());
-
-// for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({
   extended: true
 }));
@@ -32,14 +25,9 @@ app.use(express.urlencoded({
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
-// this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
-
-// this tells express where to look for the view files
 app.set('views', __dirname + '/views');
-
-// this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
 /**
@@ -50,31 +38,74 @@ app.set('view engine', 'jsx');
 
 app.get("/pokemon/:id/edit", (request, response) => {
     let id = parseInt( request.params.id );
-    let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
-    response.render('home',pokemonRequested);
+
+    if (id>data.length) {
+        response.send(404, `No Pokemon found! </br>Please enter a number from 1 to ${data.length}`)
+    } else {
+        let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
+        response.render('edit',pokemonRequested);
+    }
 });
 
 
 app.put('/pokemon/:id', (request, response)=>{
 
     let id = parseInt( request.params.id );
-    let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
+    let num;
+    if (id.length < 2) {
+        num = "00"+id;
+    } else if (id.length < 3) {
+        num = "0"+id;
+    } else if (id.length < 4) {
+        num = id;
+    }
+
     let editedPokemonObj = request.body;
+    const objectKeysArray = Object.keys(data[id]);
 
-    const objectKeysArray = Object.keys(pokemonRequested);
-
-    objectKeysArray.forEach(item => {
-        pokemonRequested.item = editedPokemonObj.item;
+    data.forEach(obj => {
+        if (obj[id] === id) {
+            objectKeysArray.map(key => {
+                obj[key] = editedPokemonObj[key];
+            });
+        }
     });
 
-    jsonfile.writeFile(file, pokemonRequested, (err) => {
-        console.error(err);
-        // response.send(request.body);
-    });
-    response.send("hello");
+    response.send(data[id-1]);
 });
 
 
+
+app.get("/pokemon/:id/delete", (request, response) => {
+    let id = parseInt( request.params.id );
+
+    if (id>data.length) {
+        response.send(404, `No Pokemon found! </br>Please enter a number from 1 to ${data.length}`)
+    } else {
+        let pokemonRequested = {"pokemon": data.filter( pokemon => pokemon.id === id)[0]};
+        response.render('delete', pokemonRequested);
+    }
+});
+
+
+app.delete('/pokemon/:id', (request, response)=>{
+
+    let id = parseInt( request.params.id );
+    let index = data.findIndex(pokemon => pokemon.id === id);
+    data.splice(index,1);
+    for (i=0; i<data.length; i++) {
+        id = i+1;
+        data[i].id = id;
+        if (id < 10) {
+                data[i].num = "00"+id;
+            } else if (id < 100) {
+                data[i].num = "0"+id;
+            } else {
+                data[i].num = `${id}`;
+            }
+    }
+    response.send("Pokemon removed from Pokedex!");
+});
 
 // app.get('/pokemon/new', (request, response) => {
 
@@ -196,33 +227,32 @@ app.put('/pokemon/:id', (request, response)=>{
 // });
 
 
-// app.get('/', (request, response) => {
+app.get('/', (request, response) => {
 
-//     let respond = `<form method="GET" action="sortby">
-//                         <select name="select">
-//                             <option value="name">
-//                             <option value="id">
-//                         <input type="submit" value="Sort by Name">
-//                     </form>`;
+    const pokemonArraySortedByName = data.map(pokemon => {
+        return `${pokemon["name"]} ${pokemon["id"]}`;
+    }).sort();
 
-//     let listAllPokemonString = "";
+    pokemonObjSortedByName = {"pokemon" :pokemonArraySortedByName};
+    console.log("237");
+    // console.log(pokemonArraySortedByName);
+  //  console.log(data);
 
-//     jsonfile.readFile(file, (err, obj) => {
-//         if (err) {
-//             console.log("127: Error while reading!");
-//             console.log(err);
-//         } else {
+    const pokemonArraySortedById = data.map(pokemon => {
+        return `${pokemon["id"]} ${pokemon["name"]}`;
+    }).sort((a,b) => parseInt(a)-(parseInt(b)));
 
-//             for ( i=0; i<obj.pokemon.length; i++ ) {
-//                 let pokemonIdInPokedex = obj.pokemon[i]["id"];
-//                 let pokemonNameInPokedex = obj.pokemon[i]["name"];
+    console.log("245");
+    console.log(pokemonArraySortedById);
 
-//                 listAllPokemonString += `${pokemonIdInPokedex}: ${pokemonNameInPokedex}<br>`;
-//             }
-//         }
-//     response.send(`${respond}<br>${listAllPokemonString}`);
-//     })
-// });
+    pokemonObjSortedById = {"pokemon" :pokemonArraySortedById};
+
+    // if (request.query === "" || request.query === "sortById") {
+    // response.render('home', pokemonObjSortedById);
+    // } else if (request.query === "sortByName") {
+        response.render('home', pokemonObjSortedByName);
+    // }
+});
 
 
 
