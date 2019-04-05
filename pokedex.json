@@ -8,9 +8,9 @@
       "height": "0.71 m",
       "weight": "6.9 kg",
       "candy": "Bulbasaur Candy",
-      "candy_count": "25",
+      "candy_count": 25,
       "egg": "2 km",
-      "avg_spawns": "69",
+      "avg_spawns": 69,
       "spawn_time": "20:00"
     },
     {
