@@ -158,7 +158,7 @@ app.get('/pokemon', function(request, response) {
 app.get('/pokemon/new', (request, response) => {
 
 
-        response.render('newpokemon');
+        response.render('new');
 
 })
 
