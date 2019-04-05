@@ -4,6 +4,8 @@
 
 const express = require('express');
 const jsonfile = require('jsonfile');
+const methodOverride = require('method-override') //so that we can use PUT and DELETE in express
+
 
 const FILE = 'pokedex.json';
 
@@ -15,9 +17,12 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+// tell your app to use the module
+app.use(express.json());
 app.use(express.urlencoded({ //use this so that we can do request.body later
   extended: true
 }));
+app.use(methodOverride('_method')); // from using methodOverride above
 
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
@@ -69,17 +74,8 @@ app.get('/:id', (request, response) => {
 });
 //Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 app.get('/pokemon/new', (request, response) => {
-  let  respond =  '<h1>New Pokemon</h1>'+
-                  '<form method="POST" action="/pokemon">'+ //this action ideally will point to another app.get or app.post function that has
-                  'Pokemon ID: <input type= "number" name = "id">'+
-                  'Pokemon Num: <input type= "text" name = "num">'+
-                  'Pokemon Name: <input type= "text" name = "name">'+
-                  'Pokemon Image: <input type= "image" name = "img">'+
-                  'Height: <input type= "number" name = "height">'+
-                  'Weight: <input type= "number" name = "weight">'+
-                  '<input type= "submit" value= "Submit">'+
-                  '</form>';
-  response.send(respond);
+
+  response.render('new');
 });
 
 //Point the form to submit data to the (/pokemon) route using POST method;
@@ -166,11 +162,11 @@ app.get('/pokemon/:id/edit', (request, response)=>{
 
   let respond = obj.pokemon[arrayIndex];
 
-  response.render('thisPokemon',{ respondKey: respond, idKey: pokemonId} );
+  response.render('edit',{ respondKey: respond, idKey: pokemonId} );
   });
 });
 
-app.put('pokemon/:id')
+app.put('pokemon/:id', )
 
 /**
  * ===================================
