@@ -22,3 +22,8 @@ td {
 body {
 	background-color: red;
 }*/
+
+
+.container {
+	justify-content: center;
+}

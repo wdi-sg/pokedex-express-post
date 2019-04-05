@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Home extends React.Component {
+class New extends React.Component {
   render() {
 
     let actionAttribute = `/pokemon`;
@@ -23,4 +23,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+module.exports = New;

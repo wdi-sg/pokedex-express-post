@@ -1,9 +1,7 @@
 var React = require('react');
 
-class Home extends React.Component {
+class Sortedid extends React.Component {
   render() {
-
-console.log("foo",this);
 
   const pokemons = this.props.pokemon.map( pokemon => {
   return <tr>
@@ -24,7 +22,7 @@ console.log("foo",this);
                 <meta charset="UTF-8"/>
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
                 <link rel="stylesheet" type="text/css" href="/style.css"/>
-                <title>Pokedex:Home</title>
+                <title>Pokedex:Sortedid</title>
             </head>
 
         <body>
@@ -64,4 +62,4 @@ console.log("foo",this);
   }
 }
 
-module.exports = Home;
+module.exports = Sortedid;

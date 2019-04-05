@@ -102,48 +102,67 @@ app.get('/hello', (request, response) => {
 
     } else if(request.query.sortby === "name") {
         jsonfile.readFile(FILE, (err, obj) => {
-            let pokemonArray = [];
-            let sortedPokemonArray = [];
-            let pokemonString = "";
+            // let pokemonArray = [];
+            // let sortedPokemonArray = [];
+            // let pokemonString = "";
 
-            for(let i=0; i<obj.pokemon.length; i++) {
-                let pokemonObject = {};
-                pokemonObject.id = obj.pokemon[i].id;
-                pokemonObject.name = obj.pokemon[i].name;
-                pokemonArray.push(pokemonObject);
-            }
-            pokemonArray.sort(function(a, b) {
-             return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-         });
+            // for(let i=0; i<obj.pokemon.length; i++) {
+            //     let pokemonObject = {};
+            //     pokemonObject.id = obj.pokemon[i].id;
+            //     pokemonObject.name = obj.pokemon[i].name;
+            //     pokemonArray.push(pokemonObject);
+            // }
 
-            for(let i=0; i<pokemonArray.length; i++) {
-                pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
-            }
+         //    pokemonArray.sort(function(a, b) {
+         //     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+         // });
 
-            response.send(pokemonString);
+          // for(let i=0; i<pokemonArray.length; i++) {
+          //       pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+          //   }
+
+          // response.send(pokemonString);
+
+            obj.pokemon.sort(function(a,b) {
+                return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            });
+
+            let sortedPokemonByName = obj;
+
+                response.render("sortedname", sortedPokemonByName);
+
         });
 
     } else if(request.query.sortby === "id") {
         jsonfile.readFile(FILE, (err, obj) => {
-            let pokemonArray = [];
-            let sortedPokemonArray = [];
-            let pokemonString = "";
+         //    let pokemonArray = [];
+         //    let sortedPokemonArray = [];
+         //    let pokemonString = "";
 
-            for(let i=0; i<obj.pokemon.length; i++) {
-                let pokemonObject = {};
-                pokemonObject.id = obj.pokemon[i].id;
-                pokemonObject.name = obj.pokemon[i].name;
-                pokemonArray.push(pokemonObject);
-            }
-            pokemonArray.sort(function(a, b) {
+         //    for(let i=0; i<obj.pokemon.length; i++) {
+         //        let pokemonObject = {};
+         //        pokemonObject.id = obj.pokemon[i].id;
+         //        pokemonObject.name = obj.pokemon[i].name;
+         //        pokemonArray.push(pokemonObject);
+         //    }
+
+         //    pokemonArray.sort(function(a, b) {
+         //     return a.id - b.id;
+         // });
+
+         //    for(let i=0; i<pokemonArray.length; i++) {
+         //        pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
+         //    }
+
+         //    response.send(pokemonString);
+
+             obj.pokemon.sort(function(a, b) {
              return a.id - b.id;
          });
 
-            for(let i=0; i<pokemonArray.length; i++) {
-                pokemonString = pokemonString + pokemonArray[i].id + ". " + pokemonArray[i].name + "<br>"
-            }
+            let sortedPokemonById = obj;
 
-            response.send(pokemonString);
+                response.render("sortedid", sortedPokemonById);
         });
 
     }
@@ -285,16 +304,26 @@ if (pokemon === undefined) {
     obj.pokemon[pokemonIndex].avg_spawns = request.body.avg_spawns;
     obj.pokemon[pokemonIndex].spawn_time = request.body.spawn_time;
 
+//A much cleaner way to update the key value pairs of the json data
+// Object.keys(obj.pokemon[pokemonIndex]).forEach(key => {
+//     obj.pokemon[pokemonIndex][key] = request.body[key]
+// })
 
     // we dont need to reassign this, but lets be explicit about the change
     const changedObj = obj;
 
+    // if(request.body.)
     jsonfile.writeFile(FILE, changedObj, (err) => {
       console.error(err)
 
       //refer to line 193-223
       response.redirect(`/pokemon/${pokemonId}`);
   });
+
+// else(wrong) {
+//     response.render()
+//     render him to line 227, in line 227 function, pass in the error messages to edit.jsx, in edit.jsx write out the logic for checking the invalid input
+// }
 });
 
 });
