@@ -1,5 +1,6 @@
 var React = require("react");
 
+
 class Home extends React.Component {
     render() {
 const actionAttribute = `/pokemon/${this.props.idKey}/?_method=PUT`
