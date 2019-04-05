@@ -34,9 +34,47 @@ app.get("/pokemon", (request, response) => {
   console.log(request.query);
   let query = request.query;
   if (!(query.sort === undefined)) {
-    
-  } 
-  response.render("homepage",pokedex);
+    if (query.sort === "name") {
+      // //sort pokemon by name
+      // let pokemonNameArray = [];
+      // for (let i = 0; i < pokedex["pokemon"].length; i++) {
+      //   const pokemonName = pokedex["pokemon"][i].name;
+      //   // pokemonNameList.push(pokemon.name);
+      //   pokemonNameArray.push(pokemonName);
+      // }
+      // //sort the array by pokemon names
+      // pokemonNameArray.sort();
+      // //now use the array to sort the objects
+      // let sortedPokedexObjectArray = { pokemon: [] };
+      // for (let j = 0; j < pokemonNameArray.length; j++) {
+      //   const pokemonNameFromNameArray = pokemonNameArray[j];
+      //   for (let i = 0; i < pokedex["pokemon"].length; i++) {
+      //     const pokemonFromPokedex = pokedex["pokemon"][i];
+      //     if (pokemonFromPokedex.name === pokemonNameFromNameArray) {
+      //       sortedPokedexObjectArray["pokemon"].push(pokemonFromPokedex);
+      //     }
+      //   }
+      // }
+      console.log(pokedex["pokemon"]);
+      function sortPokemonByName(pokemonA, pokemonB) {
+        var nameA = pokemonA.name.toLowerCase();
+        var nameB = pokemonB.name.toLowerCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      }
+      pokedex["pokemon"].sort(sortPokemonByName);
+      console.log(pokedex["pokemon"]);
+
+      response.render("homepage", pokedex);
+    }
+  } else {
+    response.render("homepage", pokedex);
+  }
 });
 
 app.get("/pokemon/new", (request, response) => {
@@ -63,6 +101,18 @@ app.get("/pokemon/:id/edit", (request, response) => {
     }
     response.render("edit-pokemon", chosenOne);
   });
+});
+
+app.get("/pokemon/:id", (request, response) => {
+  let pokemonId = parseInt(request.params.id);
+  let chosenOne;
+  for (let i = 0; i < pokedex["pokemon"].length; i++) {
+    const pokemon = pokedex["pokemon"][i];
+    if (pokemonId === pokemon.id) {
+      chosenOne = pokemon;
+    }
+  }
+  response.render("pokemon-id", chosenOne);
 });
 
 app.put("/pokemon/:id", (request, response) => {
@@ -97,7 +147,6 @@ app.put("/pokemon/:id", (request, response) => {
     });
   });
 });
-
 app.get("/:id", (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {

@@ -11,7 +11,12 @@ class Home extends React.Component {
             <img src={pokemonObj.img} />
           </td>
           <td>{pokemonObj.name}</td>
-          <td>buttons</td>
+          <td>
+            <form action={"/pokemon/" + pokemonObj.id} method="get">
+              <button className="btn btn-primary" type="submit" >View</button>
+              <button className="btn btn-primary" type="submit" >Edit</button>
+            </form>
+          </td>
         </tr>
       );
     });
@@ -38,7 +43,14 @@ class Home extends React.Component {
             <div className="row">
               <div className="col">
                 <form action="/pokemon" method="GET">
-                  <button type="submit" name="sort" value="name" class="btn btn-primary">
+                  <button type="submit" className="btn btn-primary">
+                    Home
+                  </button>
+                  <button
+                    type="submit"
+                    name="sort"
+                    value="name"
+                    className="btn btn-secondary">
                     Sort By Name
                   </button>
                 </form>
