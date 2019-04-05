@@ -26,13 +26,27 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
-// app.get('/', (req, res) => {
-//     // running this will let express to run home.handlebars file in your views folder
-//     res.render('home')
-// })
+//---------------------------------------
+//index page: homepage listing all pokemon
+app.get("pokemon/", (request, response) => {
+
+    let allPokemonArr = [];
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            allPokemonArr.push(`<li>${obj.pokemon[i].name}</li>`);
+        }
+
+        response.send("All Pokemon:" + allPokemonArr.join("") + ".");
+        //eventually...
+        //running this will let express to run home.handlebars file in your views folder
+        //response.render('home');
+    });
+});
 
 //---------------------------------------
-app.get('/:id', (request, response) => {
+//getting individual pokemon
+app.get('/pokemon/:id', (request, response) => {
 
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
@@ -65,9 +79,7 @@ app.get('/:id', (request, response) => {
 });
 
 //---------------------------------------
-
-//Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-
+//creating a new pokemon
 app.get('/pokemon/new', (request, response) => {
 
     let pokeform = '<h1>Pokémon Details</h1>' +
@@ -103,23 +115,9 @@ app.post('/pokemon', function(request, response) {
     response.send(newPokemon);
 });
 
-//at the root route (GET request) / display a list of all the pokemons in the pokedex
-app.get("/", (request, response) => {
-
-    let allPokemonArr = [];
-
-    jsonfile.readFile(FILE, (err, obj) => {
-        for (let i = 0; i < obj.pokemon.length; i++) {
-            allPokemonArr.push(`<li>${obj.pokemon[i].name}</li>`);
-        }
-
-        response.send("All Pokemon:" + allPokemonArr.join("") + ".");
-    });
-});
-
 //POST part 2
 //---------------------------------------
-//add the ability to edit the data for a given pokemon
+//editing pokemon
 
 app.get('/pokemon/:id/edit', (request, response) => {
 
@@ -139,7 +137,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
         let selectedPokemon = obj.pokemon[selectedPokemonIndex];
 
-        response.render("home", selectedPokemon);
+        response.render("edit", selectedPokemon);
     });
 });
 
@@ -159,7 +157,7 @@ app.put('/pokemon/:id', (request, response) => {
 
         let originalPokeName = obj.pokemon[pokeIndex].name;
 
-        // individually edit each value in the animal *object*
+        // individually edit each value in the pokemon *object*
         // obj.pokemon[PokeIndex].id = request.body.id;
         obj.pokemon[pokeIndex].num = request.body.num;
         obj.pokemon[pokeIndex].name = request.body.name;
@@ -184,9 +182,7 @@ app.put('/pokemon/:id', (request, response) => {
 });
 
 //---------------------------------------
-// add a new page with a form ( it will be a form with only a single button )
-// make the path for this page /pokemon/:id/delete
-// submit the form to /pokemon/:id with method DELETE
+// delete pokemon
 
 app.get('/pokemon/:id/delete', (request, response) => {
 
