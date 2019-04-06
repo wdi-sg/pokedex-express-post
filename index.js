@@ -64,7 +64,7 @@ var addZero = function(n) {
   return str;
 }
 
-var getUniquePokemonType = function () {
+var getAllPokemonType = function () {
     let uniqueTypes = [];
 
     _.forEach(data.pokemon, (p) => {
@@ -157,13 +157,10 @@ var getPokemonByIdRequestHandler = function (request, response) {
 }
 
 var newPokemonRequestHandler = function (request, response) {
-    let uniquePokemonType = getUniquePokemonType();
-
-    response.render('add', {'uniquePokemonType': uniquePokemonType});
+    response.render('add', { 'allPokemonType': getAllPokemonType() });
 }
 
 var addNewPokemonRequestHandler = function (request, response) {
-
     getPokemonWeakness(getPokemonType(request.body.type));
 
     let newPokemon = {
