@@ -218,8 +218,8 @@ if (pokemon === undefined) {
       response.send("not found");
   } else {
 
-//else if pokemon is found by id, then send the matched pokemon as response
-      response.send(pokemon);
+    //when user arrive at /pokemon/:id, render them the view pokemon page which will show a pokemon details page which tallies with the input id in the url
+      response.render("view", { pokemonKey: pokemon });
   }
 });
 });
@@ -283,6 +283,9 @@ if (pokemon === undefined) {
         }
     }
 
+    pokemon = obj.pokemon[pokemonIndex];
+
+
     // individually edit each value in the pokemon object with the user's inputs from the form in the edit.jsx page
     obj.pokemon[pokemonIndex].num = request.body.num;
     obj.pokemon[pokemonIndex].name = request.body.name;
@@ -307,8 +310,8 @@ if (pokemon === undefined) {
     jsonfile.writeFile(FILE, changedObj, (err) => {
       console.error(err)
 
-      //append the id value to the redirect url, this will redirect user to the edited pokemon page after the pokemon's fields have been edited
-      response.redirect(`/pokemon/${pokemonId}`);
+      //render the view pokemon page where the pokemon is the one where the user has just edited
+      response.render("view", { pokemonKey: pokemon });
   });
 
 // else(wrong) { - this is for validation check further exercise

@@ -8,22 +8,34 @@ class Edit extends React.Component {
     let actionAttribute = `/pokemon/${this.props.idKey}?_method=PUT`;
 
     return (
+         <html>
+            <head>
+                <meta charset="UTF-8"/>
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+                <link rel="stylesheet" type="text/css" href="/editstyle.css"/>
+                <title>Pokedex:Edit</title>
+            </head>
+
         <body>
-        <h1>EDIT pokemons</h1>
+        <div class="container">
+        <h1>EDIT pokemon</h1><br/>
         <form method="POST" action={actionAttribute}>
-        Edit num:<input type="text" name="num" value={this.props.recordKey.num}/><br/>
-        Edit name:<input type="text" name="name" value={this.props.recordKey.name}/><br/>
-        Edit img:<input type="text" name="img" value={this.props.recordKey.img}/><br/>
-        Edit height:<input type="text" name="height" value={this.props.recordKey.height}/><br/>
-        Edit weight:<input type="text" name="weight" value={this.props.recordKey.weight}/><br/>
-        Edit candy:<input type="text" name="candy" value={this.props.recordKey.candy}/><br/>
-        Edit candy_count:<input type="text" name="candy_count" value={this.props.recordKey.candy_count}/><br/>
-        Edit egg:<input type="text" name="egg" value={this.props.recordKey.egg}/><br/>
-        Edit avg_spawns:<input type="text" name="avg_spawns" value={this.props.recordKey.avg_spawns}/><br/>
-        Edit spawn_time:<input type="text" name="spawn_time" value={this.props.recordKey.spawn_time}/><br/>
-        <input type="submit" value="Confirm"/>
+        Edit num:<input type="text" name="num" value={this.props.recordKey.num}/><br/><br/>
+        Edit name:<input type="text" name="name" value={this.props.recordKey.name}/><br/><br/>
+        Edit img:<input type="text" name="img" value={this.props.recordKey.img}/><br/><br/>
+        Edit height:<input type="text" name="height" value={this.props.recordKey.height}/><br/><br/>
+        Edit weight:<input type="text" name="weight" value={this.props.recordKey.weight}/><br/><br/>
+        Edit candy:<input type="text" name="candy" value={this.props.recordKey.candy}/><br/><br/>
+        Edit candy_count:<input type="text" name="candy_count" value={this.props.recordKey.candy_count}/><br/><br/>
+        Edit egg:<input type="text" name="egg" value={this.props.recordKey.egg}/><br/><br/>
+        Edit avg_spawns:<input type="text" name="avg_spawns" value={this.props.recordKey.avg_spawns}/><br/><br/>
+        Edit spawn_time:<input type="text" name="spawn_time" value={this.props.recordKey.spawn_time}/><br/><br/>
+        <input type="submit" class="btn btn-primary" value="Confirm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href={`/`} class="btn btn-danger">Back</a>
         </form>
+        </div>
         </body>
+        </html>
     );
 //     return (
 //         <Layout>

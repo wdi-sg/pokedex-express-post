@@ -1,0 +1,78 @@
+/*
+Colors to use:
+dark blue: #06365f
+light blue: #1c5380
+*/
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+body h1 span {
+	color: rgb(96,96,96);
+}
+
+.container {
+margin: 10px;
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+
+
+.bulbasaur {
+background-color: rgb(242,242,242);
+margin: 5px;
+border-radius: 15px;
+}
+
+.content {
+  margin: 5px;
+  padding: 10px;
+}
+
+.rectangle {
+	height: 200px;
+	width: 350px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	background-color: rgb(56,168,213);
+	border-radius: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.rectangle span {
+	color: white;
+	margin-top: 10px;
+	margin-left: 10px;
+	padding-top: 10px;
+}
+
+.rectangle span div {
+	color: black;
+	margin-top: 15px;
+}
+
+h1 {
+	text-align: center;
+}
+
+.attribute {
+	/*border: 1px solid black;*/
+	/*flex-basis: 45%;*/
+	width: 45%;
+	margin:5px;
+}
+
+p {
+	margin: 5px 0;
+}
+
+#eachImage {
+	width: 375px;
+	height: 375px;
+}

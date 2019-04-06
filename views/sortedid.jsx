@@ -1,5 +1,7 @@
 var React = require('react');
 
+var Layout = require('./layout');
+
 class Sortedid extends React.Component {
   render() {
 
@@ -17,15 +19,8 @@ class Sortedid extends React.Component {
   })
 
     return (
-        <html>
-            <head>
-                <meta charset="UTF-8"/>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-                <link rel="stylesheet" type="text/css" href="/style.css"/>
-                <title>Pokedex:Sortedid</title>
-            </head>
+        <Layout>
 
-        <body>
         <div align="center" class="mainDiv">
         <h1>Welcome to Pokedex!</h1><br/>
         <div class="buttonDiv col-9">
@@ -56,8 +51,8 @@ class Sortedid extends React.Component {
             </table>
             </div>
             </div>
-        </body>
-        </html>
+
+        </Layout>
     );
   }
 }
