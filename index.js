@@ -199,13 +199,12 @@ app.get('/', (request, response) => {
 
 // at the root route (GET request) `/` display a list of all the pokemons in the pokedex
 
-if (request.query.sortby === "name") {
-            response.send("hi");
-        } else {
-            jsonfile.readFile(FILE, (err, obj) => {
-        response.render('home', obj)
-    })
-
+    if (request.query.sortby === "name") {
+        response.send("hi");
+    } else {
+        jsonfile.readFile(FILE, (err, obj) => {
+            response.render('home', obj)
+        })
     }
 
 });
