@@ -15,12 +15,12 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
-//this line below, sets a layout look to your express project
-const reactEngine = require('express-react-views').createEngine();
-app.engine('jsx', reactEngine);
+// //this line below, sets a layout look to your express project
+// const reactEngine = require('express-react-views').createEngine();
+// app.engine('jsx', reactEngine);
 
-//this tells express where to look for the view files
-app.set('views', __dirname + '/views');
+// //this tells express where to look for the view files
+// app.set('views', __dirname + '/views');
 
 //this line sets react to be the default view engine
 app.set('view engine', 'jsx');
@@ -38,12 +38,13 @@ app.use(express.urlencoded({
  */
 
 // Display a list of all pokemon
-app.get('/', (request, response)=>{
-
-    jsonfile.readFile(FILE, (err, obj)=>{
-        response.send(obj.pokemon);
-    })
-})
+// app.get('/', (request, response)=>{
+//     jsonfile.readFile(FILE, (err, obj)=>{
+//         let pokemonIndex = obj.pokemon;
+//         response.render('home', {obj:pokemonIndex});
+//         // response.send(obj.pokemon);
+//     })
+// })
 
 // Submit new Pokemon
 app.get('/pokemon/new', (request, response)=>{
@@ -93,36 +94,36 @@ app.post('/pokemon', function(request, response) {
 // save the request body
 });
 
-// Edit Pokemon
-app.get('/pokemon/:id/edit', (request, response)=>{
+// //Edit Pokemon
+// app.get('/pokemon/:id/edit', (request, response)=>{
 
-    let pokemon = parseInt( request.params.id );
-        console.log(pokemon);
+//     let pokemon = parseInt( request.params.id );
 
-    //This will read the pokedex.json
-    jsonfile.readFile(FILE, (err, obj) => {
 
-    let  respond =  '<h1>Edit Pokemon</h1>'+
+//     //This will read the pokedex.json
+//     jsonfile.readFile(FILE, (err, obj) => {
 
-              '<form method="POST" action="/'+pokemon.id+'?_method=PUT">'+
-              'Id:<input type="number" name="id" min="152" max="200" value="'+pokemon.id+'"/>'+
-              '<br>'+'<br>'+
-              'Num:<input type="number" name="num" min="152" max="200" >'+
-              '<br>'+'<br>'+
-              'Name:<input type="text" name="name" >'+
-              '<br>'+'<br>'+
-              'Image:<input type="file" name="img" accept="image/*">'+
-              '<br>'+'<br>'+
-              'Height:<input type="text" name="height" >'+
-              '<br>'+'<br>'+
-              'Weight:<input type="text" name="weight" >'+
-              '<br>'+'<br>'+
-              '<input type="submit" value="Submit">'
-              '</form>';
+//     let  respond =  '<h1>Edit Pokemon</h1>'+
 
-    response.send(obj.pokemon);
-    });
-});
+//               '<form method="POST" action="/'+pokemon.id+'?_method=PUT">'+
+//               'Id:<input type="number" name="id" min="152" max="200" value="'+pokemon.id+'"/>'+
+//               '<br>'+'<br>'+
+//               'Num:<input type="number" name="num" min="152" max="200" >'+
+//               '<br>'+'<br>'+
+//               'Name:<input type="text" name="name" >'+
+//               '<br>'+'<br>'+
+//               'Image:<input type="file" name="img" accept="image/*">'+
+//               '<br>'+'<br>'+
+//               'Height:<input type="text" name="height" >'+
+//               '<br>'+'<br>'+
+//               'Weight:<input type="text" name="weight" >'+
+//               '<br>'+'<br>'+
+//               '<input type="submit" value="Submit">'
+//               '</form>';
+
+//     response.send(obj.pokemon);
+//     });
+// });
 
 app.get('/:id', (request, response) => {
 
