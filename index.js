@@ -44,20 +44,30 @@ app.set('view engine', 'jsx');
 
  //Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
  app.post('/pokemon', (request, response)=>{
-   console.log("this is request body:",request.body);
+  //for testing purposes, I console log out stuff here...
+   console.log("this is request body.id: "+request.body.id);
+   console.log("this is request body.num: "+request.body.num);
+   console.log("this is request body.name: "+request.body.name);
    let newPokemon = request.body;
+   console.log("Printing out newPokemon.id: "+newPokemon.id);
+   console.log("Printing out newPokemon.num: "+newPokemon.num);
+   console.log("Printing out newPokemon.name: "+newPokemon.name);
+   //read the data in the file first before pushing the new pokemon data
    jsonfile.readFile(FILE, (err, obj) => {
        if (err) console.error(err);
-       (obj.pokemon).push(newPokemon);
-       //write file
+       obj.pokemon.push(newPokemon);
+
 
        // we dont need to reassign this, but lets be explicit about the change
-       const changedObj = obj;
+       let changedObj = obj;
+       //write file
        jsonfile.writeFile(FILE, changedObj, { spaces: 2 }, (err) => {
            if (err) console.error(err);
+           console.log("Printing out changedObj.pokemon: "+changedObj.pokemon);
+           let pokeList = changedObj.pokemon;
+           console.log("Printing out pokeList: "+pokeList);
+           response.render('home', {respondKey: pokeList});
        });
-       let pokeList = changedObj.pokemon;
-       response.render('home', {respondKey: pokeList});
    });
  });
 
