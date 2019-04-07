@@ -13,7 +13,7 @@ class Home extends React.Component {
     console.log("Creating a loop now");
 
     let allPokemonStatsArr = this.props.respondKey.map(thisPokemonStats=>{
-      let id = thisPokemonStats.id;
+      let id = parseInt(thisPokemonStats.id);
       let num = thisPokemonStats.num;
       let name = thisPokemonStats.name;
       let image = thisPokemonStats.img;

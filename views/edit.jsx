@@ -27,6 +27,7 @@ class Edit extends React.Component {
         <input type = "text" name = "name" value = {this.props.respondKey.name}/><br/>
         Pokemon Image: <br/>
         <img type = "image" name = "img" src = {this.props.respondKey.img}/><br/>
+        <input type = "url" name = "img" value = {this.props.respondKey.img}/><br/>
         Pokemon Height: <br/>
         <input type = "text" name = "height" value = {this.props.respondKey.height}/><br/>
         Pokemon Weight: <br/>

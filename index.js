@@ -53,11 +53,12 @@ app.set('view engine', 'jsx');
 
        // we dont need to reassign this, but lets be explicit about the change
        const changedObj = obj;
-       jsonfile.writeFile(FILE, changedObj, (err) => {
+       jsonfile.writeFile(FILE, changedObj, { spaces: 2 }, (err) => {
            if (err) console.error(err);
        });
+       let pokeList = changedObj.pokemon;
+       response.render('home', {respondKey: pokeList});
    });
-   response.render('home', {respondKey: newPokemon});
  });
 
 app.get('/pokemon/:id', (request, response) => {
@@ -71,11 +72,11 @@ app.get('/pokemon/:id', (request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     for (let i = 0; i < obj.pokemon.length; i++) {
-        if (pokemonId === obj.pokemon[i].id) {
+        if (pokemonId == obj.pokemon[i].id) {
             selectedPokemonIndex = i;
         }
     }
-
+    console.log("printing out selected pokemon index: "+selectedPokemonIndex);
     let respond = obj.pokemon[selectedPokemonIndex];
 
       response.render('single', respond);
@@ -158,7 +159,7 @@ app.get('/pokemon/:id/edit', (request, response)=>{
   jsonfile.readFile(FILE, (err, obj) => {
 
     for (let i = 0; i < obj.pokemon.length; i++) {
-        if (pokemonId === obj.pokemon[i].id) {
+        if (pokemonId == obj.pokemon[i].id) {
             selectedPokemonIndex = i;
         };
     };
@@ -171,31 +172,62 @@ app.get('/pokemon/:id/edit', (request, response)=>{
 
 app.put('/pokemon/:id', (request, response)=>{
   // we are recieving data
+  //the request.body.num; THIS 'num' must match the property name that you assigned in the edit.jsx
   console.log("this is request body:",request.body);
-  let pokemonId = parseInt(request.params.id)-1;
+  let pokemonId = parseInt(request.params.id);
+  let selectedPokemonIndex;
   console.log("printing out the idKey: "+pokemonId)
   jsonfile.readFile(FILE, (err, obj) => {
       if (err) console.error(err);
-      console.log()
-      obj.pokemon[pokemonId].num = request.body.num; //the request.body.num; THIS 'num' must match the property name that you assigned in the edit.jsx
-      obj.pokemon[pokemonId].name = request.body.name;
-      obj.pokemon[pokemonId].img = request.body.img;
-      obj.pokemon[pokemonId].height = request.body.height;
-      obj.pokemon[pokemonId].weight = request.body.weight;
-      obj.pokemon[pokemonId].candy = request.body.candy;
-      obj.pokemon[pokemonId].candy_count = request.body.candy_count;
-      obj.pokemon[pokemonId].egg = request.body.egg;
-      obj.pokemon[pokemonId].avg_spawns = request.body.avg_spawns;
-      obj.pokemon[pokemonId].spawn_time = request.body.spawn_time;
+      for (let i = 0; i < obj.pokemon.length; i++) {
+          if (pokemonId == parseInt(obj.pokemon[i].id)){
+              selectedPokemonIndex = parseInt(i);
+          }
+        }
+      console.log("printing out selectedPokemonIndex: "+selectedPokemonIndex);
+      console.log("Printing out obj.pokemon: "+obj.pokemon);
+      console.log("Printing out selectedPokemonIndex: "+obj.pokemon[selectedPokemonIndex]);
+      console.log("Printing out selectedPokemonIndex.num: "+obj.pokemon[selectedPokemonIndex].num);
+      console.log("printing out request.body.num: "+request.body.num);
+      obj.pokemon[selectedPokemonIndex].num = request.body.num;
+      obj.pokemon[selectedPokemonIndex].name = request.body.name;
+      obj.pokemon[selectedPokemonIndex].img = request.body.img;
+      obj.pokemon[selectedPokemonIndex].height = request.body.height;
+      obj.pokemon[selectedPokemonIndex].weight = request.body.weight;
+      obj.pokemon[selectedPokemonIndex].candy = request.body.candy;
+      obj.pokemon[selectedPokemonIndex].candy_count = request.body.candy_count;
+      obj.pokemon[selectedPokemonIndex].egg = request.body.egg;
+      obj.pokemon[selectedPokemonIndex].avg_spawns = request.body.avg_spawns;
+      obj.pokemon[selectedPokemonIndex].spawn_time = request.body.spawn_time;
       // we dont need to reassign this, but lets be explicit about the change
       const changedObj = obj;
 
       jsonfile.writeFile(FILE, changedObj, { spaces: 2 }, (err) => {
           if (err) console.error(err);
-          response.render('single',changedObj.pokemon[pokemonId]);
+          response.render('single',changedObj.pokemon[selectedPokemonIndex]);
         });
     })
 })
+
+app.get('/pokemon/:id/delete', (request, response)=>{
+  let pokemonId = parseInt(request.params.id);
+  let selectedPokemonIndex;
+
+  jsonfile.readFile(FILE, (err,obj)=>{
+    for (let i=0; i<obj.pokemon.length; i++){
+      if (pokemonId == obj.pokemon[i].id){
+        selectedPokemonIndex = i;
+      };
+    };
+    let respond = obj.pokemon[selectedPokemonIndex];
+    response.render('delete', {respondKey: respond, idKey: pokemonId});
+  });
+});
+
+app.delete('/pokemon/:id', (request, response)=>{
+  console.log("this is request body:",request.body);
+})
+
 
 /**
  * ===================================

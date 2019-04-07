@@ -7,7 +7,7 @@ class Single extends React.Component {
     console.log("printing out stats");
     console.log(stats);
     console.log("done printing out stats");
-      let id = stats.id;
+      let id = parseInt(stats.id);
       let num = stats.num;
       let name = stats.name;
       let image = stats.img;
