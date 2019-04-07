@@ -4,14 +4,21 @@ class New extends React.Component {
 
   render() {
     return (
-                      <form method = "POST" action = {''}>
-                      Pokemon Num: <input type= "text" name = "num"/> //always remember to close the tags for jsx files....
-                      Pokemon Name: <input type= "text" name = "name"/>
-                      Pokemon Image: <input type= "image" name = "img"/>
-                      Height: <input type= "number" name = "height"/>
-                      Weight: <input type= "number" name = "weight"/>
-                      <input type= "submit" value= "Submit"/>
-                      </form>
+            <form method = "POST" action = {'/pokemon'}>
+              Pokemon ID: <br/>
+              <input type= "text" name = "id" value = /><br/>
+              Pokemon Num: <br/>
+              <input type= "text" name = "num"/><br/> //always remember to close the tags for jsx files....
+              Pokemon Name: <br/>
+              <input type= "text" name = "name"/><br/>
+              Pokemon Image: <br/>
+              <input type= "image" name = "img"/><br/>
+              Height: <br/>
+              <input type= "number" name = "height"/><br/>
+              Weight: <br/>
+              <input type= "number" name = "weight"/><br/>
+              <input type= "submit" value= "Submit"/><br/>
+            </form>
             );
           }
 }

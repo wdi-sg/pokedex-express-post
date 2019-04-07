@@ -4,9 +4,7 @@
 
 const express = require('express');
 const jsonfile = require('jsonfile');
-const methodOverride = require('method-override') //so that we can use PUT and DELETE in express
-
-
+const methodOverride = require('method-override') //so that we can use 'PUT' and 'DELETE' in express, but the form button's method has to be 'POST'
 const FILE = 'pokedex.json';
 
 /**
@@ -27,13 +25,10 @@ app.use(methodOverride('_method')); // from using methodOverride above
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
-
 // this tells express where to look for the view files
 app.set('views', __dirname + '/views');
-
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
-
 
 /**
  * ===================================
@@ -41,42 +36,53 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+ //Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
+ app.get('/pokemon/new', (request, response) => {//this 'pokemon/new' currently is directing towards ''/pokemon/:id'
 
+   response.render('new');
+ });
+
+ //Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
+ app.post('/pokemon', (request, response)=>{
+   console.log("this is request body:",request.body);
+   let newPokemon = request.body;
+   jsonfile.readFile(FILE, (err, obj) => {
+       if (err) console.error(err);
+       (obj.pokemon).push(newPokemon);
+       //write file
+
+       // we dont need to reassign this, but lets be explicit about the change
+       const changedObj = obj;
+       jsonfile.writeFile(FILE, changedObj, (err) => {
+           if (err) console.error(err);
+       });
+   });
+   response.render('home', {respondKey: newPokemon});
+ });
+
+app.get('/pokemon/:id', (request, response) => {
+  let pokemonId = parseInt( request.params.id);
+  let selectedPokemonIndex;
+
+  console.log("printing out pokemonId: "+pokemonId);
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.error(err);
     // obj is the object from the pokedex json file
     // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
+    for (let i = 0; i < obj.pokemon.length; i++) {
+        if (pokemonId === obj.pokemon[i].id) {
+            selectedPokemonIndex = i;
+        }
     }
 
-    if (pokemon === undefined) {
+    let respond = obj.pokemon[selectedPokemonIndex];
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
+      response.render('single', respond);
+    });
   });
-});
-//Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-app.get('/pokemon/new', (request, response) => {
 
-  response.render('new');
-});
+
 
 //Point the form to submit data to the (/pokemon) route using POST method;
 // app.post('/pokemon', (request, response) => {
@@ -91,51 +97,41 @@ app.get('/pokemon/new', (request, response) => {
 //   });
 // });
 
-//Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
-app.post('/pokemon', (request, response) => {
-  // we are recieving data
-  console.log("this is request body:",request.body);
-  // save the request body
-jsonfile.readFile(FILE, (err, obj) => {
-
-  console.log("reading file now");
-  console.error(err);
-  console.log(request.body);
-  console.log("done reading file");
-  obj.pokemon.push(request.body);
-
-  jsonfile.writeFile(FILE, obj, { spaces: 2 }, (err) => {
-    console.log("writing file now");
-    console.error(err);
-    // now look inside your json file
-    response.send(obj);
-    console.log("done writing file");
-    console.log(obj);
-    });
-  });
-});
-
 //at the root route (GET request) / display a list of all the pokemons in the pokedex
-app.get('/', (request, response) => {
+//but this time we want to do a rendering with react engine to a home.jsx file.
+app.get('/', (request, response)=>{
   jsonfile.readFile(FILE, (err, obj) => {
     console.log("Begin reading file");
-    let array = [];
-    let string = "";
-    for (let i =0; i<obj.pokemon.length; i++){
-      console.log(obj.pokemon[i].name);
-      array.push(obj.pokemon[i].name); ////ideally should try to put each pokemon id, num and name into an object with three pairs of key-values. Then each pokemon details will be an object element in the array.
-    }
-    console.error(err);
-    console.table(array);
-    for (i in array){
-      string = string + array[i] + '<br>'+ " ";
-    }
-    let respond = string;
-    console.log(respond);
-    response.send(`${respond}`);
-    console.log("End reading file");
-  });
-});
+    let pokeList = obj.pokemon;
+
+    response.render('home', {respondKey: pokeList});
+  })
+})
+
+
+
+// //this was the old version of creating a list of pokemon in the root pokedex directory...
+// app.get('/', (request, response) => {
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     console.log("Begin reading file");
+//     let array = [];
+//     let string = "";
+//     for (let i =0; i<obj.pokemon.length; i++){
+//       console.log(obj.pokemon[i].name);
+//       array.push(obj.pokemon[i].name); ////ideally should try to put each pokemon id, num and name into an object with three pairs of key-values. Then each pokemon details will be an object element in the array.
+//     }
+//     console.error(err);
+//     console.table(array);
+//     for (i in array){
+//       string = string + array[i] + '<br>'+ " ";
+//     }
+//     let respond = string;
+//     console.log(respond);
+//     response.send(`${respond}`);
+//     console.log("End reading file");
+//   });
+// });
+
 
 // app.get('/', (request, response) => {
 //   response.send("yay");
@@ -157,16 +153,49 @@ app.get('/', (request, response) => {
 
 app.get('/pokemon/:id/edit', (request, response)=>{
   let pokemonId = parseInt(request.params.id);
-  let arrayIndex = parseInt(request.params.id)-1; //because say Bulbasaur is id of 1, but index of zero in the array
-  jsonfile.readFile('pokedex.json', (err, obj) => {
+  // let arrayIndex = parseInt(request.params.id)-1; //because say Bulbasaur is id of 1, but index of zero in the array
+  let selectedPokemonIndex;
+  jsonfile.readFile(FILE, (err, obj) => {
 
-  let respond = obj.pokemon[arrayIndex];
+    for (let i = 0; i < obj.pokemon.length; i++) {
+        if (pokemonId === obj.pokemon[i].id) {
+            selectedPokemonIndex = i;
+        };
+    };
 
-  response.render('edit',{ respondKey: respond, idKey: pokemonId} );
+  let respond = obj.pokemon[selectedPokemonIndex];
+
+  response.render('edit',{respondKey: respond, idKey: pokemonId});
   });
 });
 
-app.put('pokemon/:id', )
+app.put('/pokemon/:id', (request, response)=>{
+  // we are recieving data
+  console.log("this is request body:",request.body);
+  let pokemonId = parseInt(request.params.id)-1;
+  console.log("printing out the idKey: "+pokemonId)
+  jsonfile.readFile(FILE, (err, obj) => {
+      if (err) console.error(err);
+      console.log()
+      obj.pokemon[pokemonId].num = request.body.num; //the request.body.num; THIS 'num' must match the property name that you assigned in the edit.jsx
+      obj.pokemon[pokemonId].name = request.body.name;
+      obj.pokemon[pokemonId].img = request.body.img;
+      obj.pokemon[pokemonId].height = request.body.height;
+      obj.pokemon[pokemonId].weight = request.body.weight;
+      obj.pokemon[pokemonId].candy = request.body.candy;
+      obj.pokemon[pokemonId].candy_count = request.body.candy_count;
+      obj.pokemon[pokemonId].egg = request.body.egg;
+      obj.pokemon[pokemonId].avg_spawns = request.body.avg_spawns;
+      obj.pokemon[pokemonId].spawn_time = request.body.spawn_time;
+      // we dont need to reassign this, but lets be explicit about the change
+      const changedObj = obj;
+
+      jsonfile.writeFile(FILE, changedObj, { spaces: 2 }, (err) => {
+          if (err) console.error(err);
+          response.render('single',changedObj.pokemon[pokemonId]);
+        });
+    })
+})
 
 /**
  * ===================================
