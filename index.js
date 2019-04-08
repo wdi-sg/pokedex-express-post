@@ -39,8 +39,6 @@ var startServer = function () {
     jsonfile.readFileAsync(file)
         .then((JSONContent) => {
             data = JSONContent;
-        })
-        .then(() => {
             app.listen(3000);
         })
         .catch((err) => {
