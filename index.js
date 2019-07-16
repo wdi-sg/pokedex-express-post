@@ -124,10 +124,10 @@ app.post('/?sortby=name', (request, response) => {
         console.log(arr)
 
         jsonfile.writeFile(file, obj, function (err) {
-            // obj.pokemon.push(newPokemon);
+
             console.error(err)
-        response.send(arr)
-        console.log(arr)
+            // response.send(arr)
+            // console.log(arr)
 
         })
     })
