@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Test",
+      "img": "test link",
+      "height": "123 m",
+      "weight": "123 kg"
     }
   ]
 }
