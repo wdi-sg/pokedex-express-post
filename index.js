@@ -30,8 +30,6 @@ const addPokemonForm = (request, response) => {
       '<body>'+
       '<h1>animal form</h1>'+
       '<form method="POST" action="/pokemon">'+
-      '<input name="id" placeholder="id" required/><br>'+
-      '<input name="num" placeholder="num" required/><br>'+
       '<input name="name" placeholder="name" required/><br>'+
       '<input name="img" placeholder="img" required/><br>'+
       '<input name="height" placeholder="height (m)" required/><br>'+
@@ -59,15 +57,17 @@ const addPokemon = (request,response) => {
                 }
             }
             if (!existing) {
+                let lastKey = obj.lastKey + 1;
                 let pokemonObject = {
-                    "id": parseInt(newPokemon.id),
-                    "num": newPokemon.num,
+                    "id": lastKey,
+                    "num": lastKey.toString(),
                     "name": newPokemon.name,
                     "img": newPokemon.img,
                     "height": newPokemon.height+" m",
                     "weight": newPokemon.weight+" kg"
                 }
                 obj.pokemon.push(pokemonObject);
+                obj.lastKey = lastKey;
                 jsonfile.writeFile(FILE, obj, (err) =>{
                     response.send(`<h2>Added ${newPokemon.name}</h2>`);
                 })
