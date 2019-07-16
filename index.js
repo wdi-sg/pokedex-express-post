@@ -109,9 +109,19 @@ app.post("/new", (request,response) => {
     });
 });
 
-// app.get('/', (request, response) => {
-//   response.send("yay");
-// });
+app.get('/', (request, response) => {
+    // response.send("yay");
+    var pokemonName = [];
+    jsonfile.readFile(file,(err,obj)=>{
+        for (let i = 0; i < obj.pokemon.length;i++){
+            console.log(obj.pokemon[i].name);
+            pokemonName.push(obj.pokemon[i].name);
+        }
+        console.log("is it showing???")
+        var stringPokemonName = pokemonName.join("<br>");
+        response.send(stringPokemonName);
+    })
+});
 
 /**
  * ===================================
