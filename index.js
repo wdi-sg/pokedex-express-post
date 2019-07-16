@@ -67,11 +67,6 @@ app.post('/pokemon', function(request, response) {
             console.log('error reading file');
             console.log(err);
         }
-        // else {
-        //     console.log('what is currently on file');
-        //     // console.log(obj.pokemon);
-
-        // }
 
         let newPokemon = request.body;
         console.log(newPokemon);
@@ -105,6 +100,29 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 
+// Sort pokemon by name
+app.get('/sort/name', (request, response) => {
+
+    let showAllArr = [];
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        if (err) {
+            console.log('error reading file');
+            console.log(err);
+        } else {
+            for (let i = 0; i < obj.pokemon.length; i++) {
+                showAllArr.push(obj.pokemon[i].name);
+            }
+        }
+        console.log(showAllArr);
+        showAllArr.sort();
+        response.send(showAllArr.join("<br>"));
+    });
+});
+
+
+// show all pokemon on pokedex
 app.get('/', (request, response) => {
 
     let showAllArr = [];
@@ -120,7 +138,7 @@ app.get('/', (request, response) => {
             }
         }
         console.log(showAllArr);
-        response.send(showAllArr);
+        response.send(showAllArr.join("<br>"));
     });
 });
 
