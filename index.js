@@ -28,14 +28,14 @@ let createPokemon = (request, response) => {
     let form = '';
     form = `
     <form method="POST" action="/pokemon">
-      Pokemon Name:
-      <input type="text" name="id" placeholder="id">
-      <input type="text" name="num" placeholder="num">
-      <input type="text" name="name" placeholder="name">
-      <input type="text" name="img" placeholder="img">
-      <input type="text" name="height" placeholder="height">
-      <input type="text" name="weight" placeholder="weight">
-      <input type="submit" value="Submit">
+      Pokemon Name:<br>
+      <br><input type="text" name="id" placeholder="id">
+      <br><input type="text" name="num" placeholder="num">
+      <br><input type="text" name="name" placeholder="name">
+      <br><input type="text" name="img" placeholder="img">
+      <br><input type="text" name="height" placeholder="height">
+      <br><input type="text" name="weight" placeholder="weight">
+      <br><input type="submit" value="Submit">
     </form>
     `
     response.send(form);
@@ -43,16 +43,11 @@ let createPokemon = (request, response) => {
 
 let showCreatedPokemon = (request, response) => {
     let newPoke = request.body;
-    console.log('newPoke: ' +newPoke);
 
     jsonfile.readFile(FILE, (err,obj) => {
-        // let currentNum = obj.lastKey;
-        console.log('obj lastkey: ' + obj.lastKey)
         newPoke.num = obj.lastKey + 1;
         obj.lastKey++;
-
         obj.pokemon.push(newPoke);
-
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) {
                 console.log('error in writing!');
@@ -92,9 +87,14 @@ let showPokemonDetailsUsingInput = (request, response) => {
 }
 
 let showPokemonDetailsUsingLink = (request, response) => {
+    // console.log(request.route.path);
+    // console.log(request.route.body);
+    // console.log(request.route);
+    console.log(request.url);
+
     jsonfile.readFile(FILE, (err, obj) => {
         for(let i=0; i<obj.pokemon.length; i++) {
-            if ( 7 === obj.pokemon[i].id){
+            if ( request.url === `/poke/${obj.pokemon[i].id}`){
                 response.send(
                     `${obj.pokemon[i].name}<br>
                     <img src="${obj.pokemon[i].img}"><br>Height: ${obj.pokemon[i].height}<br>Weight: ${obj.pokemon[i].weight}`)
@@ -103,24 +103,28 @@ let showPokemonDetailsUsingLink = (request, response) => {
     });
 }
 
-let sortPokemon = (request, response) => {
-
+let sortAllPokemon = (request, response) => {
     let query = request.query.sortby;
 
     jsonfile.readFile(FILE, (err,obj) => {
-
         let content = '';
         let form = '';
         form = `
+        <form action="/pokemon/new">
+            <button type="submit" value="/poke/:id">Create Pokemon </button>
+        </form> <br>
+
         <form method="GET">
             <select name="sortby">
+                <option value="id">Id</option>
                 <option value="name">Name</option>
                 <option value="weight">Weight</option>
                 <option value="height">Height</option>
-                <option value="id">Id</option>
             </select>
-            <input type="submit" value="Submit">
-        </form>`;
+            <input type="submit" value="Sort Pokemon">
+        </form>
+        `;
+
 
         content = form;
 
@@ -132,10 +136,11 @@ let sortPokemon = (request, response) => {
             obj.pokemon.sort(compareHeight);
         }
 
+        //once sorted, display all pokemon to server
         for(let i=0; i<obj.pokemon.length; i++) {
             let eachPoke = obj.pokemon[i].name;
             content +=
-            `<a href='./pokemon/${obj.pokemon[i].id}'>${obj.pokemon[i].name}</a><br>`;
+            `<br><a href='/poke/${obj.pokemon[i].id}'>${obj.pokemon[i].name}</a>`;
         }
         response.send(content);
     });
@@ -188,14 +193,14 @@ let compareHeight = (a, b) => {
  * ROUTING
  * ===================================
  */
-app.get('/:id', showPokemonDetailsUsingInput);
-app.get('/pokemon/:id', showPokemonDetailsUsingLink);
 
-app.get('/', sortPokemon);
-
+app.post('/pokemon/new', showCreatedPokemon);
 app.get('/pokemon/new', createPokemon);
 app.post('/pokemon', showCreatedPokemon);
 
+app.get('/poke/:id', showPokemonDetailsUsingLink);
+app.get('/:id', showPokemonDetailsUsingInput);
+app.get('/', sortAllPokemon);
 
 /**
  * ===================================
