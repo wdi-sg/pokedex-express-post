@@ -71,6 +71,7 @@ app.get('/', (request, response) => {
                     <div class="pokemon-list">${list}</div>
                     </body>
                     </html>`;
+
                 return pokedexPage;
             };
 
@@ -149,16 +150,18 @@ app.get('/pokemon/new', (request, response) => {
     let form = '';
     form = `
         <html>
-        <body>
-        <h1>New pokemon form</h1>
+        <body style="text-align: center; background-color: black; color: yellow">
+        <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
+        <h1>Gotta catch'em all!</h1>
+        <h2>Add New Pokemon</h2>
         <form method="POST" action="/pokemon">
-        <p>id</p><input type="number" min="152" name="id" placeholder="id"/>
-        <p>num</p><input name="num" placeholder="num"/>
-        <p>name</p><input name="name" placeholder="name"/>
-        <p>img</p><input name="img" placeholder="img href"/>
-        <p>height</p><input name="height" placeholder="height"/>
-        <p>weight</p><input name="weight" placeholder="weight"/>
-        <input type="submit"/>
+        <p>Pokemon ID</p><input type="number" min="152" name="id" placeholder="id"/>
+        <p>Pokemon Number</p><input type="number" min="152" name="num" placeholder="num"/>
+        <p>Pokemon Name</p><input name="name" placeholder="name"/>
+        <p>Pokemon Image Link</p><input name="img" placeholder="img href"/>
+        <p>Pokemon Height</p><input name="height" placeholder="height"/>
+        <p>Pokemon Weight</p><input name="weight" placeholder="weight"/><br><br>
+        <input type="submit" value="Add Pokemon"/>
         </form>
         </body>
         </html>`;
@@ -170,9 +173,9 @@ app.get('/pokemon/new', (request, response) => {
 
 app.post('/pokemon', (request,response) => {
 
-  console.log("posting pokemon");
+  // console.log("posting pokemon");
   var newPokemon = request.body;
-  console.log( newPokemon );
+  // console.log( newPokemon );
 
   // save in data file
   jsonfile.readFile(FILE, (err, data) => {
@@ -181,12 +184,17 @@ app.post('/pokemon', (request,response) => {
       console.log(err)
     }
 
-    // console.log("what i currently have");
-    // console.log(data.pokemon);
+    let pokemon = data.pokemon
+    let pokemonAddedPage = '';
+    pokemonAddedPage = `
+        <html>
+        <body style="text-align: center; background-color: black; color: yellow">
+        <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
+        <h1>Gotta catch'em all!</h1>
+        <h2>New Pokemon Added!</h2>`
 
     // save data
-    data.pokemon.push(newPokemon);
-    // obj[key] = value;
+    pokemon.push(newPokemon);
 
     jsonfile.writeFile(FILE, data, (err) => {
       if( err ){
@@ -194,17 +202,13 @@ app.post('/pokemon', (request,response) => {
         console.log(err)
         response.status(503).send("ERROR WRITING FILE");
       } else {
-        console.log("write file successful");
-
-        console.log( "send response");
-        response.send("yes! new Pokemon added");
+        // console.log("write file successful");
+        // console.log( "send response");
+        response.send(pokemonAddedPage);
       }
 
     });
   });
-  // console.log here will log before json write file thats why better // to put in write file function
-  // console.log( "send response");
-  // response.send("yes!");
 });
 
 // /**
