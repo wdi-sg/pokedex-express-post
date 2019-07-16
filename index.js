@@ -1,7 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
+const file = 'pokedex.json';
 
 /**
  * ===================================
@@ -12,6 +11,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// To get request.body
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -21,7 +26,7 @@ const app = express();
 app.get('/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+  jsonfile.readFile(file, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = parseInt( request.params.id );
@@ -50,8 +55,70 @@ app.get('/:id', (request, response) => {
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
+
+app.get('/pokemon/new', (request, response) => {
+
+  let form = '';
+  form = '<html>' +
+    '<body>'+
+    '<h1>Create New Pokemon</h1>'+
+    '<form method="POST" action="/pokemon">'+
+    '<p>ID:</p><input name="id"/>'+
+    '<p>Num:</p><input name="num"/>'+
+    '<p>Name:</p><input name="name"/>'+
+    '<p>Image:</p><input name="img"/>'+
+    '<p>Height:</p><input name="height"/>'+
+    '<p>Weight:</p><input name="weight"/>'+
+    '<br><br><input type="submit"/>'+
+    '</form>'+
+    '</body>'+
+    '</html>';
+
+  response.send(form);
+});
+
+
+app.post('/pokemon', (request,response) => {
+
+    var newEntry = request.body;
+    let found = false;
+
+    // //save in data file
+    jsonfile.readFile(file, (err, obj) => {
+        if( err ){
+            console.log("error reading file");
+            console.log(err)
+        }
+        else{
+            if(newEntry.id > obj["pokemon"].length){
+                let pokemonToAdd = {
+                      "id": parseInt(newEntry.id),
+                      "num": newEntry.num,
+                      "name": newEntry.name,
+                      "img": newEntry.img,
+                      "height": newEntry.height,
+                      "weight": newEntry.weight
+                }
+                obj.pokemon.push(pokemonToAdd);
+
+                jsonfile.writeFile(file, obj, (err) => {
+                    if( err ){
+                        console.log("error writing file");
+                        console.log(err)
+                        response.status(503).send("no!");
+                    }else{
+                        console.log("~~~~~~~yay");
+                        console.log( "send response");
+                        response.send("new");
+                        console.log(obj["pokemon"].length)
+                    }
+                });
+            }
+            else {
+                response.send("<h1>Pokemon already exists</h1>");
+            }
+        }
+    });
 });
 
 /**
