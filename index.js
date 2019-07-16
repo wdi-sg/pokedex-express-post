@@ -118,10 +118,64 @@ app.get('/pokemon/new', (request, response) => {
     response.send(form);
 });
 
-
+/*app.get('/?sortby=name', (request, response) => {
+    console.log("sorting names");
+    jsonfile.readFile(FILE, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    } else {
+        let pokemonArr = [];
+        var sortedPokemon = [];
+        var sortedPokemonList = '<ul>';
+        for( let i=0; i<obj.pokemon.length; i++ ){
+            pokemonArr.push(obj.pokemon[i].name);
+        }
+        sortedPokemon = pokemonArr.sort();
+        console.log(sortedPokemon);
+        pokemonArr.forEach(function(poke) {
+            sortedPokemonList += '<li>'+ poke + '</li>'
+        });
+        sortedPokemonList += '</ul>';
+        response.send(sortedPokemonList);
+        }
+    })
+});*/
 
 app.get('/', (request, response) => {
   //response.send("yay");
+    console.log("getting form");
+    let form = '';
+    form = '<form method = "get" action = "/" >' +
+    '<input type="submit" name="sortby" value="name">' +
+    '</form>';
+
+    if (request.query.sortby === 'name'){
+        console.log("sorting names");
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+            console.log("error reading file");
+            console.log(err)
+        } else {
+            let pokemonArr = [];
+            var sortedPokemon = [];
+            var sortedPokemonList = '<ul>';
+            for( let i=0; i<obj.pokemon.length; i++ ){
+                pokemonArr.push(obj.pokemon[i].name);
+            }
+            sortedPokemon = pokemonArr.sort();
+            console.log(sortedPokemon);
+            pokemonArr.forEach(function(poke) {
+                sortedPokemonList += '<li>'+ poke + '</li>'
+            });
+            sortedPokemonList += '</ul>';
+            response.send(sortedPokemonList);
+        }
+    })
+    } else {
+
+
+
   jsonfile.readFile(FILE, (err, obj) => {
     if( err ){
       console.log("error reading file");
@@ -137,10 +191,13 @@ app.get('/', (request, response) => {
             pokemonList += '<li>'+ poke + '</li>';
         });
         pokemonList += '</ul>';
-        response.send(pokemonList);
+        response.send(form + pokemonList);
     }
   })
+  }
 });
+
+
 
 /**
  * ===================================
