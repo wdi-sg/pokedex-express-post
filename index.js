@@ -34,113 +34,104 @@ form =
         '<option value="weight">Weight</option>' +
         '<option value="height">Height</option>' +
         '</select>' +
-        '<br><br>' +
         '<input type="submit" value = "Sort By"/>'+
         '</form>';
 
 
-// Default listing of all Pokemon
-
 app.get('/', (request, response) => {
 
-    pokemonList = [];
+    console.log(request.query)
 
-    jsonfile.readFile(FILE, (err,obj) => {
+    if (request.query.sortby === "name"){
+        console.log(request.query.sortby)
+        console.log('sorting by name')
 
-        if(err) {
-            console.log('there is an error');
-            console.log(err);
+        pokemonList = [];
 
-        } else {
-            for (let i = 0; i < obj['pokemon'].length; i ++) {
-                pokemonList.push(obj['pokemon'][i].name)
+        jsonfile.readFile(FILE, (err,obj) => {
+
+            if (err) {
+                console.log('there is an error');
+                console.log(err);
+
+            } else {
+                for (let i = 0; i < obj['pokemon'].length; i ++) {
+                    pokemonList.push(obj['pokemon'][i].name)
+                }
+
+                pokemonList = pokemonList.sort();
+                response.send(form + pokemonList.join('<br>'))
             }
+        });
 
-            response.send(form + pokemonList.join('<br>'))
-        }
-    });
+    } else if (request.query.sortby === "weight"){
+        pokemonList = [];
+
+        jsonfile.readFile(FILE, (err,obj) => {
+
+            if (err) {
+                console.log('there is an error');
+                console.log(err);
+
+            } else {
+
+                let pokemonArray = obj.pokemon;
+
+                let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.weight) - parseFloat(b.weight));
+
+                for (let i = 0; i < sortedArray.length; i ++) {
+                    pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].weight)
+                }
+
+                response.send(form + pokemonList.join('<br>'))
+            }
+        });
+
+    } else if (request.query.sortby === "height"){
+        pokemonList = [];
+
+        jsonfile.readFile(FILE, (err,obj) => {
+
+            if (err) {
+                console.log('there is an error');
+                console.log(err);
+
+            } else {
+
+                let pokemonArray = obj.pokemon;
+
+                let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.height) - parseFloat(b.height));
+
+                for (let i = 0; i < sortedArray.length; i ++) {
+                    pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].height)
+                }
+
+                response.send(form + pokemonList.join('<br>'))
+            }
+        });
+
+    } else {
+        console.log('nothing selected yet')
+
+        pokemonList = [];
+
+        jsonfile.readFile(FILE, (err,obj) => {
+
+            if(err) {
+                console.log('there is an error');
+                console.log(err);
+
+            } else {
+                for (let i = 0; i < obj['pokemon'].length; i ++) {
+                    pokemonList.push(obj['pokemon'][i].name)
+                }
+
+                response.send(form + pokemonList.join('<br>'))
+            }
+        });
+    }
 
 });
-
-// Listing of Pokemon by Name
-
-app.get('/name', (request, response) => {
-
-    pokemonList = [];
-
-    jsonfile.readFile(FILE, (err,obj) => {
-
-        if (err) {
-            console.log('there is an error');
-            console.log(err);
-
-        } else {
-            for (let i = 0; i < obj['pokemon'].length; i ++) {
-                pokemonList.push(obj['pokemon'][i].name)
-            }
-
-            pokemonList = pokemonList.sort();
-            response.send(form + pokemonList.join('<br>'))
-        }
-    });
-
-});
-
-// Listing of Pokemon by Weight
-
-app.get('/weight', (request, response) => {
-
-    pokemonList = [];
-
-    jsonfile.readFile(FILE, (err,obj) => {
-
-        if (err) {
-            console.log('there is an error');
-            console.log(err);
-
-        } else {
-
-            let pokemonArray = obj.pokemon;
-
-            let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.weight) - parseFloat(b.weight));
-
-            for (let i = 0; i < sortedArray.length; i ++) {
-                pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].weight)
-            }
-
-            response.send(form + pokemonList.join('<br>'))
-        }
-    });
-});
-
-
-// Listing of Pokemon by Height
-
-app.get('/height', (request, response) => {
-
-    pokemonList = [];
-
-    jsonfile.readFile(FILE, (err,obj) => {
-
-        if (err) {
-            console.log('there is an error');
-            console.log(err);
-
-        } else {
-
-            let pokemonArray = obj.pokemon;
-
-            let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.height) - parseFloat(b.height));
-
-            for (let i = 0; i < sortedArray.length; i ++) {
-                pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].height)
-            }
-
-            response.send(form + pokemonList.join('<br>'))
-        }
-    });
-});
-
 
 
 app.get('/:id', (request, response) => {
