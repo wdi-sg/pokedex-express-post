@@ -189,7 +189,7 @@ app.get('/', (request, response) => {
             });
             console.log(sortedPokemon);
             pokemonArr.forEach(function(poke) {
-                sortedPokemonList += '<li>'+ JSON.stringify(poke) + '</li>'
+                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', weight: ' + poke.weight + '</li>'
             });
             sortedPokemonList += '</ul>';
            response.send(form + '<h2>Pokemon sorted by weight</h2>' + sortedPokemonList);
