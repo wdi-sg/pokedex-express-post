@@ -195,6 +195,42 @@ app.get('/', (request, response) => {
            response.send(form + '<h2>Pokemon sorted by weight</h2>' + sortedPokemonList);
         }
     })
+    } else if (request.query.sortby === 'height'){ //sort by height
+        console.log("sorting height");
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+            console.log("error reading file");
+            console.log(err)
+        } else {
+            let pokemonArr = [];
+            var sortedPokemon = [];
+            var sortedPokemonList = '<ul>';
+            for( let i=0; i<obj.pokemon.length; i++ ){
+                pokemonArr.push({
+                        name: obj.pokemon[i].name,
+                        height: parseFloat(obj.pokemon[i].height)
+                    });
+            }
+            console.log(pokemonArr);
+            sortedPokemon = pokemonArr.sort(function(a, b){
+                const heightA = a.height;
+                const heightB = b.height;
+                let comparison = 0;
+                if (heightA > heightB) {
+                    comparison = 1;
+                } else if (heightA < heightB) {
+                    comparison = -1;
+                }
+            return comparison;
+            });
+            console.log(sortedPokemon);
+            pokemonArr.forEach(function(poke) {
+                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', height: ' + poke.height + '</li>'
+            });
+            sortedPokemonList += '</ul>';
+           response.send(form + '<h2>Pokemon sorted by height</h2>' + sortedPokemonList);
+        }
+    })
     } else { //show all pokemon
 
 
