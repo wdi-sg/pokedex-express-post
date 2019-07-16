@@ -1880,7 +1880,8 @@
       "candy": "None",
       "egg": "Not in Eggs",
       "avg_spawns": 0,
-      "spawn_time": "N/A"
+      "spawn_time": "N/A",
+      "_locals": {}
     }
   ]
 }
