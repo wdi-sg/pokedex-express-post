@@ -12,6 +12,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());
+
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -54,6 +60,49 @@ app.get('/', (request, response) => {
   response.send("yay");
 });
 
+app.get('/pokemon/new', (request, response) => {
+    console.log('getting form');
+
+    let form = '';
+    form = '<html>' +
+    '<body>'+
+    '<h1>Form</h1>'+
+//note *POST* action here//
+    '<form method="POST" action="/pokemon">'+
+    '<input name="id"/>'+
+    '<input name="num"/>'+
+    '<input name="name"/>'+
+    '<input name="img"/>'+
+    '<input name="height"/>'+
+    '<input name="weight"/>'+
+    '<input type="submit"/>'+
+    '</form>'+
+    '</body>'+
+    '</html>';
+
+    response.send(form);
+});
+
+
+
+
+app.post('/pokemon', function(request, response) {
+  console.log('whyy cannot');
+  var newPokemon = request.body;
+  console.log(newPokemon);
+  // save the request body
+  jsonfile.readFile(FILE, (err, obj) => {
+    console.log('reading file');
+
+    obj.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+        console.error(err)
+    });
+
+  });
+    response.send(newPokemon);
+});
 /**
  * ===================================
  * Listen to requests on port 3000
