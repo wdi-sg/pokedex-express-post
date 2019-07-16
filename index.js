@@ -21,6 +21,32 @@ app.use(express.urlencoded({
 
 /**
  * ===================================
+ * Functions
+ * ===================================
+ */
+
+const listAllPokemon = (request, response) => {
+
+    let pokemonList = [];
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        if(err) {
+            console.log('there is an error');
+            console.log(err);
+
+        } else {
+
+            for (let i = 0; i < obj['pokemon'].length; i ++) {
+                pokemonList.push(obj['pokemon'][i].name)
+            }
+
+            response.send('List of all Pokemon in the Pokedex:' + '<br><br>' + pokemonList.join('<br>'))
+        }
+    });
+}
+/**
+ * ===================================
  * Routes and Endpoints
  * ===================================
  */
@@ -88,6 +114,7 @@ app.post('/pokemon', (request,response) => {
 
     let pokemon = request.body;
     console.log(pokemon);
+    pokemon.id = parseInt(pokemon.id);
 
     jsonfile.readFile(FILE, (err, obj) => {
         if( err ){
@@ -96,19 +123,26 @@ app.post('/pokemon', (request,response) => {
         }
 
         // Save data to pokedex.json
-        obj.pokemon.push(pokemon);
 
-        jsonfile.writeFile(FILE, obj, (err) => {
+        if (pokemon.id < obj.pokemon.length) {
+            response.status(406).send(`Sorry but that ID is incorrect! Please use ID: ${obj.pokemon.length + 1}`);
 
-            if( err ) {
-                console.log("error writing file");
-                console.log(err)
-                response.status(503).send("no!");
+        } else {
 
-            } else {
-                response.send(obj.pokemon);
-      }
-    });
+            obj.pokemon.push(pokemon);
+
+            jsonfile.writeFile(FILE, obj, (err) => {
+
+                if( err ) {
+                    console.log("error writing file");
+                    console.log(err)
+                    response.status(503).send("no!");
+
+                } else {
+                    response.send(obj.pokemon);
+                }
+            });
+        }
   });
 });
 
