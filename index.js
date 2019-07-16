@@ -12,6 +12,14 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+
 /**
  * ===================================
  * Routes
@@ -48,6 +56,52 @@ app.get('/:id', (request, response) => {
       response.send(pokemon);
     }
   });
+});
+
+
+
+app.post('/pokemon', function(request, response) {
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log('error reading file');
+            console.log(err);
+        }
+        // else {
+        //     console.log('what is currently on file');
+        //     // console.log(obj.pokemon);
+
+        // }
+
+        let newPokemon = request.body;
+        console.log(newPokemon);
+
+        // console.log(obj.pokemon);
+
+        obj.pokemon.push(newPokemon);
+
+        // save the request body into json file
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log('error writing file!');
+                console.log(err);
+                response.status(503).send("no!");
+            }
+        }); ////// end of writing json file //////
+
+    });////// end of reading json file //////
+    console.log("send response");
+    response.send("yes!");
+});
+
+
+app.get('/pokemon/new', (request, response) => {
+
+    var form = '';
+
+    form = '<form method="POST" action="/pokemon">Pokemon Name:<input type="number" name="id" placeholder="enter id"><input type="number" name="num" placeholder="enter number"><input type="text" name="name" placeholder="enter name"><input type="text" name="img" placeholder="enter img url"><input type="text" name="height" placeholder="enter height"><input type="text" name="weight" placeholder="enter weight"><input type="text" name="candy" placeholder="enter candy type or none"><input type="text" name="egg" placeholder="enter 1km, 5km or 10km"><input type="number" name="avg_spawns" placeholder="enter 1km, 5km or 10km"><input type="time" name="spawn_time" placeholder="enter time"><input type="submit" value="Submit"></form>';
+
+    response.send(form);
 });
 
 app.get('/', (request, response) => {
