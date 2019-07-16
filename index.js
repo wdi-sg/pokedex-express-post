@@ -40,13 +40,10 @@ form =
 
 app.get('/', (request, response) => {
 
-    console.log(request.query)
-
     if (request.query.sortby === "name"){
-        console.log(request.query.sortby)
-        console.log('sorting by name')
 
         pokemonList = [];
+        sortedArray = [];
 
         jsonfile.readFile(FILE, (err,obj) => {
 
@@ -55,12 +52,18 @@ app.get('/', (request, response) => {
                 console.log(err);
 
             } else {
+
                 for (let i = 0; i < obj['pokemon'].length; i ++) {
                     pokemonList.push(obj['pokemon'][i].name)
                 }
 
                 pokemonList = pokemonList.sort();
-                response.send(form + pokemonList.join('<br>'))
+
+                for (let i = 0; i < pokemonList.length; i ++) {
+                    sortedArray.push((i + 1) + ") " + pokemonList[i])
+                }
+
+                response.send(form + sortedArray.join('<br>'))
             }
         });
 
@@ -69,18 +72,18 @@ app.get('/', (request, response) => {
 
         jsonfile.readFile(FILE, (err,obj) => {
 
+            let pokemonArray = obj.pokemon;
+
             if (err) {
                 console.log('there is an error');
                 console.log(err);
 
             } else {
 
-                let pokemonArray = obj.pokemon;
-
                 let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.weight) - parseFloat(b.weight));
 
                 for (let i = 0; i < sortedArray.length; i ++) {
-                    pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].weight)
+                    pokemonList.push((i + 1) + ") " + sortedArray[i].name + ": " + sortedArray[i].weight)
                 }
 
                 response.send(form + pokemonList.join('<br>'))
@@ -92,18 +95,18 @@ app.get('/', (request, response) => {
 
         jsonfile.readFile(FILE, (err,obj) => {
 
+            let pokemonArray = obj.pokemon;
+
             if (err) {
                 console.log('there is an error');
                 console.log(err);
 
             } else {
 
-                let pokemonArray = obj.pokemon;
-
                 let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.height) - parseFloat(b.height));
 
                 for (let i = 0; i < sortedArray.length; i ++) {
-                    pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].height)
+                    pokemonList.push((i + 1) + ") " + sortedArray[i].name + ": " + sortedArray[i].height)
                 }
 
                 response.send(form + pokemonList.join('<br>'))
@@ -111,7 +114,6 @@ app.get('/', (request, response) => {
         });
 
     } else {
-        console.log('nothing selected yet')
 
         pokemonList = [];
 
