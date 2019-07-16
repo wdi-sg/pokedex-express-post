@@ -1,0 +1,23 @@
+h1{
+	text-align: center;
+	font-family: 'Shadows Into Light', cursive;
+}
+
+.displayImg-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.image-container {
+	width: 180px;
+	height: 180px;
+	border: 2px solid #f7f7f7;
+	border-radius: 10px;
+	margin: 5px;
+/*	display: flex;
+	flex-direction: column;
+	justify-content: center;*/
+
+}
