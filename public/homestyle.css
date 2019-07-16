@@ -1,0 +1,29 @@
+.mainDiv {
+	margin: 25px auto;
+}
+
+form {
+	display: inline;
+}
+
+table {
+	border: .3px solid black;
+	text-align: center;
+}
+
+thead {
+	font-weight: bold;
+}
+
+td {
+	border: .3px solid black;
+}
+/*
+body {
+	background-color: red;
+}*/
+
+
+.container {
+	justify-content: center;
+}

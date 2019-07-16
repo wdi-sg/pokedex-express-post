@@ -1,0 +1,14 @@
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+
+form {
+	display: inline;
+}
+
+#eachImage {
+	width: 350px;
+	height: 350px;
+}

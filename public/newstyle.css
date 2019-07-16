@@ -1,0 +1,9 @@
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+
+form {
+    display: inline;
+}
