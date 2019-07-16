@@ -23,7 +23,7 @@ app.use(express.urlencoded({
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+var checkPokemon = function (request, response) {
 
   // get json from specified file
   jsonfile.readFile(file, (err, obj) => {
@@ -53,10 +53,10 @@ app.get('/:id', (request, response) => {
       response.send(pokemon);
     }
   });
-});
+};
 
 
-app.get('/pokemon/new', (request, response) => {
+ var makeForm = function (request, response) {
 
   let form = '';
   form = '<html>' +
@@ -75,10 +75,10 @@ app.get('/pokemon/new', (request, response) => {
     '</html>';
 
   response.send(form);
-});
+};
 
 
-app.post('/pokemon', (request,response) => {
+var submitData = function (request,response) {
 
     var newEntry = request.body;
     let found = false;
@@ -109,8 +109,7 @@ app.post('/pokemon', (request,response) => {
                     }else{
                         console.log("~~~~~~~yay");
                         console.log( "send response");
-                        response.send("new");
-                        console.log(obj["pokemon"].length)
+                        response.send("New Pokemon added!");
                     }
                 });
             }
@@ -119,7 +118,38 @@ app.post('/pokemon', (request,response) => {
             }
         }
     });
-});
+};
+
+
+
+var defaultHome = function (request, response){
+    var fullList = []
+
+    jsonfile.readFile(file, (err, obj) => {
+        if (err){
+            console("ERRRORRR~~");
+        }
+        else {
+            for (let i = 0; i < obj["pokemon"].length; i++) {
+                fullList.push(`${obj["pokemon"][i]["name"]}`);
+            }
+            var fullListJoin = fullList.join("<br>");
+            response.send(`<h1> Pokedex Home </h1> ${fullListJoin}`);
+        }
+    });
+
+}
+
+
+
+app.get('/', defaultHome);
+app.post('/pokemon', submitData);
+app.get('/pokemon/new', makeForm);
+app.get('/:id', checkPokemon);
+
+
+
+
 
 /**
  * ===================================
