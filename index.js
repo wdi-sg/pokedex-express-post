@@ -12,6 +12,11 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -49,6 +54,71 @@ app.get('/:id', (request, response) => {
     }
   });
 });
+
+app.post('/pokemon', (request,response) => {
+
+  console.log("YAY WOW");
+  let pokemonNew = request.body;
+  console.log("new pokemon");
+  console.log( pokemonNew );
+
+  // save in data file
+  jsonfile.readFile(FILE, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    // console.log("what i currently have");
+    // console.log(obj.pokemon);
+
+
+    // save data
+    obj.pokemon.push(pokemonNew);
+    // obj[key] = value;
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      if( err ){
+        console.log("error writing file");
+        console.log(err)
+        response.status(503).send("no!");
+      } else {
+        console.log("~~~~~~~yay");
+        //sends response after saving it in the file. for user to know if it was saved in the file.
+        console.log( "send response");
+        response.send("yes! New pokemon added!");
+      }
+
+    });
+  });
+});
+
+app.get('/pokemon/new', (request, response) => {
+    // render a template form here
+    //response.send("hello world");
+    console.log("getting form");
+    let form = '';
+    form = '<html>' + '<body>' +
+    '<form method="POST" action="/pokemon">' +
+    '<p>Pokemon Id</p>' +
+    '<input type="number" name="id">' +
+    '<p>Pokemon number</p>' +
+    '<input type="number" name="num">' +
+    '<p>Pokemon name</p>' +
+    '<input type="text" name="name">' +
+    '<p>Pokemon image</p>' +
+    '<input type="number" name="img">' +
+    '<p>Pokemon height</p>' +
+    '<input type="number" name="height">' +
+    '<p>Pokemon weight</p>' +
+    '<input type="number " name="weight">' +
+    '<input type="submit" value="Submit">' +
+    '</form>' +
+    '</body>' + '</html>';
+    response.send(form);
+});
+
+
 
 app.get('/', (request, response) => {
   response.send("yay");
