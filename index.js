@@ -41,7 +41,7 @@ app.post('/pokemon', (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            obj.lastKey ++;
+            obj.lastKey++;
             req.body.id = parseInt(req.body.id);
             obj.pokemon.push(req.body);
             jsonfile.writeFile(FILE, obj, (err) => {
@@ -108,7 +108,7 @@ app.get('/', (request, response) => {
                 response.send(`
         <h2>List of all Pokemons:</h2>
         <form method="GET">${sortingMethods()}
-        <input type="submit"></form>
+        </form>
         <ul>${endResult}</ul>`);
             }
         })
@@ -133,7 +133,7 @@ app.get('/', (request, response) => {
                 response.send(`
         <h2>List of all Pokemons:</h2>
         <form method="GET">${sortingMethods()}
-        <input type="submit"></form>
+        </form>
         <ul>${endResult}</ul>`);
             }
         })
@@ -158,7 +158,7 @@ app.get('/', (request, response) => {
                 response.send(`
         <h2>List of all Pokemons:</h2>
         <form method="GET">${sortingMethods()}
-        <input type="submit"></form>
+        </form>
         <ul>${endResult}</ul>`);
             }
         })
@@ -175,14 +175,15 @@ app.get('/', (request, response) => {
         <h2>List of all Pokemons:</h2>
         <form method="GET">
         ${sortingMethods()}
-        <input type="submit" value="Submit"></form>
+        </form>
         <ul>${result}</ul>`);
             }
         })
     }
 
     var sortingMethods = function() {
-        return `<select name="sortby" placeholder="Select a sorting method">
+        return `<select name="sortby" placeholder="Select a sorting method" onchange="this.form.submit()">
+        <option value="">Select a Sorting Method</option>
         <option value="name">Sort by Name</option>
         <option value="weight">Sort by Weight</option>
         <option value="height">Sort by Height</option>
