@@ -35,8 +35,9 @@
       "weight": "100.0 kg",
       "candy": "Bulbasaur Candy",
       "egg": "Not in Eggs",
-      "avg_spawns": 1.7,
-      "spawn_time": "11:30"
+      "avg_spawns": "1.7",
+      "spawn_time": "11:30",
+      "candy_count": ""
     },
     {
       "id": 4,
