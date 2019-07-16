@@ -43,9 +43,5 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object could have `"id": 152` and `"num": "152"`
-  * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
+  * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151` - in this system you *will not* have to worry about ids being consecutive integers.
   * are there any other ways to make a unique id for something? Remember that it is technically possible for 2 requests to be made to your server at almost the exact same time. What would happen when request 1 comes in and you begin to write to the disk and request 2 comes in and starts *and* finishes writing to the disk before request 1 finished writing to the disk?
-  
-* this pokedex is a simplified one, but how would you implement keeping track of the pokemon type?
- * One solution would be to have a form on each `pokemon/:id` (individual pokemon) pages. This post request would put a single pokemon type into that specific pokemon.
- * How would you create and save the *set* of specific pokemon types that a user could input into a pokemon? How would you display them to the user and let them submit them in a form? A select input perhaps?
