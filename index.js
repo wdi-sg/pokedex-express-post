@@ -121,7 +121,25 @@ app.get('/pokemon/new', (request, response) => {
 
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  //response.send("yay");
+  jsonfile.readFile(FILE, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    } else {
+        let pokemonArr = [];
+        var pokemonList = '<ul>';
+        for( let i=0; i<obj.pokemon.length; i++ ){
+            pokemonArr.push(obj.pokemon[i].name);
+        }
+        console.log(pokemonArr);
+        pokemonArr.forEach(function(poke) {
+            pokemonList += '<li>'+ poke + '</li>';
+        });
+        pokemonList += '</ul>';
+        response.send(pokemonList);
+    }
+  })
 });
 
 /**
