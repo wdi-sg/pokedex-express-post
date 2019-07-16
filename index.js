@@ -89,6 +89,8 @@ app.get('/:id', (request, response) => {
     });
 });
 
+
+//To display list of all pokemons by default, and also handle different types query
 app.get('/', (request, response) => {
     if (request.query.sortby === "name") {
         let result = [];
@@ -181,16 +183,18 @@ app.get('/', (request, response) => {
         })
     }
 
-    var sortingMethods = function() {
-        return `<select name="sortby" placeholder="Select a sorting method" onchange="this.form.submit()">
+
+
+});
+
+var sortingMethods = function() {
+    return `<select name="sortby" placeholder="Select a sorting method" onchange="this.form.submit()">
         <option value="">Select a Sorting Method</option>
         <option value="name">Sort by Name</option>
         <option value="weight">Sort by Weight</option>
         <option value="height">Sort by Height</option>
         </select>`
-    }
-
-});
+}
 
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
