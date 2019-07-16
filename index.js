@@ -41,7 +41,7 @@ let createPokemon = (request, response) => {
     response.send(form);
 }
 
-let showCreatedPokemon = (request, response) => {
+let addCreatedPokemon = (request, response) => {
     let newPoke = request.body;
 
     jsonfile.readFile(FILE, (err,obj) => {
@@ -90,7 +90,7 @@ let showPokemonDetailsUsingLink = (request, response) => {
     // console.log(request.route.path);
     // console.log(request.route.body);
     // console.log(request.route);
-    console.log(request.url);
+    // console.log(request.url);
 
     jsonfile.readFile(FILE, (err, obj) => {
         for(let i=0; i<obj.pokemon.length; i++) {
@@ -111,7 +111,7 @@ let sortAllPokemon = (request, response) => {
         let form = '';
         form = `
         <form action="/pokemon/new">
-            <button type="submit" value="/poke/:id">Create Pokemon </button>
+            <button type="submit">Create Pokemon </button>
         </form> <br>
 
         <form method="GET">
@@ -194,9 +194,8 @@ let compareHeight = (a, b) => {
  * ===================================
  */
 
-app.post('/pokemon/new', showCreatedPokemon);
 app.get('/pokemon/new', createPokemon);
-app.post('/pokemon', showCreatedPokemon);
+app.post('/pokemon', addCreatedPokemon);
 
 app.get('/poke/:id', showPokemonDetailsUsingLink);
 app.get('/:id', showPokemonDetailsUsingInput);
