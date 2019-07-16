@@ -118,39 +118,26 @@ app.get('/pokemon/new', (request, response) => {
     response.send(form);
 });
 
-/*app.get('/?sortby=name', (request, response) => {
-    console.log("sorting names");
-    jsonfile.readFile(FILE, (err, obj) => {
-    if( err ){
-      console.log("error reading file");
-      console.log(err)
-    } else {
-        let pokemonArr = [];
-        var sortedPokemon = [];
-        var sortedPokemonList = '<ul>';
-        for( let i=0; i<obj.pokemon.length; i++ ){
-            pokemonArr.push(obj.pokemon[i].name);
-        }
-        sortedPokemon = pokemonArr.sort();
-        console.log(sortedPokemon);
-        pokemonArr.forEach(function(poke) {
-            sortedPokemonList += '<li>'+ poke + '</li>'
-        });
-        sortedPokemonList += '</ul>';
-        response.send(sortedPokemonList);
-        }
-    })
-});*/
+
 
 app.get('/', (request, response) => {
   //response.send("yay");
     console.log("getting form");
     let form = '';
-    form = '<form method = "get" action = "/" >' +
-    '<input type="submit" name="sortby" value="name">' +
+    form = '<form method = "get" action = "/">' +
+    //'<input type="submit" name="sortby" value="name">' +
+    '<select name="sortby">' +
+    '<option name="" value="0" selected>Sort by</option>' +
+    '<option value="name">Name</option>' +
+    '<option value="weight">Weight</option>' +
+    '<option value="height">Height</option>' +
+    '</select>' +
+    '<input type="submit" />' +
     '</form>';
 
-    if (request.query.sortby === 'name'){
+    console.log(request.query.sortby);
+
+    if (request.query.sortby === 'name'){ //sort by name
         console.log("sorting names");
     jsonfile.readFile(FILE, (err, obj) => {
         if( err ){
@@ -164,15 +151,51 @@ app.get('/', (request, response) => {
                 pokemonArr.push(obj.pokemon[i].name);
             }
             sortedPokemon = pokemonArr.sort();
-            console.log(sortedPokemon);
+            //console.log(sortedPokemon);
             pokemonArr.forEach(function(poke) {
                 sortedPokemonList += '<li>'+ poke + '</li>'
             });
             sortedPokemonList += '</ul>';
-            response.send(sortedPokemonList);
+            response.send(form + '<h2>Pokemon sorted by name</h2>' + sortedPokemonList);
         }
     })
-    } else {
+    } else if (request.query.sortby === 'weight'){ //sort by weight
+        console.log("sorting weight");
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+            console.log("error reading file");
+            console.log(err)
+        } else {
+            let pokemonArr = [];
+            var sortedPokemon = [];
+            var sortedPokemonList = '<ul>';
+            for( let i=0; i<obj.pokemon.length; i++ ){
+                pokemonArr.push({
+                        name: obj.pokemon[i].name,
+                        weight: parseFloat(obj.pokemon[i].weight)
+                    });
+            }
+            console.log(pokemonArr);
+            sortedPokemon = pokemonArr.sort(function(a, b){
+                const weightA = a.weight;
+                const weightB = b.weight;
+                let comparison = 0;
+                if (weightA > weightB) {
+                    comparison = 1;
+                } else if (weightA < weightB) {
+                    comparison = -1;
+                }
+            return comparison;
+            });
+            console.log(sortedPokemon);
+            pokemonArr.forEach(function(poke) {
+                sortedPokemonList += '<li>'+ JSON.stringify(poke) + '</li>'
+            });
+            sortedPokemonList += '</ul>';
+           response.send(form + '<h2>Pokemon sorted by weight</h2>' + sortedPokemonList);
+        }
+    })
+    } else { //show all pokemon
 
 
 
@@ -186,7 +209,7 @@ app.get('/', (request, response) => {
         for( let i=0; i<obj.pokemon.length; i++ ){
             pokemonArr.push(obj.pokemon[i].name);
         }
-        console.log(pokemonArr);
+        //console.log(pokemonArr);
         pokemonArr.forEach(function(poke) {
             pokemonList += '<li>'+ poke + '</li>';
         });
