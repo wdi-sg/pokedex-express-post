@@ -36,6 +36,11 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Implement this sort functionality as a drop down (`select` `input`) of all the sorting fields the user can choose to sort by.
 
+* Add a "Sort by weight" button to the homepage (`/` route) that when clicked, sends a GET request with a query parameter specifying "?sortby=weight" ( this requests a whole new page )
+
+* Add a "Sort by height" button to the homepage
+  - what do you need to write to abstract the idea of *sorting* in your code? What is the most elegant way to sort by any field in the pokedex?
+
 * Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object could have `"id": 152` and `"num": "152"`
   * Hint: You might consider adding a new key value pair in `pokedex.json`, like `"lastKey": 151`
