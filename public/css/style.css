@@ -1,0 +1,250 @@
+/* General */
+body {
+	width: 90%;
+	margin: 1px auto;
+
+}
+
+h1 {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+nav {
+	width: 42.5%;
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+}
+
+.back {
+	width: 150px;
+	display: block;
+}
+
+/* Nav */
+.siteNav {
+	width: 100%;
+	display: flex;
+	margin-bottom: 20px;
+	flex-direction: row;
+}
+
+.siteNav > div {
+	width: 14.2%;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	background-color: #313131;
+	border-left: 2px solid #222222;
+	border-right: 2px solid #222222;
+}
+
+.home, .home:hover {
+	background-color: #919191;
+	border-left: 2px solid #919191;
+	border-right: 2px solid #919191;
+	border-bottom: 4px solid #919191;
+}
+
+.pokedex, .pokedex:hover {
+	background-color: #DD330F;
+	border-left: 2px solid #DD330F;
+	border-right: 2px solid #DD330F;
+	border-bottom: 4px solid #DD330F;
+}
+
+.watchPokemonTV, .watchPokemonTV:hover {
+	background-color: #EF6B33;
+	border-left: 2px solid #EF6B33;
+	border-right: 2px solid #EF6B33;
+	border-bottom: 4px solid #EF6B33;
+}
+
+.playMinigames, .playMinigames:hover {
+	background-color: #BB9831;
+	border-left: 2px solid #BB9831;
+	border-right: 2px solid #BB9831;
+	border-bottom: 4px solid #BB9831;
+}
+
+.tradingCardGame,.tradingCardGame:hover {
+	background-color: #2BA7D6;
+	border-left: 2px solid #2BA7D6;
+	border-right: 2px solid #2BA7D6;
+	border-bottom: 4px solid #2BA7D6;
+}
+
+.videoGame, .videoGame:hover {
+	background-color: #1853B7;
+	border-left: 2px solid #1853B7;
+	border-right: 2px solid #1853B7;
+	border-bottom: 4px solid #1853B7;
+}
+
+.play, .play:hover {
+	background-color: #4DAD5F;
+	border-left: 2px solid #4DAD5F;
+	border-right: 2px solid #4DAD5F;
+	border-bottom: 4px solid #4DAD5F;
+}
+
+/* Pokedex Page*/
+form {
+	margin: 0px 20px 20px 0px;
+	display: inline-block;
+}
+
+.table {
+	/*width: 90%;*/
+	margin: auto;
+	text-align: center;
+}
+
+.table> tbody > tr > td {
+	vertical-align: middle;
+}
+
+.btn {
+	margin-right: 5px;
+}
+
+
+/* Add new Pokemon Page*/
+.add > span > label > input {
+	margin-right: 5px;
+	transform: scale(1.1)
+}
+
+.add > span > label {
+	margin-right: 18px;
+}
+
+
+/*View Single Pokemon Page*/
+h1 > span {
+	color: #5A5A5A;
+}
+
+.main-content {
+	width: 60%;
+}
+
+.pokemonImage {
+	height: 60%;
+	border-radius: 10px;
+	background-color: #F2F2F2;
+}
+
+.pokemonImage > img {
+	width: 330px;
+}
+
+.stats {
+	border-radius: 10px;
+	background-color: #289AC6;
+	padding: 20px 20px 2px 30px;
+}
+
+.detail {
+	padding-bottom: 20px;
+}
+
+.detail > h5 {
+	font-weight: 300;
+	color: white;
+	margin-bottom: 0px;
+}
+
+.type, .weakness  {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.type > div, .weakness > div  {
+	color: white;
+	min-width: 120px;
+	font-size: 16px;
+	padding-bottom: 2px;
+	text-align: center;
+	border-radius: 6px;
+	margin: 0px 6px 6px 0px;
+}
+
+.grass {
+	background-color: #9ACB59;
+}
+
+.poison {
+	background-color: #B97FC7;
+}
+
+.normal {
+	background-color: #116AC9;
+}
+
+.fighting {
+	background-color: #C80038;
+}
+
+.flying {
+	background-color: #97E5EC;
+}
+
+.ground {
+	background-color: #C3AE73;
+}
+
+.rock {
+	background-color: #8E8470;
+}
+
+.bug {
+	background-color: #009A8F;
+}
+
+.ghost {
+	background-color: #300531;
+}
+
+.fire {
+	background-color: #FD9B6E;
+}
+
+.water {
+	background-color: #5AC1EF;
+}
+
+.electric {
+	background-color: #FECF2E;
+}
+
+.psychic {
+	background-color: #F35D9A;
+}
+
+.ice {
+	background-color: #B8D7E9;
+}
+
+.dragon {
+	background-color: #B8D7E9;
+}
+
+.dark {
+	background-color: #001E3E;
+}
+
+.fairy {
+	background-color: #FFA8EA;
+}
+
+.footer  {
+	display: flex;
+	flex-direction: row;
+	padding-top: 15px;
+	border-top: 3px solid #F2F2F2;
+	justify-content: space-between;
+}
