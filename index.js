@@ -113,22 +113,96 @@ var getAllPokemonRequest = function(request,response){
       console.log("error reading file" + err);
     }
 
-    // this is where you get all the pokemon
-    var pokemonList = [];
+    //http://localhost:4000/?sortby=name
+    var sortType = request.query.sortby;
+    console.log(sortType);
 
-    data.pokemon.forEach( function(item){
-      pokemonList.push(item.name);
-    })
+    var pokemonDisplay = "";
 
-    // this is where you make the buttons
-    var button = '<button>Sort By Name</button>';
+    if (sortType === "name"){
 
-    // this is where you construct the html
+      var array = data.pokemon;
 
-    response.send(pokemonList.toString() + button);
+      array.sort(function(a, b){
+      var keyA = a.name,
+          keyB = b.name;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+
+      array.forEach( function(item){
+        var pokemonString = `<div class="pokemon">${item.id} - ${item.name}</div> `;
+        pokemonDisplay = pokemonDisplay.concat(pokemonString);
+      })
+
+
+    } else if( sortType === "height"){
+
+      var array = data.pokemon;
+
+      array.sort(function(a, b){
+      var keyA = a.height,
+          keyB = b.height;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+
+      array.forEach( function(item){
+        var pokemonString = `<div class="pokemon">${item.height} - ${item.name}</div> `;
+        pokemonDisplay = pokemonDisplay.concat(pokemonString);
+      })
+
+    } else if( sortType === "weight"){
+
+      var array = data.pokemon;
+
+      array.sort(function(a, b){
+      var keyA = a.weight,
+          keyB = b.weight;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+
+      array.forEach( function(item){
+        var pokemonString = `<div class="pokemon">${item.weight} - ${item.name}</div> `;
+        pokemonDisplay = pokemonDisplay.concat(pokemonString);
+      })
+
+    } else {
+      //default
+      data.pokemon.forEach( function(item){
+        var pokemonString = `<div class="pokemon">${item.id} - ${item.name}</div> `;
+        pokemonDisplay = pokemonDisplay.concat(pokemonString);
+      })
+    }
+
+    //
+    var idButton = '<input type="submit" name="sortby" value="">';
+    var nameButton = '<input type="submit" name="sortby" value="name">';
+    var heightButton = '<input type="submit" name="sortby" value="height">';
+    var weightButton = '<input type="submit" name="sortby" value="weight">';
+
+
+    var form = '<form method="get" action="/">'
+               + idButton
+               + nameButton
+               + heightButton
+               + weightButton
+               + '</form>';
+
+
+    response.send(form + pokemonDisplay);
+
   });
 
 }
+
 
 /**
  * ===================================
@@ -140,6 +214,7 @@ app.get('/', getAllPokemonRequest);
 app.get('/:id', getPokemonByIdRequest);
 app.get('/pokemon/new', getNewPokemonRequest);
 app.post('/pokemon', addNewPokemonRequest);
+
 
 /**
  * ===================================
