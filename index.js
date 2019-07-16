@@ -41,36 +41,67 @@ app.get('/pokemon/search', (request, response) => {
 })
 //allows user to enter in new pokemon
 app.get('/pokemon/new',(request,response)=>{
-  response.send(`
-    <form method="POST" action="/pokemon">
-      ID:
-      <input type="text" name="id" placeholder="1"><br>
-      Num:
-      <input type="text" name="num" placeholder="001"><br>
-      Name:
-      <input type="text" name="name" placeholder="Bulbasaur"><br>
-      Image:
-      <input type="text" name="image" placeholder="image url goes here"><br>
-      Height:
-      <input type="text" name="height" placeholder="height in m"><br>
-      Weight:
-      <input type="text" name="weight" placeholder="weight in kg"><br>
-      <br><br><br>
-      <input type="submit" value="Submit">
-    </form>
-`);
+  jsonfile.readFile(file, function(err,obj){
+    var lastId = 0;
+    for (var i = 0; i < obj["pokemon"].length; i++){
+      if (obj["pokemon"][i]["id"]>lastId){
+        lastId = obj["pokemon"][i]["id"]
+      }
+    }
+    var newId = parseInt(lastId) + 1;
+    function padding (num, size){
+      var str = num+""
+      while (str.length < size){
+        str = "0" + str;
+      }
+      return str;
+    }
+    var newIdPad = padding(newId, 3);
+    response.send(`
+      <form method="POST" action="/pokemon">
+        ID:
+        ${newId}<br>
+        <input type="hidden" name="id" value="${newId}"><br>
+        Num:
+        ${newIdPad}<br>
+        <input type="hidden" name="num" value="${newIdPad}"><br>
+        Name:
+        <input type="text" name="name" placeholder="Bulbasaur"><br>
+        Image:
+        <input type="text" name="image" placeholder="image url goes here"><br>
+        Height:
+        <input type="text" name="height" placeholder="height in m"><br>
+        Weight:
+        <input type="text" name="weight" placeholder="weight in kg"><br>
+        <br><br><br>
+        <input type="submit" value="Submit">
+      </form>
+  `);
+  })
 });
 
 app.post('/pokemon', function(request, response) {
   jsonfile.readFile(file, function(err,obj){
-    console.log(request.body);
-    obj["pokemon"].push(request.body);
-    jsonfile.writeFile(file,obj,(err) => {
-      if(err){
-        console.error(err)
-      };
-      response.send("New pokemon added!");
-    });
+    console.log(request.body.id);
+    var duplicatePokemon = false;
+    for (var i = 0; i < obj["pokemon"].length; i++){
+      if (request.body.name === obj["pokemon"][i]["name"]){
+        duplicatePokemon = true;
+      }
+    }
+    if (request.body.id <= obj["pokemon"].length || duplicatePokemon){
+      console.log("duplicate!")
+      response.send("Error! Id has just been taken!");
+    }else{
+      obj["pokemon"].push(request.body);
+      jsonfile.writeFile(file,obj,(err) => {
+        if(err){
+          console.error(err)
+        };
+        response.send("New pokemon added!");
+      });
+    }
+
   })
 });
 
@@ -87,8 +118,6 @@ app.get('/', function(request, response){
     </select>
     </form>`
   if (request.query.sortby === "name"){
-
-
     jsonfile.readFile(file, function(err,obj){
       for (var i = 0; i < obj["pokemon"].length; i++){
         list.push(obj["pokemon"][i]["name"]);
