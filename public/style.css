@@ -1,0 +1,30 @@
+.sort {
+    font-size: 20px;
+}
+
+#sortSelect {
+    padding: 10px 50px;
+    margin-left: 20px;
+}
+
+#sortSubmit {
+    background-color: deepskyblue;
+    padding: 5px 25px;
+    margin-left: 10px;
+    display: inline-block;
+    border-radius: 5px;
+    color: white;
+}
+
+.pokemons {
+    display: inline-block;
+    margin: 20px;
+    float: left;
+    text-align: center
+}
+
+
+img {
+    background-color: 'gainsboro';
+    width: 200px;
+}
