@@ -123,25 +123,59 @@ var submitData = function (request,response) {
 
 
 var defaultHome = function (request, response){
-    var fullList = []
+    var fullList = [];
 
     jsonfile.readFile(file, (err, obj) => {
         if (err){
             console("ERRRORRR~~");
         }
         else {
-            for (let i = 0; i < obj["pokemon"].length; i++) {
-                fullList.push(`${obj["pokemon"][i]["name"]}`);
-            }
+                for (let i = 0; i < obj["pokemon"].length; i++) {
+                    fullList.push(`${obj["pokemon"][i]["name"]}`);
+                }
             var fullListJoin = fullList.join("<br>");
-            response.send(`<h1> Pokedex Home </h1> ${fullListJoin}`);
+            console.log(fullListJoin);
+            console.log(fullList);
+
+            let sort = "";
+            if (request.query.sortby === "name") {
+                sort = fullList.sort();
+                var sortJoin = sort.join("<br>")
+            }
+            else if (request.query.sortby === undefined){
+                var sortJoin = fullListJoin;
+            };
+
+            let home = '';
+            home = '<html>' +
+            '<body>'+
+            '<h1>Pokedex Home</h1>'+
+            '<form method="GET">'+
+            '<select name = "sortby">'+
+            '<option value = "name">Sort by Name</option>'+
+            '<option value = "weight">Sort by Weight</option>'+
+            '<option value = "height">Sort by Height</option>'+
+            '</select>'+
+            '<button type="submit"/>Sort</button>'+
+            '</form>'+
+            `<p>${sortJoin}</p>`+
+            //`<p>${fullListJoin}</p>`+
+            '</body>'+
+            '</html>';
+
+            response.send(home);
         }
     });
-
 }
 
+ // var checkQuery = function (request, response){
+ //            if(request.query.sortby === "name"){
+ //        response.send("sorting by name");
+ //    }
+ // }
 
 
+// app.get('/?*', checkQuery);
 app.get('/', defaultHome);
 app.post('/pokemon', submitData);
 app.get('/pokemon/new', makeForm);
