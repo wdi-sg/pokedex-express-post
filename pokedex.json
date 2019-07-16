@@ -1731,25 +1731,11 @@
 		"avg_spawns": 0,
 		"spawn_time": "N/A"
 	}, {
-		"pokename": "Poopmon",
 		"id": "152",
 		"num": "152",
-		"img": "random fake url",
-		"height": "4'20\"",
-		"weight": "42kg"
-	}, {
-		"pokename": "Poopmon",
-		"id": "152",
-		"num": "152",
-		"img": "random fake url",
-		"height": "4'20\"",
-		"weight": "42kg"
-	}, {
-		"pokename": "Poopmon",
-		"id": "153",
-		"num": "153",
-		"img": "random fake url",
-		"height": "4'20",
-		"weight": "42kg"
+		"name": "lolmon",
+		"img": "lolimg",
+		"height": "lolheight",
+		"weight": "lolweight"
 	}]
 }

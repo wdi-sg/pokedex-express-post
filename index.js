@@ -4,18 +4,41 @@ const file = 'pokedex.json';
 
 const app = express();
 
-//parser thing
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+//front page - show all pokemon in dex (name i guess)
+app.get('/pokemon', (request, response) => {
+
+   console.log("welcome to the pokedex!")
+  // get json from specified file
+    jsonfile.readFile(file, (err, obj) => {
+
+        if (err) {
+            console.log("something went wrong..")
+        }
+
+        let allPokemon = [];
+
+        for (let i = 0; i < obj.pokemon.length; i++){
+            //get all pokemon names and save it to the array
+            allPokemon.push(obj.pokemon[i].name);
+        }
+
+        console.log("got all pokemon");
+        let pokemonList = allPokemon.join(", ");
+        response.send(pokemonList);
+    });
+});
+
 
 //creating form on /pokemon/new [must be on top]
 app.get('/pokemon/new', (request, response) => {
 
   console.log("birthing form");
 
-// id, num, name, img, height, and weight
 
 //set conditional to make id and num unique - use onclick function to self-generate a unique ID?
 
@@ -24,12 +47,12 @@ app.get('/pokemon/new', (request, response) => {
     '<body>'+
     '<h1>Add your Pokémon</h1>'+
     '<form method="POST" action="/pokemon">'+
-    '<h4>Name:</h4>' +
-    '<input type="text" name="pokename">'+
     '<h4>ID:</h4>' +
     '<input type="text" name="id">'+
     '<h4>Num:</h4>' +
     '<input type="text" name="num">'+
+    '<h4>Name:</h4>' +
+    '<input type="text" name="name">'+
     '<h4>Img Source:</h4>' +
     '<input type="text" name="img">'+
     '<h4>Height:</h4>' +
@@ -45,7 +68,6 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 //save the form data to pokedex.json
-
 app.post('/pokemon', (request,response) => {
 
 console.log("incoming pokemon entry");
