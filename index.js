@@ -1,13 +1,13 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
 
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
+
+const express = require('express');
+const jsonfile = require('jsonfile');
+const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
@@ -18,16 +18,32 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-
 /**
  * ===================================
- * Functions
+ * Routes and Endpoints
  * ===================================
  */
 
-const listAllPokemon = (request, response) => {
+let pokemonList = [];
+let form = '';
+form =
+        '<h1>Pokedex!</h1>'+
+        '<form method="GET" action="/">'+
+        '<select name="sortby">' +
+        '<option value="name">Name</option>' +
+        '<option value="weight">Weight</option>' +
+        '<option value="height">Height</option>' +
+        '</select>' +
+        '<br><br>' +
+        '<input type="submit" value = "Sort By"/>'+
+        '</form>';
 
-    let pokemonList = [];
+
+// Default listing of all Pokemon
+
+app.get('/', (request, response) => {
+
+    pokemonList = [];
 
     jsonfile.readFile(FILE, (err,obj) => {
 
@@ -36,22 +52,96 @@ const listAllPokemon = (request, response) => {
             console.log(err);
 
         } else {
-
             for (let i = 0; i < obj['pokemon'].length; i ++) {
                 pokemonList.push(obj['pokemon'][i].name)
             }
 
-            response.send('List of all Pokemon in the Pokedex:' + '<br><br>' + pokemonList.join('<br>'))
+            response.send(form + pokemonList.join('<br>'))
         }
     });
-}
-/**
- * ===================================
- * Routes and Endpoints
- * ===================================
- */
 
-app.get('/', listAllPokemon);
+});
+
+// Listing of Pokemon by Name
+
+app.get('/name', (request, response) => {
+
+    pokemonList = [];
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        if (err) {
+            console.log('there is an error');
+            console.log(err);
+
+        } else {
+            for (let i = 0; i < obj['pokemon'].length; i ++) {
+                pokemonList.push(obj['pokemon'][i].name)
+            }
+
+            pokemonList = pokemonList.sort();
+            response.send(form + pokemonList.join('<br>'))
+        }
+    });
+
+});
+
+// Listing of Pokemon by Weight
+
+app.get('/weight', (request, response) => {
+
+    pokemonList = [];
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        if (err) {
+            console.log('there is an error');
+            console.log(err);
+
+        } else {
+
+            let pokemonArray = obj.pokemon;
+
+            let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.weight) - parseFloat(b.weight));
+
+            for (let i = 0; i < sortedArray.length; i ++) {
+                pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].weight)
+            }
+
+            response.send(form + pokemonList.join('<br>'))
+        }
+    });
+});
+
+
+// Listing of Pokemon by Height
+
+app.get('/height', (request, response) => {
+
+    pokemonList = [];
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        if (err) {
+            console.log('there is an error');
+            console.log(err);
+
+        } else {
+
+            let pokemonArray = obj.pokemon;
+
+            let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.height) - parseFloat(b.height));
+
+            for (let i = 0; i < sortedArray.length; i ++) {
+                pokemonList.push(sortedArray[i].name + ": " + sortedArray[i].height)
+            }
+
+            response.send(form + pokemonList.join('<br>'))
+        }
+    });
+});
+
+
 
 app.get('/:id', (request, response) => {
 
@@ -84,6 +174,7 @@ app.get('/:id', (request, response) => {
     }
   });
 });
+
 
 // Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 
