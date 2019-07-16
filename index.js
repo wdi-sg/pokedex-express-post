@@ -183,17 +183,37 @@ var getAllPokemonRequest = function(request,response){
     }
 
     //
+    var sortBySelect =  '<span>Sort By:</span>' +
+                        '<select id="sortby" name="sortby" onchange="this.form.submit()">' +
+                        // '<select id="sortby" name="sortby">' +
+                        '<option value="">ID</option>' +
+                        '<option value="name">Name</option>' +
+                        '<option value="weight">Weight</option>' +
+                        '<option value="height">Height</option>' +
+                        '</select>' ;
+
+    // var sortBySelectElement = document.getElementById('sortby');
+    //
+    // sortBySelectElement.addEventListener('change', getValuefromSelect);
+    //
+    // var getValuefromSelect = function(){
+    //   console.log(sortBySelectElement.value);
+    // }
+
     var idButton = '<input type="submit" name="sortby" value="">';
     var nameButton = '<input type="submit" name="sortby" value="name">';
     var heightButton = '<input type="submit" name="sortby" value="height">';
     var weightButton = '<input type="submit" name="sortby" value="weight">';
+    // var submitButton = '<input type="submit" value="Submit">';
 
 
     var form = '<form method="get" action="/">'
-               + idButton
-               + nameButton
-               + heightButton
-               + weightButton
+               + sortBySelect
+               // + idButton
+               // + nameButton
+               // + heightButton
+               // + weightButton
+               // + submitButton
                + '</form>';
 
 
