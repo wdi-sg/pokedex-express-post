@@ -1,0 +1,14 @@
+.box {
+	display: inline-block;
+	width: 150px;
+	margin: 0;
+	padding:0;
+	border: 1px solid black;
+}
+
+.containerOfBox {
+		width: 950px;
+}
+body{
+	background:pink;
+}
