@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-
 /**
  * ===================================
  * Functions
@@ -25,19 +24,27 @@ app.use(express.urlencoded({
  */
 
 const addPokemonForm = (request, response) => {
-  let form = '';
-  form = '<html>' +
-      '<body>'+
-      '<h1>animal form</h1>'+
-      '<form method="POST" action="/pokemon">'+
-      '<input name="name" placeholder="name" required/><br>'+
-      '<input name="img" placeholder="img" required/><br>'+
-      '<input name="height" placeholder="height (m)" required/><br>'+
-      '<input name="weight" placeholder="weight (kg)" required/><br>'+
-      '<button>Submit</button>'+
-      '</form>'+
-      '</body>'+
-      '</html>';
+  let form =
+    `<html>
+        <head>
+            <style>
+                input, button {
+                    padding:4px;
+                    margin-bottom: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>animal form</h1>
+            <form method="POST" action="/pokemon">
+                <input name="name" placeholder="name" required/><br>
+                <input name="img" placeholder="img" required/><br>
+                <input name="height" placeholder="height (m)" required/><br>
+                <input name="weight" placeholder="weight (kg)" required/><br>
+                <button>Submit</button>
+            </form>
+        </body>
+    </html>`;
   response.send(form);
 }
 const addPokemon = (request,response) => {
@@ -81,17 +88,30 @@ const addPokemon = (request,response) => {
 
 const showPokemon = (request, response) => {
     let sortby = request.query.sortby;
-    let content = '<h2>List of Pokemon</h2>'+
-        '<form>'+
-        '<select name="sortby">'+
-        '<option disabled selected>Select an option</option>'+
-        '<option value="id">ID</option>'+
-        '<option value="name">Name</option>'+
-        '<option value="weight">Weight</option>'+
-        '<option value="height">Height</option>'+
-        '</select>'+
-        '<button>Sort by</button>'+
-        '</form>';
+    let content =
+        `<html>
+            <head>
+                <style>
+                    input, button {
+                        padding:4px;
+                        margin-bottom: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>List of Pokemon</h2>
+                <form>
+                    <select name="sortby">
+                        <option disabled selected>Select an option</option>
+                        <option value="id">ID</option>
+                        <option value="name">Name</option>
+                        <option value="weight">Weight</option>
+                        <option value="height">Height</option>
+                    </select>
+                    <button>Sort by</button>
+                </form>
+            </body>
+        <html>`;
 
     jsonfile.readFile(FILE, (err,obj)=> {
         if (err){
@@ -118,11 +138,38 @@ const showPokemon = (request, response) => {
                 }
             }
             for (let pokemon of pokedex){
-                content += `<a href="/${pokemon.name}">${pokemon.name}</a><br>`;
+                content += `<a href="/pokemon/${pokemon.id}">${pokemon.name}</a><br>`;
             }
         }
         response.send(content);
     });
+}
+
+const showPokemonDetails = (request,response) => {
+    let pokemonID = parseInt(request.params.pokemon);
+    console.log (pokemonID);
+    let content = "";
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (pokemonID === pokemon.id){
+                    content = `<h2>${pokemon.name}<h2>
+                        <img src="${pokemon.img}">
+                    `;
+                }
+            }
+            if (content != ""){
+                response.send(content);
+            }
+            else {
+                response.send("Pokemon not found!");
+            }
+        }
+    })
 }
 
 //Sort alphabetically
@@ -155,8 +202,8 @@ function sortByID(a, b) {
 }
 //Sort by Weight
 function sortByWeight(a, b) {
-  const indexA = parseInt(a.weight);
-  const indexB = parseInt(b.weight);
+  const indexA = parseFloat(a.weight);
+  const indexB = parseFloat(b.weight);
 
   let comparison = 0;
   if (indexA > indexB) {
@@ -168,8 +215,8 @@ function sortByWeight(a, b) {
 }
 //Sort by Height
 function sortByHeight(a, b) {
-  const indexA = parseInt(a.height);
-  const indexB = parseInt(b.height);
+  const indexA = parseFloat(a.height);
+  const indexB = parseFloat(b.height);
 
   let comparison = 0;
   if (indexA > indexB) {
@@ -188,6 +235,8 @@ function sortByHeight(a, b) {
 app.get('/pokemon/new', addPokemonForm);
 
 app.post('/pokemon', addPokemon);
+
+app.get('/pokemon/:pokemon', showPokemonDetails);
 
 app.get('/', showPokemon);
 
