@@ -113,23 +113,47 @@ app.get('/:id', (request, response) => {
   });
 });
 
+// ===================================================
+
 app.get('/', (request, response) => {
+
   var showAllPokemon = [];
+  var displayData
 
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) {
         console.log(err);
     }
+
     else {
+
         for (let i = 0; i < obj.pokemon.length; i++) {
             showAllPokemon.push(obj.pokemon[i].name + "\n");
+
         }
 
+    displayData = showAllPokemon;
+
     }
-    response.send(showAllPokemon.toString());
+
+    let form = '';
+
+    form =  '<form method = "GET">' +
+                '<select name = "sortby">' +
+                    '<option value = "name">sort by name</option>' +
+                    '<option value = "weight">sort by weight</option>' +
+                    '<option value = "height">sort by height</option>' +
+                '</select>' +
+            '<input type = "submit" value = "submit">' +
+            '</form>' + displayData.toString();
+
+    response.send(form);
+
   })
 
 });
+
+// ===================================================
 
 /**
  * ===================================
