@@ -2,7 +2,7 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 const methodOverride = require('method-override')
 
-const FILE = 'pokedex.json';
+const FILE = 'pokedexmore.json';
 const app = express();
 
 app.use(methodOverride('_method'));
@@ -18,40 +18,45 @@ app.set('view engine', 'jsx');
 
 app.get('/', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
-    let pokeNameArr = [];
-    for (let i=0; i<obj.pokemon.length; i++) {
-      pokeNameArr.push(`${obj.pokemon[i].name}<br>`)
-      pokeImgArr.push(obj.pokemon[i].img)
-      pokeNumArr.push(obj.pokemon[i].num)
-    }
-    if (request.query.sortby == "nameAescend") {
-      pokeNameArr = pokeNameArr.sort();      
-    }
-    if (request.query.sortby == "indexAescend") {
-      pokeNameArr == pokeNameArr;
-    }
-    if (request.query.sortby == "indexDescend") {
-      pokeNameArr = pokeNameArr.reverse();
-    }
-      response.send(`
-      <html>
-      <body>
-      <h1>Welcome to the online Pokedex!<br><br></h1>
-      <form action="/" method="GET">
-      <select type='text' name='sortby'>
-        <option value="nameAescend">Sort by Ascending Name</option>
-        <option value="indexAescend">Sort by Aescending Index</option>
-        <option value="indexDescend">Sort by Descending Index</option>
-      </select>
-        <input type="submit"/>
-      </form><br>
-      <p>
-      Here is a list of all pokemons:<br><br>
-        ${pokeNameArr.join("")}
-      </p>
-      </body>
-      </html>
-      `)
+
+    let pokedexJson = obj;
+
+    response.render('mainpage', pokedexJson);
+
+    // let pokeNameArr = [];
+    // for (let i=0; i<obj.pokemon.length; i++) {
+    //   pokeNameArr.push(`${obj.pokemon[i].name}<br>`)
+    //   pokeImgArr.push(obj.pokemon[i].img)
+    //   pokeNumArr.push(obj.pokemon[i].num)
+    // }
+    // if (request.query.sortby == "nameAescend") {
+    //   pokeNameArr = pokeNameArr.sort();      
+    // }
+    // if (request.query.sortby == "indexAescend") {
+    //   pokeNameArr == pokeNameArr;
+    // }
+    // if (request.query.sortby == "indexDescend") {
+    //   pokeNameArr = pokeNameArr.reverse();
+    // }
+    //   response.send(`
+    //   <html>
+    //   <body>
+    //   <h1>Welcome to the online Pokedex!<br><br></h1>
+    //   <form action="/" method="GET">
+    //   <select type='text' name='sortby'>
+    //     <option value="nameAescend">Sort by Ascending Name</option>
+    //     <option value="indexAescend">Sort by Aescending Index</option>
+    //     <option value="indexDescend">Sort by Descending Index</option>
+    //   </select>
+    //     <input type="submit"/>
+    //   </form><br>
+    //   <p>
+    //   Here is a list of all pokemons:<br><br>
+    //     ${pokeNameArr.join("")}
+    //   </p>
+    //   </body>
+    //   </html>
+    //   `)
 
   })
 })
