@@ -17,37 +17,37 @@ class Editpage extends React.Component {
             <img src= {this.props.img}/>
                 <form action={url} method="POST" className = "form-container">
                     <h2>ID</h2>
-                    <input type="number" name="id" placeholder={this.props.id}/>
+                    <input type="number" name="id" defaultValue={this.props.id}/>
 
                     <h2>Num</h2>
-                    <input type="text" name="num" placeholder={this.props.num}/>
+                    <input type="text" name="num" defaultValue={this.props.num}/>
 
                     <h2>Name</h2>
-                    <input type="text" name="name" placeholder={this.props.name}/>
+                    <input type="text" name="name" defaultValue={this.props.name}/>
 
                     <h2>Img Src</h2>
-                    <input type="text" name="img" placeholder={this.props.img}/>
+                    <input type="text" name="img" defaultValue={this.props.img}/>
 
                     <h2>Height</h2>
-                    <input type="text" name="height" placeholder={this.props.height}/>
+                    <input type="text" name="height" defaultValue={this.props.height}/>
 
                     <h2>Weight</h2>
-                    <input type="text" name="weight" placeholder={this.props.weight}/>
+                    <input type="text" name="weight" defaultValue={this.props.weight}/>
 
                     <h2>Candy</h2>
-                    <input type="text" name="candy" placeholder={this.props.candy}/>
+                    <input type="text" name="candy" defaultValue={this.props.candy}/>
 
                     <h2>Candy Count</h2>
-                    <input type="text" name="candycount" placeholder={this.props.candy_count}/>
+                    <input type="text" name="candycount" defaultValue={this.props.candy_count}/>
 
                     <h2>Egg</h2>
-                    <input type="text" name="candycount" placeholder={this.props.egg}/>
+                    <input type="text" name="candycount" defaultValue={this.props.egg}/>
 
                     <h2>Average Spawns</h2>
-                    <input type="number" name="avgspawns" placeholder={this.props.avg_spawns}/>
+                    <input type="number" name="avgspawns" defaultValue={this.props.avg_spawns}/>
 
                     <h2>Spawn Time</h2>
-                    <input type="text" name="spawntime" placeholder={this.props.spawn_time}/>
+                    <input type="text" name="spawntime" defaultValue={this.props.spawn_time}/>
                     <br/>
                     <input type="submit"/>
                 </form>

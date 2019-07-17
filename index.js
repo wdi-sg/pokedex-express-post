@@ -23,6 +23,9 @@ app.use(methodOverride('_method'));
 const editpage = 'edit.jsx';
 const homepage = 'home.jsx';
 
+let pokeId = null;
+let pokemonMatchingId = null;
+
 
 /**
  * ===================================
@@ -36,6 +39,7 @@ app.get('/', (request, response) => {
 });
 
  /*==== Front Page ==== */
+
 app.get('/pokemon', (request, response) => {
     let sortRequest = request.query.sortby;
 
@@ -50,19 +54,49 @@ app.get('/pokemon', (request, response) => {
 /*==== Edit Page ==== */
 app.get('/pokemon/:id/edit', (request, response) => {
 
-    let pokeId = parseInt(request.params.id);
+    pokeId = parseInt(request.params.id);
 
     jsonfile.readFile(file, (err,obj) => {
         if (err) {
             console.log("Something went wrong when displaying the edit page.")
         }
 
-        let pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
+        pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
 
-        // response.send("wowie");
+
         response.render(editpage, pokemonMatchingId);
     });
 })
+
+/*==== Accepting Edit Request ==== */
+app.put("/pokemon/:id", (request, response) => {
+
+    let editedPoke = request.body;
+    console.log(pokemonMatchingId);
+    console.log(editedPoke);
+
+
+    jsonfile.readFile(file, (err, obj) => {
+        if (err) {
+            console.log("Something went wrong while trying to read the file.");
+            console.log(err)
+        }
+
+        //obj[] - object with id === pokeID
+        let unparsedIndex = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
+        let index = parseInt(unparsedIndex);
+        obj.pokemon[index] = editedPoke;
+
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) {
+                console.log("There was an error writing the edited Pokemon to file.");
+                console.log(err)
+            } else {
+                response.send(`${editedPoke.name} has been updated!`);
+            }
+        });
+    });
+});
 
 /**
  * ===================================
@@ -130,7 +164,7 @@ function sortPokemon(sortRequest, obj){
  * To-Do
  * ===================================
  */
-//creating form on /pokemon/new
+// creating form on /pokemon/new
 // app.get('/pokemon/new', (request, response) => {
 
 //     console.log("birthing form");
@@ -162,7 +196,7 @@ function sortPokemon(sortRequest, obj){
 //     response.send(form);
 // });
 
-//save the form data to pokedex.json
+// save the form data to pokedex.json
 // app.post('/pokemon', (request, response) => {
 
 //     var newPoke = request.body;
@@ -192,40 +226,6 @@ function sortPokemon(sortRequest, obj){
 //                 response.json(newPoke);
 //             }
 //         });
-//     });
-// });
-
-//find pokemon info by name
-// app.get('/pokemon/:name', (request, response) => {
-
-//     jsonfile.readFile(file, (err, obj) => {
-
-//         let pokeName = "";
-//         let pokeWeight = "";
-//         let pokemonFound = false;
-//         let lowerCase = request.params.name.toLowerCase();
-//         let capsFirst = lowerCase.charAt(0).toUpperCase();
-//         let pokeToFind = capsFirst + lowerCase.slice(1);
-
-//         console.log(pokeToFind);
-
-//         //find pokeToFind in obj and return its name and weight
-//         for (let i = 0; i < obj.pokemon.length; i++) {
-//             if (obj.pokemon[i].name === pokeToFind) {
-//                 pokeName = obj.pokemon[i].name;
-//                 pokeWeight = obj.pokemon[i].weight;
-//                 pokemonFound = true;
-
-//                 console.log(obj.pokemon[i].name);
-//                 console.log(obj.pokemon[i].weight);
-//             }
-//         }
-
-//         if (!pokemonFound) {
-//             response.status(404).send(`<html><body><h1>Pikaboo:(</h1><br><p>Could not find information on ${pokeToFind} - Is that a new pokemon? Gotta catch em all!</p></body></html>`);
-//         } else if (pokemonFound) {
-//             response.send(`<html><body><h1>${pokeName}</h1><br><p>Weight: ${pokeWeight}</p></body></html>`);
-//         }
 //     });
 // });
 
