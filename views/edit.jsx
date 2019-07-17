@@ -11,7 +11,7 @@ class Edit extends React.Component {
             <p>pokemon: {this.props.pokemon.name}</p>
             <form action={url} method="POST">
                 <p>name</p>
-                <input name="id" value={this.props.pokemon.name}/>
+                <input name="name" value={this.props.pokemon.name}/>
                 <p>id</p>
                 <input name="id" value={this.props.pokemon.id}/>
                 <p>number</p>

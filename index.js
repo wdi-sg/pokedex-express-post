@@ -252,15 +252,15 @@ var putPokemonByIdRequest = function(request,response){
 
     // save data
     obj.pokemon[parseInt(request.params.id) - 1] = newPokemon;
-
+    console.log(obj.pokemon[parseInt(request.params.id) - 1].name);
 
 
     jsonfile.writeFile(FILE, obj, (error) => {
       if( error ){
         console.log(error)
-      }else{
-        response.send("updated");
       }
+
+      response.send(obj.pokemon[parseInt(request.params.id) - 1].name + ' updated!')
 
     });
 
