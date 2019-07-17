@@ -1,14 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
 // Init express app
 const app = express();
 
@@ -17,6 +9,28 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
+const FILE = 'pokedex.json';
+
+/**
+ * ===================================
+ * Configurations and set up
+ * ===================================
+ */
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
 let pokemonNames = [];
 let sortedPokemons = [];
@@ -184,6 +198,36 @@ app.get('/pokemon/:id', (request, response) => {
       response.send(pokemon);
     }
   });
+});
+
+
+//PART 2//
+
+app.get('pokemon/:id/edit', (request, response) => {
+    console.log('amending pokemon info');
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
+
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+        let currentPokemon = obj.pokemon[i];
+
+        if( currentPokemon.id === inputId ){
+            pokemon = currentPokemon;
+        }
+    }
+      const data = pokemon;
+
+    response.render('home', data)
+    });
 });
 
 /**
