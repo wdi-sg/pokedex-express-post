@@ -127,18 +127,33 @@ app.get('/', (request, response) => {
                 if (nameA < nameB) {
                     return -1
                 }
-
                 if (nameB < nameA) {
                     return 1
                 }
-
                 return 0;
-
                 });
+            } // end of sort by name
 
-            }
+            // start of sort by weight
+            if (sortby == 'weight') {
+                pokedex.sort(function(a, b) {
+                    // sort by weight
+                    var weightA = parseFloat(a.weight);
+                    var weightB = parseFloat(b.weight);
+                    return weightA - weightB;
+                });
+            } // end of sort by weight
+
+            // start of sort by height
+            if (sortby == 'height') {
+                pokedex.sort(function(a, b) {
+                    // sort by weight
+                    var heightA = parseFloat(a.height);
+                    var heightB = parseFloat(b.height);
+                    return heightA - heightB;
+                });
+            } // end of sort by height
         }
-        //console.log(pokedex);
         response.send(pokedex);
     }); // end of reading json file
 });
