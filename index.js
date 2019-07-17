@@ -19,103 +19,62 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 
-
-
-
-
 //search for pokemon
 app.get('/pokemon/search', (request, response) => {
-  //allows case-insensitive entry
-  var smallLetter = request.query.q.toLowerCase();
-  var capsFirst = smallLetter.charAt(0).toUpperCase();
-  var combined = capsFirst+smallLetter.slice(1);
-  //flags if search for pokemon name turns up negative
-  var search = false;
   jsonfile.readFile(file, function(err,obj){
-    for (var i = 0; i < obj["pokemon"].length; i++){
-      if (obj["pokemon"][i]["name"] === combined){
-        response.write(`
-          Name: ${obj["pokemon"][i]["name"]} <br>
-          Height: ${obj["pokemon"][i]["height"]} <br>
-          Weight: ${obj["pokemon"][i]["weight"]} <br>
-        `);
-        response.end();
-        search = true;
-      }
+    //allows case-insensitive entry
+    var smallLetter = request.query.q.toLowerCase();
+    var capsFirst = smallLetter.charAt(0).toUpperCase();
+    var combined = capsFirst+smallLetter.slice(1);
+    var list = obj["pokemon"];
+    var dataSet = {
+      data: list,
+      qstring: combined
     }
-    if (combined === ""){
-      response.send(`Welcome to the online Pokedex!`)
-      search = true;
-    }
-    if (!search){
-      response.status(404).send(
-        `Could not find information about ${request.query.q} - Is that a new pokemon? Gotta catch em' all!`
-      );
-    }
-  });
-})
+      response.render('searchPokemon',dataSet)
+  })
+});
+
 //allows user to enter in new pokemon
 app.get('/pokemon/new',(request,response)=>{
   jsonfile.readFile(file, function(err,obj){
-    var lastId = 0;
-    for (var i = 0; i < obj["pokemon"].length; i++){
-      if (obj["pokemon"][i]["id"]>lastId){
-        lastId = obj["pokemon"][i]["id"]
-      }
+    var list = obj["pokemon"];
+    var dataSet = {
+      data: list
     }
-    var newId = parseInt(lastId) + 1;
-    function padding (num, size){
-      var str = num+""
-      while (str.length < size){
-        str = "0" + str;
-      }
-      return str;
-    }
-    var newIdPad = padding(newId, 3);
-    response.send(`
-      <form method="POST" action="/pokemon/added">
-        ID:
-        ${newId}<br>
-        <input type="hidden" name="id" value="${newId}"><br>
-        Num:
-        ${newIdPad}<br>
-        <input type="hidden" name="num" value="${newIdPad}"><br>
-        Name:
-        <input type="text" name="name" placeholder="Bulbasaur"><br>
-        Image:
-        <input type="text" name="image" placeholder="image url goes here"><br>
-        Height:
-        <input type="text" name="height" placeholder="height in m"><br>
-        Weight:
-        <input type="text" name="weight" placeholder="weight in kg"><br>
-        <br><br><br>
-        <input type="submit" value="Submit">
-      </form>
-  `);
+    response.render('newPokemon',dataSet);
   })
 });
 
 app.post('/pokemon/added', function(request, response) {
   jsonfile.readFile(file, function(err,obj){
-    var duplicatePokemon = false;
-    for (var i = 0; i < obj["pokemon"].length; i++){
-      if (request.body.name === obj["pokemon"][i]["name"]){
-        duplicatePokemon = true;
+    // console.log(request.body)
+    var bodyInfo = request.body;
+    var list = obj["pokemon"];
+    var responseSet = {
+      flagstate : false,
+      idstate : false
+    }
+    if (parseInt(bodyInfo["id"]) <= list.length){
+      responseSet.idstate = true
+    }else {
+      for (var i = 0; i < list.length; i++){
+        if (list[i]["name"] === bodyInfo["name"]){
+          console.log("duplicatefound")
+          responseSet.flagstate = true
+          break;
+        }
       }
     }
-    if (request.body.id <= obj["pokemon"].length || duplicatePokemon){
-      console.log("duplicate!")
-      response.send("Error! Id has just been taken!");
-    }else{
-      obj["pokemon"].push(request.body);
-      jsonfile.writeFile(file,obj,(err) => {
-        if(err){
-          console.error(err)
-        };
-        response.send("New pokemon added!");
-      });
+    if (responseSet.flagstate === false && responseSet.idstate === false){
+      list.push(bodyInfo);
     }
-
+    response.render("addPokemon",responseSet)
+    jsonfile.writeFile(file,obj,(err) => {
+      if(err){
+        console.error(err)
+      };
+    });
   })
 });
 
