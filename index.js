@@ -123,27 +123,26 @@ var submitData = function (request,response) {
 
 
 var defaultHome = function (request, response){
-    var fullList = [];
+    var fullNameList = [];
 
     jsonfile.readFile(file, (err, obj) => {
         if (err){
             console("ERRRORRR~~");
         }
         else {
-                for (let i = 0; i < obj["pokemon"].length; i++) {
-                    fullList.push(`${obj["pokemon"][i]["name"]}`);
-                }
-            var fullListJoin = fullList.join("<br>");
-            console.log(fullListJoin);
-            console.log(fullList);
-
-            let sort = "";
-            if (request.query.sortby === "name") {
-                sort = fullList.sort();
-                var sortJoin = sort.join("<br>")
+            for (let i = 0; i < obj["pokemon"].length; i++) {
+                fullNameList.push(`${obj["pokemon"][i]["name"]}`);
             }
+
+            let displayList = ""
+            if (request.query.sortby === "name") {
+                var sort = fullNameList.sort();
+                displayList = sort.join("<br>")
+            }
+
             else if (request.query.sortby === undefined){
-                var sortJoin = fullListJoin;
+                var fullNameListJoin = fullNameList.join("<br>");
+                displayList = fullNameListJoin;
             };
 
             let home = '';
@@ -158,8 +157,7 @@ var defaultHome = function (request, response){
             '</select>'+
             '<button type="submit"/>Sort</button>'+
             '</form>'+
-            `<p>${sortJoin}</p>`+
-            //`<p>${fullListJoin}</p>`+
+            `<p>${displayList}</p>`+
             '</body>'+
             '</html>';
 
@@ -168,21 +166,10 @@ var defaultHome = function (request, response){
     });
 }
 
- // var checkQuery = function (request, response){
- //            if(request.query.sortby === "name"){
- //        response.send("sorting by name");
- //    }
- // }
-
-
-// app.get('/?*', checkQuery);
 app.get('/', defaultHome);
 app.post('/pokemon', submitData);
 app.get('/pokemon/new', makeForm);
 app.get('/:id', checkPokemon);
-
-
-
 
 
 /**
