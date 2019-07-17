@@ -60,23 +60,34 @@ app.get('/pokemon/:id/edit',(request, response) => {
 app.put("/pokemon/:id", (request, response) => {
 
     //console.log(request);
-  let inputId = parseInt( request.params.id );
-  let newCont = request.body;
-  //let newWeight = request.body.weight;
-  console.log('newName: ' + newCont.name);
-  console.log('request body:' + request.body);
-  //read the file in and write out to it
-  jsonfile.readFile(FILE, (err,obj) => {
-    obj.pokemon[inputId-1].name = newCont.name;
-    obj.pokemon[inputId-1].num = newCont.num;
-    obj.pokemon[inputId-1].img = newCont.img;
-    obj.pokemon[inputId-1].height = newCont.height + " m";
-    obj.pokemon[inputId-1].weight = newCont.weight + " kg";
+    let inputId = parseInt( request.params.id );
+    let newCont = request.body;
+    //let newWeight = request.body.weight;
+    console.log('newName: ' + newCont.name);
+    console.log('request body:' + request.body);
+    //read the file in and write out to it
+    jsonfile.readFile(FILE, (err,obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        } else {
+            obj.pokemon[inputId-1].name = newCont.name;
+            obj.pokemon[inputId-1].num = newCont.num;
+            obj.pokemon[inputId-1].img = newCont.img;
+            obj.pokemon[inputId-1].height = newCont.height + " m";
+            obj.pokemon[inputId-1].weight = newCont.weight + " kg";
 
 
-    jsonfile.writeFile(FILE,obj, (err) => {
-        response.send(newCont.name + ' updated!');
-    })
+            jsonfile.writeFile(FILE,obj, (err) => {
+                if( err ){
+                    console.log("error writing file");
+                    console.log(err)
+                    response.status(503).send("no!");
+                } else {
+                    response.send(newCont.name + ' updated!');
+                }
+            })
+        }
     })
 });
 
@@ -167,9 +178,9 @@ app.get('/pokemon/new', (request, response) => {
     '<p>Pokemon image</p>' +
     '<input type="number" name="img">' +
     '<p>Pokemon height</p>' +
-    '<input type="number" name="height">' +
+    '<input type="number" name="height"> m' +
     '<p>Pokemon weight</p>' +
-    '<input type="number " name="weight">' +
+    '<input type="number " name="weight"> kg' +
     '<input type="submit" value="Submit">' +
     '</form>' +
     '</body>' + '</html>';
@@ -247,7 +258,7 @@ app.get('/', (request, response) => {
             });
             console.log(sortedPokemon);
             pokemonArr.forEach(function(poke) {
-                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', weight: ' + poke.weight + '</li>'
+                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', weight: ' + poke.weight +' kg' + '</li>'
             });
             sortedPokemonList += '</ul>';
            response.send(form + '<h2>Pokemon sorted by weight</h2>' + sortedPokemonList);
@@ -283,7 +294,7 @@ app.get('/', (request, response) => {
             });
             console.log(sortedPokemon);
             pokemonArr.forEach(function(poke) {
-                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', height: ' + poke.height + '</li>'
+                sortedPokemonList += '<li>'+ 'Name: ' + poke.name +', height: ' + poke.height + ' m' + '</li>'
             });
             sortedPokemonList += '</ul>';
            response.send(form + '<h2>Pokemon sorted by height</h2>' + sortedPokemonList);
