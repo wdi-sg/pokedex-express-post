@@ -1,6 +1,5 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
 
 /**
@@ -12,41 +11,68 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+app.use(express.static(__dirname + '/public'));
+
 /**
  * ===================================
  * Functions
  * ===================================
  */
 
-const addPokemonForm = (request, response) => {
-  let form =
-    `<html>
-        <head>
-            <style>
-                input, button {
-                    padding:4px;
-                    margin-bottom: 20px;
+// Show pokemon function
+const showPokemon = (request, response) => {
+    let sortby = request.query.sortby;
+    jsonfile.readFile(FILE, (err,obj)=> {
+        if (err){
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+
+            if (sortby) {
+                switch (sortby) {
+                    case "id":
+                        pokedex.sort(sortByID);
+                        break;
+                    case "name":
+                        pokedex.sort(sortByName);
+                        break;
+                    case "weight":
+                        pokedex.sort(sortByWeight);
+                        break;
+                    case "height":
+                        pokedex.sort(sortByHeight);
+                        break;
                 }
-            </style>
-        </head>
-        <body>
-            <h1>animal form</h1>
-            <form method="POST" action="/pokemon">
-                <input name="name" placeholder="name" required/><br>
-                <input name="img" placeholder="img" required/><br>
-                <input name="height" placeholder="height (m)" required/><br>
-                <input name="weight" placeholder="weight (kg)" required/><br>
-                <button>Submit</button>
-            </form>
-        </body>
-    </html>`;
-  response.send(form);
-}
+            }
+            let data = {
+                pokedex: pokedex
+            };
+            response.render('home',data)
+        }
+    });
+};
+
+// Show Add Pokemon form
+const addPokemonForm = (request, response) => {
+    response.render('add-form')
+};
+
+// Add Pokemon
 const addPokemon = (request,response) => {
     let newPokemon = request.body;
     let existing = false;
@@ -72,82 +98,22 @@ const addPokemon = (request,response) => {
                     "img": newPokemon.img,
                     "height": newPokemon.height+" m",
                     "weight": newPokemon.weight+" kg"
-                }
+                };
                 obj.pokemon.push(pokemonObject);
-                obj.lastKey = lastKey;
                 jsonfile.writeFile(FILE, obj, (err) =>{
-                    response.send(`<h2>Added ${newPokemon.name}</h2>`);
+                    response.send(`<h2>Added ${newPokemon.name}</h2><a href="/">View all Pokemon</a>`);
                 })
             }
             else {
-                response.send("The Pokemon ID or num have already been taken.");
+                response.send(`<h2>The Pokemon ID or num have already been taken.</h2><a href="/">View all Pokemon</a>`);
             }
         }
     })
-}
+};
 
-const showPokemon = (request, response) => {
-    let sortby = request.query.sortby;
-    let content =
-        `<html>
-            <head>
-                <style>
-                    input, button {
-                        padding:4px;
-                        margin-bottom: 20px;
-                    }
-                </style>
-            </head>
-            <body>
-                <h2>List of Pokemon</h2>
-                <form>
-                    <select name="sortby">
-                        <option disabled selected>Select an option</option>
-                        <option value="id">ID</option>
-                        <option value="name">Name</option>
-                        <option value="weight">Weight</option>
-                        <option value="height">Height</option>
-                    </select>
-                    <button>Sort by</button>
-                </form>
-            </body>
-        <html>`;
-
-    jsonfile.readFile(FILE, (err,obj)=> {
-        if (err){
-            console.log(err);
-        }
-        else {
-            let pokedex = obj.pokemon;
-
-            if (sortby) {
-                content+='<h4>Sorted by '+sortby+'</h4>';
-                switch (sortby) {
-                    case "id":
-                        pokedex.sort(sortByID);
-                        break;
-                    case "name":
-                        pokedex.sort(sortByName);
-                        break;
-                    case "weight":
-                        pokedex.sort(sortByWeight);
-                        break;
-                    case "height":
-                        pokedex.sort(sortByHeight);
-                        break;
-                }
-            }
-            for (let pokemon of pokedex){
-                content += `<a href="/pokemon/${pokemon.id}">${pokemon.name}</a><br>`;
-            }
-        }
-        response.send(content);
-    });
-}
-
+// Show individual Pokemon details
 const showPokemonDetails = (request,response) => {
-    let pokemonID = parseInt(request.params.pokemon);
-    console.log (pokemonID);
+    let id = parseInt(request.params.id);
     let content = "";
     jsonfile.readFile(FILE,(err,obj)=> {
         if (err) {
@@ -155,22 +121,137 @@ const showPokemonDetails = (request,response) => {
         }
         else {
             let pokedex = obj.pokemon;
-            for (let pokemon of pokedex){
-                if (pokemonID === pokemon.id){
-                    content = `<h2>${pokemon.name}<h2>
-                        <img src="${pokemon.img}">
-                    `;
+            let data = {};
+            for (let pokemon of pokedex) {
+                if (id === pokemon.id) {
+                    data.pokemon = pokemon;
                 }
             }
-            if (content != ""){
-                response.send(content);
+            if (data.pokemon !== undefined) {
+                response.render('pokemon', data);
             }
             else {
-                response.send("Pokemon not found!");
+                response.send(`<h2>Pokemon Not Found</h2><a href="/">View all Pokemon</a>`);
             }
         }
     })
-}
+};
+
+// Show Edit Pokemon form
+const editPokemonForm = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (id === pokemon.id){
+                    var data = {
+                        pokemon : pokemon
+                    }
+                }
+            }
+            response.render('edit-form',data)
+        }
+    });
+};
+
+// Update Pokemon details
+const updatePokemonDetails = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            var updatedPokemon = null;
+            for (var i=0;i<pokedex.length;i++) {
+                var pokemon = pokedex[i];
+                if (id === pokemon.id) {
+                    let data = {};
+                    updatedPokemon = {
+                        "id": id,
+                        "num": id.toString(),
+                        "name": request.body.name,
+                        "img": request.body.img,
+                        "height": parseFloat(request.body.height) + " m",
+                        "weight": parseFloat(request.body.weight) + " kg"
+                    };
+                    pokedex[i] = updatedPokemon;
+                    jsonfile.writeFile(FILE, obj, (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            data.pokemon = updatedPokemon;
+                            data.updated = true;
+                            response.render('pokemon', data);
+                        }
+                    });
+                }
+            }
+            if (updatedPokemon === null){
+                response.send(`<h2>Pokemon not found</h2><a href="/">View all Pokemon</a>`);
+            }
+        }
+    });
+};
+
+// Delete Pokemon form
+const deletePokemonForm = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (id === pokemon.id){
+                    var data = {
+                        pokemon : pokemon
+                    }
+                }
+            }
+            response.render('delete-form',data)
+        }
+    });
+};
+
+// Delete Pokemon details
+const deletePokemonDetails = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (var i=0;i<pokedex.length;i++) {
+                var pokemon = pokedex[i];
+                if (id === pokemon.id) {
+                    let name = pokemon.name;
+                    pokedex.splice(i,1);
+                    jsonfile.writeFile(FILE, obj, (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            response.send(`<h2>Pokemon deleted</h2><a href="/">View all Pokemon</a>`);
+                        }
+                    });
+                }
+            }
+        }
+    });
+};
+
+/**
+ * ===================================
+ * Sorting Algorithms
+ * ===================================
+ */
 
 //Sort alphabetically
 function sortByName(a, b) {
@@ -226,19 +307,28 @@ function sortByHeight(a, b) {
   }
   return comparison;
 }
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+
+app.get('/', showPokemon);
+app.put('/', showPokemon);
+
 app.get('/pokemon/new', addPokemonForm);
 
 app.post('/pokemon', addPokemon);
 
-app.get('/pokemon/:pokemon', showPokemonDetails);
+app.get('/pokemon/:id', showPokemonDetails);
+app.put('/pokemon/:id', updatePokemonDetails);
+app.delete('/pokemon/:id', deletePokemonDetails);
 
-app.get('/', showPokemon);
+app.get('/pokemon/:id/edit', editPokemonForm);
+
+app.get('/pokemon/:id/delete', deletePokemonForm);
 
 /**
  * ===================================
