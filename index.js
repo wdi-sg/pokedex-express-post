@@ -156,8 +156,8 @@ app.get('/pokemon/new', (request, response) => {
         <h1>Gotta catch'em all!</h1>
         <h2>Add New Pokemon</h2>
         <form method="POST" action="/pokemon">
-        <p>Pokemon ID</p><input type="number" min="${parseInt(pokemon[pokemon.length-1].id)+1}" name="id" placeholder="id"/>
-        <p>Pokemon Number</p><input type="number" min="${parseInt(pokemon[pokemon.length-1].id)+1}" name="num" placeholder="num"/>
+        <p>Pokemon ID</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="id" placeholder="id"/>
+        <p>Pokemon Number</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="num" placeholder="num"/>
         <p>Pokemon Name</p><input name="name" placeholder="name"/>
         <p>Pokemon Image Link</p><input name="img" placeholder="img href"/>
         <p>Pokemon Height</p><input name="height" placeholder="height"/>
