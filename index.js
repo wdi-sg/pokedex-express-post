@@ -17,11 +17,69 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+
+app.get('/pokemon/:id/edit',(request, response) => {
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let inputId = parseInt( request.params.id );
+
+    let url = `/pokemon/${obj.pokemon[inputId-1].id}?_method=put`
+
+    let html = `
+    <form method="POST" action=${url}>
+        <h1> edit this pokemon's name </h1>
+        <p>number: ${obj.pokemon[inputId-1].num}</p>
+        <p>name: ${obj.pokemon[inputId-1].name}</p>
+        <p>img: <img src="${obj.pokemon[inputId-1].img}"></p>
+        <p>height: ${obj.pokemon[inputId-1].height}</p>
+        <p>weight: ${obj.pokemon[inputId-1].weight}</p>
+        <p><input name="num" type="number" value="${obj.pokemon[inputId-1].num}"/></p>
+        <p><input name="name" type="text" value="${obj.pokemon[inputId-1].name}"/></p>
+        <p><input name="img" type="text" value="${obj.pokemon[inputId-1].img}"/></p>
+        <p><input name="height" type="number" step="0.01" min="0" value="${obj.pokemon[inputId-1].height}"/> m</p>
+        <p><input name="weight" type="number" step="0.01" min="0" value="${obj.pokemon[inputId-1].weight}"/> kg</p>
+        <input type="submit" value="edit this"/>
+    </form>`;
+
+    response.send(html);
+  })
+
+
+});
+
+app.put("/pokemon/:id", (request, response) => {
+
+    //console.log(request);
+  let inputId = parseInt( request.params.id );
+  let newCont = request.body;
+  //let newWeight = request.body.weight;
+  console.log('newName: ' + newCont.name);
+  console.log('request body:' + request.body);
+  //read the file in and write out to it
+  jsonfile.readFile(FILE, (err,obj) => {
+    obj.pokemon[inputId-1].name = newCont.name;
+    obj.pokemon[inputId-1].num = newCont.num;
+    obj.pokemon[inputId-1].img = newCont.img;
+    obj.pokemon[inputId-1].height = newCont.height + " m";
+    obj.pokemon[inputId-1].weight = newCont.weight + " kg";
+
+
+    jsonfile.writeFile(FILE,obj, (err) => {
+        response.send(newCont.name + ' updated!');
+    })
+    })
+});
+
 
 app.get('/:id', (request, response) => {
 
