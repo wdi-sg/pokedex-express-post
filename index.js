@@ -239,7 +239,7 @@ var getPokemonByIdRequest = function(request,response){
 
 }
 
-var putPokemonByIdRequest = function(request,response){
+var editPokemonById = function(request,response){
 
   var newPokemon = request.body;
   console.log( newPokemon );
@@ -295,6 +295,29 @@ var editPokemonByIdRequest = function(request,response){
   });
 }
 
+// var deletePokemonByIdRequest = function(request,response){
+//   jsonfile.readFile(FILE, (error, obj) => {
+//     if( error ){
+//       console.log(error);
+//     }
+//
+//     console.log(obj);
+//     var id = parseInt(request.params.id) - 1;
+//
+//     var pokemon = obj.pokemon[id];
+//
+//     var data = {
+//       pokemon : pokemon,
+//     }
+//
+//     response.render('delete', data);
+//   });
+// }
+//
+// var deletePokemonById = function(request,response){
+//
+// }
+
 /**
  * ===================================
  * Routes
@@ -313,8 +336,10 @@ app.get('/', getAllPokemonRequest);
 //after adding react
 app.get('/home', displayHomeRequest);
 app.get('/pokemon/:id', getPokemonByIdRequest);
-app.put('/pokemon/:id', putPokemonByIdRequest);
+app.put('/pokemon/:id', editPokemonById);
 app.get('/pokemon/:id/edit', editPokemonByIdRequest);
+// app.get('/pokemon/:id/delete', deletePokemonByIdRequest);
+// app.delete('/pokemon/:id', deletePokemonById);
 
 
 /**
