@@ -18,6 +18,8 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+app.use(express.static(__dirname + '/public'));
+
 /**
  * ===================================
  * Routes
@@ -206,7 +208,7 @@ var getAllPokemonRequest = function(request,response){
     var weightButton = '<input type="submit" name="sortby" value="weight">';
     // var submitButton = '<input type="submit" value="Submit">';
 
-
+    var head = `<head><link rel="stylesheet" type="text/css" href="style.css"></head>`
     var form = '<form method="get" action="/">'
                + sortBySelect
                // + idButton
@@ -215,9 +217,10 @@ var getAllPokemonRequest = function(request,response){
                // + weightButton
                // + submitButton
                + '</form>';
+    var body = `<body>${form}${pokemonDisplay}</body>`
 
 
-    response.send(form + pokemonDisplay);
+    response.send(head+body);
 
   });
 
