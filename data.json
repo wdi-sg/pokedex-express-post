@@ -1,0 +1,28 @@
+{
+  "pokemon": [
+    {
+      "id": 1,
+      "name": "bubulasar",
+      "height": "123cm",
+      "weight": "12kg"
+    },
+    {
+      "id": 2,
+      "name": "squritle",
+      "height": "223cm",
+      "weight": "120kg"
+    },
+    {
+      "id": 3,
+      "name": "charmander",
+      "height": "553cm",
+      "weight": "620kg"
+    },
+    {
+      "id": 4,
+      "name": "snorlax",
+      "height": "1553cm",
+      "weight": "7620kg"
+    }
+  ]
+}
