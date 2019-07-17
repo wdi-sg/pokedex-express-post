@@ -1,62 +1,154 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
+var currentId = 0;
+const file = 'pokedex.json';
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
 
-app.get('/:id', (request, response) => {
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
+app.get('/pokemon/new', (req, res) => {
+  jsonfile.readFile(file,(err,obj)=> {
+    if(err){
+      console.log("There's an error")
     }
 
-    if (pokemon === undefined) {
+  
+  let form = `<form action="/pokemon" method="post">
+                <p>Name</p>
+                <input name="lastname" />
+                <p>Num</p>
+                <input name="num" />
+                <p>id</p>
+                <input name="id" />
+                <p>Image</p>
+                <input name="img" />
+                <p>height</p>
+                <input name="height" />
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+                <input type="submit"/>
+            </form>`
 
-      response.send(pokemon);
+  res.send(form);
+});
+});
+
+app.post('/pokemon',(req, res) => {
+  jsonfile.readFile(file,(err,obj)=> {
+    if(err){
+      console.log("There's an error")
     }
+    obj.pokemon.push(req.body);
+    // console.log(newPokemon);
+    jsonfile.writeFile(file,obj,(err)=>{
+      if(err){console.log("error")}
+        console.log("how is it done")
+      res.send("pokemonAdded");
+    });
+  });
+})
+
+app.get('/',(req, res)=> {
+  jsonfile.readFile(file,(err,obj)=>{
+    if(err){console.log("error")}
+    let pokemon = obj.pokemon;
+  res.send(pokemon);
+  })
+});
+
+
+
+//part 2
+app.get('/pokemon/:id/edit',(request, response) => {
+  //get data from json
+  jsonfile.readFile(file, (err, obj) => {
+    if( err ){
+      console.log(err);
+    } 
+     console.log(obj);
+    let id = request.params.id;
+    console.log(id);
+    let editedPokemon = obj.pokemon[id];
+    console.log(editedPokemon);
+    var output = "" +
+      "<p>edit form</p>"+
+      '<form action="/something">'+
+      '<input name="name" >'+
+      "</form>";
+      var data = {
+     editedPokemon : editedPokemon,
+     editedPokemonId : id
+    };
+
+    response.render('home', data);
+
   });
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
+
+
+app.put('/pokemon/:id', (request, response) => {
+  console.log("WOW PUT");
+
+  var newPokemon = request.body;
+
+ // save in data file
+  
+  jsonfile.readFile(file, (err, obj) => {
+    console.log("got file");
+    if( err ){
+     
+      console.log(err);
+    }
+//      save data
+    obj.pokemon[request.params.id] = newPokemon;
+   
+    jsonfile.writeFile(file, obj, (err) => {
+      console.log("write file done");
+      if( err ){
+        console.log("error writing file");
+       
+        response.status(503).send("no!");
+      }else{
+        console.log("~~~~~~~yay");
+
+        response.send("updated");
+      }
+
+    });
+  });
+
+
 });
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
