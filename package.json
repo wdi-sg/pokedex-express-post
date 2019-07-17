@@ -4,8 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "jsonfile": "^4.0.0",
     "method-override": "^2.3.10"
-  }
+  },
+  "description": "We will build a web app using Node.js and Express - a Pokedex app.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aikchongtan/pokedex-express-post.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/aikchongtan/pokedex-express-post/issues"
+  },
+  "homepage": "https://github.com/aikchongtan/pokedex-express-post#readme"
 }
