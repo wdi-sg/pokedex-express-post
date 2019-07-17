@@ -1730,12 +1730,5 @@
 		"egg": "Not in Eggs",
 		"avg_spawns": 0,
 		"spawn_time": "N/A"
-	}, {
-		"id": "152",
-		"num": "152",
-		"name": "lolmon",
-		"img": "lolimg",
-		"height": "lolheight",
-		"weight": "lolweight"
 	}]
 }
