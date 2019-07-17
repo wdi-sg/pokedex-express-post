@@ -125,7 +125,6 @@ let sortAllPokemon = (request, response) => {
         </form>
         `;
 
-
         content = form;
 
         if (query === 'name') {
