@@ -20,49 +20,38 @@ app.use(express.urlencoded({
 
 app.use(express.static(__dirname + '/public'));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-var getPokemonByIdRequest = function(request,response){
+var displayHomeRequest = function(request, response){
+   response.render('home');
+ }
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, data) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
 
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<data.pokemon.length; i++ ){
-
-      let currentPokemon = data.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-
-}
 
 var addNewPokemonRequest = function(request,response){
   var newPokemon = request.body;
   // save in data file
-  jsonfile.readFile(FILE, (err, data) => {
+  jsonfile.readFile(file, (err, data) => {
     if( err ){
       console.log("error reading file");
       console.log(err);
@@ -93,7 +82,7 @@ var getNewPokemonRequest = function(request,response){
     //get the next index
     var lastIndex = data.pokemon.length + 1 ;
 
-    var form = '<form method="POST" action="/pokemon">' +
+    var form = '<form method="POST" action="/pokemon1">' +
                 'Add new Pokemon:<br>' +
                 '<input type="text" name="id" placeholder="id" value="' + lastIndex + '"><br>' +
                 '<input type="text" name="num" placeholder="num" value="' + lastIndex + '"><br>' +
@@ -227,16 +216,97 @@ var getAllPokemonRequest = function(request,response){
 }
 
 
+
+//part 2
+var getPokemonByIdRequest = function(request,response){
+
+  jsonfile.readFile(FILE, (error, obj) => {
+    if( error ){
+      console.log(error)
+    }
+
+    console.log(obj);
+    var id = parseInt(request.params.id) - 1;
+
+    var thisPokemon = obj.pokemon[id];
+
+    var data = {
+      pokemon : thisPokemon,
+    }
+
+    response.render('pokemon', data);
+  });
+
+}
+
+var putPokemonByIdRequest = function(request,response){
+
+  var newPokemon = request.body;
+  console.log( newPokemon );
+
+  // save in data file
+  jsonfile.readFile(FILE, (error, obj) => {
+    if( error ){
+      console.log(error)
+    }
+
+    // save data
+    obj.pokemon[parseInt(request.params.id) - 1] = newPokemon;
+
+
+
+    jsonfile.writeFile(FILE, obj, (error) => {
+      if( error ){
+        console.log(error)
+      }else{
+        response.send("updated");
+      }
+
+    });
+
+
+  });
+}
+
+var editPokemonByIdRequest = function(request,response){
+  jsonfile.readFile(FILE, (error, obj) => {
+    if( error ){
+      console.log(error);
+    }
+
+    console.log(obj);
+    var id = parseInt(request.params.id) - 1;
+
+    var pokemon = obj.pokemon[id];
+
+    var data = {
+      pokemon : pokemon,
+    }
+
+    response.render('edit', data);
+  });
+}
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+
 app.get('/', getAllPokemonRequest);
-app.get('/:id', getPokemonByIdRequest);
-app.get('/pokemon/new', getNewPokemonRequest);
-app.post('/pokemon', addNewPokemonRequest);
+
+//old code part 1
+// app.get('/pokemon:id', getPokemonByIdRequest);
+// app.get('/pokemon1/new', getNewPokemonRequest);
+// app.post('/pokemon1', addNewPokemonRequest);
+
+
+//after adding react
+app.get('/home', displayHomeRequest);
+app.get('/pokemon/:id', getPokemonByIdRequest);
+app.put('/pokemon/:id', putPokemonByIdRequest);
+app.get('/pokemon/:id/edit', editPokemonByIdRequest);
 
 
 /**
