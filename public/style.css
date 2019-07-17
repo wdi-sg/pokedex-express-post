@@ -51,18 +51,12 @@ form {
 	border-radius: 10px;
 }
 
-.form-container {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-
-.form-container h2 {
+.edit-mon h2 {
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 12pt;
+	margin: 30px 0px 10px 0;
 }
 
-.input-field {
-  margin: 5px 20px;
+.edit-mon img {
+	margin-bottom: -20px;
 }
