@@ -1,0 +1,52 @@
+body {
+	font-family: 'Ubuntu', sans-serif;	/* weight 300 and 400 */
+	width: 80%;
+	margin: 0 auto;
+	padding: 0;
+	text-align: center;
+}
+
+form {
+	margin: 15px;
+}
+
+/* container holding all the poke cards */
+#pokemon-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+/* individual pkmn cards */
+.pokemon-card {
+	  width: 150px;
+    margin: 10px 20px;
+}
+
+.pokemon-card a {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.pokemon-card p {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 12pt;
+	font-weight: 300;
+	margin: 5px;
+}
+
+.pokemon-card h1 {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 15pt;
+	font-weight: 400;
+	margin: 5px;
+}
+
+.pokemon-card img {
+	background-color: #F2F2F2;
+	width: 100%;
+	border-radius: 10px;
+}
