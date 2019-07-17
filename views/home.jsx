@@ -2,7 +2,8 @@ var React = require('react');
 
 class Homepage extends React.Component {
   render() {
-    const pokeEntries = this.props.pokemon.map(pokemon =>{
+
+    const pokeCards = this.props.pokemon.map(pokemon =>{
         let pokePage = "/pokemon/" + pokemon.num;
         return (
                 <div className="pokemon-card">
@@ -36,7 +37,7 @@ class Homepage extends React.Component {
                 <input type='submit'/>
             </form>
             <div id="pokemon-container">
-                {pokeEntries}
+                {pokeCards}
             </div>
         </body>
         </html>

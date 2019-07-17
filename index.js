@@ -47,6 +47,24 @@ app.get('/pokemon', (request, response) => {
     });
 });
 
+/*==== Edit Page ==== */
+app.get('/pokemon/:id/edit', (request, response) => {
+
+    let pokeId = parseInt(request.params.id);
+
+    jsonfile.readFile(file, (err,obj) => {
+        if (err) {
+            console.log("Something went wrong when displaying the edit page.")
+        }
+
+        let pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
+        console.log(pokemonMatchingId);
+
+        // response.send("wowie");
+        response.render(editpage, pokemonMatchingId);
+    });
+})
+
 /**
  * ===================================
  * Helper Functions
