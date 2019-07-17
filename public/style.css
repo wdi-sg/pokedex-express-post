@@ -50,3 +50,19 @@ form {
 	width: 100%;
 	border-radius: 10px;
 }
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.form-container h2 {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 12pt;
+}
+
+.input-field {
+  margin: 5px 20px;
+}

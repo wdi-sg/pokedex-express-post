@@ -58,7 +58,6 @@ app.get('/pokemon/:id/edit', (request, response) => {
         }
 
         let pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
-        console.log(pokemonMatchingId);
 
         // response.send("wowie");
         response.render(editpage, pokemonMatchingId);
