@@ -1,0 +1,145 @@
+div, th, td {
+	/*border: solid 1px red;*/
+}
+
+body {
+	font-family: sans-serif;
+}
+
+h1 {
+	text-align: center;
+	font-weight: 400;
+	margin: 5px auto 70px auto;
+}
+
+img {
+	height: 240px;
+	width: 240px;
+	margin-bottom: 15px;
+}
+
+.pokeID {
+	color: #616161;
+}
+
+.pokeDetails {
+	display: flex;
+	flex-flow: row;
+	margin: 0 50px;
+}
+
+.mainPoke {
+	background-color: #F2F2F2;
+	border-radius: 5px;
+}
+
+.left {
+width: 40%;
+display: flex;
+flex-flow: column wrap;
+align-items: center;
+justify-content: center;
+}
+
+.right {
+	padding: 0 40px;
+	width: 60%;
+}
+
+.blurb {
+	font-size: 16px;
+	margin-bottom: 20px;
+	font-weight: 330;
+}
+
+.stats {
+	background-color: #38A8D5;
+	border-radius: 5px;
+	display: flex;
+	flex-flow: row wrap;
+	padding: 20px;
+}
+
+li {
+	list-style: none;
+	width: 50%;
+	color: #F1F9FC;
+	font-weight: 300;
+	font-size: 15px;
+}
+
+.statValue {
+	font-size: 18px;
+	color: #000000;
+	font-weight: 370;
+	margin: 18px 0;
+}
+
+h3 {
+	font-weight: 300;
+}
+
+.buttonBox {
+	width: 60%;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+/*	border: solid 5px blue;*/
+}
+
+#edit {
+	background-color: #9CCA58;
+}
+
+#delete {
+	background-color: #B881C7;
+}
+
+.button {
+	padding: 8px 20px;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.button>a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.back {
+	margin-top: 30px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.statChart {
+	padding: 16px 30px;
+	background-color: #A4A4A4;
+	border-radius: 5px;
+	margin-top: 15px;
+}
+
+h4 {
+	margin: 0 0 25px 0;
+	font-weight: 350;
+	font-size: 18px;
+}
+
+td {
+	background-color: #FFFFFF;
+	height: 7px;
+	width: 12%;
+	border: solid 1px #A4A4A4;
+}
+
+th {
+	font-size: 14px;
+	f
+}
+
+@media (min-width: 1064px) {
+	.pokeWrapper {
+		width: 1048px;
+		margin: 0 auto;
+	}
+}
