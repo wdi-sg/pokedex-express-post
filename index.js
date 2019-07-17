@@ -126,13 +126,13 @@ app.get('/', (request, response) => {
     let form = '';
     form = '<form method = "get" action = "/">' +
     //'<input type="submit" name="sortby" value="name">' +
-    '<select name="sortby">' +
+    '<select name="sortby" onchange="this.form.submit()">' +
     '<option name="" value="0" selected>Sort by</option>' +
     '<option value="name">Name</option>' +
     '<option value="weight">Weight</option>' +
     '<option value="height">Height</option>' +
     '</select>' +
-    '<input type="submit" />' +
+    //'<input type="submit" />' +
     '</form>';
 
     console.log(request.query.sortby);
