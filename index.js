@@ -116,21 +116,20 @@ let sendPokemonDeleteRequest = (request, response) => {
 
 // delete a given pokemon
 let deletePokemon = (request, response) => {
-    console.log( "this is request body:",request.body );
     // get the current contents of the file
     jsonfile.readFile(FILE, (err, obj) => {
 
-        // get the location in the array we are requesting
+        // get the id of the pokemon we're deleting
         let pokemonId = parseInt( request.params.id );
-        let arrayIndex = (pokemonId - 1);
 
         // change the current contents of the file
-        obj.pokemon.splice( arrayIndex, 1);
+        let updatedObj = obj;
+        updatedObj.pokemon = updatedObj.pokemon.filter(pokemon => pokemon.id !== pokemonId);
 
-        // we don't need to reassign this, but lets be explicit about the change
-        const changedObj = obj;
+        // need to update the lastKey
+        updatedObj.lastKey = updatedObj.pokemon[updatedObj.pokemon.length - 1].id;
 
-        jsonfile.writeFile(FILE, changedObj, (err) => {
+        jsonfile.writeFile(FILE, updatedObj, (err) => {
             console.error(err)
 
             response.redirect('/');
@@ -167,19 +166,8 @@ let lookupPokemonById = (request, response) => {
 
 // send request to create a new custom pokemon
 let sendPokemonNewRequest = (request, response) => {
-    // to convert to newform.jsx
-    let  newForm =`<h1>Let's create a new Pokemon!</h1>
-                  <form method="POST" action="/pokemon">
-                  <h4>Provide your new pokemon's details here:</h4>
-                  Name: <input type="text" name="name">
-                  Image link: <input type="text" name="img">
-                  Height: <input type="text" name="height">
-                  Weight: <input type="text" name="weight">
-                  <p></p>
-                  <input type="submit" value="Submit">
-                  </form>`;
 
-    response.send(newForm);
+    response.render('CreatePokemon');
 };
 
 // create a new custom pokemon: parse the form data and save the new pokemon data into pokedex.json
