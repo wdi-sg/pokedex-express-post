@@ -11,6 +11,15 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const methodOverride = require('method-override');
+
+app.use(methodOverride('_method'));
+//this prompts an error
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
 //ROUTES
 
 
@@ -125,8 +134,11 @@ app.get('/', (request, response) => {
 
 app.get('/test', (request, response) => {
     if (request.query.sortby === "name") {
+        //sort here!
         response.send("aYeye")
+
     }
+    console.log('hi')
     // console.log("console.log");
 
     // response.send(request.query)
@@ -152,8 +164,27 @@ app.get('/test', (request, response) => {
 
 })
 
+app.get("/pokemon/:id/edit", (request, response) => {
+    //verified editPokemon
+    let editPokemonIndex = parseInt(request.params.id);
+    let editPokemon = null;
+    jsonfile.readFile(file, function(err, obj) {
+        for (let i=0; i<obj.pokemon.length; i+=1){
+            if (obj.pokemon[i].id === editPokemonIndex){
+                editPokemon = obj.pokemon[i]
+            }
+        }
+
+        response.render('home', editPokemon)
+        // response.send(editPokemon)
+    })
 
 
+})
+
+app.put("/pokemon/:id", (request, response) => {
+    response.send("GOT TO APP PUT!");
+})
 
 
 
