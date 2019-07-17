@@ -26,6 +26,8 @@ app.use(express.urlencoded({
  * ===================================
  */
 
+
+
 app.get('/:id', (request, response) => {
 
   // get json from specified file
@@ -59,10 +61,11 @@ app.get('/:id', (request, response) => {
 });
 
 
-
+// Write new pokemon to file
 app.post('/pokemon', function(request, response) {
 
     jsonfile.readFile(FILE, (err, obj) => {
+
         if (err) {
             console.log('error reading file');
             console.log(err);
@@ -70,9 +73,6 @@ app.post('/pokemon', function(request, response) {
 
         let newPokemon = request.body;
         console.log(newPokemon);
-
-        // console.log(obj.pokemon);
-
         obj.pokemon.push(newPokemon);
 
         // save the request body into json file
@@ -86,61 +86,84 @@ app.post('/pokemon', function(request, response) {
 
     });////// end of reading json file //////
     console.log("send response");
-    response.send("yes!");
+    response.send("New pokemon added!");
 });
+
+
 
 
 app.get('/pokemon/new', (request, response) => {
 
     var form = '';
 
-    form = '<form method="POST" action="/pokemon">Pokemon Name:<input type="number" name="id" placeholder="enter id"><input type="number" name="num" placeholder="enter number"><input type="text" name="name" placeholder="enter name"><input type="text" name="img" placeholder="enter img url"><input type="text" name="height" placeholder="enter height"><input type="text" name="weight" placeholder="enter weight"><input type="text" name="candy" placeholder="enter candy type or none"><input type="text" name="egg" placeholder="enter 1km, 5km or 10km"><input type="number" name="avg_spawns" placeholder="enter 1km, 5km or 10km"><input type="time" name="spawn_time" placeholder="enter time"><input type="submit" value="Submit"></form>';
+    form = '<html><head><style type="text/css">form, input {font-size: 1em;padding: 10px;margin: 10px 20px;}</style></head><body><h1>Add New Pokemon</h1><form method="POST" action="/pokemon"><input type="number" name="id" placeholder="enter id"><input type="number" num="num" placeholder="enter num"><input type="text" name="name" placeholder="enter name"><input type="text" name="img" placeholder="enter img url"><input type="text" name="height" placeholder="enter height"><input type="text" name="weight" placeholder="enter weight"><input type="submit" value="Submit"></form></body></html>';
 
     response.send(form);
 });
 
 
-// Sort pokemon by name
-app.get('/sort/name', (request, response) => {
+// make a search using: localhost:3000/route?q=name
+app.get('/', (request, response) => {
 
-    let showAllArr = [];
+    console.log("You are searching for: " + request.query.sortby);
 
     jsonfile.readFile(FILE, (err, obj) => {
+
+        let pokedex = obj.pokemon;
 
         if (err) {
             console.log('error reading file');
             console.log(err);
         } else {
-            for (let i = 0; i < obj.pokemon.length; i++) {
-                showAllArr.push(obj.pokemon[i].name);
+
+            let sortby = request.query.sortby;
+            // sort by name
+            if (sortby == 'name') {
+
+            pokedex.sort(function(a, b) {
+
+                var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+                if (nameA < nameB) {
+                    return -1
+                }
+
+                if (nameB < nameA) {
+                    return 1
+                }
+
+                return 0;
+
+                });
+
             }
         }
-        console.log(showAllArr);
-        showAllArr.sort();
-        response.send(showAllArr.join("<br>"));
-    });
+        //console.log(pokedex);
+        response.send(pokedex);
+    }); // end of reading json file
 });
+
+
 
 
 // show all pokemon on pokedex
 app.get('/', (request, response) => {
 
-    let showAllArr = [];
-
     jsonfile.readFile(FILE, (err, obj) => {
+
+        let pokedex = obj.pokemon;
 
         if (err) {
             console.log('error reading file');
             console.log(err);
-        } else {
-            for (let i = 0; i < obj.pokemon.length; i++) {
-                showAllArr.push(obj.pokemon[i].name);
-            }
         }
-        console.log(showAllArr);
-        response.send(showAllArr.join("<br>"));
+
+        console.log(pokedex);
+        response.send(pokedex);
     });
 });
+
+
 
 /**
  * ===================================
