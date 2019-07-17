@@ -119,27 +119,14 @@ app.get('/', function(request, response){
     </form>`
   if (request.query.sortby === "name"){
     jsonfile.readFile(file, function(err,obj){
-      for (var i = 0; i < obj["pokemon"].length; i++){
-        list.push(obj["pokemon"][i]["name"]);
-      }
-      list.sort();
-      for (var j = 0; j < list.length; j++){
-        listHolder += `<li>${list[j]}</li>`
+      list = obj["pokemon"].sort(compareValues("name"));
+      for (var i = 0; i < list.length; i++){
+        listHolder += `<li>${list[i]["name"]}</li>`
       }
       response.send(`<h1>List of pokemon sorted by name:</h1>${form}<br><ul>${listHolder}</ul>`)
     });
   }else if (request.query.sortby === "weight"){
     jsonfile.readFile(file, function(err,obj){
-    function compareValues(key){
-      return function (a,b){
-        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        return 0;
-        }
-        let varA = parseFloat(a[key])
-        let varB = parseFloat(b[key])
-        return varA-varB;
-      }
-    }
       list = obj["pokemon"].sort(compareValues("weight"));
       for (var i = 0; i < list.length; i++){
         listHolder += `<li>${list[i]["name"]} - ${list[i]["weight"]}</li>`
@@ -148,16 +135,6 @@ app.get('/', function(request, response){
     });
   }else if (request.query.sortby === "height"){
     jsonfile.readFile(file, function(err,obj){
-    function compareValues(key){
-      return function (a,b){
-        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        return 0;
-        }
-        let varA = parseFloat(a[key])
-        let varB = parseFloat(b[key])
-        return varA-varB;
-      }
-    }
       list = obj["pokemon"].sort(compareValues("height"));
       for (var i = 0; i < list.length; i++){
         listHolder += `<li>${list[i]["name"]} - ${list[i]["height"]}</li>`
@@ -176,3 +153,31 @@ app.get('/', function(request, response){
 });
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+function compareValues(key){
+  var varA, varB, compare;
+  return function (a,b){
+    if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+    return 0;
+    }
+    if (hasNumber(a[key]) === true && hasNumber(b[key]) === true){
+      console.log("is a number")
+      varA = parseFloat(a[key])
+      varB = parseFloat(b[key])
+      return varA-varB;
+    }else {
+      console.log("is a string")
+      varA = a[key].toUpperCase()
+      varB = b[key].toUpperCase()
+      if (varA > varB){
+        compare = 1;
+      }else if (varA < varB){
+        compare = -1;
+      }
+      return compare;
+    }
+  }
+}
+function hasNumber(input){
+  return /\d/.test(input);
+}
