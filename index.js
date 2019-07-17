@@ -1,21 +1,25 @@
+// express module -handle http request
 const express = require('express');
-const jsonfile = require('jsonfile');
-const dexData = "pokedex.json"
-const newDexData = "pokedex.json"
-// const jsonfile = require('jsonfile');
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+// jsonfile module read/write json
+const jsonfile = require('jsonfile');
+const dexData = "pokedex.json"
+
+
+// method override module override http put/delete
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// react-views module
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -45,8 +49,6 @@ function borderEmptyRow() {
     const row = "     ++                                                                                                ++";
     return row;
 };
-
-
 function pokedexBanner() {
     const rowA = borderSide("██████╗  ██████╗ ██╗  ██╗███████╗██████╗ ███████╗██╗  ██╗ ");
     const rowB = borderSide("██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝██╔══██╗██╔════╝╚██╗██╔╝ ");
@@ -62,13 +64,12 @@ function pokedexBanner() {
 
     return msg
 };
-
-function kantoBanner() {
-    const rowA = borderSide("▄ •▄  ▄▄▄·  ▐ ▄ ▄▄▄▄▄         ▄▄▄  ▄▄▄ . ▄▄ • ▪         ▐ ▄ ");
-    const rowB = borderSide("█▌▄▌▪▐█ ▀█ •█▌▐█•██  ▪        ▀▄ █·▀▄.▀·▐█ ▀ ▪██ ▪     •█▌▐█");
-    const rowC = borderSide("▐▀▀▄·▄█▀▀█ ▐█▐▐▌ ▐█.▪ ▄█▀▄    ▐▀▀▄ ▐▀▀▪▄▄█ ▀█▄▐█· ▄█▀▄ ▐█▐▐▌");
-    const rowD = borderSide("▐█.█▌▐█ ▪▐▌██▐█▌ ▐█▌·▐█▌.▐▌   ▐█•█▌▐█▄▄▌▐█▄▪▐█▐█▌▐█▌.▐▌██▐█▌");
-    const rowE = borderSide("·▀  ▀ ▀  ▀ ▀▀ █▪ ▀▀▀  ▀█▄▀▪   .▀  ▀ ▀▀▀ ·▀▀▀▀ ▀▀▀ ▀█▄▀▪▀▀ █▪");
+function pokemonBanner() {
+    const rowA = borderSide(" ▄▄▄·      ▄ •▄ ▄▄▄ .• ▌ ▄ ·.        ▐ ▄  ");
+    const rowB = borderSide("▐█ ▄█▪     █▌▄▌▪▀▄.▀··██ ▐███▪▪     •█▌▐█ ");
+    const rowC = borderSide(" ██▀· ▄█▀▄ ▐▀▀▄·▐▀▀▪▄▐█ ▌▐▌▐█· ▄█▀▄ ▐█▐▐▌ ");
+    const rowD = borderSide("▐█▪·•▐█▌.▐▌▐█.█▌▐█▄▄▌██ ██▌▐█▌▐█▌.▐▌██▐█▌ ");
+    const rowE = borderSide(".▀    ▀█▄▀▪·▀  ▀ ▀▀▀ ▀▀  █▪▀▀▀ ▀█▄▀▪▀▀ █▪ ");
     const rowSpace = borderEmptyRow();
     const row = borderTopBottom();
 
@@ -76,15 +77,12 @@ function kantoBanner() {
     return title
 };
 function directory() {
-    const dir = "<a href='/'>Index</a>"+
-                    "<ul>"+
-                    "<li><a href='/pokedex'>PokeDex</a></li>"+
-                        "<ul>"+
-                            "<li><a href='/pokedex/new'>New</a></li>"+
-                            "<li><a href='/pokedex/kanto'>Kanto</a></li>"+
-                        "<ul>"
-                    "<ul>";
-    return dir
+    const nav = "<ul style='font-size: 25px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;'>"+
+                    "<li style='display:inline;'><a href='/pokemon/'>ALL</a></li>  "+
+                    "<li style='display:inline;'><a href='/pokemon/new'>NEW</a></li>  "+
+                    "<li style='display:inline;'><a href='/pokemon/:id/edit'>UPDATE</a></li>"+
+                "<ul>";
+    return nav
 };
 function showAllKantoMon(data) {
     const listStart = "<ol>";
@@ -113,7 +111,7 @@ function showAllKantoMonImg(data) {
     pokeDb.forEach(index =>{
         let n = index["name"]
         let i = index["img"]
-        let img = `<a href='/pokedex/kanto/${n}'>`+
+        let img = `<a href='/pokemon/${n}'>`+
                     `<img alt='${n}' src='${i}' style='border: 2px solid black; border-radius: 25px;'  width="100" height="100">`+
                     `</a>`
         arrImg.push(img);
@@ -183,7 +181,7 @@ function getImgByName(data, pokemon){
     }
 };
 function generateForm(){
-    const form ="<form method='POST' action='/pokedex/new/pokemon'>"+
+    const form ="<form method='POST' action='/pokemon'>"+
                     "PokeMon Name:<br>"+
                     "<input type='text' name='name'><br><br>"+
                     "PokeMon Image:<br>"+
@@ -196,47 +194,54 @@ function generateForm(){
                 "</form>";
             return form
 };
+function newMon(pokemon, pokedex){
+    let newMon = pokemon;
 
-function newMonAdd(data){
-    const pokemon = {};
+    const currentMonLength = pokedex["pokemon"].length;
+    console.log(currentMonLength)
+    const newMonId = currentMonLength + 1;
 
+    let hNum = newMon.height;
+    newMon.height = hNum + " m"
+    let wNum = newMon.weight;
+    newMon.weight = wNum + " kg"
+    newMon.id = newMonId;
+    newMon.num = "#"+newMonId;
+    return newMon
+};
 
+function pokeCard(name, pokedex){
+    const byName = name.toLowerCase();
+    const db = pokedex["pokemon"]
 
+    let pokemon = {}
+    for (let i = 0; i < db.length; i++) {
+        let temp =db[i]["name"].toLowerCase();
+        if (temp === byName){
+            pokemon = db[i]
+        }
+    }
 
-
-    Object.defineProperties(pokemon, {
-      "id": 1,
-      "num": "001",
-      "name": "Bulbasaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg"
-  });
-}
-
-function pokeCard(img, id, num, name, height, weight){
     const card =
 
-       "<div style='background-color: powderblue; display: inline;flex: 1;display: flex;flex-flow: row nowrap;width: 650px;height: 250px;border: 5px solid black;border-radius: 125px;align-self: center;'>"+
-        "<div style='width: 250px;border:5px solid black;border-radius: 125px'>"+
+       "<div style='background-color: gray; display: inline;flex: 1;display: flex;flex-flow: row nowrap;width: 650px;height: 250px;border: 5px solid black;border-radius: 125px;align-self: center;margin: 0 0 0 150px'>"+
+        "<div style='margin-left: 100px'>"+
             "<a href='#'>"+
-                `<img src='${img}' width='200px' height='200px'>`+
+                `<img src='${pokemon["img"]}' width='200px' height='200px'>`+
             "</a>"+
         "</div>"+
-        '<div style="flex: 1.5;text-align: left;">'+
+        '<div style="flex: 1.5;text-align: left;margin-left: 20px">'+
             '<p style="font-size: 20px;margin: 25px auto 25px 30px;line-height: 1.6;">'+
-                `ID: ${id}<br>`+
-                `Number: ${num}<br>`+
-                `Name: ${name}<br>`+
-                `Height: ${height}<br>`+
-                `Weight: ${weight}<br>`+
+                `ID: ${pokemon["id"]}<br>`+
+                `Number: ${pokemon["num"]}<br>`+
+                `Name: ${pokemon["name"]}<br>`+
+                `Height: ${pokemon["height"]}<br>`+
+                `Weight: ${pokemon["weight"]}<br>`+
             '</p>'+
         '</div>'+
     '</div>'
-
-
-return card
-}
+    return card
+};
 
 
 
@@ -248,44 +253,37 @@ return card
 
  //to index page
 app.get('/', (request, response) => {
-    const dir = directory()
-    response.send(dir);
-});
-app.get('/pokedex', (request, response) => {
-    const banner = pokedexBanner()
-    const dir = directory()
+    const header = pokedexBanner()
+    const nav = directory()
 
-    const htmlBody ="<html>"+"<body>"+"<div>"+"<pre>"+banner+"</pre>"+"</div>"+
-                            dir +"</div>"+"</body>"+"</html>"
+    const htmlBody =`<html>
+                        <body style='background-color: lightblue'>
+                            <div>
+                                <pre>${header}</pre>
+                            </div>
+                            ${nav}
+                        </body>
+                    </html>`
 
     response.send(htmlBody);
 });
-// app.get('/pokedex/kanto', (request, response) => {
-//     jsonfile.readFile(dexData, (err, obj) => {
-//         const title = kantoBanner()
-//         const dir = kantoDir()
-//         const pokeList = showAllKantoMon(obj)
-
-//         const htmlBody ="<html>"+"<body>"+"<div>"+"<pre>"+title+"</pre>"+"</div>"+"<div>"+
-//                         dir+"</div>"+"<div>"+pokeList +"</div>"+"</body>"+"</html>"
-
-//         if(!htmlBody) response.send("Denied!");
-//         else {
-//             console.log("YAS!");
-
-//             response.send(htmlBody);
-//         }
-//         if (err) console.error(err);
-//     });
-// });
-app.get('/pokedex/kanto', (request, response) => {
+app.get('/pokemon/', (request, response) => {
     jsonfile.readFile(dexData, (err, obj) => {
-        const title = kantoBanner()
-        const dir = directory()
+        const header = pokemonBanner()
+        const nav = directory()
         const pokeList = showAllKantoMonImg(obj)
 
-        const htmlBody ="<html>"+"<body>"+"<div>"+"<pre>"+title+"</pre>"+"</div>"+"<div>"+
-                        dir+"</div>"+"<div>"+pokeList +"</div>"+"</body>"+"</html>"
+        const htmlBody =`<html>
+                        <body style='background-color: lightblue'>
+                            <div>
+                                <pre style='text-align: center'>${header}</pre>
+                            </div>
+                            <div style='text-align: center'>
+                                ${nav}
+                            </div>
+                            ${pokeList}
+                        </body>
+                    </html>`
 
         if(!htmlBody) response.send("Denied!");
         else {
@@ -296,14 +294,53 @@ app.get('/pokedex/kanto', (request, response) => {
         if (err) console.error(err);
     });
 });
-app.get('/pokedex/new', (request, response) => {
+app.get('/pokemon/:name', (request, response) => {
     jsonfile.readFile(dexData, (err, obj) => {
-        const title = newBanner()
-        const dir = directory()
+        const header = pokemonBanner()
+        const nav = directory()
+
+        const monName = request.params.name;
+        const card = pokeCard(monName, obj);
+
+        const htmlBody =`<html>
+                        <body style='background-color: lightblue'>
+                            <div>
+                                <pre style='text-align: center'>${header}</pre>
+                            </div>
+                            <div style='text-align: center'>
+                                ${nav}
+                            </div>
+                            <div style='align-content: center'>
+                                ${card}
+                            </div>
+                        </body>
+                    </html>`
+
+
+
+        if(!htmlBody) response.send("Denied!");
+        console.log("YAS!")
+        response.send(htmlBody);
+        if (err) console.error(err);
+    });
+});
+app.get('/pokemon/new', (request, response) => {
+    jsonfile.readFile(dexData, (err, obj) => {
+        const header = newBanner()
+        const nav = directory()
         const form = generateForm()
 
-        const htmlBody ="<html>"+"<body>"+"<div>"+"<pre>"+title+"</pre>"+"</div>"+"<div>"+
-                        dir+"</div>"+"<div>"+form +"</div>"+"</body>"+"</html>"
+        const htmlBody =`<html>
+                        <body style='background-color: lightblue'>
+                            <div>
+                                <pre style='text-align: center'>${header}</pre>
+                            </div>
+                            <div style='text-align: center'>
+                                ${nav}
+                            </div>
+                            ${form}
+                        </body>
+                    </html>`;
 
         if(!htmlBody) response.send("Denied!");
         else {
@@ -314,38 +351,29 @@ app.get('/pokedex/new', (request, response) => {
         if (err) console.error(err);
     });
 });
-app.post('/pokedex/new/pokemon', (request, response) => {
-    // const title = newBanner()()
-    // const dir = newDir()
-    // const form = generateForm()
+app.post('/pokemon', (request, response) => {
+    jsonfile.readFile(dexData, (err, obj) => {
+        const header = newBanner()
+        const nav = directory()
 
+        let temp = request.body;
+        console.log(temp)
+        const newPokemon = newMon(temp, obj)
+        console.log(newPokemon)
+        obj["pokemon"].push(newPokemon)
 
-    jsonfile.readFile(newDexData, (err, obj) => {
-        const title = newBanner()
-        const dir = directory()
-
-
-        let newMon = request.body;
-
-        const currentMonLength = obj["pokemon"].length;
-        const newMonId = currentMonLength + 1;
-
-        let hNum = newMon.height;
-        newMon.height = hNum + " m"
-        let wNum = newMon.weight;
-        newMon.weight = wNum + " kg"
-        newMon.id = newMonId;
-        newMon.num = "#"+newMonId;
-
-        const card = pokeCard(newMon.img, newMon.id, newMon.num, newMon.name,newMon.height,newMon.weight)
-
-        obj["pokemon"].push(newMon)
-
-
-
-
-        const htmlBody ="<html>"+"<body>"+"<div>"+"<pre>"+title+"</pre>"+"</div>"+"<div>"+
-                        dir+"</div>"+"<div>"+card +"</div>"+"</body>"+"</html>"
+        const pokeList = showAllKantoMonImg(obj)
+        const htmlBody =`<html>
+        <body style='background-color: lightblue'>
+        <div>
+        <pre style='text-align: center'>${header}</pre>
+        </div>
+        <div style='text-align: center'>
+        ${nav}
+        </div>
+        ${pokeList}
+        </body>
+        </html>`;
 
         if(!htmlBody) response.send("Denied!");
         else {
@@ -354,10 +382,13 @@ app.post('/pokedex/new/pokemon', (request, response) => {
             response.send(htmlBody);
         }
         jsonfile.writeFile(dexData, obj, (err) => {
+            console.log("yeyeyey")
             console.log(err)
+            console.log("yeyeyey")
         });
     });
 });
+
 
 app.get('/pokedex/img/:name', (request, response) => {
     jsonfile.readFile(dexData, (err, obj) => {
