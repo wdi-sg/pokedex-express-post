@@ -1,5 +1,3 @@
-
-
 /**
  * ===================================
  * Configurations and set up
@@ -23,176 +21,168 @@ app.use(express.urlencoded({
 
 /**
  * ===================================
- * Compare Function
- * ===================================
- */
-
-function compareName(a, b) {
-  const nameA = a.name.toLowerCase();
-  const nameB = b.name.toLowerCase();
-
-  let comparison = 0;
-  if (nameA >= nameB){
-    comparison = 1;
-  } else if (nameA <= nameB) {
-    comparison = -1;
-  }
-  return comparison;
-}
-
-function compareWeight(a, b) {
-  const weightA = parseFloat(a.weight);
-  const weightB = parseFloat(b.weight);
-
-  let comparison = 0;
-  if (weightA >= weightB){
-    comparison = 1;
-  } else if (weightA <= weightB) {
-    comparison = -1;
-  }
-  return comparison;
-}
-
-
-function compareHeight(a, b) {
-  const heightA = parseFloat(a.height);
-  const heightB = parseFloat(b.height);
-
-  let comparison = 0;
-  if (heightA >= heightB){
-    comparison = 1;
-  } else if (heightA <= heightB) {
-    comparison = -1;
-  }
-  return comparison;
-}
-
-/**
- * ===================================
  * Routes
  * ===================================
  */
 
+
 app.post('/pokemon', (request, response) => {
   //debug code (output request body)
   jsonfile.readFile(FILE, (err, obj) => {
+
+    obj.lastKey+=1;
+    request.body.id = obj.lastKey;
+    request.body.num = obj.lastKey;
+    request.body.weight = `${request.body.weight} kg`;
+    request.body.height = `${request.body.height} m`;
     
-    obj.pokemon.push(request.body);    
+    obj.pokemon.push(request.body);
 
     // save the request body
     jsonfile.writeFile(FILE, obj, (err) => {
     });
 
-    response.send(request.body)
+    let html = '<html>' +
+                '<body style="text-align:center; background-color:black;">'+
+                `<h1 style="color: white;">New Pokemon Details</h1>` +
+                `<p style='color: white;'>
+                ID: ${request.body.id} <br>
+                Num: ${request.body.num} <br>
+                Name: ${request.body.name}<br>
+                Weight: ${request.body.weight}<br>
+                Height: ${request.body.height}<br></p>`+
+                + '</body>'+'</html>';
+
+    response.send(html)
   });
 });
 
-app.get('/', (request, response) => {
-    console.log(request.body);
-    console.log(request.query);
-    jsonfile.readFile(FILE, (err, obj) => {
-      if (Object.keys(request.query).length!==0){
-          let query = request.query.sortby;
-          let sortedArray = [];
-          let html = '<html>' +
-        '<body style="text-align:center; background-color:black;">'+
-        `<h1 style="color: white;">Pokemon sorted by ${query}</h1>`;
-
-       switch (query){
-        case 'name':
-          obj.pokemon.sort(compareName);
-
-          obj.pokemon.forEach(function(pokemon) {
-            let div = `<div style="display:inline-block; color:white;">`
-            if ('img' in pokemon){
-              div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
-            } else {
-              div = div + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
-            }
-            html = html + div;
-          });
-
-          html = html + '</body>'+'</html>';
-
-          response.send(html);
-          break;
-
-        case 'weight':
-            obj.pokemon.sort(compareWeight);
-
-            obj.pokemon.forEach(function(pokemon) {
-              let div = `<div style="display:inline-block; color:white;">`
-              if ('img' in pokemon){
-                div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
-              } else {
-                div = div + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
-              }
-              html = html + div;
-            });
-
-            html = html + '</body>'+'</html>';
-
-            response.send(html);
-            break;
-
-          case 'height':
-            obj.pokemon.sort(compareHeight);
-
-            obj.pokemon.forEach(function(pokemon) {
-              let div = `<div style="display:inline-block; color:white;">`
-              if ('img' in pokemon){
-                div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
-              } else {
-                div = div + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
-              }
-              html = html + div;
-            });
-
-            html = html + '</body>'+'</html>';
-
-            response.send(html);
-            break;
-
-       }     
-          
-      } else {
-        let html = '';
-        html = '<html>' +
-        '<body style="text-align:center; background-color:black;">'+
-        '<h1 style="color: white;">Input new pokemon</h1>'+
+app.get('/pokemon/new', (request, response) => {
+    html = '<html>' +
+          '<body style="text-align:center; background-color:black;">'+
+          '<h1 style="color: white;">Input new pokemon</h1>'+
           '<form method="POST" action="/pokemon" style="color: white;">'+
-            'ID: <input name="id" type="number" /><br><br>'+
-            `Num: <input name="num" min="${obj.pokemon.length}" type="number" /><br><br>`+
-            'Name: <input name="name" type="text" /><br><br>'+
-            'Height: <input name="height" type="number" step="0.1" /><br><br>'+
-            'Weight: <input name="weight" type="number" step="0.1" /><br><br>'+
-            '<input type="submit" /><br><br>'+
-          '</form>' +
+              'Name: <input name="name" type="text" /><br><br>'+
+              'Height: <input name="height" type="number" step="0.01" /><br><br>'+
+              'Weight: <input name="weight" type="number" step="0.01" /><br><br>'+
+              '<input type="submit" /><br><br>'+
+          '</form>'+
+          '</body>'+
+          '</html>';
 
-          '<form method="GET" action="/" style="color: white;">'+
-            '<select name="sortby">' +
-              '<option value="name">Name</option>' +
-              '<option value="height">Height</option>' +
-              '<option value="weight">Weight</option>' +
-            '</select><br><br>' +
-            '<input type="submit" /><br><br>'+
-          '</form>' +
+    response.send(html)
+});
 
-          '<h1 style="color: white;">List of all Pokemon</h1>';
+app.get('/', (request, response) => {
+    let html = '<html>' +
+                  '<body style="text-align:center; background-color:black;">'+
+                    '<h1 style="color: white;">Choose to Sort By</h1>'+
+                    '<form method="GET" action="/" style="color: white;">'+
+                          '<select name="sortby">' +
+                          '<option value="name">Name</option>' +
+                          '<option value="height">Height</option>' +
+                          '<option value="weight">Weight</option>' +
+                          '</select><br><br>' +
+                          '<input type="submit" /><br><br>'+
+                      '</form>';
 
-        obj.pokemon.forEach(function(pokemon) {
-          let div = `<div style="display:inline-block; color:white;">`
-           if ('img' in pokemon){
-              div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
-           } else {
-              div = div + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
-           }
-           html = html + div;
-        })
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (Object.keys(request.query).length!==0){
+            let query = request.query.sortby;
+            html += `<h1 style="color: white;">Pokemon sorted by ${query}</h1>`;
 
-        html = html + '</body>'+'</html>';
+            switch (query){
+            case 'name':
+                obj.pokemon.sort((a,b) => {
+                  if (a.name.toLowerCase() >= b.name.toLowerCase()){
+                      return 1;
+                  } else if (a.name.toLowerCase() <= b.name.toLowerCase()) {
+                      return -1;
+                  } else {
+                    return 0;
+                  }
+                });
 
-        response.send(html);
+                obj.pokemon.forEach(function(pokemon) {
+                    let div = `<div style="display:inline-block; color:white;">`;
+
+                    if ('img' in pokemon){
+                        div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
+                    } else {
+                        div = div + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
+                    }
+
+                    html = html + div;
+                });
+
+                html = html + '</body>'+'</html>';
+
+                response.send(html);
+                break;
+
+            case 'weight':
+                obj.pokemon.sort((a,b) => {
+                  return parseFloat(a.weight) - parseFloat(b.weight);
+                });
+
+                obj.pokemon.forEach(function(pokemon) {
+                    let div = `<div style="display:inline-block; color:white;">`;
+
+                    if ('img' in pokemon){
+                        div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
+                    } else {
+                        div = div + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
+                    }
+
+                    html = html + div;
+                });
+
+                html = html + '</body>'+'</html>';
+
+                response.send(html);
+                break;
+
+            case 'height':
+                obj.pokemon.sort((a,b) => {
+                  return parseFloat(a.height) - parseFloat(b.height);
+                });
+
+                obj.pokemon.forEach(function(pokemon) {
+                    let div = `<div style="display:inline-block; color:white;">`
+                  
+                    if ('img' in pokemon){
+                        div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
+                    } else {
+                        div = div + `<p>${pokemon.num}. ${pokemon.name}<br>${pokemon[query]}<br></p></div>`;
+                    }
+
+                    html = html + div;
+                });
+
+                html = html + '</body>'+'</html>';
+
+                response.send(html);
+                break;
+            }     
+          
+        } else {
+            html+= '<h1 style="color: white;">List of all Pokemon</h1>';;
+
+            obj.pokemon.forEach(function(pokemon) {
+                let div = `<div style="display:inline-block; color:white;">`
+                
+                if ('img' in pokemon){
+                    div = div + `<img src="${pokemon.img}">` + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
+                } else {
+                    div = div + `<p>${pokemon.num}. ${pokemon.name}<br></p></div>`;
+                }
+
+                html = html + div;
+            })
+
+            html = html + '</body>'+'</html>';
+
+            response.send(html);
       }
     });
 });
