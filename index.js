@@ -80,9 +80,10 @@ app.post('/pokemon', (request, response) => {
         obj.pokemon.push(newPokemon);
 
         jsonfile.writeFile(file, obj, function (err) {
-            // obj.pokemon.push(newPokemon);
-            console.error(err)
-        response.send(newPokemon);
+            if (err) {
+                console.log(err);
+            }
+            response.send(newPokemon);
         })
     })
 
@@ -92,10 +93,10 @@ app.post('/pokemon', (request, response) => {
 app.get('/', (request, response) => {
     let btnForm = `<form method="POST" action="/?sortby=name">
     <button type="submit">Sort by Name</button>
-    <button type="submit">Sort by Weight</button>
-    <button type="submit">Sort by Height</button>
     </form>
     `
+    // <button type="submit">Sort by Weight</button>
+    // <button type="submit">Sort by Height</button>
     // let selForm = `<form name='myform' action="">
     // <select name="select" onchange="changeAction(this.value)">
     // <option name="default" value="0">Sort by...<option>
@@ -104,33 +105,50 @@ app.get('/', (request, response) => {
     // <option name="height" value="3">Height<option>
     // </select>
     // `
-    jsonfile.readFile(file, function(err, obj) {
-        response.send(btnForm)
-    })
+
+    let select = `<form method="GET" action="/test">
+                    <select name="sortby">
+                        <option value="name">Sort by Name</option>
+                        <option value="weight">Sort by Weight</option>
+                    </select>
+
+                    <button type="submit">Sort</button>
+                </form>`
+
+    console.log("alksdlakdj")
+    response.send(select);
+    // jsonfile.readFile(file, function(err, obj) {
+    //     response.send(btnForm)
+    // })
 })
 
 
-app.post('/?sortby=name', (request, response) => {
+app.get('/test', (request, response) => {
+    if (request.query.sortby === "name") {
+        response.send("aYeye")
+    }
+    // console.log("console.log");
+
+    // response.send(request.query)
+    //console.log(request.query)
     //does not enter this POST
-    console.log('sorting by name')
-    console.log(request.body)
-    jsonfile.readFile(file, function(err, obj) {
-        let arr = [];
-        for (let i=0; i<obj.pokemon.length; i+=1){
-            arr.push(obj.pokemon[i].name)
-            arr.sort();
-        }
-        response.send(arr)
-        console.log(arr)
+    // jsonfile.readFile(file, function(err, obj) {
+    //     let arr = [];
+    //     for (let i=0; i<obj.pokemon.length; i+=1){
+    //         arr.push(obj.pokemon[i].name)
+    //         arr.sort();
+    //     }
+    //     response.send(arr)
+    //     console.log(arr)
 
-        jsonfile.writeFile(file, obj, function (err) {
+    //     jsonfile.writeFile(file, obj, function (err) {
 
-            console.error(err)
-            // response.send(arr)
-            // console.log(arr)
+    //         console.error(err)
+    //         // response.send(arr)
+    //         // console.log(arr)
 
-        })
-    })
+    //     })
+    // })
 
 })
 
