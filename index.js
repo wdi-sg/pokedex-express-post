@@ -51,7 +51,7 @@ app.get('/pokemon', (request, response) => {
     });
 });
 
-/*==== Edit Page ==== */
+/*==== Request Edit Page ==== */
 app.get('/pokemon/:id/edit', (request, response) => {
 
     pokeId = parseInt(request.params.id);
@@ -62,7 +62,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
         }
 
         pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
-
+        //creates a "copy" of the poke but is not a direct reference to it (i think)
 
         response.render(editpage, pokemonMatchingId);
     });
@@ -164,7 +164,7 @@ function sortPokemon(sortRequest, obj){
  * To-Do
  * ===================================
  */
-// creating form on /pokemon/new
+// creating new poke! on /pokemon/new
 // app.get('/pokemon/new', (request, response) => {
 
 //     console.log("birthing form");

@@ -6,8 +6,9 @@ body {
 	text-align: center;
 }
 
-form {
-	margin: 15px;
+#header-img {
+	width: 350px;
+	margin: 0 0 -50px 0;
 }
 
 /* container holding all the poke cards */
@@ -49,6 +50,10 @@ form {
 	background-color: #F2F2F2;
 	width: 100%;
 	border-radius: 10px;
+}
+
+form {
+	margin: 15px;
 }
 
 .edit-mon h2 {

@@ -24,7 +24,7 @@ class Homepage extends React.Component {
             <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <header>
-
+        <img id="header-img" src="/header.jpg"/>
         </header>
         <body>
             <form method='GET' action='/pokemon'>
