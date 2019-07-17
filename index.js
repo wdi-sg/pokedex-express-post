@@ -9,6 +9,14 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 //for adding new pokemon
 app.get('/pokemon/new', (req, res) => {
     jsonfile.readFile(FILE, (err, obj) => {
@@ -195,6 +203,31 @@ var sortingMethods = function() {
         <option value="height">Sort by Height</option>
         </select>`
 }
+
+app.get('/pokemon/:id/edit', (req, res) => {
+    let id = req.params.id;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokemon = obj.pokemon[id-1];
+        res.render("edit",pokemon);
+
+// {
+//       "id": 1,
+//       "num": "001",
+//       "name": "Bulbasaur",
+//       "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
+//       "height": "0.71 m",
+//       "weight": "6.9 kg",
+//       "candy": "Bulbasaur Candy",
+//       "candy_count": "25",
+//       "egg": "2 km",
+//       "avg_spawns": "69",
+//       "spawn_time": "20:00"
+//     },
+
+    });
+})
+
 
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
