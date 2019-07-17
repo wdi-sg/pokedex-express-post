@@ -254,14 +254,22 @@ var putPokemonByIdRequest = function(request,response){
     obj.pokemon[parseInt(request.params.id) - 1] = newPokemon;
     console.log(obj.pokemon[parseInt(request.params.id) - 1].name);
 
+    var id = parseInt(request.params.id) - 1;
+    var thisPokemon = obj.pokemon[id];
+
+    var data = {
+      pokemon : thisPokemon,
+      updated : true
+    }
 
     jsonfile.writeFile(FILE, obj, (error) => {
       if( error ){
         console.log(error)
       }
 
-      response.send(obj.pokemon[parseInt(request.params.id) - 1].name + ' updated!')
+      // response.send(obj.pokemon[parseInt(request.params.id) - 1].name + ' updated!');
 
+      response.render('pokemon', data);
     });
 
 

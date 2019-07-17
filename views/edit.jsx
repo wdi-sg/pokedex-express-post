@@ -21,7 +21,7 @@ class Edit extends React.Component {
                 <p>weight</p>
                 <input name="weight" value={this.props.pokemon.weight}/>
                 <p>image</p>
-                <input name="image" value={this.props.pokemon.img}/>
+                <input name="img" value={this.props.pokemon.img}/>
                 <br/>
                 <input type="submit"/>
             </form>
