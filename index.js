@@ -47,11 +47,11 @@ var redirectToPokemon = function(request,response){
 }
 
 var displayAllPokemons = function(request, response){
-  jsonfile.readFile(FILE, (err, dataObj)=>{
+  jsonfile.readFile(FILE, (err, obj)=>{
 
-    console.log(dataObj.pokemon);
+    console.log(obj.pokemon);
     const data = {
-      pokemonsAll : dataObj.pokemon
+      pokemonsAll : obj.pokemon
 
     };
 
@@ -61,30 +61,41 @@ var displayAllPokemons = function(request, response){
   });
  }
 
+var getNewPokemonForm = function(request,response){
+ jsonfile.readFile(FILE, function(err,obj){
+   //get the next index
+   var lastIndex = data.pokemon.length + 1 ;
 
+   var data = {
+     lastIndex : lastIndex,
+   }
 
-var addNewPokemonRequest = function(request,response){
+   response.render('new',data);
+ });
+}
+
+var addNewPokemon = function(request,response){
   var newPokemon = request.body;
   // save in data file
-  jsonfile.readFile(FILE, (err, data) => {
+  jsonfile.readFile(FILE, (err, obj) => {
     if( err ){
       console.log("error reading file");
       console.log(err);
     }
 
-    console.log(data.pokemon);
+    console.log(obj.pokemon);
 
     // save data
-    data.pokemon.push(newPokemon);
-    // obj[key] = value;
+    obj.pokemon.push(newPokemon);
 
-    jsonfile.writeFile(FILE, data, (err) => {
+
+    jsonfile.writeFile(FILE, obj, (err) => {
       if( err ){
         console.log("error writing file");
         console.log(err)
       }else{
-        response.send("success");
-        // response.redirect('pokemon');
+        // response.send("success");
+        response.redirect(`/pokemon/${obj.pokemon.length}`);
 
       }
 
@@ -94,22 +105,9 @@ var addNewPokemonRequest = function(request,response){
 
 }
 
-var getNewPokemonRequest = function(request,response){
-  jsonfile.readFile(FILE, function(err,data){
-    //get the next index
-    var lastIndex = data.pokemon.length + 1 ;
-
-    var data = {
-      lastIndex : lastIndex,
-    }
-
-    response.render('new',data);
-  });
-}
-
 var getAllPokemonRequest = function(request,response){
 
-  jsonfile.readFile(FILE, function(err,data){
+  jsonfile.readFile(FILE, function(err,obj){
 
     if(err){
       console.log("error reading file" + err);
@@ -123,7 +121,7 @@ var getAllPokemonRequest = function(request,response){
 
     if (sortType === "name"){
 
-      var array = data.pokemon;
+      var array = obj.pokemon;
 
       array.sort(function(a, b){
       var keyA = a.name,
@@ -142,7 +140,7 @@ var getAllPokemonRequest = function(request,response){
 
     } else if( sortType === "height"){
 
-      var array = data.pokemon;
+      var array = obj.pokemon;
 
       array.sort(function(a, b){
       var keyA = a.height,
@@ -160,7 +158,7 @@ var getAllPokemonRequest = function(request,response){
 
     } else if( sortType === "weight"){
 
-      var array = data.pokemon;
+      var array = obj.pokemon;
 
       array.sort(function(a, b){
       var keyA = a.weight,
@@ -178,7 +176,7 @@ var getAllPokemonRequest = function(request,response){
 
     } else {
       //default
-      data.pokemon.forEach( function(item){
+      obj.pokemon.forEach( function(item){
         var pokemonString = `<div class="pokemon">${item.id} - ${item.name}</div> `;
         pokemonDisplay = pokemonDisplay.concat(pokemonString);
       })
@@ -315,15 +313,17 @@ var editPokemonByIdRequest = function(request,response){
 
 
 app.get('/', redirectToPokemon);
+app.get('/pokemon', displayAllPokemons);
+app.get('/pokemon/new', getNewPokemonForm);
+app.post('/pokemon', addNewPokemon);
 
 //old code part 1
 // app.get('/pokemon:id', getPokemonByIdRequest);
-app.get('/pokemon/new', getNewPokemonRequest);
-app.post('/pokemon1', addNewPokemonRequest);
+
 
 
 //after adding react
-app.get('/pokemon', displayAllPokemons);
+
 app.get('/pokemon/:id', getPokemonByIdRequest);
 app.put('/pokemon/:id', editPokemonById);
 app.get('/pokemon/:id/edit', editPokemonByIdRequest);

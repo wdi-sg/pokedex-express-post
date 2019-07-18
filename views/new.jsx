@@ -7,7 +7,7 @@ class New extends React.Component {
         <body>
           <div>
             <h1>Add new Pokemon</h1>
-            <form action="/pokemon1" method="POST">
+            <form action="/pokemon" method="POST">
                 <p>name</p>
                 <input name="name"/>
                 <p>id</p>
