@@ -20,9 +20,10 @@ app.use(express.urlencoded({
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
 
-const editpage = 'edit.jsx';
 const homepage = 'home.jsx';
-const createpage = 'create.jsx'
+const editpage = 'edit.jsx';
+const createpage = 'create.jsx';
+const deletepage = 'delete.jsx';
 
 let pokeId = null;
 let pokemonMatchingId = null;
@@ -81,6 +82,7 @@ app.put("/pokemon/:id", (request, response) => {
         //obj[] - object with id === pokeID
         let unparsedIndex = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
         let index = parseInt(unparsedIndex);
+        //eh but actually if its findIndex does that mean its already parsed - check check
         obj.pokemon[index] = editedPoke;
 
         jsonfile.writeFile(file, obj, (err) => {
@@ -95,7 +97,7 @@ app.put("/pokemon/:id", (request, response) => {
     });
 });
 
-/*==== Creating New Pokemon Request ==== */
+/*==== Creating Request for New Pokemon ==== */
 app.get('/pokemon/new', (request, response) => {
     //not sure if need to read file & have obj for this one
     response.render(createpage);
@@ -127,7 +129,50 @@ app.post('/pokemon', (request, response) => {
     });
 });
 
-/*==== Delete Pokemon ==== */
+/*==== Request Delete Pokemon ==== */
+app.get('/pokemon/:id/delete', (request, response) => {
+    pokeId = parseInt(request.params.id);
+
+    jsonfile.readFile(file, (err,obj) => {
+        if (err) {
+            console.log("Something went wrong when displaying the delete page.")
+        }
+
+        pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
+        response.render(deletepage, pokemonMatchingId);
+    });
+})
+
+/*====  Delete Pokemon ==== */
+app.delete("/pokemon/:id", (request, response) => {
+    console.log(request.body);
+    //pkmn to bye bye
+    let byebyePoke = request.body;
+
+
+    jsonfile.readFile(file, (err, obj) => {
+        if (err) {
+            console.log("Something went wrong while trying to read the file.");
+            console.log(err)
+        }
+
+        let index = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
+        //trying findIndex without parsing
+
+        //slice out the pokemon at index
+        obj.pokemon.splice(index, 1);
+
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) {
+                console.log("There was an error deleting Pokemon from file.");
+                console.log(err)
+            } else {
+                response.send(`${byebyePoke.name} has been deleted!`);
+                //update to show default home page
+            }
+        });
+    });
+});
 
 /**
  * ===================================
@@ -196,11 +241,11 @@ function sortPokemon(sortRequest, obj){
  * ===================================
  */
 
-// check that create mon works
 // make delete page
 //indv pokemon pages
 // redirect new and edited pkmn to their respective updated pages instead of showing default message
 // response.status proper error messages
+
 
  /*==== Setting Up Port ==== */
 app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 8080 ~~~'));
