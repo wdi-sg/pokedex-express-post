@@ -12,10 +12,21 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
@@ -31,9 +42,22 @@ app.get('/pokemon/:id/edit',(request, response) => {
 
   jsonfile.readFile(FILE, (err, obj) => {
 
-    let inputId = parseInt( request.params.id );
+    if( err ){
+          console.log("error reading file");
+          console.log(err)
+    } else {
+        let inputId = parseInt( request.params.id );
+        const pokemon = obj.pokemon[inputId - 1];
 
-    let url = `/pokemon/${obj.pokemon[inputId-1].id}?_method=put`
+        const data = {
+            index:  inputId,
+            pokemonData: pokemon
+        }
+        console.log(data);
+        response.render('editForm', data);
+    }
+
+/*    let url = `/pokemon/${obj.pokemon[inputId-1].id}?_method=put`
 
     let html = `
     <form method="POST" action=${url}>
@@ -49,12 +73,8 @@ app.get('/pokemon/:id/edit',(request, response) => {
         <p><input name="height" type="number" step="0.01" min="0" value="${obj.pokemon[inputId-1].height}"/> m</p>
         <p><input name="weight" type="number" step="0.01" min="0" value="${obj.pokemon[inputId-1].weight}"/> kg</p>
         <input type="submit" value="edit this"/>
-    </form>`;
-
-    response.send(html);
-  })
-
-
+    </form>`;*/
+  });
 });
 
 app.put("/pokemon/:id", (request, response) => {
@@ -71,11 +91,13 @@ app.put("/pokemon/:id", (request, response) => {
           console.log("error reading file");
           console.log(err)
         } else {
-            obj.pokemon[inputId-1].name = newCont.name;
+            obj.pokemon[inputId-1] = newCont;
+
+/*            obj.pokemon[inputId-1].name = newCont.name;
             obj.pokemon[inputId-1].num = newCont.num;
             obj.pokemon[inputId-1].img = newCont.img;
             obj.pokemon[inputId-1].height = newCont.height + " m";
-            obj.pokemon[inputId-1].weight = newCont.weight + " kg";
+            obj.pokemon[inputId-1].weight = newCont.weight + " kg";*/
 
 
             jsonfile.writeFile(FILE,obj, (err) => {
@@ -100,10 +122,17 @@ app.get('/:id', (request, response) => {
     // extract input data from request
     let inputId = parseInt( request.params.id );
 
-    var pokemon;
+    const pokemon = obj.pokemon[inputId - 1];
+
+    const data = {
+        index: inputId-1,
+        pokemonData: pokemon
+    };
+
+    response.render('pokemonlist', data);
 
     // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+   /* for( let i=0; i<obj.pokemon.length; i++ ){
 
       let currentPokemon = obj.pokemon[i];
 
@@ -120,7 +149,7 @@ app.get('/:id', (request, response) => {
     } else {
 
       response.send(pokemon);
-    }
+    }*/
   });
 });
 
