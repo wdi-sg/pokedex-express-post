@@ -3,7 +3,7 @@
     {
       "id": 1,
       "num": "001",
-      "name": "Bulbasaur",
+      "name": "whatesaur",
       "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
       "height": "0.71 m",
       "weight": "6.9 kg",
@@ -19,11 +19,11 @@
       "name": "Ivysaur",
       "img": "http://www.serebii.net/pokemongo/pokemon/002.png",
       "height": "0.99 m",
-      "weight": "13.0 kg",
+      "weight": "5 kg",
       "candy": "Bulbasaur Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 4.2,
+      "candy_count": "50",
+      "egg": "Yes",
+      "avg_spawns": "4.2",
       "spawn_time": "07:00"
     },
     {
@@ -1152,22 +1152,21 @@
       "height": "1.30 m",
       "weight": "0.1 kg",
       "candy": "Gastly Candy",
-      "candy_count": 25,
+      "candy_count": "25",
       "egg": "5 km",
-      "avg_spawns": 79,
+      "avg_spawns": "59",
       "spawn_time": "04:21"
     },
     {
       "id": 93,
       "num": "093",
-      "name": "Haunter",
       "img": "http://www.serebii.net/pokemongo/pokemon/093.png",
       "height": "1.60 m",
       "weight": "0.1 kg",
       "candy": "Gastly Candy",
-      "candy_count": 100,
+      "candy_count": "50",
       "egg": "Not in Eggs",
-      "avg_spawns": 5.2,
+      "avg_spawns": "5.2",
       "spawn_time": "00:10"
     },
     {
@@ -1358,14 +1357,13 @@
     {
       "id": 109,
       "num": "109",
-      "name": "Koffing",
       "img": "http://www.serebii.net/pokemongo/pokemon/109.png",
       "height": "0.61 m",
       "weight": "1.0 kg",
       "candy": "Koffing Candy",
-      "candy_count": 50,
+      "candy_count": "20",
       "egg": "5 km",
-      "avg_spawns": 20,
+      "avg_spawns": "20",
       "spawn_time": "08:16"
     },
     {
@@ -1881,6 +1879,33 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "Blaziken",
+      "img": "https://cdn.bulbagarden.net/upload/thumb/9/90/257Blaziken.png/375px-257Blaziken.png",
+      "height": "1.9 m",
+      "weight": "52 kg",
+      "candy": "100",
+      "candy_count": "20",
+      "egg": "100 km",
+      "avg_spawns": "2",
+      "spawn_time": "2"
+    },
+    {
+      "id": 154,
+      "num": "154",
+      "name": "Cyndaquil",
+      "img": "https://cdn.bulbagarden.net/upload/thumb/9/9b/155Cyndaquil.png/375px-155Cyndaquil.png",
+      "height": "0.5 m",
+      "weight": "7.9 kg",
+      "candy": "100",
+      "candy_count": "20",
+      "egg": "No",
+      "avg_spawns": "2",
+      "spawn_time": "2"
     }
-  ]
+  ],
+  "lastKey": 154
 }
