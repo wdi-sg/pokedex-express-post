@@ -1883,28 +1883,7 @@
       "spawn_time": "N/A"
     },
     {
-      "name": "Chikorita",
-      "id": "152",
-      "Num": "152",
-      "Img": "",
-      "Weight": "10",
-      "Height": "0.9"
-    },
-    {
-      "name": "Bayleef",
-      "id": "153",
-      "Num": "153",
-      "Img": "",
-      "Weight": "30",
-      "Height": "1"
-    },
-    {
-      "name": "Meganium",
-      "id": "154",
-      "Num": "154",
-      "Img": "",
-      "Weight": "50",
-      "Height": "189"
+      "id": null
     }
   ]
 }

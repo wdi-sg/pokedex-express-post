@@ -127,33 +127,31 @@ app.post("/new", (request,response) => {
 });
 
 var homePage = (request,response)=>{
-    var pokemonName = [];
     jsonfile.readFile(file,(err,obj)=>{
+        var pokemonData = [];
         for (let i = 0; i < obj.pokemon.length;i++){
             console.log(obj.pokemon[i].name);
-            pokemonName.push(obj.pokemon[i].name);
+            pokemonData.push(obj.pokemon[i]);
         }
-        console.log("is it showing???")
-        var stringPokemonName = pokemonName.join("<br>");
-        // response.send(stringPokemonName);
-        let form = '';
-            form = '<html>' +
-            '<body>'+
-            '<h1>Welcome to the walking pokedex</h1>'+
-            '<form method="GET" action="/sortbyname">'+
-            '<button type="submit">Sortbyname</button>'+
-            '</form>'+
-            '<form method="GET" action="/sortbyheight">'+
-            '<button type="submit">Sortbyheight</button>'+
-            '</form>'+
-            '<form method="GET" action="/sortbyweight">'+
-            '<button type="submit">Sortbyweight</button>'+
-            '</form>'+
-            `<p>${stringPokemonName}</p>`+
-            '</body>'+
-            '</html>';
-        // response.send(form);
-    })
+
+        let data = {"pokemonData": pokemonData};
+
+        console.log(pokemonData);
+        response.render("show", data);
+    });
+};
+
+var individual = (request,response) =>{
+    var id = request.params.id;
+    jsonfile.readFile(file,(err,obj)=>{
+        var pokemonDetail = obj.pokemon[id-1];
+
+        var data = {
+            pokemon: pokemonDetail,
+            pokemonId: id
+        };
+    });
+    response.render('individual',data);
 }
 
 var sortByName = (request,response) =>{
@@ -254,9 +252,9 @@ var remove = (request,response)=>{
 }
 
 var removeUpdate = (request,response)=>{
-    var index = request.params.id;
+    var index = parseInt(request.params.id);
     jsonfile.readFile(file,(err,obj)=>{
-        obj.pokemon.splice(index);
+        obj.pokemon.splice(index,1);
         jsonfile.writeFile(file,obj,(err)=>{
             if(err){
                 console.log("error in deleting");
@@ -300,7 +298,8 @@ jsonfile.writeFile(file, obj, (err) => {
 
 
 
-app.get('/', homePage);
+app.get('/pokemon', homePage);
+// app.get('/pokemon/:id',individual);
 app.get('/sortbyname', sortByName);
 // app.get('/sortbyheight', sortByHeight);
 // app.get('/sortbyweight', sortByWeight);
@@ -308,7 +307,7 @@ app.get('/sortbyname', sortByName);
 app.get('/pokemon/:id/edit', edit);
 app.put('/pokemon/:id', update);
 app.get('/pokemon/:id/delete', remove);
-app.put('pokemon/:id',removeUpdate);
+app.delete('/pokemon/:id',removeUpdate);
 
 
 /**
@@ -316,4 +315,4 @@ app.put('pokemon/:id',removeUpdate);
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));

@@ -1,13 +1,15 @@
 var React = require('react');
 
-class Delete extends React.Component{
+class Individual extends React.Component{
     render(){
-        var url = "/pokemon/"+this.props.pokemonId+"?_method=DELETE";
+        var url = "/pokemon/"+this.props.pokemonId;
         return(
             <html>
                 <body>
                     <div>
-                        <h1>Delete entry</h1>
+                        <h1>
+
+                        </h1>
                         <p>Pokemon: {this.props.pokemon.name}</p>
                         <form method="POST" action={url}>
                         <button type="submits">delete data</button>
@@ -19,4 +21,4 @@ class Delete extends React.Component{
     };
 };
 
-module.exports = Delete;
+module.exports = Individual;
