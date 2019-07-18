@@ -97,7 +97,14 @@ app.get('/pokemon/:id', (request, response) => {
         console.log(obj);
         var id = request.params.id;
         var selectedPokemon = obj.pokemon[id];
-        response.send(selectedPokemon);
+
+        // response.send(selectedPokemon);
+        let data = {
+            index : id,
+            pokemonData : selectedPokemon
+        };
+
+        response.render('onepokemon', data);
     });
 });
 
