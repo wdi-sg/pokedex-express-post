@@ -62,83 +62,84 @@ app.set('view engine', 'jsx');
 
 // Point the form to submit data to the (/pokemon) route using POST method
 
-app.get('/pokemon/new', (request, response) => {
-  let form = `<form method="POST" action="/pokemon">
-  Pokemon Information:
-  <input type="text" name="id" placeholder="id">
-  <input type="text" name="num" placeholder="number">
-  <input type="text" name="name" placeholder="name">
-  <input type="text" name="img" placeholder="img">
-  <input type="text" name="height" placeholder="height">
-  <input type="text" name="weight" placeholder="weight">
-  <input type="submit" value="Submit">
-  </form>
-  `
+// app.get('/pokemon/new', (request, response) => {
+//   let form = `<form method="POST" action="/pokemon">
+//   Pokemon Information:
+//   <input type="text" name="id" placeholder="id">
+//   <input type="text" name="num" placeholder="number">
+//   <input type="text" name="name" placeholder="name">
+//   <input type="text" name="img" placeholder="img">
+//   <input type="text" name="height" placeholder="height">
+//   <input type="text" name="weight" placeholder="weight">
+//   <input type="submit" value="Submit">
+//   </form>
+//   `
 
-  response.send(form);
-});
-
-
-app.post('/pokemon', (request, response) => {
-    let newPokemon = request.body;
-    console.log(newPokemon)
-
-    jsonfile.readFile(file, function(err, obj) {
-
-        //not working properly
-        obj.pokemon.push(newPokemon);
-
-        jsonfile.writeFile(file, obj, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            response.send(newPokemon);
-        })
-    })
-
-})
+//   response.send(form);
+// });
 
 
-app.get('/', (request, response) => {
-    let btnForm = `<form method="POST" action="/?sortby=name">
-    <button type="submit">Sort by Name</button>
-    </form>
-    `
-    // <button type="submit">Sort by Weight</button>
-    // <button type="submit">Sort by Height</button>
-    // let selForm = `<form name='myform' action="">
-    // <select name="select" onchange="changeAction(this.value)">
-    // <option name="default" value="0">Sort by...<option>
-    // <option name="name" value="1" action="?sortby=name">Name<option>
-    // <option name="weight" value="2">Weight<option>
-    // <option name="height" value="3">Height<option>
-    // </select>
-    // `
+// app.post('/pokemon', (request, response) => {
+//     let newPokemon = request.body;
+//     console.log(newPokemon)
 
-    let select = `<form method="GET" action="/test">
-                    <select name="sortby">
-                        <option value="name">Sort by Name</option>
-                        <option value="weight">Sort by Weight</option>
-                    </select>
+//     jsonfile.readFile(file, function(err, obj) {
 
-                    <button type="submit">Sort</button>
-                </form>`
+//         //not working properly
+//         obj.pokemon.push(newPokemon);
 
-    console.log("alksdlakdj")
-    response.send(select);
-    // jsonfile.readFile(file, function(err, obj) {
-    //     response.send(btnForm)
-    // })
-})
+//         jsonfile.writeFile(file, obj, function (err) {
+//             if (err) {
+//                 console.log(err);
+//             }
+//             response.send(newPokemon);
+//         })
+//     })
+
+// })
 
 
-app.get('/test', (request, response) => {
-    if (request.query.sortby === "name") {
-        //sort here!
-        response.send("aYeye")
+// app.get('/', (request, response) => {
+//     let btnForm = `<form method="POST" action="/?sortby=name">
+//     <button type="submit">Sort by Name</button>
+//     </form>
+//     `
+//     // <button type="submit">Sort by Weight</button>
+//     // <button type="submit">Sort by Height</button>
+//     // let selForm = `<form name='myform' action="">
+//     // <select name="select" onchange="changeAction(this.value)">
+//     // <option name="default" value="0">Sort by...<option>
+//     // <option name="name" value="1" action="?sortby=name">Name<option>
+//     // <option name="weight" value="2">Weight<option>
+//     // <option name="height" value="3">Height<option>
+//     // </select>
+//     // `
 
-    }
-    console.log('hi')
+//     let select = `<form method="GET" action="/test">
+//                     <select name="sortby">
+//                         <option value="name">Sort by Name</option>
+//                         <option value="weight">Sort by Weight</option>
+//                     </select>
+
+//                     <button type="submit">Sort</button>
+//                 </form>`
+
+//     console.log("alksdlakdj")
+//     response.send(select);
+//     // jsonfile.readFile(file, function(err, obj) {
+//     //     response.send(btnForm)
+//     // })
+// })
+
+
+// app.get('/test', (request, response) => {
+//     if (request.query.sortby === "name") {
+//         //sort here!
+//         response.send("aYeye")
+
+//     }
+//     console.log('hi')
+
     // console.log("console.log");
 
     // response.send(request.query)
@@ -161,29 +162,62 @@ app.get('/test', (request, response) => {
 
     //     })
     // })
+// })
 
+app.get("/pokemon", (request, response) => {
+    jsonfile.readFile(file, function(err, obj) {
+        response.render('home', obj)
+    })
 })
+
 
 app.get("/pokemon/:id/edit", (request, response) => {
     //verified editPokemon
-    let editPokemonIndex = parseInt(request.params.id);
+    let editPokemonId = parseInt(request.params.id);
     let editPokemon = null;
     jsonfile.readFile(file, function(err, obj) {
         for (let i=0; i<obj.pokemon.length; i+=1){
-            if (obj.pokemon[i].id === editPokemonIndex){
+            if (obj.pokemon[i].id === editPokemonId){
                 editPokemon = obj.pokemon[i]
             }
         }
-
-        response.render('home', editPokemon)
+        // editPokemon = JSON.stringify(editPokemon)
+        console.log(editPokemon)
+        response.render('edit', editPokemon)
         // response.send(editPokemon)
     })
 
 
 })
 
+app.get("/pokemon/:id/delete", (request, response) => {
+    let deletePokemonId = parseInt(request.params.id);
+    console.log(deletePokemonId);
+    let deletePokemon = null;
+    jsonfile.readFile(file, function(err, obj) {
+        for (let i=0; i<obj.pokemon.length; i+=1){
+            if (obj.pokemon[i].id === deletePokemonId){
+                deletePokemon = obj.pokemon[i];
+            }
+
+
+        }
+    console.log(deletePokemon)
+    response.render('delete', deletePokemon)
+    })
+})
+
+
+
 app.put("/pokemon/:id", (request, response) => {
-    response.send("GOT TO APP PUT!");
+
+    response.send(request.body);
+})
+
+app.get("/pokemon/page/:id", (request, response) => {
+    console.log("fetched id = "+request.params.id)
+    let pokemonId = request.params.id
+    response.send(pokemonId);
 })
 
 
