@@ -7,7 +7,7 @@ class Home extends React.Component {
     //variables defined for sorting logic
     //form to sort by values
     var form =
-      <form method="GET" action="/">
+      <form method="GET" action="/pokemon">
       <select name ="sortby" action="/" onchange="this.form.submit()">
         <option disabled selected value>Select an option</option>
         <option value="weight">Sort by weight</option>

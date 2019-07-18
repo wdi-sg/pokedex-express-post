@@ -6,7 +6,7 @@ class Home extends React.Component {
     //code logic goes here
     //form to sort by values
     var form =
-      <form method="GET" action="/">
+      <form method="GET" action="/pokemon">
       <select name ="sortby" action="/" onChange="this.form.submit()">
         <option disabled selected value>Select an option</option>
         <option value="weight">Sort by weight</option>
