@@ -24,6 +24,7 @@ const homepage = 'home.jsx';
 const editpage = 'edit.jsx';
 const createpage = 'create.jsx';
 const deletepage = 'delete.jsx';
+//actually... there is no need to create these variables right but i guess its just neater
 
 let pokeId = null;
 let pokemonMatchingId = null;
@@ -80,9 +81,7 @@ app.put("/pokemon/:id", (request, response) => {
         }
 
         //obj[] - object with id === pokeID
-        let unparsedIndex = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
-        let index = parseInt(unparsedIndex);
-        //eh but actually if its findIndex does that mean its already parsed - check check
+        let index = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
         obj.pokemon[index] = editedPoke;
 
         jsonfile.writeFile(file, obj, (err) => {
@@ -99,7 +98,6 @@ app.put("/pokemon/:id", (request, response) => {
 
 /*==== Creating Request for New Pokemon ==== */
 app.get('/pokemon/new', (request, response) => {
-    //not sure if need to read file & have obj for this one
     response.render(createpage);
 });
 
@@ -157,8 +155,6 @@ app.delete("/pokemon/:id", (request, response) => {
         }
 
         let index = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
-        //trying findIndex without parsing
-
         //slice out the pokemon at index
         obj.pokemon.splice(index, 1);
 
@@ -241,10 +237,9 @@ function sortPokemon(sortRequest, obj){
  * ===================================
  */
 
-// make delete page
-//indv pokemon pages
+//indv pokemon pages - incl links to delete or edit
 // redirect new and edited pkmn to their respective updated pages instead of showing default message
-// response.status proper error messages
+// response.status proper error messages (error 501?)
 
 
  /*==== Setting Up Port ==== */

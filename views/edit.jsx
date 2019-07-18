@@ -35,7 +35,7 @@ class Editpage extends React.Component {
                     <h2>Egg</h2>
                     <input type="text" name="candycount" defaultValue={this.props.egg}/>
                     <h2>Average Spawns</h2>
-                    <input type="number" name="avgspawns" defaultValue={this.props.avg_spawns}/
+                    <input type="number" name="avgspawns" defaultValue={this.props.avg_spawns}/>
                     <h2>Spawn Time</h2>
                     <input type="text" name="spawntime" defaultValue={this.props.spawn_time}/>
                     <br/>
