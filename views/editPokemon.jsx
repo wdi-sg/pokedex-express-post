@@ -38,12 +38,15 @@ class Home extends React.Component {
 
     return (
       <html>
-        <body>
+        <body style={{backgroundColor: "rgba(0,0,0,0.5)", textAlign:"center"}}>
           <div>
-            <h1>You are editing {this.props.data.name}</h1>
+            <h1 style={{color: "#FFFFFF"}}>You are editing {this.props.data.name}</h1>
           </div>
-          <div style={{width: '10%'}}>
+          <div style={{width: '10%', color: "#FFFFFF", margin: "0 auto"}}>
             {form}
+          </div>
+          <div>
+            <p style={{color: "#FFFFFF"}}><a href="/pokemon">Back to main</a></p>
           </div>
         </body>
       </html>

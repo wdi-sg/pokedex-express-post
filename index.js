@@ -47,66 +47,42 @@ app.get('/pokemon/new',(request,response)=>{
 });
 
 app.post('/pokemon/added', function(request, response) {
-  jsonfile.readFile(file, function(err,obj){
-    // console.log(request.body)
-    var bodyInfo = request.body;
-    var list = obj["pokemon"];
-    var responseSet = {
-      flagstate : false,
-      idstate : false
+  jsonfile.readFile(file,(err,obj)=>{
+    var dataSet = {
+      pokemon : request.body,
+      data: obj["pokemon"]
     }
-    if (parseInt(bodyInfo["id"]) <= list.length){
-      responseSet.idstate = true
-    }else {
-      for (var i = 0; i < list.length; i++){
-        if (list[i]["name"] === bodyInfo["name"]){
-          console.log("duplicatefound")
-          responseSet.flagstate = true
-          break;
-        }
-      }
-    }
-    if (responseSet.flagstate === false && responseSet.idstate === false){
-      list.push(bodyInfo);
-    }
-    response.render("addPokemon",responseSet)
-    jsonfile.writeFile(file,obj,(err) => {
-      if(err){
-        console.error(err)
-      };
-    });
+    console.log(dataSet.pokemon.id)
+    console.log(dataSet.pokemon)
+    // var redirection = '/pokemon/'+dataSet.pokemon.id
+    response.render("addPokemon", dataSet)
+    // response.redirect(redirection)
   })
 });
 
 app.get('/pokemon', function(request, response){
   jsonfile.readFile(file, function (err,obj){
-    
-    if (request.query.sortby === "name"){
-      var list = obj["pokemon"].sort(compareValues("name"));
-      var dataSet = {
-        data : list
-      }
-      response.render("sortByName",dataSet)
-    }else if (request.query.sortby === "weight"){
-      var list = obj["pokemon"].sort(compareValues("weight"));
-      var dataSet = {
-        data : list
-      }
-      response.render("sortByWeight",dataSet)
-    }else if (request.query.sortby === "height"){
-      var list = obj["pokemon"].sort(compareValues("height"));
-      var dataSet = {
-        data : list
-      }
-      response.render("sortByHeight",dataSet)
-    }else {
-      var dataSet = {
-        data : obj
-      }
-      response.render("home",dataSet)
+    var list = obj["pokemon"]
+    var dataSet = {
+      data : list,
+      requestQuery: request.query.sortby
     }
+    response.render("home",dataSet)
   })
 });
+
+app.get('/pokemon/:id', function(request,response){
+  jsonfile.readFile(file, function (err,obj){
+    var pokemonId = obj["pokemon"][parseInt(request.params.id)-1]
+    console.log(pokemonId)
+    var list = obj["pokemon"];
+    var dataSet = {
+      data: list,
+      pokemon: pokemonId
+    }
+    response.render("pokemonpage",dataSet)
+  })
+})
 
 app.get('/pokemon/:id/edit', function(request, response){
   jsonfile.readFile(file, function (err,obj){
@@ -121,12 +97,14 @@ app.get('/pokemon/:id/edit', function(request, response){
 app.put('/pokemon/:id', function(request, response){
   jsonfile.readFile(file, function (err,obj){
     var upDatePokemon = request.body;
+    var dataSet = {
+      pokeinfo: upDatePokemon
+    }
     obj["pokemon"][parseInt(request.params.id)-1] = upDatePokemon;
+    response.render("updatedPokemon",dataSet)
     jsonfile.writeFile(file, obj, (err)=>{
       if(err){
         console.log(err)
-      }else{
-        response.render("updatedPokemon")
       }
     });
   })
@@ -157,33 +135,3 @@ app.delete('/pokemon/:id', function(request, response){
 
 
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
-
-
-//function that does the sorting by name, weight or height
-function compareValues(key){
-  var varA, varB, compare;
-  return function (a,b){
-    if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-    return 0;
-    }
-    if (hasNumber(a[key]) === true && hasNumber(b[key]) === true){
-      // console.log("is a number")
-      varA = parseFloat(a[key])
-      varB = parseFloat(b[key])
-      return varA-varB;
-    }else {
-      // console.log("is a string")
-      varA = a[key].toUpperCase()
-      varB = b[key].toUpperCase()
-      if (varA > varB){
-        compare = 1;
-      }else if (varA < varB){
-        compare = -1;
-      }
-      return compare;
-    }
-  }
-}
-function hasNumber(input){
-  return /\d/.test(input);
-}
