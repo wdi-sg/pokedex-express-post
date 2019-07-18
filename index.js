@@ -192,6 +192,43 @@ app.get('/', (request, response) => {
     });
 });
 
+// show a form for requested pokemon and allow user to edit its data
+app.get('/pokemon/:id/edit', (request, response) => {
+
+    // read pokedex json file
+     jsonfile.readFile(FILE, (err, obj) => {
+
+        if (err) {
+            console.log('error reading file');
+            console.log(err);
+        }
+
+        console.log(obj);
+
+        var id = request.params.id;
+
+        var pokedex = obj.pokemon[id];
+
+         var output = `
+            <p>edit form</p>
+            <form action="/something">
+            <input name="name" value="'+pokedex.name+'">
+            </form>
+         `;
+
+        var data = {
+            pokemonKey: pokedex,
+            pokemonId: id
+        }
+
+        response.render('edit', data);
+    });
+
+});
+
+
+
+
 
 
 /**
