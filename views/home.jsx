@@ -3,13 +3,14 @@ var React = require('react');
 class Home extends React.Component {
     render() {
         const pokemon = this.props.pokemonKey.map(pokemon =>
-
-           <li key={pokemon.name}>
-           Name: {pokemon.name}
-           Height: {pokemon.height}
-           Weight: {pokemon.weight}
-           <img src={pokemon.img} />
-           </li>
+           <div key={pokemon.name} className="pokemon">
+                <img src={pokemon.img} />
+                <ul>
+                    <li>Name: {pokemon.name}</li>
+                    <li>Height: {pokemon.height}</li>
+                    <li>Weight: {pokemon.weight}</li>
+                </ul>
+           </div>
         );
     return (
       <html>
@@ -17,9 +18,9 @@ class Home extends React.Component {
           <div>
             <h1>Hello! Welcome to Pokedex!</h1>
           </div>
-          <ul>
+          <div>
             {pokemon}
-          </ul>
+          </div>
         </body>
       </html>
     );
