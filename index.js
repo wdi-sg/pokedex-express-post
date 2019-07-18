@@ -167,6 +167,8 @@ app.post('/pokemon', function(request, response) {
     response.send(newPokemon);
 });
 
+
+
 //display pokemon by its id in address bar
 app.get('/pokemon/:id', (request, response) => {
 
@@ -186,6 +188,7 @@ app.get('/pokemon/:id', (request, response) => {
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
       }
+    console.log(pokemon);
     }
 
     if (pokemon === undefined) {
@@ -201,10 +204,10 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 
-//PART 2//
-
-app.get('pokemon/:id/edit', (request, response) => {
-    console.log('amending pokemon info');
+//PART 2 - edit data for a given pokemon//
+//first display existing pokemon info in form//
+app.get('/pokemon/:id/edit', (request, response) => {
+    console.log('showing existing pokemon info');
 
     jsonfile.readFile(FILE, (err, obj) => {
     if( err ){
@@ -229,6 +232,32 @@ app.get('pokemon/:id/edit', (request, response) => {
     response.render('home', data)
     });
 });
+
+app.put('/pokemon/:id/edit', (request, response) => {
+    console.log('amending pokemon info');
+    console.log(request.body);
+
+    let id = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        }
+
+        let newPokemonInfo = request.body;
+        newPokemonInfo.id = parseInt(newPokemonInfo.id);
+
+        obj.pokemon[id-1] = newPokemonInfo;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("write file done");
+//display new info for pokemon created by user
+            response.redirect("/pokemon/"+id);
+        });
+    });
+});
+
 
 /**
  * ===================================

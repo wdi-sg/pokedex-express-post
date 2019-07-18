@@ -2,7 +2,8 @@ var React = require('react');
 
 class Home extends React.Component {
   render() {
-    var url = "/pokemon/" +this.props.id + "/edit";
+    console.log(this.props);
+    var url = "/pokemon/" +this.props.id + "/edit?_method=PUT";
     return (
       <html>
         <body>
@@ -10,6 +11,7 @@ class Home extends React.Component {
             <h1>Edit pokemon profile</h1>
             <p>ID: {this.props.id}</p>
             <form action={url} method="POST">
+                <input type="hidden" name="id" value={this.props.id}/>
                 <p>Num</p>
                 <input name="num" value={this.props.num}/>
                 <p>Name</p>
@@ -23,7 +25,7 @@ class Home extends React.Component {
                 <p>Candy</p>
                 <input name="candy" value={this.props.candy}/>
                 <p>Egg</p>
-                <input name="egg" value={this.props.egge}/>
+                <input name="egg" value={this.props.egg}/>
                 <p>Avg Spawns</p>
                 <input name="avg_spawns" value={this.props.avg_spawns}/>
                 <p>Spawn Time</p>
