@@ -1,6 +1,32 @@
 {
   "pokemon": [
     {
+      "id": 1,
+      "num": "001",
+      "name": "Bulbasaur",
+      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
+      "height": "0.71 m",
+      "weight": "6.9 kg",
+      "candy": "Bulbasaur Candy",
+      "candy_count": "25",
+      "egg": "2 km",
+      "avg_spawns": "69",
+      "spawn_time": "20:00"
+    },
+    {
+      "id": 2,
+      "num": "002",
+      "name": "Ivysaur",
+      "img": "http://www.serebii.net/pokemongo/pokemon/002.png",
+      "height": "0.99 m",
+      "weight": "13.0 kg",
+      "candy": "Bulbasaur Candy",
+      "candy_count": 100,
+      "egg": "Not in Eggs",
+      "avg_spawns": 4.2,
+      "spawn_time": "07:00"
+    },
+    {
       "id": 3,
       "num": "003",
       "name": "Venusaur",
@@ -605,9 +631,16 @@
       "spawn_time": "02:22"
     },
     {
+      "id": 51,
+      "num": "051",
       "name": "Dugtrio",
+      "img": "http://www.serebii.net/pokemongo/pokemon/051.png",
       "height": "0.71 m",
-      "weight": "33.3555 kg"
+      "weight": "33.3 kg",
+      "candy": "Dugtrio",
+      "egg": "Not in Eggs",
+      "avg_spawns": 1.4,
+      "spawn_time": "12:37"
     },
     {
       "id": 52,
@@ -1848,13 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": "152",
-      "name": "jewel",
-      "img": "imagejewel",
-      "height": "52cm",
-      "weight": "100kg"
     }
   ]
 }
