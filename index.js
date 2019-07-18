@@ -240,6 +240,10 @@ const deletePokemonDetails = (request, response) => {
     });
 };
 
+//Page not found
+const pageNotFound = (request, response) => {
+    response.send("Page not found!");
+}
 /**
  * ===================================
  * Sorting Algorithms
@@ -322,6 +326,8 @@ app.delete('/pokemon/:id', deletePokemonDetails);
 app.get('/pokemon/:id/edit', editPokemonForm);
 
 app.get('/pokemon/:id/delete', deletePokemonForm);
+
+app.get('*', pageNotFound);
 
 /**
  * ===================================

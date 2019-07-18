@@ -7,7 +7,14 @@ class Pokemon extends React.Component {
 		let pokemon = this.props.pokemon;
 		let editLink = "../pokemon/"+this.props.pokemon.id+"/edit";
 		let deleteLink = "../pokemon/"+this.props.pokemon.id+"/delete";
-
+		let types = pokemon.type.map(type => {
+			let link = "../pokemon/type/"+type.toLowerCase();
+			return <li><a href={link}>{type}</a></li>
+		});
+		let weaknessess = pokemon.weaknesses.map(weaknesses => {
+			let link = "../pokemon/weaknessess/"+weaknesses.toLowerCase();
+			return <li><a href={link}>{weaknesses}</a></li>
+		});
 		return (
 			<html>
 			<head>
@@ -29,6 +36,10 @@ class Pokemon extends React.Component {
 								<div className="card-body">
 									<p>Height: {pokemon.height}</p>
 									<p>Weight: {pokemon.weight}</p>
+									<p>Type:</p>
+									<ul>{types}</ul>
+									<p>Weaknessess:</p>
+									<ul>{weaknessess}</ul>
 								</div>
 							</div>
 						</div>
