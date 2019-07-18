@@ -102,7 +102,8 @@ app.get('/pokemon/new', (request, response) => {
 });
 
 
-// make a search using: localhost:3000/route?q=name
+// make a search using: http://localhost:3000/?sortby=name
+
 app.get('/', (request, response) => {
 
     console.log("You are searching for: " + request.query.sortby);
@@ -135,6 +136,8 @@ app.get('/', (request, response) => {
             } // end of sort by name
 
             // start of sort by weight
+            // http://localhost:3000/?sortby=weight
+
             if (sortby == 'weight') {
                 pokedex.sort(function(a, b) {
                     // sort by weight
@@ -145,6 +148,8 @@ app.get('/', (request, response) => {
             } // end of sort by weight
 
             // start of sort by height
+            // http://localhost:3000/?sortby=height
+
             if (sortby == 'height') {
                 pokedex.sort(function(a, b) {
                     // sort by weight
