@@ -9,6 +9,16 @@ return (
         <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400&display=swap" rel="stylesheet"/>
         <link rel="stylesheet" type="text/css" href="/style.css"/>
     </head>
+    <header>
+        <nav>
+            <ul id="nav-container">
+                <li className="item"><a href="/pokemon">Home</a></li>
+                <li className="item"><a href="/pokemon/new">New</a></li>
+                <li className="item"><a href="null">Types</a></li>
+                <div id="bar"></div>
+            </ul>
+        </nav>
+    </header>
     <body>
         <div className = "edit-mon">
             <h1>Are you sure you want to delete: {this.props.name}? :(</h1>

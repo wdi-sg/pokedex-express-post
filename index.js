@@ -56,6 +56,38 @@ app.get('/pokemon', (request, response) => {
     });
 });
 
+/*==== Creating Request for New Pokemon ==== */
+app.get('/pokemon/new', (request, response) => {
+    response.render(createpage);
+});
+
+/*==== Posting New Pokemon ==== */
+app.post('/pokemon', (request, response) => {
+    let newPoke = request.body;
+    console.log(newPoke);
+
+    jsonfile.readFile(file, (err, obj) => {
+        if (err) {
+            console.log("Something went wrong while trying to read Pokemon file.");
+            console.log(err)
+        }
+
+        obj.pokemon.push(newPoke);
+
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) {
+                console.log("Something went wrong while trying to add new Pokemon.");
+                console.log(err);
+            } else {
+                console.log("New Pokemon successfully added to the Dex!");
+                let url = "/pokemon/" + newPoke.id;
+                response.redirect(url);
+                //it goes to the right page but not sure why it crashes initially. tried with setTimeout also
+            }
+        });
+    });
+});
+
 /*==== Requesting Single Poke Page ==== */
 app.get('/pokemon/:id', (request, response) => {
     pokeId = parseInt(request.params.id);
@@ -97,7 +129,6 @@ app.put('/pokemon/:id', (request, response) => {
             console.log(err)
         }
 
-        //obj[] - object with id === pokeID
         let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) === pokeId);
         obj.pokemon[index] = editedPoke;
 
@@ -107,38 +138,7 @@ app.put('/pokemon/:id', (request, response) => {
                 console.log(err)
             } else {
                 response.send(`${editedPoke.name} has been updated!`);
-                //update to show the changed pokemon page
-            }
-        });
-    });
-});
-
-/*==== Creating Request for New Pokemon ==== */
-app.get('/pokemon/new', (request, response) => {
-    response.render(createpage);
-});
-
-/*==== Posting New Pokemon ==== */
-app.post('/pokemon', (request, response) => {
-    let newPoke = request.body;
-    console.log(newPoke);
-
-    jsonfile.readFile(file, (err, obj) => {
-        if (err) {
-            console.log("Something went wrong while trying to read Pokemon file.");
-            console.log(err)
-        }
-
-        obj.pokemon.push(newPoke);
-
-        jsonfile.writeFile(file, obj, (err) => {
-            if (err) {
-                console.log("Something went wrong while trying to add new Pokemon.");
-                console.log(err);
-            } else {
-                console.log("New Pokemon successfully added to the Dex!");
-                response.json(newPoke);
-                // show pokemon's new page instead
+                //solve redirect issue faced in add pokemon and apply
             }
         });
     });
@@ -250,8 +250,7 @@ function sortPokemon(sortRequest, obj){
  * ===================================
  */
 
-//indv pokemon pages - incl links to delete or edit
-// redirect new and edited pkmn to their respective updated pages instead of showing default message
+// redirect new and edited pkmn to their respective updated pages instead of showing default message - results in crash
 // response.status proper error messages (error 501?)
 
 
