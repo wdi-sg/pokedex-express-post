@@ -70,7 +70,7 @@ function generatePage(list) {
 function createList(pokemon) {
     var pokemonCardList = "";
     for (let i=0; i<pokemon.length; i++) {
-        console.log(pokemon[i].name)
+        // console.log(pokemon[i].name)
         pokemonCardList = `
         ${pokemonCardList}
         <div style="display:inline-block; text-align:center;">
@@ -84,6 +84,12 @@ function createList(pokemon) {
     return pokemonCardList;
 }
 
+
+/**
+ * ==================================================
+ *           To UPDATE TO REACT TEMPLATE
+ * ==================================================
+ */
 app.get('/pokemon', (request, response) => {
 
         jsonfile.readFile(FILE, (err, data) => {
@@ -148,6 +154,59 @@ app.get('/pokemon', (request, response) => {
         });
 })
 
+/**
+ * ======================================================
+ *             Route for adding new pokemon
+ * ======================================================
+ */
+app.get('/pokemon/new', (request, response) => {
+    console.log("getting new pokemon form");
+
+    jsonfile.readFile(FILE, (err, data) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    response.render('./pages/newPokemon')
+    });
+});
+
+
+app.post('/pokemon', (request,response) => {
+
+  // console.log("posting pokemon");
+  var newPokemon = request.body;
+  // console.log( newPokemon );
+
+  // save in data file
+  jsonfile.readFile(FILE, (err, data) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    let pokemon = data.pokemon
+
+    // save data
+    pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, data, (err) => {
+      if( err ){
+        console.log("error writing file");
+        console.log(err)
+        response.status(503).send("ERROR WRITING FILE");
+      } else {
+        // console.log("write file successful");
+        // console.log( "send response");
+        response.redirect('/pokemon');
+      }
+
+    });
+  });
+});
+
+
 
 /**
  * ======================================================
@@ -175,84 +234,85 @@ app.get('/pokemon/:id', (request, response)=>{
 
 
 
-/**
- * ======================================================
- *             Route for adding new pokemon
- * ======================================================
- */
-app.get('/pokemon/new', (request, response) => {
-    console.log("getting new pokemon form");
+// /**
+//  * ======================================================
+//  *             Route for adding new pokemon
+//  * ======================================================
+//  */
+// app.get('/pokemon/new', (request, response) => {
+//     console.log("getting new pokemon form");
 
-    jsonfile.readFile(FILE, (err, data) => {
-    if( err ){
-      console.log("error reading file");
-      console.log(err)
-    }
+//     jsonfile.readFile(FILE, (err, data) => {
+//     if( err ){
+//       console.log("error reading file");
+//       console.log(err)
+//     }
 
-    let pokemon = data.pokemon
-    let form = '';
-    form = `
-        <html>
-        <body style="text-align: center; background-color: black; color: yellow">
-        <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
-        <h1>Gotta catch'em all!</h1>
-        <h2>Add New Pokemon</h2>
-        <form method="POST" action="/pokemon">
-        <p>Pokemon ID</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="id" placeholder="id"/>
-        <p>Pokemon Number</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="num" placeholder="num"/>
-        <p>Pokemon Name</p><input name="name" placeholder="name"/>
-        <p>Pokemon Image Link</p><input name="img" placeholder="img href"/>
-        <p>Pokemon Height</p><input name="height" placeholder="height"/>
-        <p>Pokemon Weight</p><input name="weight" placeholder="weight"/><br><br>
-        <input type="submit" value="Add Pokemon"/>
-        </form>
-        </body>
-        </html>`;
+//     let pokemon = data.pokemon
+//     let form = '';
+//     form = `
+//         <html>
+//         <body style="text-align: center; background-color: black; color: yellow">
+//         <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
+//         <h1>Gotta catch'em all!</h1>
+//         <h2>Add New Pokemon</h2>
+//         <form method="POST" action="/pokemon">
+//         <p>Pokemon ID</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="id" placeholder="id"/>
+//         <p>Pokemon Number</p><input type="number" value="${parseInt(pokemon[pokemon.length-1].id)+1}" name="num" placeholder="num"/>
+//         <p>Pokemon Name</p><input name="name" placeholder="name"/>
+//         <p>Pokemon Image Link</p><input name="img" placeholder="img href"/>
+//         <p>Pokemon Height</p><input name="height" placeholder="height"/>
+//         <p>Pokemon Weight</p><input name="weight" placeholder="weight"/><br><br>
+//         <input type="submit" value="Add Pokemon"/>
+//         </form>
+//         </body>
+//         </html>`;
 
-    response.send(form);
-    });
-});
+//     // response.send(form);
+//     response.render('./pages/newPokemon')
+//     });
+// });
 
 
-app.post('/pokemon', (request,response) => {
+// app.post('/pokemon', (request,response) => {
 
-  // console.log("posting pokemon");
-  var newPokemon = request.body;
-  // console.log( newPokemon );
+//   // console.log("posting pokemon");
+//   var newPokemon = request.body;
+//   // console.log( newPokemon );
 
-  // save in data file
-  jsonfile.readFile(FILE, (err, data) => {
-    if( err ){
-      console.log("error reading file");
-      console.log(err)
-    }
+//   // save in data file
+//   jsonfile.readFile(FILE, (err, data) => {
+//     if( err ){
+//       console.log("error reading file");
+//       console.log(err)
+//     }
 
-    let pokemon = data.pokemon
-    let pokemonAddedPage = '';
-    pokemonAddedPage = `
-        <html>
-        <body style="text-align: center; background-color: black; color: yellow">
-        <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
-        <h1>Gotta catch'em all!</h1>
-        <h2>New Pokemon Added!</h2>`
+//     let pokemon = data.pokemon
+//     let pokemonAddedPage = '';
+//     pokemonAddedPage = `
+//         <html>
+//         <body style="text-align: center; background-color: black; color: yellow">
+//         <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
+//         <h1>Gotta catch'em all!</h1>
+//         <h2>New Pokemon Added!</h2>`
 
-    // save data
-    pokemon.push(newPokemon);
+//     // save data
+//     pokemon.push(newPokemon);
 
-    jsonfile.writeFile(FILE, data, (err) => {
-      if( err ){
-        console.log("error writing file");
-        console.log(err)
-        response.status(503).send("ERROR WRITING FILE");
-      } else {
-        // console.log("write file successful");
-        // console.log( "send response");
-        response.send(pokemonAddedPage);
-      }
+//     jsonfile.writeFile(FILE, data, (err) => {
+//       if( err ){
+//         console.log("error writing file");
+//         console.log(err)
+//         response.status(503).send("ERROR WRITING FILE");
+//       } else {
+//         // console.log("write file successful");
+//         // console.log( "send response");
+//         response.send(pokemonAddedPage);
+//       }
 
-    });
-  });
-});
+//     });
+//   });
+// });
 
 /**
  * ======================================================
@@ -287,7 +347,7 @@ app.put('/pokemon/:id', (request, response)=>{
   jsonfile.readFile(FILE, (err, data)=>{
 
     let pokemonIndex = request.params.id;
-    // const currentAnimal = dataObj.animals[animalsIndex];
+    //save data
     data.pokemon[pokemonIndex-1] = request.body;
 
     jsonfile.writeFile(FILE, data, (err)=>{
@@ -307,10 +367,51 @@ app.put('/pokemon/:id', (request, response)=>{
  */
  app.get('/pokemon/:id/delete', (request, response)=>{
 
-    response.send("delete page")
+    jsonfile.readFile(FILE, (err, data)=>{
+
+        let pokemonIndex = parseInt(request.params.id);
+        const pokemon = data.pokemon[pokemonIndex-1];
+
+        const dataObj = {
+          index: pokemonIndex,
+          pokemonData : pokemon
+        };
+
+        response.render('./pages/deletePokemon', dataObj);
+
+    });
 
 })
 
+
+app.delete('/pokemon/:id', (request, response)=>{
+
+  console.log("REQUEST BODY");
+  console.log( request.body);
+
+  jsonfile.readFile(FILE, (err, data)=>{
+
+    let pokemonIndex = request.params.id;
+    // data.pokemon[pokemonIndex-1] = request.body;
+
+    let pokemon = data.pokemon
+    // save data
+    pokemon.splice(pokemonIndex-1,1);
+    let counter = 1;
+    for (i=0; i<pokemon.length; i++) {
+        pokemon[i].id = counter;
+        counter ++;
+    }
+
+
+    jsonfile.writeFile(FILE, data, (err)=>{
+      // response.send("POKEMON EDITED");
+    });
+
+  });
+
+  response.redirect('/pokemon');
+});
 
 
 // /**
