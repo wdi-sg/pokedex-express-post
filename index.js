@@ -17,11 +17,116 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+//react template
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+var editData = function (request, response) {
+  //console.log("editData");
+
+  jsonfile.readFile(file, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    //console.log(obj);
+    var id = request.params.id;
+
+    var data = {
+      pokemonId : obj.pokemon[id]
+    }
+
+    response.render('edit', data);
+  });
+};
+
+
+var updated = function (request, response) {
+
+    var newEntry = request.body;
+
+    jsonfile.readFile(file, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    obj.pokemon[request.params.id-1].name = newEntry.name;
+    obj.pokemon[request.params.id-1].id = parseInt(newEntry.id);
+    obj.pokemon[request.params.id-1].num = newEntry.num;
+    obj.pokemon[request.params.id-1].height = newEntry.height;
+    obj.pokemon[request.params.id-1].weight = newEntry.weight;
+            console.log(newEntry);
+
+            jsonfile.writeFile(file, obj, (err) => {
+
+              if( err ){
+                console.log("error writing file");
+                console.log(err);
+
+              }else{
+                response.send('Updated');
+            }
+        });
+    });
+};
+
+
+var deleteData = function (request, response){
+    jsonfile.readFile(file, (err, obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log (err);
+          }
+
+       var id = request.params.id;
+
+        var pokemon = obj.pokemon[id];
+
+        var output = "" +
+        "<h1>Edit Form</h1>"+
+          '<form method = "POST" action="/deleted/'+id+'?_method=delete">'+
+          '<p>Name</p><input name="name" value="'+pokemon.name+'" readonly>'+
+          '<br><br><input type="submit" value="Delete this"/>'+
+          "</form>";
+        response.send(output);
+    });
+};
+
+var deleted = function (request, response){
+    jsonfile.readFile(file, (err, obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log(err);
+        }
+
+        var id = request.params.id;
+        obj.pokemon.splice(id,1)
+
+        jsonfile.writeFile(file, obj, (err) => {
+
+          if( err ){
+            console.log("error writing file");
+            console.log(err);
+
+          }else{
+            response.send('deleted');
+            }
+        });
+    });
+}
 
 var checkPokemon = function (request, response) {
 
@@ -56,7 +161,7 @@ var checkPokemon = function (request, response) {
 };
 
 
- var makeForm = function (request, response) {
+var makeForm = function (request, response) {
 
   let form = '';
   form = '<html>' +
@@ -121,7 +226,6 @@ var submitData = function (request,response) {
 };
 
 
-
 var defaultHome = function (request, response){
     var fullNameList = [];
 
@@ -166,10 +270,15 @@ var defaultHome = function (request, response){
     });
 }
 
-app.get('/', defaultHome);
-app.post('/pokemon', submitData);
-app.get('/pokemon/new', makeForm);
+
 app.get('/:id', checkPokemon);
+app.post('/pokemon', submitData);
+app.get('/pokemon/:id/edit', editData);
+app.get('/pokemon/:id/delete', deleteData);
+app.delete('/deleted/:id', deleted);
+app.put('/pokemon/:id', updated);
+app.get('/pokemon/new', makeForm);
+app.get('/', defaultHome);
 
 
 /**
