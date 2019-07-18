@@ -2,6 +2,8 @@ var React = require('react');
 var PokemonProfile  = require('./components/pokemonProfile.jsx');
 var PokemonDetails  = require('./components/pokemonDetails.jsx');
 
+
+
 class Pokemon extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.pokemon.id + "?_method=PUT";

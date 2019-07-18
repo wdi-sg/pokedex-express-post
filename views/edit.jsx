@@ -7,9 +7,10 @@ class Edit extends React.Component {
       <html>
         <body>
           <div>
-            <h1>Edit Pokemon</h1>
-            <p>pokemon: {this.props.pokemon.name}</p>
+            <h1>Edit {this.props.pokemon.name}</h1>
+            <img src={this.props.pokemon.img}/>
             <form action={url} method="POST">
+
                 <p>name</p>
                 <input name="name" value={this.props.pokemon.name}/>
                 <p>id</p>
@@ -20,10 +21,11 @@ class Edit extends React.Component {
                 <input name="height" value={this.props.pokemon.height}/>
                 <p>weight</p>
                 <input name="weight" value={this.props.pokemon.weight}/>
-                <p>image</p>
+                <p>AnimalPage</p>
                 <input name="img" value={this.props.pokemon.img}/>
-                <br/>
+                <br/><br/>
                 <input type="submit"/>
+                <br/>
             </form>
           </div>
         </body>

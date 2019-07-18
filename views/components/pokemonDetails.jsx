@@ -2,6 +2,7 @@ var React = require('react');
 
 class PokemonDetails extends React.Component {
   render() {
+
     return (
         <div>{this.props.data.candy}<br/>
             {this.props.data.candy_count}<br/>

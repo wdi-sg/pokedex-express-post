@@ -1,3 +1,9 @@
 body{
   background: #eee;
 }
+
+
+.pokemon{
+  background: #333;
+  color: white;
+}
