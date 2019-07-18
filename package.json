@@ -12,7 +12,7 @@
   "author": "Nick Ang <nickangtc@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "express-react-views": "^0.11.0",
     "jsonfile": "^4.0.0",
     "method-override": "^3.0.0",
