@@ -82,39 +82,47 @@ app.get('/pokemon', (req, res) => {
     });
 })
 
-let doSorting = function(arr, sortMethod) {
-    if (sortMethod === "name")
-        return arr.slice().sort((a, b) => (a[sortMethod] > b[sortMethod]) ? 1 : -1)
-    else
-        return arr.slice().sort((a, b) => (parseFloat(a[sortMethod]) > parseFloat(b[sortMethod])) ? 1 : -1)
-}
+app.get('/pokemon/new', (req, res) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let newKey = obj.lastKey + 1;
+        let data = {
+            data: newKey
+        };
+        res.render('add', data);
+    })
+})
+
+app.post('/pokemon', (req, res) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.pokemon.push(req.body);
+        obj.lastKey++;
+        jsonfile.writeFile(FILE, obj, (err) => {
+            res.redirect(`/pokemon/${obj.pokemon.length-1}`);
+        });
+    });
+})
 
 app.get('/pokemon/:id', (req, res) => {
     let id = parseInt(req.params.id);
-    console.log(id);
 
     jsonfile.readFile(FILE, (err, obj) => {
-        let pokemonArr = obj.pokemon;
-        for (let i = 0; i < pokemonArr.length; i++) {
-            if (pokemonArr[i].id === id) {
-                console.log(pokemonArr[i]);
-                let data = {
-                    pokemon : pokemonArr[i]
-                };
-                res.render('individual', data);
-                break;
-            }
+        let foundPok = logarithmicComplex(obj.pokemon, obj.pokemon.length, id)
+        let data = {
+            pokemon: foundPok
+        };
+        res.render('individual', data);
 
-        }
     })
 })
+
+
 
 app.get('/pokemon/:id/edit', (req, res) => {
     let id = req.params.id;
 
     jsonfile.readFile(FILE, (err, obj) => {
-        let pokemon = obj.pokemon[id - 1];
-        res.render("edit", pokemon);
+        let foundPok = logarithmicComplex(obj.pokemon, obj.pokemon.length, id)
+        res.render("edit", foundPok);
     });
 })
 
@@ -123,7 +131,8 @@ app.put('/pokemon/:id', (req, res) => {
     let pokemon = req.body;
     pokemon.id = parseInt(pokemon.id);
     jsonfile.readFile(FILE, (err, obj) => {
-        obj.pokemon[id - 1] = pokemon
+        let foundPokIndex = logarithmicComplex(obj.pokemon, obj.pokemon.length, id, true)
+        obj.pokemon[foundPokIndex] = pokemon
         jsonfile.writeFile(FILE, obj, (err) => {
             res.redirect(`/pokemon/${id}`);
         });
@@ -133,20 +142,47 @@ app.put('/pokemon/:id', (req, res) => {
 app.get('/pokemon/:id/delete', (req, res) => {
     let id = req.params.id;
     jsonfile.readFile(FILE, (err, obj) => {
-        let pokemon = obj.pokemon[id - 1];
-        res.render("delete", pokemon);
+        let foundPok = logarithmicComplex(obj.pokemon, obj.pokemon.length, id)
+        res.render("delete", foundPok);
     });
 })
 
 app.delete('/pokemon/:id', (req, res) => {
     let id = req.params.id;
     jsonfile.readFile(FILE, (err, obj) => {
-        obj.pokemon.splice(id - 1, 1);
+        let foundPokIndex = logarithmicComplex(obj.pokemon, obj.pokemon.length, id, true)
+        obj.pokemon.splice(foundPokIndex, 1);
         jsonfile.writeFile(FILE, obj, (err) => {
-            res.send("Deleted");
+            res.redirect("/pokemon");
         });
     });
 })
+
+let doSorting = function(arr, sortMethod) {
+    if (sortMethod === "name")
+        return arr.slice().sort((a, b) => (a[sortMethod] > b[sortMethod]) ? 1 : -1)
+    else
+        return arr.slice().sort((a, b) => (parseFloat(a[sortMethod]) > parseFloat(b[sortMethod])) ? 1 : -1)
+}
+
+const logarithmicComplex = function(arr, n, id, getIndex = false) {
+
+    let left = 0;
+    let right = n - 1;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid].id < id)
+            left = mid + 1;
+        else if (arr[mid].id > id)
+            right = mid - 1;
+        else
+        if (getIndex === true)
+            return mid
+        else
+            return arr[mid]
+    }
+
+}
 
 
 

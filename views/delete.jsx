@@ -20,6 +20,10 @@ class Delete extends React.Component {
                         <td><input type="text" name="num"value={pokemon.num} readOnly style={{backgroundColor:"#b2b2b2"}}/></td>
                     </tr>
                     <tr>
+                        <td>Name</td>
+                        <td><input type="text" name="name" value={pokemon.name} readOnly style={{backgroundColor:"#b2b2b2"}}/></td>
+                    </tr>
+                    <tr>
                         <td>Image Link</td>
                         <td><input type="text" name="img" value={pokemon.img} readOnly style={{backgroundColor:"#b2b2b2"}}/></td>
                     </tr>

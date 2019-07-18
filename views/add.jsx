@@ -1,64 +1,62 @@
 var React = require('react');
-class Individual extends React.Component {
+class Add extends React.Component {
 
   render() {
-    let pokemon = this.props.pokemon;
-    let pokUrlEdit = "/pokemon/"+pokemon.id+"/edit";
+    let newKey = this.props.data;
     return (
       <html>
         <body style={{textAlign:"center"}}>
-            <h1>{pokemon.name}</h1>
-            <img src={pokemon.img}/>
-                <table style={{margin:"0 auto",textAlign:"left",fontSize:20}}>
+            <h1>Add New Pokemon</h1>
+            <form method="POST" action="/pokemon">
+                <table style={{margin:"0 auto",textAlign:"left"}}>
                     <tr>
                         <td>ID</td>
-                        <td>{pokemon.id}</td>
+                        <td><input type="text" name="id" value={newKey} readOnly style={{backgroundColor:"#b2b2b2"}} /></td>
                     </tr>
                     <tr>
                         <td>Num</td>
-                        <td>{pokemon.num}</td>
+                        <td><input type="text" name="num" value={newKey} readOnly style={{backgroundColor:"#b2b2b2"}} /></td>
                     </tr>
                     <tr>
                         <td>Name</td>
-                        <td>{pokemon.name}</td>
+                        <td><input type="text" name="name"/></td>
                     </tr>
                     <tr>
                         <td>Image Link</td>
-                        <td>{pokemon.img}</td>
+                        <td><input type="text" name="img" /></td>
                     </tr>
                     <tr>
                         <td>Height</td>
-                        <td>{pokemon.height}</td>
+                        <td><input type="text" name="height" /></td>
                     </tr>
                     <tr>
                         <td>Weight</td>
-                        <td>{pokemon.weight}</td>
+                        <td><input type="text" name="weight" /></td>
                     </tr>
                     <tr>
                         <td>Candy</td>
-                        <td>{pokemon.candy}</td>
+                        <td><input type="text" name="candy" /></td>
                     </tr>
                     <tr>
                         <td>Candy Count</td>
-                        <td>{pokemon.candy_count}</td>
+                        <td><input type="text" name="candy_count" /></td>
                     </tr>
                     <tr>
                         <td>Egg</td>
-                        <td>{pokemon.egg}</td>
+                        <td><input type="text" name="egg" /></td>
                     </tr>
                     <tr>
                         <td>Avg Spawns</td>
-                        <td>{pokemon.avg_spawns}</td>
+                        <td><input type="text" name="avg_spawns" /></td>
                     </tr>
                     <tr>
                         <td>Spawn Time</td>
-                        <td>{pokemon.spawn_time}</td>
+                        <td><input type="text" name="spawn_time" /></td>
                     </tr>
                 </table>
                 <br/>
-                <form action={pokUrlEdit}>
-                    <input type="submit" value="Edit" />
-                </form>
+                <input type="submit" value="Add"/>
+            </form>
 
         </body>
       </html>
@@ -66,4 +64,4 @@ class Individual extends React.Component {
   }
 }
 
-module.exports = Individual;
+module.exports = Add;

@@ -21,7 +21,7 @@ class Main extends React.Component {
       <html>
         <body style={{width:1000,margin:"0 auto",fontFamily:"sans-serif",textAlign:"center"}}>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" style={{width:500,display:"block",margin:"0 auto"}}/><br/>
-            <form>{sortingMethod}<br/><br/><input type="submit" value="Submit"/></form><br/>
+            <form>{sortingMethod}<br/><br/><input type="submit" value="Submit"/></form><br/><a href="/pokemon/new" style={{display:"block",textAlign:"left"}}>Add New Pokemon</a>
             <div style={{display:"flex",flexWrap:"wrap",justifyContent:"space-around"}}>{pokTable}</div>
         </body>
       </html>
