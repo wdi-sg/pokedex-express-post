@@ -12,6 +12,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// Init React
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
 
 // tell your app to use the module
 app.use(express.json());
@@ -19,6 +25,9 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// Init MethodOverride
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
 /**
  * ===================================
