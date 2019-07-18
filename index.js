@@ -59,7 +59,7 @@ app.post('/pokemon', (req, res) => {
         obj.pokemon.push(pokemon);
         obj.lastKey++;
         jsonfile.writeFile(FILE, obj, (err) => {
-            res.redirect(`/pokemon/${obj.pokemon.length}`);
+            res.redirect(`/pokemon/${obj.lastKey}`);
         });
     });
 })

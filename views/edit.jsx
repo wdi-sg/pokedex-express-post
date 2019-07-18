@@ -22,7 +22,7 @@ class Edit extends React.Component {
                     </tr>
                     <tr>
                         <td>Name</td>
-                        <td><input type="text" name="name" value={pokemon.name}/></td>
+                        <td><input type="text" name="name" value={pokemon.name} required minlength="2"/></td>
                     </tr>
                     <tr>
                         <td>Image Link</td>
