@@ -258,6 +258,39 @@ app.put('/pokemon/:id/edit', (request, response) => {
     });
 });
 
+//delete a pokemon//
+app.get('/pokemon/:id/delete', (request, response) => {
+    console.log('about to delete pokemon');
+
+    response.render('delete');
+
+});
+
+app.delete("/pokemon/:id/delete", (request, response) => {
+    console.log('deleting pokemon info');
+
+    let id = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        }
+
+        obj.pokemon.splice((id-1), 1);
+
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("write file done");
+
+            for (let i = 0; i < obj.pokemon.length; i++) {
+                sortedPokemons.push(obj.pokemon[i].name);
+            }
+
+            response.send(sortedPokemons);
+        });
+    });
+});
 
 /**
  * ===================================
