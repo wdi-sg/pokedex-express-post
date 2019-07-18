@@ -62,7 +62,7 @@ var displayAllPokemons = function(request, response){
 var addNewPokemonRequest = function(request,response){
   var newPokemon = request.body;
   // save in data file
-  jsonfile.readFile(file, (err, data) => {
+  jsonfile.readFile(FILE, (err, data) => {
     if( err ){
       console.log("error reading file");
       console.log(err);
@@ -79,7 +79,9 @@ var addNewPokemonRequest = function(request,response){
         console.log("error writing file");
         console.log(err)
       }else{
-        response.send(data);
+        response.send("success");
+        // response.redirect('pokemon');
+
       }
 
     });
@@ -93,17 +95,11 @@ var getNewPokemonRequest = function(request,response){
     //get the next index
     var lastIndex = data.pokemon.length + 1 ;
 
-    var form = '<form method="POST" action="/pokemon1">' +
-                'Add new Pokemon:<br>' +
-                '<input type="text" name="id" placeholder="id" value="' + lastIndex + '"><br>' +
-                '<input type="text" name="num" placeholder="num" value="' + lastIndex + '"><br>' +
-                '<input type="text" name="name" placeholder="name"><br>' +
-                '<input type="text" name="img" placeholder="img"><br>' +
-                '<input type="text" name="height" placeholder="height"><br>' +
-                '<input type="text" name="weight" placeholder="weight"><br>' +
-                '<input type="submit" value="Submit">' +
-                '</form>';
-    response.send(form);
+    var data = {
+      lastIndex : lastIndex,
+    }
+
+    response.render('new',data);
   });
 }
 
@@ -318,8 +314,8 @@ var editPokemonByIdRequest = function(request,response){
 
 //old code part 1
 // app.get('/pokemon:id', getPokemonByIdRequest);
-// app.get('/pokemon1/new', getNewPokemonRequest);
-// app.post('/pokemon1', addNewPokemonRequest);
+app.get('/pokemon/new', getNewPokemonRequest);
+app.post('/pokemon1', addNewPokemonRequest);
 
 
 //after adding react
@@ -335,4 +331,4 @@ app.get('/pokemon/:id/edit', editPokemonByIdRequest);
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(4500, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(4500, () => console.log('~~~ Tuning in to the waves of port 4500 ~~~'));
