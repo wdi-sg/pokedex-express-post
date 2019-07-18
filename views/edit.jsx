@@ -6,9 +6,10 @@ class Edit extends React.Component {
     let url = "/pokemon/"+pokemon.id+"?_method=PUT";
     return (
       <html>
-        <body style={{textAlign:"center"}}>
+        <body style={{textAlign:"center",fontSize:15}}>
             <h1>Edit Pokemon</h1>
-            <img src={pokemon.img}/>
+            <a href="/pokemon" style={{position:"absolute",bottom:50,left:"50%",transform:"translateX(-50%)"}}>Home</a>
+            <img src={pokemon.img} style={{width:200}}/>
             <form method="POST" action={url}>
                 <table style={{margin:"0 auto",textAlign:"left"}}>
                     <tr>

@@ -3,7 +3,6 @@ const jsonfile = require('jsonfile');
 const app = express();
 const FILE = 'pokedex.json';
 
-// tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -16,8 +15,13 @@ app.set('view engine', 'jsx');
 
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
-///////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
+
+//just to force default page to /pokemon
+app.get('/', (req, res) => {
+    res.redirect("/pokemon")
+})
 
 //main page that list all pokemon
 app.get('/pokemon', (req, res) => {
@@ -37,7 +41,7 @@ app.get('/pokemon', (req, res) => {
     });
 })
 
-//for adding new pokemon
+//Add Pokemon - GET
 app.get('/pokemon/new', (req, res) => {
     jsonfile.readFile(FILE, (err, obj) => {
         let newKey = obj.lastKey + 1;
@@ -47,19 +51,21 @@ app.get('/pokemon/new', (req, res) => {
         res.render('add', data);
     })
 })
-
+//Add Pokemon - POST
 app.post('/pokemon', (req, res) => {
+    let pokemon = req.body;
+    pokemon.id = parseInt(pokemon.id);
     jsonfile.readFile(FILE, (err, obj) => {
-        obj.pokemon.push(req.body);
+        obj.pokemon.push(pokemon);
         obj.lastKey++;
         jsonfile.writeFile(FILE, obj, (err) => {
-            res.redirect(`/pokemon/${obj.pokemon.length-1}`);
+            res.redirect(`/pokemon/${obj.pokemon.length}`);
         });
     });
 })
 
 
-//for checking individual pokemon
+//Single Pokoemon - GET
 app.get('/pokemon/:id', (req, res) => {
     let id = parseInt(req.params.id);
 
@@ -74,7 +80,7 @@ app.get('/pokemon/:id', (req, res) => {
 })
 
 
-//for editing pokemon
+//Edit Pokemon - GET
 app.get('/pokemon/:id/edit', (req, res) => {
     let id = req.params.id;
 
@@ -84,6 +90,7 @@ app.get('/pokemon/:id/edit', (req, res) => {
     });
 })
 
+//Edit Pokemon - PUT
 app.put('/pokemon/:id', (req, res) => {
     let id = req.params.id;
     let pokemon = req.body;
@@ -97,7 +104,7 @@ app.put('/pokemon/:id', (req, res) => {
     });
 })
 
-//for deleting pokemon
+//Delete Pokemon - GET
 app.get('/pokemon/:id/delete', (req, res) => {
     let id = req.params.id;
     jsonfile.readFile(FILE, (err, obj) => {
@@ -106,6 +113,7 @@ app.get('/pokemon/:id/delete', (req, res) => {
     });
 })
 
+//Delete Pokemon - DELETE
 app.delete('/pokemon/:id', (req, res) => {
     let id = req.params.id;
     jsonfile.readFile(FILE, (err, obj) => {
@@ -136,12 +144,14 @@ const logarithmicComplex = function(arr, n, id, getIndex = false) {
             left = mid + 1;
         else if (arr[mid].id > id)
             right = mid - 1;
-        else
-        if (getIndex === true)
-            return mid
-        else
-            return arr[mid]
+        else {
+            if (getIndex === true)
+                return mid
+            else
+                return arr[mid]
+        }
     }
+
 
 }
 
