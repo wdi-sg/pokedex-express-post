@@ -1,10 +1,10 @@
 var React = require('react');
-var Pokemon  = require('./components/pokemonProfile.jsx');
+var PokemonProfile  = require('./components/pokemonProfile.jsx');
 
 class Home extends React.Component {
   render() {
     const pokemonList = this.props.pokemonsAll.map((pokemon)=>{
-        return <Pokemon data={pokemon}/>
+        return <PokemonProfile data={pokemon}/>
     });
     return (
       <html>

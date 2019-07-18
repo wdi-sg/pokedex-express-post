@@ -1,8 +1,11 @@
 var React = require('react');
+var PokemonProfile  = require('./components/pokemonProfile.jsx');
+var PokemonDetails  = require('./components/pokemonDetails.jsx');
 
 class Pokemon extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.pokemon.id + "?_method=PUT";
+    var editUrl = "/pokemon/"+this.props.pokemon.id +"/edit/";
     var message = "";
     if (this.props.updated === true){
       message = 'This pokemon is updated';
@@ -16,17 +19,15 @@ class Pokemon extends React.Component {
     return (
       <html>
         <body>
+        <a href="/pokemon">Back to list</a>
+        {message}
           <div>
-            <p style={feedbackStyle}>{message}</p>
-            <h1>{this.props.pokemon.name}</h1>
-            <p>ID: {this.props.pokemon.id}</p>
-            <p>Num: {this.props.pokemon.num}</p>
-            <p>Weight: {this.props.pokemon.weight}</p>
-            <p>Height: {this.props.pokemon.height}</p>
-            <img src={this.props.pokemon.img}/>
-
-
+            <PokemonProfile data={this.props.pokemon}/>
+            <br/>
+            <PokemonDetails data={this.props.pokemon}/>
           </div>
+          <a href={editUrl}>Edit This Pokemon</a>
+          <button>Delete This Pokemon</button>
         </body>
       </html>
     );
