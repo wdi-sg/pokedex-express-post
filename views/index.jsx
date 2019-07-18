@@ -20,6 +20,18 @@ class indexPage extends React.Component {
       paddingTop: 20
     };
 
+
+    const form =
+      <form method="GET" action="/pokemon" style={{marginBottom: 30}}>
+        <select name="sortby" style={{fontSize: 20, marginRight: 10}}>
+        <option>Sort By</option>
+        <option value="name">Name</option>
+        <option value="weight">Weight</option>
+        <option value="height">Height</option>
+        </select>
+        <input type="submit" value = "Sort!"/>
+      </form>
+
     const pokemon = this.props.pokemon.map( element => {
       return(<div style={divStyle}><img src={element.img}/>
             <h3>{element.name}</h3>
@@ -33,7 +45,8 @@ class indexPage extends React.Component {
     return (
       <html>
         <body style={bodyStyle}>
-          <h1>List of All Pokemon (Unsorted)</h1>
+          <h1>List of All Pokemon {this.props.status}</h1>
+            {form}
             {pokemon}
         </body>
       </html>

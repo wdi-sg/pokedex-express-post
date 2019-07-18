@@ -41,29 +41,14 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-let pokemonList = [];
-let form = '';
-form =
-        '<h1>Pokedex!</h1>'+
-        '<form method="GET" action="/pokemon">'+
-        '<select name="sortby">' +
-        '<option>Sort By</option>' +
-        '<option value="name">Name</option>' +
-        '<option value="weight">Weight</option>' +
-        '<option value="height">Height</option>' +
-        '</select>' +
-        '<input type="submit" value = "Sort By"/>'+
-        '</form>';
-
 
 app.get('/pokemon', (request, response) => {
 
     if (request.query.sortby === "name"){
 
-        pokemonList = [];
-        sortedArray = [];
-
         jsonfile.readFile(FILE, (err,obj) => {
+
+            let pokemonArray = obj.pokemon;
 
             if (err) {
                 console.log('there is an error');
@@ -71,22 +56,18 @@ app.get('/pokemon', (request, response) => {
 
             } else {
 
-                for (let i = 0; i < obj['pokemon'].length; i ++) {
-                    pokemonList.push(obj['pokemon'][i].name)
+                let sortedArray = pokemonArray.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+                const pokemonData = {
+                    pokemon : sortedArray,
+                    status: "(Sorted By Name)"
                 }
 
-                pokemonList = pokemonList.sort();
-
-                for (let i = 0; i < pokemonList.length; i ++) {
-                    sortedArray.push((i + 1) + ") " + pokemonList[i])
-                }
-
-                response.send(form + sortedArray.join('<br>'))
+                response.render('index', pokemonData)
             }
         });
 
     } else if (request.query.sortby === "weight"){
-        pokemonList = [];
 
         jsonfile.readFile(FILE, (err,obj) => {
 
@@ -100,16 +81,16 @@ app.get('/pokemon', (request, response) => {
 
                 let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.weight) - parseFloat(b.weight));
 
-                for (let i = 0; i < sortedArray.length; i ++) {
-                    pokemonList.push((i + 1) + ") " + sortedArray[i].name + ": " + sortedArray[i].weight)
+                const pokemonData = {
+                    pokemon : sortedArray,
+                    status : "(Sorted By Weight)"
                 }
 
-                response.send(form + pokemonList.join('<br>'))
+                response.render('index', pokemonData)
             }
         });
 
     } else if (request.query.sortby === "height"){
-        pokemonList = [];
 
         jsonfile.readFile(FILE, (err,obj) => {
 
@@ -121,13 +102,15 @@ app.get('/pokemon', (request, response) => {
 
             } else {
 
+
                 let sortedArray = pokemonArray.sort( (a,b) => parseFloat(a.height) - parseFloat(b.height));
 
-                for (let i = 0; i < sortedArray.length; i ++) {
-                    pokemonList.push((i + 1) + ") " + sortedArray[i].name + ": " + sortedArray[i].height)
+                const pokemonData = {
+                    pokemon : sortedArray,
+                    status : "(Sorted By Height)"
                 }
 
-                response.send(form + pokemonList.join('<br>'))
+                response.render('index', pokemonData)
             }
         });
 
