@@ -49,12 +49,52 @@ var redirectToPokemon = function(request,response){
 var displayAllPokemons = function(request, response){
   jsonfile.readFile(FILE, (err, obj)=>{
 
-    console.log(obj.pokemon);
+    var sortType = request.query.sortby;
+    console.log(sortType);
+    var newArray = obj.pokemon;
+
+    if (sortType === "name"){
+
+      newArray.sort(function(a, b){
+      var keyA = a.name,
+          keyB = b.name;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+
+
+    } else if( sortType === "height"){
+      newArray.sort(function(a, b){
+      var keyA = a.height,
+          keyB = b.height;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+    } else if( sortType === "weight"){
+
+
+      newArray.sort(function(a, b){
+      var keyA = a.weight,
+          keyB = b.weight;
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+      });
+
+
+
+    } else if( sortType === "id"){
+      //default
+    }
+
     const data = {
-      pokemonsAll : obj.pokemon
-
+      pokemonsAll : newArray
     };
-
 
     response.render('home', data);
 
@@ -113,7 +153,7 @@ var getAllPokemonRequest = function(request,response){
       console.log("error reading file" + err);
     }
 
-    //http://localhost:4000/?sortby=name
+    //http://localhost:4500/pokemon?sortby=name
     var sortType = request.query.sortby;
     console.log(sortType);
 
@@ -174,7 +214,7 @@ var getAllPokemonRequest = function(request,response){
         pokemonDisplay = pokemonDisplay.concat(pokemonString);
       })
 
-    } else {
+    } else if( sortType === "id"){
       //default
       obj.pokemon.forEach( function(item){
         var pokemonString = `<div class="pokemon">${item.id} - ${item.name}</div> `;
