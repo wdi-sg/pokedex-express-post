@@ -19,7 +19,7 @@ app.use(methodOverride('_method'));
 app.get('/pokemon/new', (req, res) => {
   jsonfile.readFile(file,(err,obj)=> {
     if(err){
-      console.log("There's an error")
+      console.log("There's an error");
     }
 
   
@@ -79,11 +79,11 @@ app.get('/pokemon/:id/edit',(request, response) => {
     console.log(id);
     let editedPokemon = obj.pokemon[id];
     console.log(editedPokemon);
-    var output = "" +
-      "<p>edit form</p>"+
-      '<form action="/something">'+
-      '<input name="name" >'+
-      "</form>";
+    // var output = "" +
+    //   "<p>edit form</p>"+
+    //   '<form action="/something">'+
+    //   '<input name="name" >'+
+    //   "</form>";
       var data = {
      editedPokemon : editedPokemon,
      editedPokemonId : id
@@ -132,6 +132,61 @@ app.put('/pokemon/:id', (request, response) => {
 
 
 
+app.get('/pokemon/:id/delete',(request, response) => {
+  //get data from json
+  jsonfile.readFile(file, (err, obj) => {
+    if( err ){
+      console.log(err);
+    } 
+     // console.log(obj);
+    let id = request.params.id;
+    console.log(id);
+    let deletedPokemon = obj.pokemon[id];
+    console.log(deletedPokemon);
+    
+      var data = {
+     deletedPokemon : deletedPokemon,
+     deletedPokemonId : id
+    };
+
+    response.render('delete', data);
+
+  });
+});
+
+
+app.delete('/pokemon/:id', (request, response) => {
+  console.log("WOW DELETE");
+
+  var deletePokemon = request.body;
+
+ // save in data file
+  
+  jsonfile.readFile(file, (err, obj) => {
+    console.log("got file");
+    if( err ){
+     
+      console.log(err);
+    }
+//      save data
+    obj.pokemon.splice(request.params.id,1 );
+    console.log(obj.pokemon);
+   
+    jsonfile.writeFile(file, obj, (err) => {
+      console.log("write file done");
+      if( err ){
+        console.log("error writing file");
+       
+        response.status(503).send("no!");
+      }else{
+        console.log("~~~~~~~yay");
+
+        response.send("deleted");
+      }
+
+    });
+  });
+});
 
 
 
