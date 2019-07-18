@@ -25,7 +25,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-// Init MethodOverride
+// Set up method-override for PUT and DELETE forms
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
 
@@ -209,13 +209,6 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
         var pokedex = obj.pokemon[id];
 
-         var output = `
-            <p>edit form</p>
-            <form action="/something">
-            <input name="name" value="'+pokedex.name+'">
-            </form>
-         `;
-
         var data = {
             pokemonKey: pokedex,
             pokemonId: id
@@ -269,6 +262,8 @@ app.put('/pokemon/:id', (request, response) => {
     });
 });
 
+
+
 // Show pokemon based on user entered pokemon id
 app.get('/pokemon/:id', (request, response) => {
 
@@ -288,6 +283,63 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 
+
+// show form to delete selected pokemon
+app.get('/pokemon/:id/delete', (request, response) => {
+
+    // read pokedex json file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        if (err) {
+            console.log('error reading file');
+            console.log(err);
+        }
+            console.log(obj);
+            var id = request.params.id;
+            var pokedex = obj.pokemon[id];
+
+            var data = {
+                pokemonKey: pokedex,
+                pokemonId: id
+            }
+
+        response.render('delete', data);
+    });
+});
+
+
+
+app.delete('/pokemon/:id', (request, response) => {
+    let id = parseInt(request.params.id);
+    console.log("DELETING...");
+    console.log("about to get file");
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log("got file");
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        } else {
+            console.log("what i currently have");
+            let pokedex = obj.pokemon;
+            // delete selected pokemon
+            pokedex.splice(id, 1);
+            // start of writing to json file
+            console.log("about to write file");
+            jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("write file done");
+                if( err ){
+                    console.log("error writing file");
+                    console.log(err)
+                    response.status(503).send("no!");
+                } else {
+                    console.log("~~~~~~~yay. pokemon updated!");
+                    console.log( "send response");
+                    response.send('Pokemon deleted');
+                }
+            }); // end of writing to json file
+        }
+    });
+});
 
 
 /**
