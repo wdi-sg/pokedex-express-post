@@ -623,16 +623,9 @@
       "spawn_time": "02:22"
     },
     {
-      "id": 51,
-      "num": "051",
       "name": "Dugtrio",
-      "img": "http://www.serebii.net/pokemongo/pokemon/051.png",
       "height": "0.71 m",
-      "weight": "33.3 kg",
-      "candy": "Dugtrio",
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.4,
-      "spawn_time": "12:37"
+      "weight": "33.3555 kg"
     },
     {
       "id": 52,
