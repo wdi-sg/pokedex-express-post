@@ -9,9 +9,9 @@ class New extends React.Component {
             <h1>New Pokemon Entry!!!!!!</h1>
             <form method= "POST" action="/pokemon">
                 <p>Id</p>
-                <input name="id" disabled="disabled" defaultValue={this.props.pokemonId}/>
+                <input name="id" readonly="readonly" defaultValue={parseInt(this.props.pokemonId)}/>
                 <p>Num</p>
-                <input name="num" disabled="disabled" defaultValue={this.props.pokemonId}/>
+                <input name="num" readonly="readonly" defaultValue={this.props.pokemonId}/>
                 <p>Name</p>
                 <input name="name"/>
                 <p>Img</p>

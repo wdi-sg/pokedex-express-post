@@ -3,7 +3,7 @@ var React = require('react');
 class Individual extends React.Component{
     render(){
         var styleBody = {
-            backgroundColor : "white"
+            backgroundColor : "#00b7ff"
         }
         var pic = {
             height : "200px",
@@ -15,11 +15,13 @@ class Individual extends React.Component{
             fontWeight : "Bold"
         }
         var url = "/pokemon/"+this.props.pokemonId;
+        var urlHome = "/pokemon";
         return(
             <html>
                 <body style = {styleBody}>
                     <div style={style}>
                         <h1>
+                            <p>Pokemon Dexter</p>
                             <img style = {pic} src ={this.props.pokemon.img}/>
                             <p>{this.props.pokemon.name}</p>
                         </h1>
@@ -29,6 +31,9 @@ class Individual extends React.Component{
                         <p>Pokemon Weight: {this.props.pokemon.weight}</p>
                         <p>Fav Candy: {this.props.pokemon.candy}</p>
                         <p>Egg Hatch Step: {this.props.pokemon.egg}</p>
+                        <form method="get" action={urlHome}>
+                        <button type="submits">Home</button>
+                        </form>
                     </div>
                 </body>
             </html>

@@ -71,28 +71,12 @@ app.use(methodOverride('_method'));
 //   });
 // });
 
-// let form = '';
-//         form = '<html>' +
-//         '<body>'+
-//         '<h1>New Pokemon Entries</h1>'+
-//         '<form method="POST" action="/new">'+
-//         '<p>Name of Pokemon</p><input name="name"/>'+
-//         '<p>Id of Pokemon</p><input name="id"/>'+
-//         '<p>Num of Pokemon</p><input name="Num"/>'+
-//         '<p>Img link of Pokemon</p><input name="Img"/>'+
-//         '<p>Weight of Pokemon</p><input name="Weight"/>'+
-//         '<p>Height of Pokemon</p><input name="Height"/>'+
-//         '<input type="submit"/>'+
-//         '</form>'+
-//         '</body>'+
-        // '</html>';
-
 
 var newEntry = (request,response) =>{
     console.log("HELLO");
     jsonfile.readFile(file,(err,obj)=>{
         var data = {
-            pokemonId: obj.pokemon.length
+            pokemonId: (obj.pokemon.length)+1
         };
         console.log(data);
         response.render("new",data);
@@ -105,6 +89,7 @@ var newUpdate = (request,response) => {
     jsonfile.readFile(file,(err,obj)=>{
         console.log(newPokemon);
         obj.pokemon.push(newPokemon);
+        var url = "/pokemon/" + newPokemon.id
         jsonfile.writeFile(file, obj, (err) => {
             console.log("Added new pokemon")
             if( err ){
@@ -116,7 +101,7 @@ var newUpdate = (request,response) => {
                 console.log("~~~~~~~yay");
 
                 console.log( "send response");
-                // response.send("yes!");
+                response.redirect(url)
             }
         })
     });
@@ -125,7 +110,7 @@ var newUpdate = (request,response) => {
 var homePage = (request,response)=>{
     jsonfile.readFile(file,(err,obj)=>{
         let data = {
-            "pokemonData": obj.pokemon
+            pokemonData: obj.pokemon
         };
         response.render("show", data);
     });
@@ -300,4 +285,4 @@ app.get('/pokemon', homePage);
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
