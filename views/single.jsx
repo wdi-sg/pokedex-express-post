@@ -4,7 +4,7 @@ var PokemonDetails  = require('./components/pokemonDetails.jsx');
 
 
 
-class Pokemon extends React.Component {
+class Single extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.pokemon.id + "?_method=PUT";
     var editUrl = "/pokemon/"+this.props.pokemon.id +"/edit/";
@@ -36,4 +36,4 @@ class Pokemon extends React.Component {
   }
 }
 
-module.exports = Pokemon;
+module.exports = Single;

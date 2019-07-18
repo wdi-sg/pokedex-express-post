@@ -245,7 +245,7 @@ var getPokemonByIdRequest = function(request,response){
       pokemon : thisPokemon,
     }
 
-    response.render('pokemon', data);
+    response.render('single', data);
   });
 
 }
@@ -280,7 +280,7 @@ var editPokemonById = function(request,response){
 
       // response.send(obj.pokemon[parseInt(request.params.id) - 1].name + ' updated!');
 
-      response.render('pokemon', data);
+      response.render('single', data);
     });
 
 
