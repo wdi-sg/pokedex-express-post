@@ -2,11 +2,11 @@ var React = require('react');
 
 class MainPage extends React.Component {
   render() {
-    console.log("here")
+    console.log("here");
     return (
         <html>
         <body>
-        <form>
+        <form method="POST" action={"/pokemon/:" + this.props.pokemonEdit.id}>
         <h1>Edit your pokemon details here</h1>
         <h3>Is your Pokemon gaining muscle mass?</h3>
         <h3>Cut down on protein shakes!</h3>
@@ -32,7 +32,7 @@ class MainPage extends React.Component {
         <br/>
         Weight:&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="text" name="weight" defaultValue={this.props.pokemonEdit.weight}/>
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Change"/>
         </form>
         </body>
         </html>

@@ -16,7 +16,7 @@ app.use(express.urlencoded({
 app.get('/pokemon/:id/edit', (request, response) =>{
     jsonfile.readFile(FILE, (err, obj) => {
         let inputId = parseInt( request.params.id );
-        var pokemon;
+        let pokemon;
         for( let i=0; i<obj.pokemon.length; i++ ){
             let currentPokemon = obj.pokemon[i];
             if( currentPokemon.id === inputId ){
@@ -36,7 +36,37 @@ app.get('/pokemon/:id/edit', (request, response) =>{
     });
 });
 
+app.post('/pokemon/:id', function(request, response) {
 
+    console.log("Edit attempted");
+    var animal = request.body;
+    console.log( animal );
+
+  jsonfile.readFile(FILE, (err, obj) => {
+    if( err ){
+      console.log("error reading file");
+      console.log(err)
+    }
+
+    animal.id = parseInt(animal.id);
+
+    const index = obj.pokemon.findIndex(i => i.id === request.body.id);
+    obj.pokemon[index] = request.body;
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      if( err ){
+        console.log("error writing file");
+        console.log(err)
+        response.status(503).send("no!");
+      }else{
+        console.log( "send response");
+        response.send(animal);
+      }
+
+    });
+  });
+
+});
 
 app.get('/:id', (request, response) => {
 
