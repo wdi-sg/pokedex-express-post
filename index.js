@@ -42,6 +42,10 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
+var redirectToPokemon = function(request,response){
+  response.redirect("/pokemon");
+}
+
 var displayAllPokemons = function(request, response){
   jsonfile.readFile(FILE, (err, dataObj)=>{
 
@@ -310,7 +314,7 @@ var editPokemonByIdRequest = function(request,response){
  */
 
 
-// app.get('/', getAllPokemonRequest);
+app.get('/', redirectToPokemon);
 
 //old code part 1
 // app.get('/pokemon:id', getPokemonByIdRequest);
