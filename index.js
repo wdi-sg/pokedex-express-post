@@ -5,18 +5,35 @@
  * ===================================
  */
 
+// Init express app
 const express = require('express');
+const app = express();
+
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
-
-// Init express app
-const app = express();
 
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
+
 
 /**
  * ===================================
@@ -30,6 +47,7 @@ form =
         '<h1>Pokedex!</h1>'+
         '<form method="GET" action="/">'+
         '<select name="sortby">' +
+        '<option>Sort By</option>' +
         '<option value="name">Name</option>' +
         '<option value="weight">Weight</option>' +
         '<option value="height">Height</option>' +
@@ -136,7 +154,8 @@ app.get('/', (request, response) => {
 });
 
 
-app.get('/:id', (request, response) => {
+app.get('/pokemon/:id', (request, response) => {
+
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -171,26 +190,23 @@ app.get('/:id', (request, response) => {
 
 // Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 
-app.get('/pokemon/new', (request, response) => {
+app.get('/new', (request, response) => {
 
-    let form = '';
+    jsonfile.readFile(FILE, (err,obj) => {
 
-    form = '<html>' +
-        '<body>'+
-        '<h1>Enter Details of New Pokemon!</h1>'+
-        '<form method="POST" action="/pokemon">'+
-        '<p>Id</p><input name="id"/>'+
-        '<p>Num</p><input name="num"/>'+
-        '<p>Name</p><input name="name"/>'+
-        '<p>Img Url</p><input name="imgURL"/>'+
-        '<p>Height (m)</p><input name="height"/>'+
-        '<p>Weight (kg)</p><input name="weight"/>'+ '<br><br>' +
-        '<input type="submit"/>'+
-        '</form>'+
-        '</body>'+
-        '</html>';
+        const data = {
+            arrayLength: obj.pokemon.length + 1
+        }
 
-    response.send(form);
+        if (err){
+          console.log("error reading file");
+          console.log(err)
+        }
+        else {
+            response.render('form', data)
+        }
+
+    });
 });
 
 
@@ -229,6 +245,61 @@ app.post('/pokemon', (request,response) => {
         }
   });
 });
+
+app.get('/pokemon/:id/edit',(request, response)=>{
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        let pokemonIndex = request.params.id
+        const pokemon = obj.pokemon[pokemonIndex]
+
+        const data = {
+            index: pokemonIndex,
+            pokemonData : pokemon
+        }
+
+        if (err){
+          console.log("error reading file");
+          console.log(err)
+        }
+        else {
+            response.render('editForm', data)
+        }
+
+    });
+
+});
+
+app.put('/pokemon/:id', (request, response) =>{
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        let pokemonIndex = request.params.id;
+        let updatedObj = obj;
+        updatedObj.pokemon[pokemonIndex] = request.body;
+        updatedObj.pokemon[pokemonIndex].id = parseInt(updatedObj.pokemon[pokemonIndex].id);
+
+        if (err){
+          console.log("error reading file");
+          console.log(err)
+        }
+
+        else {
+
+            jsonfile.writeFile(FILE, updatedObj, (err) => {
+                if (err) {
+                    console.log('error reading file')
+                    console.log(err)
+                } else {
+                    response.send('Pokemon updated!')
+                    console.log(updatedObj.pokemon[pokemonIndex])
+                }
+            })
+        }
+    });
+});
+
+
 
 /**
  * ===================================
