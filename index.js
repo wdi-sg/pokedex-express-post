@@ -229,45 +229,63 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
 // save updated pokemon to pokedex.json file
 app.put('/pokemon/:id', (request, response) => {
-  console.log("WOW PUT");
+    console.log("WOW PUT");
 
-  var newPokemon = request.body;
-  console.log( newPokemon );
+    var newPokemon = request.body;
+    console.log( newPokemon );
 
-  // save in data file
-  console.log("about to get file");
+    // save in data file
+    console.log("about to get file");
 
-  jsonfile.readFile(FILE, (err, obj) => {
-    console.log("got file");
-    if( err ){
-      console.log("error reading file");
-      console.log(err)
-    }
+    jsonfile.readFile(FILE, (err, obj) => {
 
-    console.log("what i currently have");
-    console.log(obj.pokemon);
+        console.log("got file");
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        }
 
-    // save data
-    // obj.animals.push(animal);
-    obj.pokemon[request.params.id] = newPokemon;
+        console.log("what i currently have");
+        console.log(obj.pokemon);
 
-    console.log("about to write file");
+        // save data
+        // obj.pokemon.push(pokemon);
+        obj.pokemon[request.params.id] = newPokemon;
 
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.log("write file done");
-      if( err ){
-        console.log("error writing file");
-        console.log(err)
-        response.status(503).send("no!");
-      }else{
-        console.log("~~~~~~~yay. pokemon updated!");
-        console.log( "send response");
-        response.send("Updated!");
-      }
+        console.log("about to write file");
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("write file done");
+            if( err ){
+                console.log("error writing file");
+                console.log(err)
+                response.status(503).send("no!");
+            } else {
+                console.log("~~~~~~~yay. pokemon updated!");
+                console.log( "send response");
+                response.send("Updated!");
+            }
+        });
     });
-  });
 });
 
+// Show pokemon based on user entered pokemon id
+app.get('/pokemon/:id', (request, response) => {
+
+    console.log("new pokemon request");
+    jsonfile.readFile(FILE, (err, obj) => {
+        if( err ){
+          console.log("error reading file");
+          console.log(err)
+        }
+        console.log(obj);
+
+        var id = request.params.id;
+        var selectedPokemon = obj.pokemon[id];
+
+        response.send(selectedPokemon);
+    });
+});
 
 
 
