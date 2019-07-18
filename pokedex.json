@@ -1,12 +1,12 @@
 {
   "pokemon": [
     {
-      "id": 1,
+      "id": "1000",
       "num": "001",
-      "name": "Bulbasaur",
+      "name": "Bulbasaura",
       "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
+      "height": "0.71 mm",
+      "weight": "6.9 kgg",
       "candy": "Bulbasaur Candy",
       "candy_count": "25",
       "egg": "2 km",
@@ -309,12 +309,7 @@
       "name": "Pikachu",
       "img": "http://www.serebii.net/pokemongo/pokemon/025.png",
       "height": "0.41 m",
-      "weight": "6.0 kg",
-      "candy": "Pikachu Candy",
-      "candy_count": 50,
-      "egg": "2 km",
-      "avg_spawns": 21,
-      "spawn_time": "04:00"
+      "weight": "5.0 kg"
     },
     {
       "id": 26,
@@ -1881,7 +1876,50 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "152",
+      "num": 152,
+      "name": "T-rex",
+      "img": "An Image",
+      "height": "5m",
+      "weight": "50kg"
+    },
+    {
+      "num": 153
+    },
+    {
+      "num": 154
+    },
+    {
+      "num": 155
+    },
+    {
+      "num": 156
+    },
+    {
+      "num": 157
+    },
+    {
+      "num": 158
+    },
+    {
+      "num": 159
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      "id": "1",
+      "num": "001",
+      "name": "Bulbasaur",
+      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
+      "height": "0.71 m",
+      "weight": "6.9 kg"
     }
   ],
-  "lastKey": 151
+  "lastKey": 159
 }
