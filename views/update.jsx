@@ -1,6 +1,6 @@
 var React = require('react');
 
-class edit extends React.Component {
+class Update extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.pokemonId.id + "?_method=PUT";
     return (
@@ -29,4 +29,4 @@ class edit extends React.Component {
   }
 }
 
-module.exports = edit;
+module.exports = Update;

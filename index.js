@@ -10,6 +10,7 @@ const file = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.use(express.static('public'))
 
 // To get request.body
 app.use(express.json());
@@ -32,7 +33,7 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
-var editData = function (request, response) {
+var updateData = function (request, response) {
   //console.log("editData");
 
   jsonfile.readFile(file, (err, obj) => {
@@ -48,7 +49,7 @@ var editData = function (request, response) {
       pokemonId : obj.pokemon[id]
     }
 
-    response.render('edit', data);
+    response.render('update', data);
   });
 };
 
@@ -96,11 +97,12 @@ var deleteData = function (request, response){
         var pokemon = obj.pokemon[id];
 
         var output = "" +
-        "<h1>Edit Form</h1>"+
-          '<form method = "POST" action="/deleted/'+id+'?_method=delete">'+
+        "<h1>Edit Pokemon</h1>"+
+          '<form method = "POST" action="/pokemon/deleted/'+id+'?_method=delete">'+
           '<p>Name</p><input name="name" value="'+pokemon.name+'" readonly>'+
-          '<br><br><input type="submit" value="Delete this"/>'+
+          '<br><br><input type="submit" value="Delete"/>'+
           "</form>";
+
         response.send(output);
     });
 };
@@ -227,58 +229,47 @@ var submitData = function (request,response) {
 
 
 var defaultHome = function (request, response){
-    var fullNameList = [];
+    //var fullNameList = [];
 
     jsonfile.readFile(file, (err, obj) => {
         if (err){
             console("ERRRORRR~~");
         }
-        else {
-            for (let i = 0; i < obj["pokemon"].length; i++) {
-                fullNameList.push(`${obj["pokemon"][i]["name"]}`);
+
+        // else {
+        //     for (let i = 0; i < obj["pokemon"].length; i++) {
+        //         fullNameList.push(`${obj["pokemon"][i]["name"]}`);
+        //     }
+
+        //     let displayList = ""
+        //     if (request.query.sortby === "name") {
+        //         var sort = fullNameList.sort();
+        //         displayList = sort.join("<br>")
+        //     }
+
+        //     else if (request.query.sortby === undefined){
+        //         var fullNameListJoin = fullNameList.join("<br>");
+        //         displayList = fullNameListJoin;
+        //     };
+        // }
+        else{
+            const data = {
+                fullNameList : obj["pokemon"]
             }
-
-            let displayList = ""
-            if (request.query.sortby === "name") {
-                var sort = fullNameList.sort();
-                displayList = sort.join("<br>")
-            }
-
-            else if (request.query.sortby === undefined){
-                var fullNameListJoin = fullNameList.join("<br>");
-                displayList = fullNameListJoin;
-            };
-
-            let home = '';
-            home = '<html>' +
-            '<body>'+
-            '<h1>Pokedex Home</h1>'+
-            '<form method="GET">'+
-            '<select name = "sortby">'+
-            '<option value = "name">Sort by Name</option>'+
-            '<option value = "weight">Sort by Weight</option>'+
-            '<option value = "height">Sort by Height</option>'+
-            '</select>'+
-            '<button type="submit"/>Sort</button>'+
-            '</form>'+
-            `<p>${displayList}</p>`+
-            '</body>'+
-            '</html>';
-
-            response.send(home);
+            response.render('home', data);
         }
     });
 }
 
 
-app.get('/:id', checkPokemon);
+app.get('/pokemon/:id', checkPokemon);
 app.post('/pokemon', submitData);
-app.get('/pokemon/:id/edit', editData);
+app.get('/pokemon/:id/edit', updateData);
 app.get('/pokemon/:id/delete', deleteData);
-app.delete('/deleted/:id', deleted);
+app.delete('/pokemon/deleted/:id', deleted);
 app.put('/pokemon/:id', updated);
 app.get('/pokemon/new', makeForm);
-app.get('/', defaultHome);
+app.get('/pokemon', defaultHome);
 
 
 /**
