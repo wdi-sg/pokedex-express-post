@@ -1881,6 +1881,32 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": 152,
+      "name": "sadfad",
+      "img": "safadad",
+      "height": "123",
+      "weight": "123",
+      "candy": "",
+      "candy_count": "",
+      "egg": "",
+      "avg_spawns": "",
+      "spawn_time": ""
+    },
+    {
+      "id": 153,
+      "num": 153,
+      "name": "sadfad",
+      "img": "safadad",
+      "height": "123",
+      "weight": "123",
+      "candy": "",
+      "candy_count": "",
+      "egg": "",
+      "avg_spawns": "",
+      "spawn_time": ""
     }
   ]
 }
