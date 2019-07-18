@@ -42,8 +42,19 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-var displayHomeRequest = function(request, response){
-   response.render('home');
+var displayAllPokemons = function(request, response){
+  jsonfile.readFile(FILE, (err, dataObj)=>{
+
+    console.log(dataObj.pokemon);
+    const data = {
+      pokemonsAll : dataObj.pokemon
+
+    };
+
+
+    response.render('home', data);
+
+  });
  }
 
 
@@ -295,28 +306,6 @@ var editPokemonByIdRequest = function(request,response){
   });
 }
 
-// var deletePokemonByIdRequest = function(request,response){
-//   jsonfile.readFile(FILE, (error, obj) => {
-//     if( error ){
-//       console.log(error);
-//     }
-//
-//     console.log(obj);
-//     var id = parseInt(request.params.id) - 1;
-//
-//     var pokemon = obj.pokemon[id];
-//
-//     var data = {
-//       pokemon : pokemon,
-//     }
-//
-//     response.render('delete', data);
-//   });
-// }
-//
-// var deletePokemonById = function(request,response){
-//
-// }
 
 /**
  * ===================================
@@ -325,7 +314,7 @@ var editPokemonByIdRequest = function(request,response){
  */
 
 
-app.get('/', getAllPokemonRequest);
+// app.get('/', getAllPokemonRequest);
 
 //old code part 1
 // app.get('/pokemon:id', getPokemonByIdRequest);
@@ -334,12 +323,11 @@ app.get('/', getAllPokemonRequest);
 
 
 //after adding react
-app.get('/home', displayHomeRequest);
+app.get('/pokemon', displayAllPokemons);
 app.get('/pokemon/:id', getPokemonByIdRequest);
 app.put('/pokemon/:id', editPokemonById);
 app.get('/pokemon/:id/edit', editPokemonByIdRequest);
-// app.get('/pokemon/:id/delete', deletePokemonByIdRequest);
-// app.delete('/pokemon/:id', deletePokemonById);
+
 
 
 /**
@@ -347,4 +335,4 @@ app.get('/pokemon/:id/edit', editPokemonByIdRequest);
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(4500, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
