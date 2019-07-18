@@ -78,7 +78,7 @@ var updated = function (request, response) {
                 console.log(err);
 
               }else{
-                response.send('Updated');
+                response.redirect('/pokemon/'+request.params.id);
             }
         });
     });
@@ -124,7 +124,7 @@ var deleted = function (request, response){
             console.log(err);
 
           }else{
-            response.send('deleted');
+            response.redirect('/pokemon');
             }
         });
     });
