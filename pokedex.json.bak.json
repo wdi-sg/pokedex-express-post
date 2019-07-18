@@ -2321,13 +2321,13 @@
 				}]
 		},
 		{
-				"id": 200,
+				"id": 100,
 				"num": "100",
-				"name": "VoltorbIsEdited",
+				"name": "Voltorb",
 				"img": "http://www.serebii.net/pokemongo/pokemon/100.png",
 				"type": ["Electric"],
-				"height": "51 m",
-				"weight": "1000",
+				"height": "0.51 m",
+				"weight": "10.4 kg",
 				"candy": "Voltorb Candy",
 				"candy_count": 50,
 				"egg": "5 km",
