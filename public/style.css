@@ -56,12 +56,12 @@ form {
 	margin: 15px;
 }
 
-.edit-mon h2 {
+.edit-mon h2, .create-mon h2 {
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 12pt;
 	margin: 30px 0px 10px 0;
 }
 
-.edit-mon img {
+.edit-mon img, .create-mon img {
 	margin-bottom: -20px;
 }

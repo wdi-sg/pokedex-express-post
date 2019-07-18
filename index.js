@@ -22,6 +22,7 @@ app.use(methodOverride('_method'));
 
 const editpage = 'edit.jsx';
 const homepage = 'home.jsx';
+const createpage = 'create.jsx'
 
 let pokeId = null;
 let pokemonMatchingId = null;
@@ -40,6 +41,7 @@ app.get('/', (request, response) => {
 
  /*==== Front Page ==== */
 
+/*==== Front Page ==== */
 app.get('/pokemon', (request, response) => {
     let sortRequest = request.query.sortby;
 
@@ -53,7 +55,6 @@ app.get('/pokemon', (request, response) => {
 
 /*==== Request Edit Page ==== */
 app.get('/pokemon/:id/edit', (request, response) => {
-
     pokeId = parseInt(request.params.id);
 
     jsonfile.readFile(file, (err,obj) => {
@@ -62,19 +63,14 @@ app.get('/pokemon/:id/edit', (request, response) => {
         }
 
         pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
-        //creates a "copy" of the poke but is not a direct reference to it (i think)
-
+        //creates a "copy" of the matching poke but is not a direct reference to it (i think)
         response.render(editpage, pokemonMatchingId);
     });
 })
 
 /*==== Accepting Edit Request ==== */
 app.put("/pokemon/:id", (request, response) => {
-
     let editedPoke = request.body;
-    console.log(pokemonMatchingId);
-    console.log(editedPoke);
-
 
     jsonfile.readFile(file, (err, obj) => {
         if (err) {
@@ -93,10 +89,45 @@ app.put("/pokemon/:id", (request, response) => {
                 console.log(err)
             } else {
                 response.send(`${editedPoke.name} has been updated!`);
+                //update to show the changed pokemon page
             }
         });
     });
 });
+
+/*==== Creating New Pokemon Request ==== */
+app.get('/pokemon/new', (request, response) => {
+    //not sure if need to read file & have obj for this one
+    response.render(createpage);
+});
+
+/*==== Posting New Pokemon ==== */
+app.post('/pokemon', (request, response) => {
+    let newPoke = request.body;
+    console.log(newPoke);
+
+    jsonfile.readFile(file, (err, obj) => {
+        if (err) {
+            console.log("Something went wrong while trying to read Pokemon file.");
+            console.log(err)
+        }
+
+        obj.pokemon.push(newPoke);
+
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) {
+                console.log("Something went wrong while trying to add new Pokemon.");
+                console.log(err);
+            } else {
+                console.log("New Pokemon successfully added to the Dex!");
+                response.json(newPoke);
+                // show pokemon's new page instead
+            }
+        });
+    });
+});
+
+/*==== Delete Pokemon ==== */
 
 /**
  * ===================================
@@ -104,7 +135,7 @@ app.put("/pokemon/:id", (request, response) => {
  * ===================================
  */
 
-//* sortPokemon function: name/number/weight/height query(sortRequest) gets passed into sortPokemon function where it goes through a switch case to dynamically recreate pokemon obj each time - thus changing what is show on home page *//
+//* sortPokemon function: name/number/weight/height query(sortRequest) gets passed into sortPokemon function where it goes through a switch case to dynamically recreate pokemon obj each time, changing what is shown on home page *//
 
 function sortPokemon(sortRequest, obj){
     switch(sortRequest) {
@@ -164,70 +195,12 @@ function sortPokemon(sortRequest, obj){
  * To-Do
  * ===================================
  */
-// creating new poke! on /pokemon/new
-// app.get('/pokemon/new', (request, response) => {
 
-//     console.log("birthing form");
-
-//     //set conditional to make id and num unique - use onclick function to self-generate a unique ID?
-
-//     let form =
-//         '<html>' +
-//         '<body>' +
-//         '<h1>Add your Pokémon</h1>' +
-//         '<form method="POST" action="/pokemon">' +
-//         '<h4>ID:</h4>' +
-//         '<input type="text" name="id">' +
-//         '<h4>Num:</h4>' +
-//         '<input type="text" name="num">' +
-//         '<h4>Name:</h4>' +
-//         '<input type="text" name="name">' +
-//         '<h4>Img Source:</h4>' +
-//         '<input type="text" name="img">' +
-//         '<h4>Height:</h4>' +
-//         '<input type="text" name="height">' +
-//         '<h4>Weight:</h4>' +
-//         '<input type="text" name="weight">' +
-//         '<br><input type="submit" value="Submit">' +
-//         '</form>' +
-//         '</body>' +
-//         '</html>';
-
-//     response.send(form);
-// });
-
-// save the form data to pokedex.json
-// app.post('/pokemon', (request, response) => {
-
-//     var newPoke = request.body;
-
-//     console.log(newPoke);
-
-//     // save in data file
-//     jsonfile.readFile(file, (err, obj) => {
-//         //if error reading
-//         if (err) {
-//             console.log("could not read pokedex file");
-//             console.log(err)
-//         }
-
-//         //if not error
-//         obj.pokemon.push(newPoke);
-
-//         jsonfile.writeFile(file, obj, (err) => {
-//             //if error writing
-//             if (err) {
-//                 console.log("could not write new poke");
-//                 console.log(err);
-//                 response.status(503).send("sorry, the service in unavailable..");
-//             } else {
-//                 //show that the request was successful
-//                 console.log("new mon successfully added");
-//                 response.json(newPoke);
-//             }
-//         });
-//     });
-// });
+// check that create mon works
+// make delete page
+//indv pokemon pages
+// redirect new and edited pkmn to their respective updated pages instead of showing default message
+// response.status proper error messages
 
  /*==== Setting Up Port ==== */
 app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 8080 ~~~'));
