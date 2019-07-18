@@ -24,9 +24,18 @@ class Homepage extends React.Component {
             <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
         <header>
+        <nav>
+            <ul id="nav-container">
+                <li className="item">Home</li>
+                <li className="item">New</li>
+                <li className="item">Types</li>
+                <div id="bar"></div>
+            </ul>
+        </nav>
         <img id="header-img" src="/header.jpg"/>
         </header>
         <body>
+            <h3>Sort Those Pokémon!</h3>
             <form method='GET' action='/pokemon'>
                 <select name='sortby'>
                     <option value='num'>Number</option>
