@@ -80,6 +80,7 @@ app.post('/pokemon/added', function(request, response) {
 
 app.get('/pokemon', function(request, response){
   jsonfile.readFile(file, function (err,obj){
+    
     if (request.query.sortby === "name"){
       var list = obj["pokemon"].sort(compareValues("name"));
       var dataSet = {
