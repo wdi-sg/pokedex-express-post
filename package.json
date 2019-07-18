@@ -1,11 +1,19 @@
 {
-  "name": "express-test",
+  "name": "express-components",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3",
-    "jsonfile": "^4.0.0",
-    "method-override": "^2.3.10"
+    "express": "^4.17.1",
+    "express-react-views": "^0.11.0",
+    "jsonfile": "^5.0.0",
+    "method-override": "^3.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }
