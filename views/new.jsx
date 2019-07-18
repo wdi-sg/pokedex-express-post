@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Card = require('./components/card');
+var Form = require('./components/newform');
 var Nav = require('./components/nav');
 
 const bodyStyle = {
@@ -15,16 +15,10 @@ const divConStyle = {
 
 
 
-class Main extends React.Component {
+class New extends React.Component {
   render() {
 
     console.log("im here")
-
-
-    let monCards = this.props.pokemon.map(pokemon=>{
-
-        return <Card name = {pokemon.name} num = {pokemon.num} img = {pokemon.img} />
-    })
 
 
     return (
@@ -34,7 +28,7 @@ class Main extends React.Component {
       <body style={bodyStyle}>
       <Nav/>
       <div style={divConStyle} >
-      {monCards}
+      <Form/>
       </div>
       </body>
       </html>
@@ -42,4 +36,4 @@ class Main extends React.Component {
 }
 }
 
-module.exports = Main;
+module.exports = New;
