@@ -1,6 +1,8 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
+var currentId = 0; // when the server starts, get the latest id
+
 const FILE = 'pokedex.json';
 
 /**
@@ -10,14 +12,27 @@ const FILE = 'pokedex.json';
  */
 
 // Init express app
+// const express = require('express');
 const app = express();
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-
 
 /**
  * ===================================
@@ -113,7 +128,7 @@ app.get('/:id', (request, response) => {
   });
 });
 
-// ===================================================
+// part 1 deliverable=================================
 
 app.get('/', (request, response) => {
 
@@ -151,6 +166,118 @@ app.get('/', (request, response) => {
 
   })
 
+});
+
+// ===================================================
+
+//edit step 1: request to fetch pokedex json data
+app.get('/pokemon/:id/edit', (request, response) => {
+    console.log("get edit request");
+
+    //read pokedex json file
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log(err);
+        }
+        const id = request.params.id;
+
+        const editData = {
+
+            //reference keys for edit path
+            indexDatatoEdit : obj.pokemon[id],
+            idToEdit : id
+        }
+
+    //edit step 2a: render edit path
+    response.render('edit', editData);
+    })
+});
+
+// ===================================================
+
+//delete step 1: request to fetch pokedex json data
+app.get('/pokemon/:id/delete', (request, response) => {
+    console.log("get delete request");
+
+    //read pokedex json file
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log(err);
+        }
+        const index = parseInt(request.params.id) - 1;
+        console.log("index: " + index);
+
+        const deleteData = {
+
+            //reference keys for delete path
+            indexDatatoDelete : obj.pokemon[index],
+            idToDelete : index
+        }
+
+    //delete step 2a: render delete path
+    response.render('delete', deleteData);
+    })
+});
+
+// ===================================================
+
+//edit step 3: request to edit pokemon
+app.put('/pokemon/:id', (request, response) => {
+    console.log("put edit request");
+
+    var editData = request.body;
+    console.log("editData");
+    console.log(editData);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log("existing data");
+        console.log(obj.pokemon[request.params.id]);
+
+        obj.pokemon[request.params.id] = editData;
+
+        //edit step 4: write edited data to pokemon json
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                response.send("edit complete")
+            }
+        })
+    })
+});
+
+// ===================================================
+
+//delete step 3: request to delete pokemon
+app.delete('/pokemon/:id', (request, response) => {
+    console.log("delete request");
+
+    var index = parseInt(request.params.id) - 1;
+    console.log("index: " + index);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log(err);
+        }
+
+        obj.pokemon.splice(index, 1);
+        console.log("splice operation");
+
+        //delete step 4: delete the index pokemon json
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                response.send("delete complete");
+            }
+        })
+
+    })
 });
 
 // ===================================================
