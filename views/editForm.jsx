@@ -11,10 +11,10 @@ class Form extends React.Component {
             <form method="POST" action={"/pokemon/" + this.props.index + "?_method=PUT"} >
 
                 <p>Pokemon ID</p>
-                <input name="id" defaultValue={this.props.pokemonData.id}/>
+                <input name="id" disabled defaultValue={this.props.pokemonData.id}/>
 
                 <p>Pokemon Number</p>
-                <input name="num" defaultValue={this.props.pokemonData.num}/>
+                <input name="num" disabled defaultValue={this.props.pokemonData.num}/>
 
                 <p>Pokemon Name</p>
                 <input name="name" defaultValue={this.props.pokemonData.name}/>

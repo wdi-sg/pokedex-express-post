@@ -11,10 +11,10 @@ class Form extends React.Component {
             <form method="POST" action="/pokemon">
 
                 <p>Pokemon ID</p>
-                <input name="id" defaultValue={this.props.arrayLength}/>
+                <input name="id" disabled defaultValue={this.props.arrayLength}/>
 
                 <p>Pokemon Number</p>
-                <input name="num" defaultValue={this.props.arrayLength}/>
+                <input name="num" disabled defaultValue={this.props.arrayLength}/>
 
                 <p>Pokemon Name</p>
                 <input name="name"/>
