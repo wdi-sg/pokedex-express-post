@@ -45,7 +45,7 @@ let pokemonList = [];
 let form = '';
 form =
         '<h1>Pokedex!</h1>'+
-        '<form method="GET" action="/">'+
+        '<form method="GET" action="/pokemon">'+
         '<select name="sortby">' +
         '<option>Sort By</option>' +
         '<option value="name">Name</option>' +
@@ -56,7 +56,7 @@ form =
         '</form>';
 
 
-app.get('/', (request, response) => {
+app.get('/pokemon', (request, response) => {
 
     if (request.query.sortby === "name"){
 
@@ -133,24 +133,19 @@ app.get('/', (request, response) => {
 
     } else {
 
-        pokemonList = [];
-
         jsonfile.readFile(FILE, (err,obj) => {
 
-            if(err) {
-                console.log('there is an error');
-                console.log(err);
+            const pokemonData = obj;
 
-            } else {
-                for (let i = 0; i < obj['pokemon'].length; i ++) {
-                    pokemonList.push(obj['pokemon'][i].name)
-                }
-
-                response.send(form + pokemonList.join('<br>'))
+            if (err){
+              console.log("error reading file");
+              console.log(err)
+            }
+            else {
+                response.render('index', pokemonData)
             }
         });
     }
-
 });
 
 
@@ -298,6 +293,7 @@ app.put('/pokemon/:id', (request, response) =>{
         }
     });
 });
+
 
 
 
