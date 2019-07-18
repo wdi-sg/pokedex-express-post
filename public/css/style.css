@@ -5,20 +5,26 @@ body {
 a {
 	color: #333;
 }
+a:hover {
+	text-decoration: none;
+	color: #999;
+}
 
-
-
-input,
-select{
-	padding: 4px;
-	width: 200px;
-	height: 28px;
-	font-size: 16px;
+.navbar {
 	margin-bottom: 2rem;
 }
-button {
-	height: 24px;
-	width: 100px;
-	background-color: #CCC;
-	margin-right: 1rem;
+.row, .col {
+	margin: 0 0 2rem 0;
+}
+.card-img-top {
+	padding: 1rem;
+}
+h2  {
+	text-align:center;
+	margin-bottom: 2rem;
+}
+
+.buttons div {
+	display: flex;
+	justify-content: space-around;
 }

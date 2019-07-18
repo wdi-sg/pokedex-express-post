@@ -60,7 +60,8 @@ const showPokemon = (request, response) => {
                 }
             }
             let data = {
-                pokedex: pokedex
+                pokedex: pokedex,
+                sortby: request.query.sortby
             };
             response.render('home',data)
         }
@@ -84,7 +85,6 @@ const addPokemon = (request,response) => {
             let pokedex = obj.pokemon;
             for (let pokemon of pokedex){
                 if (pokemon.id === parseInt(newPokemon.id) || pokemon.num === newPokemon.num){
-                    console.log(pokemon.id);
                     existing = true;
                     break;
                 }
@@ -99,9 +99,10 @@ const addPokemon = (request,response) => {
                     "height": newPokemon.height+" m",
                     "weight": newPokemon.weight+" kg"
                 };
+                obj.lastKey = lastKey;
                 obj.pokemon.push(pokemonObject);
                 jsonfile.writeFile(FILE, obj, (err) =>{
-                    response.send(`<h2>Added ${newPokemon.name}</h2><a href="/">View all Pokemon</a>`);
+                    response.redirect('/pokemon/'+pokemonObject.id);
                 })
             }
             else {
@@ -131,7 +132,7 @@ const showPokemonDetails = (request,response) => {
                 response.render('pokemon', data);
             }
             else {
-                response.send(`<h2>Pokemon Not Found</h2><a href="/">View all Pokemon</a>`);
+                response.send(`<h2>Pokemon Not Found</h2><a href="/pokemon/">View all Pokemon</a>`);
             }
         }
     })
@@ -167,33 +168,25 @@ const updatePokemonDetails = (request, response) => {
         }
         else {
             let pokedex = obj.pokemon;
-            var updatedPokemon = null;
             for (var i=0;i<pokedex.length;i++) {
                 var pokemon = pokedex[i];
                 if (id === pokemon.id) {
                     let data = {};
-                    updatedPokemon = {
-                        "id": id,
-                        "num": id.toString(),
-                        "name": request.body.name,
-                        "img": request.body.img,
-                        "height": parseFloat(request.body.height) + " m",
-                        "weight": parseFloat(request.body.weight) + " kg"
-                    };
-                    pokedex[i] = updatedPokemon;
+                    pokedex[i].id = id;
+                    pokedex[i].num = id.toString();
+                    pokedex[i].name = request.body.name;
+                    pokedex[i].img = request.body.img;
+                    pokedex[i].height = parseFloat(request.body.height) + " m";
+                    pokedex[i].weight = parseFloat(request.body.weight) + " kg";
+
                     jsonfile.writeFile(FILE, obj, (err) => {
-                        if (err) {
+                         if (err) {
                             console.log(err);
                         } else {
-                            data.pokemon = updatedPokemon;
-                            data.updated = true;
-                            response.render('pokemon', data);
+                            response.redirect('/pokemon/'+id);
                         }
                     });
                 }
-            }
-            if (updatedPokemon === null){
-                response.send(`<h2>Pokemon not found</h2><a href="/">View all Pokemon</a>`);
             }
         }
     });
@@ -238,7 +231,7 @@ const deletePokemonDetails = (request, response) => {
                         if (err) {
                             console.log(err);
                         } else {
-                            response.send(`<h2>Pokemon deleted</h2><a href="/">View all Pokemon</a>`);
+                            response.redirect('/pokemon/');
                         }
                     });
                 }
@@ -315,8 +308,8 @@ function sortByHeight(a, b) {
  */
 
 
-app.get('/', showPokemon);
-app.put('/', showPokemon);
+app.get('/pokemon', showPokemon);
+app.put('/pokemon', showPokemon);
 
 app.get('/pokemon/new', addPokemonForm);
 
