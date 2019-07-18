@@ -4,7 +4,9 @@ class Show extends React.Component{
     render(){
         var divStyle = {
             display:"inline-block",
-            color:"blue"
+            color:"blue",
+            width:"200px",
+            height:"300px"
         }
         var textAlign = {
             textAlign:"center"
@@ -16,11 +18,12 @@ class Show extends React.Component{
                     <a href={url}>
                         <img src ={pokemon.img}/>
                     </a>
-                    <p>Entry Num: {pokemon.num}</p>
-                    <p>Name: {pokemon.name}</p>
+                    <p>#{pokemon.num}</p>
+                    <p>{pokemon.name}</p>
                 </div>
             );
         });
+
         return(
             <html>
                 <body>

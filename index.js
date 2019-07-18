@@ -71,72 +71,62 @@ app.use(methodOverride('_method'));
 //   });
 // });
 
+// let form = '';
+//         form = '<html>' +
+//         '<body>'+
+//         '<h1>New Pokemon Entries</h1>'+
+//         '<form method="POST" action="/new">'+
+//         '<p>Name of Pokemon</p><input name="name"/>'+
+//         '<p>Id of Pokemon</p><input name="id"/>'+
+//         '<p>Num of Pokemon</p><input name="Num"/>'+
+//         '<p>Img link of Pokemon</p><input name="Img"/>'+
+//         '<p>Weight of Pokemon</p><input name="Weight"/>'+
+//         '<p>Height of Pokemon</p><input name="Height"/>'+
+//         '<input type="submit"/>'+
+//         '</form>'+
+//         '</body>'+
+        // '</html>';
 
 
-app.get("/pokemon/new", (request,response) =>{
-    let form = '';
-        form = '<html>' +
-        '<body>'+
-        '<h1>New Pokemon Entries</h1>'+
-        '<form method="POST" action="/new">'+
-        '<p>Name of Pokemon</p><input name="name"/>'+
-        '<p>Id of Pokemon</p><input name="id"/>'+
-        '<p>Num of Pokemon</p><input name="Num"/>'+
-        '<p>Img link of Pokemon</p><input name="Img"/>'+
-        '<p>Weight of Pokemon</p><input name="Weight"/>'+
-        '<p>Height of Pokemon</p><input name="Height"/>'+
-        '<input type="submit"/>'+
-        '</form>'+
-        '</body>'+
-        '</html>';
-      // response.send(form);
-});
+var newEntry = (request,response) =>{
+    console.log("HELLO");
+    jsonfile.readFile(file,(err,obj)=>{
+        var data = {
+            pokemonId: obj.pokemon.length
+        };
+        console.log(data);
+        response.render("new",data);
+    });
+};
 
-app.post("/new", (request,response) => {
+var newUpdate = (request,response) => {
     // console.log("wow");
     var newPokemon = request.body
     jsonfile.readFile(file,(err,obj)=>{
         console.log(newPokemon);
-        if(err){
-            console.log("ERROR");
-        }
-        else{
-            if((parseInt(newPokemon.id) - 1) < obj.pokemon.length){
-                console.log("id exist. select another");
+        obj.pokemon.push(newPokemon);
+        jsonfile.writeFile(file, obj, (err) => {
+            console.log("Added new pokemon")
+            if( err ){
+                console.log("error writing file");
+                console.log(err)
+                // response.status(503).send("no!");
             }
             else{
-                obj.pokemon.push(newPokemon);
-                console.log(obj.pokemon.length);
-            }
-            jsonfile.writeFile(file, obj, (err) => {
-                console.log("Added new pokemon")
-                if( err ){
-                    console.log("error writing file");
-                    console.log(err)
-                    // response.status(503).send("no!");
-                }
-                  else{
-                    console.log("~~~~~~~yay");
+                console.log("~~~~~~~yay");
 
-                    console.log( "send response");
-                    // response.send("yes!");
-                  }
-            })
-        }
+                console.log( "send response");
+                // response.send("yes!");
+            }
+        })
     });
-});
+};
 
 var homePage = (request,response)=>{
     jsonfile.readFile(file,(err,obj)=>{
-        var pokemonData = [];
-        for (let i = 0; i < obj.pokemon.length;i++){
-            console.log(obj.pokemon[i].name);
-            pokemonData.push(obj.pokemon[i]);
-        }
-
-        let data = {"pokemonData": pokemonData};
-
-        console.log(pokemonData);
+        let data = {
+            "pokemonData": obj.pokemon
+        };
         response.render("show", data);
     });
 };
@@ -150,9 +140,10 @@ var individual = (request,response) =>{
             pokemon: pokemonDetail,
             pokemonId: id
         };
+        console.log("YOOOOO");
+        response.render('individual', data);
     });
-    response.render('individual',data);
-}
+};
 
 var sortByName = (request,response) =>{
     var pokemonName =[];
@@ -295,20 +286,14 @@ jsonfile.writeFile(file, obj, (err) => {
   spawn_time: '20:00'
 }
 */
-
-
-
-app.get('/pokemon', homePage);
-// app.get('/pokemon/:id',individual);
-app.get('/sortbyname', sortByName);
-// app.get('/sortbyheight', sortByHeight);
-// app.get('/sortbyweight', sortByWeight);
-
+app.get('/pokemon/new', newEntry);
+app.post('/pokemon',newUpdate);
 app.get('/pokemon/:id/edit', edit);
-app.put('/pokemon/:id', update);
 app.get('/pokemon/:id/delete', remove);
+app.put('/pokemon/:id', update);
 app.delete('/pokemon/:id',removeUpdate);
-
+app.get('/pokemon/:id',individual);
+app.get('/pokemon', homePage);
 
 /**
  * ===================================
