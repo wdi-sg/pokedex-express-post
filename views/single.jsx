@@ -8,6 +8,7 @@ class Single extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.pokemon.id + "?_method=PUT";
     var editUrl = "/pokemon/"+this.props.pokemon.id +"/edit/";
+    var deleteUrl = "/pokemon/"+this.props.pokemon.id +"/delete/";
     var message = "";
     if (this.props.updated === true){
       message = 'This pokemon is updated';
@@ -29,7 +30,7 @@ class Single extends React.Component {
             <PokemonDetails data={this.props.pokemon}/>
           </div>
           <a href={editUrl}>Edit This Pokemon</a>
-          <button>Delete This Pokemon</button>
+          <a href={deleteUrl}>Delete This Pokemon</a>
         </body>
       </html>
     );

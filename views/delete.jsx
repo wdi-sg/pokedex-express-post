@@ -7,7 +7,7 @@ class Delete extends React.Component {
       <html>
         <body>
           <div>
-            <h1>Delete Pokemon</h1>
+            <h1>Delete Pokemon?</h1>
             <p>pokemon: {this.props.pokemon.name}</p>
             <form action={url} method="POST">
                 <button type="submit">Delete {this.props.pokemon.name}</button>

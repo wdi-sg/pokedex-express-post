@@ -104,7 +104,7 @@ var displayAllPokemons = function(request, response){
 var getNewPokemonForm = function(request,response){
  jsonfile.readFile(FILE, function(err,obj){
    //get the next index
-   var lastIndex = data.pokemon.length + 1 ;
+   var lastIndex = obj.pokemon.length + 1 ;
 
    var data = {
      lastIndex : lastIndex,
@@ -267,7 +267,7 @@ var getAllPokemonRequest = function(request,response){
 
 
 //part 2
-var getPokemonByIdRequest = function(request,response){
+var getPokemonById = function(request,response){
 
   jsonfile.readFile(FILE, (error, obj) => {
     if( error ){
@@ -286,6 +286,25 @@ var getPokemonByIdRequest = function(request,response){
     response.render('single', data);
   });
 
+}
+
+var getEditPokemonForm = function(request,response){
+  jsonfile.readFile(FILE, (error, obj) => {
+    if( error ){
+      console.log(error);
+    }
+
+    console.log(obj);
+    var id = parseInt(request.params.id) - 1;
+
+    var pokemon = obj.pokemon[id];
+
+    var data = {
+      pokemon : pokemon,
+    }
+
+    response.render('edit', data);
+  });
 }
 
 var editPokemonById = function(request,response){
@@ -325,7 +344,7 @@ var editPokemonById = function(request,response){
   });
 }
 
-var editPokemonByIdRequest = function(request,response){
+var getDeletePokemonForm = function(request,response){
   jsonfile.readFile(FILE, (error, obj) => {
     if( error ){
       console.log(error);
@@ -340,11 +359,33 @@ var editPokemonByIdRequest = function(request,response){
       pokemon : pokemon,
     }
 
-    response.render('edit', data);
+    response.render('delete', data);
   });
 }
 
+var deletePokemonById = function(request,response){
 
+  var id = parseInt(request.params.id) - 1;
+
+  // save in data file
+  jsonfile.readFile(FILE, (error, obj) => {
+    if( error ){
+      console.log(error)
+    }
+
+    obj.pokemon.splice(id, 1);
+
+    jsonfile.writeFile(FILE, obj, (error) => {
+      if( error ){
+        console.log(error)
+      }
+
+      response.redirect('/pokemon');
+    });
+
+
+  });
+}
 /**
  * ===================================
  * Routes
@@ -357,16 +398,12 @@ app.get('/pokemon', displayAllPokemons);
 app.get('/pokemon/new', getNewPokemonForm);
 app.post('/pokemon', addNewPokemon);
 
-//old code part 1
-// app.get('/pokemon:id', getPokemonByIdRequest);
-
-
-
-//after adding react
-
-app.get('/pokemon/:id', getPokemonByIdRequest);
+app.get('/pokemon/:id', getPokemonById);
+app.get('/pokemon/:id/edit', getEditPokemonForm);
 app.put('/pokemon/:id', editPokemonById);
-app.get('/pokemon/:id/edit', editPokemonByIdRequest);
+app.get('/pokemon/:id/delete', getDeletePokemonForm);
+app.delete('/pokemon/:id/', deletePokemonById);
+
 
 
 
