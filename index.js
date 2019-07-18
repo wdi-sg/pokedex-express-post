@@ -18,6 +18,15 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views/');
+app.set('view engine', 'jsx');
+
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
@@ -29,7 +38,53 @@ app.use(express.urlencoded({
  *             Route for default and search queries
  * ======================================================
  */
-app.get('/', (request, response) => {
+
+ //Function to generate html page for response
+function generatePage(list) {
+    var pokedexPage = `
+        <html>
+        <body style="text-align: center; background-color: black; color: yellow">
+        <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
+        <h1>Gotta catch'em all!</h1>
+
+        <form method="GET">
+
+        <p>Sort By:</p>
+        <select type="submit" name="sortby">
+            <option value="">Sort By</option>
+            <option value="name">Name</option>
+            <option value="weight">Weight</option>
+            <option value="height">Height</option>
+        </select>
+        <input type="submit" value="Sort">
+        </form>
+
+        <div class="pokemon-list">${list}</div>
+        </body>
+        </html>`;
+
+    return pokedexPage;
+};
+
+//Function to create pokemon card divs to display on page
+function createList(pokemon) {
+    var pokemonCardList = "";
+    for (let i=0; i<pokemon.length; i++) {
+        console.log(pokemon[i].name)
+        pokemonCardList = `
+        ${pokemonCardList}
+        <div style="display:inline-block; text-align:center;">
+        <img style="display: block" src="${pokemon[i].img}">
+        <h3>${pokemon[i].name}</h3>
+        <p>Weight: ${pokemon[i].weight}</p>
+        <p>Height: ${pokemon[i].height}</p>
+        </div>`
+    };
+
+    return pokemonCardList;
+}
+
+app.get('/pokemon', (request, response) => {
 
         jsonfile.readFile(FILE, (err, data) => {
             if( err ){
@@ -42,55 +97,15 @@ app.get('/', (request, response) => {
  * ===================================
  */
             var pokemon = data.pokemon
-            var pokemonCardList = "";
+            //var pokemonCardList =
 /**
  * ===================================
  * Functions
  * ===================================
  */
-//Function to generate html page for response
-            function generatePage(list) {
-                var pokedexPage = `
-                    <html>
-                    <body style="text-align: center; background-color: black; color: yellow">
-                    <img src="https://fontmeme.com/permalink/190715/f87c04db0b54e3b89caa3d1d3ee405fb.png">
-                    <h1>Gotta catch'em all!</h1>
 
-                    <form method="GET">
 
-                    <p>Sort By:</p>
-                    <select type="submit" name="sortby">
-                        <option value="">Sort By</option>
-                        <option value="name">Name</option>
-                        <option value="weight">Weight</option>
-                        <option value="height">Height</option>
-                    </select>
-                    <input type="submit" value="Sort">
-                    </form>
 
-                    <div class="pokemon-list">${list}</div>
-                    </body>
-                    </html>`;
-
-                return pokedexPage;
-            };
-
-//Function to create pokemon card divs to display on page
-            function createList(img,name,weight,height) {
-                for (let i=0; i<pokemon.length; i++) {
-                    console.log(pokemon[i].name)
-                    pokemonCardList = `
-                    ${pokemonCardList}
-                    <div style="display:inline-block; text-align:center;">
-                    <img style="display: block" src="${pokemon[i].img}">
-                    <h3>${pokemon[i].name}</h3>
-                    <p>Weight: ${pokemon[i].weight}</p>
-                    <p>Height: ${pokemon[i].height}</p>
-                    </div>`
-                };
-
-                return pokemonCardList;
-            }
 /**
  * ===================================
  * Search query results display
@@ -105,33 +120,60 @@ app.get('/', (request, response) => {
                         return 1
                     return 0 //default return value (no sorting)
                 })
-                createList();
+                ;
                 // console.log("yay sorting by name!");
-                response.send(generatePage(pokemonCardList));
+                response.send(generatePage(createList(pokemon)));
             }
             else if (request.query.sortby === "weight") {
                 pokemon.sort(function(a, b) {
                     return parseFloat(a.weight)-parseFloat(b.weight);
                 });
-                createList();
+                //createList();
                 // console.log("yay sorting by weight!");
-                response.send(generatePage(pokemonCardList));
+                response.send(generatePage(createList(pokemon)));
             }
             else if (request.query.sortby === "height") {
                 pokemon.sort(function(a, b) {
                     return parseFloat(a.height)-parseFloat(b.height);
                 });
-                createList();
+                //createList();
                 // console.log("yay sorting by height!");
-                response.send(generatePage(pokemonCardList));
+                response.send(generatePage(createList(pokemon)));
             }
             else {
-                createList();
+                 //var pokemonCardList = createList(pokemon);
                 // console.log("yay no sort!");
-                response.send(generatePage(pokemonCardList));
+                response.send(generatePage(createList(pokemon)));
             }
         });
 })
+
+
+/**
+ * ======================================================
+ *         Route to show individual pokemon stats
+ * ======================================================
+ */
+
+app.get('/pokemon/:id', (request, response)=>{
+    // response.send(request.params.id);
+    // return;
+
+  jsonfile.readFile(FILE, (err, data)=>{
+
+    let pokemonIndex = request.params.id;
+    const pokemon = data.pokemon[pokemonIndex-1];
+
+    const dataObj = {
+      index: pokemonIndex,
+      pokemonData : pokemon
+    };
+
+    response.render('./pages/pokemonStats', dataObj)
+  });
+});
+
+
 
 /**
  * ======================================================
@@ -211,6 +253,65 @@ app.post('/pokemon', (request,response) => {
     });
   });
 });
+
+/**
+ * ======================================================
+ *             Route for editing pokemon data
+ * ======================================================
+ */
+app.get('/pokemon/:id/edit', (request, response) => {
+    console.log("request params " + request.params.id);
+
+    jsonfile.readFile(FILE, (err, data)=>{
+
+    let pokemonIndex = parseInt(request.params.id);
+    const pokemon = data.pokemon[pokemonIndex-1];
+
+    const dataObj = {
+      index: pokemonIndex,
+      pokemonData : pokemon
+    };
+
+    response.render('./pages/editPokemon', dataObj);
+
+    });
+
+});
+
+
+app.put('/pokemon/:id', (request, response)=>{
+
+  console.log("REQUEST BODY");
+  console.log( request.body);
+
+  jsonfile.readFile(FILE, (err, data)=>{
+
+    let pokemonIndex = request.params.id;
+    // const currentAnimal = dataObj.animals[animalsIndex];
+    data.pokemon[pokemonIndex-1] = request.body;
+
+    jsonfile.writeFile(FILE, data, (err)=>{
+      // response.send("POKEMON EDITED");
+    });
+
+  });
+
+  response.redirect('/pokemon');
+});
+
+
+/**
+ * ======================================================
+ *             Route for deleting pokemon data
+ * ======================================================
+ */
+ app.get('/pokemon/:id/delete', (request, response)=>{
+
+    response.send("delete page")
+
+})
+
+
 
 // /**
 //  * ======================================================
