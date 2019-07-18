@@ -26,13 +26,13 @@ class Homepage extends React.Component {
         <header>
         <nav>
             <ul id="nav-container">
-                <li className="item">Home</li>
-                <li className="item">New</li>
-                <li className="item">Types</li>
+                <li className="item"><a href="/pokemon">Home</a></li>
+                <li className="item"><a href="/pokemon/new">New</a></li>
+                <li className="item"><a href="null">Types</a></li>
                 <div id="bar"></div>
             </ul>
         </nav>
-        <img id="header-img" src="/header.jpg"/>
+        <a href="/pokemon"><img id="header-img" src="/header.jpg"/></a>
         </header>
         <body>
             <h3>Sort Those Pokémon!</h3>

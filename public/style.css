@@ -34,6 +34,11 @@ li.item {
 	font-size: 18px;
 }
 
+li a {
+	text-decoration: none;
+	color: inherit;
+}
+
 li.item:hover {
 	color: darkcyan;
 }

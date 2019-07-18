@@ -24,6 +24,7 @@ const homepage = 'home.jsx';
 const editpage = 'edit.jsx';
 const createpage = 'create.jsx';
 const deletepage = 'delete.jsx';
+const pokepage = 'poke.jsx';
 //actually... there is no need to create these variables right but i guess its just neater
 
 let pokeId = null;
@@ -55,6 +56,22 @@ app.get('/pokemon', (request, response) => {
     });
 });
 
+/*==== Requesting Single Poke Page ==== */
+app.get('/pokemon/:id', (request, response) => {
+    pokeId = parseInt(request.params.id);
+    console.log(typeof pokeId);
+
+    jsonfile.readFile(file, (err,obj) => {
+        if (err) {
+            console.log("Something went wrong when displaying the Poke page.")
+        }
+
+        pokemonMatchingId = obj.pokemon.find(pokemon => parseInt(pokemon.id) === pokeId);
+        console.log(pokemonMatchingId);
+        response.render(pokepage, pokemonMatchingId);
+    });
+})
+
 /*==== Request Edit Page ==== */
 app.get('/pokemon/:id/edit', (request, response) => {
     pokeId = parseInt(request.params.id);
@@ -64,14 +81,14 @@ app.get('/pokemon/:id/edit', (request, response) => {
             console.log("Something went wrong when displaying the edit page.")
         }
 
-        pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
+        pokemonMatchingId = obj.pokemon.find(pokemon => parseInt(pokemon.id) === pokeId);
         //creates a "copy" of the matching poke but is not a direct reference to it (i think)
         response.render(editpage, pokemonMatchingId);
     });
 })
 
 /*==== Accepting Edit Request ==== */
-app.put("/pokemon/:id", (request, response) => {
+app.put('/pokemon/:id', (request, response) => {
     let editedPoke = request.body;
 
     jsonfile.readFile(file, (err, obj) => {
@@ -81,7 +98,7 @@ app.put("/pokemon/:id", (request, response) => {
         }
 
         //obj[] - object with id === pokeID
-        let index = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
+        let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) === pokeId);
         obj.pokemon[index] = editedPoke;
 
         jsonfile.writeFile(file, obj, (err) => {
@@ -136,17 +153,14 @@ app.get('/pokemon/:id/delete', (request, response) => {
             console.log("Something went wrong when displaying the delete page.")
         }
 
-        pokemonMatchingId = obj.pokemon.find(pokemon => pokemon.id === pokeId);
+        pokemonMatchingId = obj.pokemon.find(pokemon => parseInt(pokemon.id) === pokeId);
         response.render(deletepage, pokemonMatchingId);
     });
 })
 
 /*====  Delete Pokemon ==== */
-app.delete("/pokemon/:id", (request, response) => {
-    console.log(request.body);
-    //pkmn to bye bye
+app.delete('/pokemon/:id', (request, response) => {
     let byebyePoke = request.body;
-
 
     jsonfile.readFile(file, (err, obj) => {
         if (err) {
@@ -154,8 +168,7 @@ app.delete("/pokemon/:id", (request, response) => {
             console.log(err)
         }
 
-        let index = obj.pokemon.findIndex(pokemon => pokemon.id === pokeId);
-        //slice out the pokemon at index
+        let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) === pokeId);
         obj.pokemon.splice(index, 1);
 
         jsonfile.writeFile(file, obj, (err) => {
