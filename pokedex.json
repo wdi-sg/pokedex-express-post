@@ -1881,6 +1881,7 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    }
+    },
+    null
   ]
 }
