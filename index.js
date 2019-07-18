@@ -1,6 +1,5 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
 
 /**
@@ -12,47 +11,323 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+app.use(express.static(__dirname + '/public'));
+
+/**
+ * ===================================
+ * Functions
+ * ===================================
+ */
+
+// Show pokemon function
+const showPokemon = (request, response) => {
+    let sortby = request.query.sortby;
+    jsonfile.readFile(FILE, (err,obj)=> {
+        if (err){
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+
+            if (sortby) {
+                switch (sortby) {
+                    case "id":
+                        pokedex.sort(sortByID);
+                        break;
+                    case "name":
+                        pokedex.sort(sortByName);
+                        break;
+                    case "weight":
+                        pokedex.sort(sortByWeight);
+                        break;
+                    case "height":
+                        pokedex.sort(sortByHeight);
+                        break;
+                }
+            }
+            let data = {
+                pokedex: pokedex,
+                sortby: request.query.sortby
+            };
+            response.render('home',data)
+        }
+    });
+};
+
+// Show Add Pokemon form
+const addPokemonForm = (request, response) => {
+    response.render('add-form')
+};
+
+// Add Pokemon
+const addPokemon = (request,response) => {
+    let newPokemon = request.body;
+    let existing = false;
+    jsonfile.readFile(FILE, (err,obj)=> {
+        if (err){
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (pokemon.id === parseInt(newPokemon.id) || pokemon.num === newPokemon.num){
+                    existing = true;
+                    break;
+                }
+            }
+            if (!existing) {
+                let lastKey = obj.lastKey + 1;
+                let pokemonObject = {
+                    "id": lastKey,
+                    "num": lastKey.toString(),
+                    "name": newPokemon.name,
+                    "img": newPokemon.img,
+                    "height": newPokemon.height+" m",
+                    "weight": newPokemon.weight+" kg"
+                };
+                obj.lastKey = lastKey;
+                obj.pokemon.push(pokemonObject);
+                jsonfile.writeFile(FILE, obj, (err) =>{
+                    response.redirect('/pokemon/'+pokemonObject.id);
+                })
+            }
+            else {
+                response.send(`<h2>The Pokemon ID or num have already been taken.</h2><a href="/">View all Pokemon</a>`);
+            }
+        }
+    })
+};
+
+// Show individual Pokemon details
+const showPokemonDetails = (request,response) => {
+    let id = parseInt(request.params.id);
+    let content = "";
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            let data = {};
+            for (let pokemon of pokedex) {
+                if (id === pokemon.id) {
+                    data.pokemon = pokemon;
+                }
+            }
+            if (data.pokemon !== undefined) {
+                response.render('pokemon', data);
+            }
+            else {
+                response.send(`<h2>Pokemon Not Found</h2><a href="/pokemon/">View all Pokemon</a>`);
+            }
+        }
+    })
+};
+
+// Show Edit Pokemon form
+const editPokemonForm = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (id === pokemon.id){
+                    var data = {
+                        pokemon : pokemon
+                    }
+                }
+            }
+            response.render('edit-form',data)
+        }
+    });
+};
+
+// Update Pokemon details
+const updatePokemonDetails = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (var i=0;i<pokedex.length;i++) {
+                var pokemon = pokedex[i];
+                if (id === pokemon.id) {
+                    let data = {};
+                    pokedex[i].id = id;
+                    pokedex[i].num = id.toString();
+                    pokedex[i].name = request.body.name;
+                    pokedex[i].img = request.body.img;
+                    pokedex[i].height = parseFloat(request.body.height) + " m";
+                    pokedex[i].weight = parseFloat(request.body.weight) + " kg";
+
+                    jsonfile.writeFile(FILE, obj, (err) => {
+                         if (err) {
+                            console.log(err);
+                        } else {
+                            response.redirect('/pokemon/'+id);
+                        }
+                    });
+                }
+            }
+        }
+    });
+};
+
+// Delete Pokemon form
+const deletePokemonForm = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (let pokemon of pokedex){
+                if (id === pokemon.id){
+                    var data = {
+                        pokemon : pokemon
+                    }
+                }
+            }
+            response.render('delete-form',data)
+        }
+    });
+};
+
+// Delete Pokemon details
+const deletePokemonDetails = (request, response) => {
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE,(err,obj)=> {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            let pokedex = obj.pokemon;
+            for (var i=0;i<pokedex.length;i++) {
+                var pokemon = pokedex[i];
+                if (id === pokemon.id) {
+                    let name = pokemon.name;
+                    pokedex.splice(i,1);
+                    jsonfile.writeFile(FILE, obj, (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            response.redirect('/pokemon/');
+                        }
+                    });
+                }
+            }
+        }
+    });
+};
+
+//Page not found
+const pageNotFound = (request, response) => {
+    response.send("Page not found!");
+}
+/**
+ * ===================================
+ * Sorting Algorithms
+ * ===================================
+ */
+
+//Sort alphabetically
+function sortByName(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  let comparison = 0;
+  if (nameA > nameB) {
+    comparison = 1;
+  } else if (nameA < nameB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
+//Sort by ID
+function sortByID(a, b) {
+  const indexA = a.id;
+  const indexB = b.id;
+
+  let comparison = 0;
+  if (indexA > indexB) {
+    comparison = 1;
+  } else if (indexA < indexB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+//Sort by Weight
+function sortByWeight(a, b) {
+  const indexA = parseFloat(a.weight);
+  const indexB = parseFloat(b.weight);
+
+  let comparison = 0;
+  if (indexA > indexB) {
+    comparison = 1;
+  } else if (indexA < indexB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+//Sort by Height
+function sortByHeight(a, b) {
+  const indexA = parseFloat(a.height);
+  const indexB = parseFloat(b.height);
+
+  let comparison = 0;
+  if (indexA > indexB) {
+    comparison = 1;
+  } else if (indexA < indexB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+app.get('/pokemon', showPokemon);
+app.put('/pokemon', showPokemon);
 
-    var pokemon;
+app.get('/pokemon/new', addPokemonForm);
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+app.post('/pokemon', addPokemon);
 
-      let currentPokemon = obj.pokemon[i];
+app.get('/pokemon/:id', showPokemonDetails);
+app.put('/pokemon/:id', updatePokemonDetails);
+app.delete('/pokemon/:id', deletePokemonDetails);
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+app.get('/pokemon/:id/edit', editPokemonForm);
 
-    if (pokemon === undefined) {
+app.get('/pokemon/:id/delete', deletePokemonForm);
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-});
-
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+app.get('*', pageNotFound);
 
 /**
  * ===================================
