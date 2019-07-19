@@ -39,17 +39,17 @@
       "spawn_time": "11:30"
     },
     {
-      "id": 4,
-      "num": "004",
-      "name": "Charmander",
-      "img": "http://www.serebii.net/pokemongo/pokemon/004.png",
-      "height": "0.61 m",
-      "weight": "8.5 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 25,
-      "egg": "2 km",
-      "avg_spawns": 25.3,
-      "spawn_time": "08:45"
+      "id": "3",
+      "num": "003",
+      "name": "Venusaur",
+      "img": "http://www.serebii.net/pokemongo/pokemon/003.png",
+      "height": "2.01 m",
+      "weight": "100.0 kg",
+      "candy": "Bulbasaur Candy",
+      "candy_count": "",
+      "egg": "Not in Eggs",
+      "avg_spawns": "1.7",
+      "spawn_time": "11:30"
     },
     {
       "id": 5,
@@ -1871,16 +1871,16 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 151,
-      "num": "151",
-      "name": "Mew",
-      "img": "http://www.serebii.net/pokemongo/pokemon/151.png",
-      "height": "0.41 m",
-      "weight": "4.0 kg",
-      "candy": "None",
-      "egg": "Not in Eggs",
-      "avg_spawns": 0,
-      "spawn_time": "N/A"
-    }
+			"id": 151,
+			"num": "151",
+			"name": "Mew",
+			"img": "http://www.serebii.net/pokemongo/pokemon/151.png",
+			"height": "0.41 m",
+			"weight": "4.0 kg",
+			"candy": "None",
+			"egg": "Not in Eggs",
+			"avg_spawns": 0,
+			"spawn_time": "N/A"
+		}
   ]
 }
