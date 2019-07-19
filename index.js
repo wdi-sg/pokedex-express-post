@@ -210,14 +210,23 @@ app.get("/pokemon/:id/delete", (request, response) => {
 
 
 app.put("/pokemon/:id", (request, response) => {
-
+    //edit function
     response.send(request.body);
 })
 
+
 app.get("/pokemon/page/:id", (request, response) => {
-    console.log("fetched id = "+request.params.id)
-    let pokemonId = request.params.id
-    response.send(pokemonId);
+    let pokemonId = parseInt(request.params.id);
+    let selPokemon = null;
+    jsonfile.readFile(file, function(err, obj) {
+        for (let i=0; i<obj.pokemon.length; i+=1){
+            if (obj.pokemon[i].id === pokemonId){
+                selPokemon = obj.pokemon[i];
+            }
+        }
+    console.log(selPokemon)
+    response.render("eachpokemon", selPokemon);
+    })
 })
 
 

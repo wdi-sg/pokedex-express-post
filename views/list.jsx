@@ -6,7 +6,7 @@ class List extends React.Component {
     let pokemonList = this.props.pokemonList.map(pokemon => {
         //here, pokemonList is a NAME from the parent (green text)
         return(
-            <li><a href={"page/"+pokemon.id}>{pokemon.name}</a></li>
+            <li><a href={"pokemon/page/"+pokemon.id}>{pokemon.name}</a></li>
         );
     });
 
