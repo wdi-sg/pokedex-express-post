@@ -103,29 +103,20 @@
       "spawn_time": "07:02"
     },
     {
-      "id": 9,
+      "id": "9",
       "num": "009",
-      "name": "Blastoise",
+      "name": "Blastoi",
       "img": "http://www.serebii.net/pokemongo/pokemon/009.png",
       "height": "1.60 m",
-      "weight": "85.5 kg",
-      "candy": "Squirtle Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 0.67,
-      "spawn_time": "00:06"
+      "weight": "85.5 kg"
     },
     {
-      "id": 10,
+      "id": "10",
       "num": "010",
-      "name": "Caterpie",
+      "name": "Caterp",
       "img": "http://www.serebii.net/pokemongo/pokemon/010.png",
       "height": "0.30 m",
-      "weight": "2.9 kg",
-      "candy": "Caterpie Candy",
-      "candy_count": 12,
-      "egg": "2 km",
-      "avg_spawns": 303.2,
-      "spawn_time": "16:35"
+      "weight": "2.9 kg"
     },
     {
       "id": 11,

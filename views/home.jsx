@@ -14,8 +14,6 @@ class Home extends React.Component {
         this.props.pokemonKey.sort(compareHeight);
     }
 
-
-
     let array = this.props.pokemonKey.map(pokemon => {
         let url = "/pokemon/" + pokemon.id;
         return <div><a href={url}>{pokemon.name}</a></div>;

@@ -27,6 +27,7 @@ let showAllPokemon = (request, response) => {
     jsonfile.readFile(FILE, (err,obj) => {
         let query = request.query.sortby;
         let pokemon = obj.pokemon;
+        console.log(pokemon);
         let data = {
             pokemonKey : pokemon,
             queryKey : query
@@ -96,13 +97,6 @@ let editPokemonResult = (request, response) => {
         for(let i=0; i<obj.pokemon.length; i++) {
             if ( id === obj.pokemon[i].id){
                 obj.pokemon[i] = request.body;
-                // let pokemon = obj.pokemon[i];
-                // pokemon.id = request.body.id;
-                // pokemon.num = request.body.num;
-                // pokemon.name = request.body.name;
-                // pokemon.image = request.body.image;
-                // pokemon.height = request.body.height;
-                // pokemon.weight = request.body.weight;
             }
         }
         jsonfile.writeFile(FILE, obj, (err) => {
@@ -113,10 +107,41 @@ let editPokemonResult = (request, response) => {
             }
         })
     })
+}
 
+let deletePokemon = (request, result) => {
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id === obj.pokemon[i].id){
+                let pokemon = obj.pokemon[i];
+                let data = {
+                    pokemon : pokemon
+                }
+                response.render('deleteForm', data)
+            }
+        }
+    })
+}
 
-
-
+let deletePokemonResult = (request, result) => {
+    let newPoke = request.body;
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id === obj.pokemon[i].id){
+                obj.pokemon.splice(i,1);
+                // obj.pokemon[i] = request.body;
+            }
+        }
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log('error in writing!');
+            } else {
+                response.send(`YOUR POKEMON DELETED!`);
+            }
+        })
+    })
 }
 
 /**
@@ -131,7 +156,8 @@ app.post('/pokemon', createdPokemonResult);
 app.get('/pokemon/:id', showPokemon);
 app.get('/pokemon/:id/edit', editPokemon);
 app.put('/pokemon/:id', editPokemonResult)
-
+app.get('/pokemon/:id/delete', deletePokemon)
+app.delete('/pokemon/:id', deletePokemonResult)
 
 /**
  * ===================================
