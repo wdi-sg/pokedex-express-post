@@ -1881,15 +1881,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    },
-    {
-      "id": "1",
-      "num": "1",
-      "name": "1",
-      "img": "1",
-      "height": "1",
-      "weight": "1"
-    },
-    {}
+    }
   ]
 }
