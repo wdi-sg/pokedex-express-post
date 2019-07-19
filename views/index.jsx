@@ -4,26 +4,9 @@ var React = require('react');
 class indexPage extends React.Component {
   render() {
 
-    const bodyStyle = {
-      textAlign:'center',
-      backgroundColor: 'lightcyan'
-    };
-
-    const divStyle = {
-      backgroundColor: 'lightblue',
-      display: 'inline-block',
-      textAlign: 'center',
-      width: 200,
-      height: 320,
-      marginRight: 5,
-      marginBottom: 5,
-      paddingTop: 20
-    };
-
-
     const form =
-      <form method="GET" action="/pokemon" style={{marginBottom: 30}}>
-        <select name="sortby" style={{fontSize: 20, marginRight: 10}}>
+      <form method="GET" action="/pokemon">
+        <select name="sortby">
         <option>Sort By</option>
         <option value="name">Name</option>
         <option value="weight">Weight</option>
@@ -33,7 +16,7 @@ class indexPage extends React.Component {
       </form>
 
     const pokemon = this.props.pokemon.map( element => {
-      return(<div style={divStyle}><img src={element.img}/>
+      return(<div><img src={element.img}/>
             <h3>{element.name}</h3>
             <p>ID: {element.id}</p>
             <p>Height: {element.height}</p>
@@ -44,12 +27,16 @@ class indexPage extends React.Component {
 
     return (
       <html>
-        <body style={bodyStyle}>
+        <head>
+            <link rel="stylesheet" href="/style.css"></link>
+        </head>
+        <body>
           <h1>List of All Pokemon {this.props.status}</h1>
             {form}
             {pokemon}
         </body>
       </html>
+
     );
   }
 }
