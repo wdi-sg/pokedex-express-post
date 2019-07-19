@@ -15,6 +15,8 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// app.use(express.static(__dirname+"/public"))
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -29,6 +31,8 @@ app.get('/', (req, res) => {
   // running this will let express to run home.handlebars file in your views folder
   res.render('home')
 })
+
+
 
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
@@ -194,6 +198,7 @@ var update = (request,response)=>{
     var id = request.params.id;
     console.log(newUpdate);
     newUpdate.id = parseInt(newUpdate.id);
+    var url = "/pokemon/"+newUpdate.id;
     // response.send("YOOOOOOO");
     jsonfile.readFile(file,(err,obj)=>{
         obj.pokemon[id] = newUpdate;
@@ -205,7 +210,8 @@ var update = (request,response)=>{
             }
             else{
                 console.log("pokemon data updated");
-                response.send("pokemon data updated");
+                // response.send("pokemon data updated");
+                response.redirect(url)
             };
         });
     });
@@ -238,7 +244,8 @@ var removeUpdate = (request,response)=>{
             }
             else{
                 console.log("pokemon data delete");
-                response.send("pokemon data delete");
+                // response.send("pokemon data delete");
+                response.redirect("/pokemon");
             };
         })
     })

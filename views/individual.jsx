@@ -16,6 +16,8 @@ class Individual extends React.Component{
         }
         var url = "/pokemon/"+this.props.pokemonId;
         var urlHome = "/pokemon";
+        var urlEdit = "/pokemon/"+((this.props.pokemonId)-1)+"/edit";
+        var urlDelete = "/pokemon/"+((this.props.pokemonId)-1)+"/delete"
         return(
             <html>
                 <body style = {styleBody}>
@@ -33,6 +35,12 @@ class Individual extends React.Component{
                         <p>Egg Hatch Step: {this.props.pokemon.egg}</p>
                         <form method="get" action={urlHome}>
                         <button type="submits">Home</button>
+                        </form>
+                        <form method="get" action={urlEdit}>
+                        <button type="submits">Edit</button>
+                        </form>
+                        <form method="get" action={urlDelete}>
+                        <button type="submits">Delete</button>
                         </form>
                     </div>
                 </body>
