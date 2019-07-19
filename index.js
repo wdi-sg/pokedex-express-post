@@ -46,11 +46,13 @@ let createdPokemonResult = (request, response) => {
         newPoke.num = obj.lastKey + 1;
         obj.lastKey++;
         obj.pokemon.push(newPoke);
+        console.log('req body:' + request.body.id)
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) {
                 console.log('error in writing!');
             } else {
-                response.send(`You have created a new Pokemon ${newPoke.name}!`);
+                // response.send(`You have created a new Pokemon ${newPoke.name}!`);
+                response.redirect('/pokemon/' + request.body.id + '/')
             }
         })
     });
@@ -60,7 +62,7 @@ let showPokemon = (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         let id = parseInt(request.params.id);
         for(let i=0; i<obj.pokemon.length; i++) {
-            if ( id === obj.pokemon[i].id ){
+            if ( id == obj.pokemon[i].id ){
                 console.log('id2',id)
                 console.log('obj id', obj.pokemon[i].id)
                 let pokemon = obj.pokemon[i];
@@ -103,17 +105,17 @@ let editPokemonResult = (request, response) => {
             if (err) {
                 console.log('error in writing!');
             } else {
-                response.send(`EDIT POKEMON SUCCESS!`);
+                response.redirect('/pokemon/'+id+'/');
             }
         })
     })
 }
 
-let deletePokemon = (request, result) => {
+let deletePokemon = (request, response) => {
     jsonfile.readFile (FILE, (err,obj) => {
         let id = parseInt(request.params.id);
         for(let i=0; i<obj.pokemon.length; i++) {
-            if ( id === obj.pokemon[i].id){
+            if ( id == obj.pokemon[i].id){
                 let pokemon = obj.pokemon[i];
                 let data = {
                     pokemon : pokemon
@@ -124,7 +126,7 @@ let deletePokemon = (request, result) => {
     })
 }
 
-let deletePokemonResult = (request, result) => {
+let deletePokemonResult = (request, response) => {
     let newPoke = request.body;
     jsonfile.readFile (FILE, (err,obj) => {
         let id = parseInt(request.params.id);
@@ -138,7 +140,9 @@ let deletePokemonResult = (request, result) => {
             if (err) {
                 console.log('error in writing!');
             } else {
-                response.send(`YOUR POKEMON DELETED!`);
+                // response.send(`YOUR POKEMON WAS DELETED!`);
+                response.redirect('/pokemon/')
+
             }
         })
     })

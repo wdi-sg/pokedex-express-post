@@ -16,7 +16,12 @@ class Home extends React.Component {
 
     let array = this.props.pokemonKey.map(pokemon => {
         let url = "/pokemon/" + pokemon.id;
-        return <div><a href={url}>{pokemon.name}</a></div>;
+        return(
+        <div style={{display: 'inline-block', color:'white', 'text-align': 'center'}}>
+            <img src={pokemon.img} style={{display: 'block'}}/>
+            <a href={url} style={{display: 'block'}}> {pokemon.name} </a>
+            <p>{pokemon.weight}</p>
+        </div>);
     })
 
     return (
