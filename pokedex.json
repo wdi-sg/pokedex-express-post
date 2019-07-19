@@ -1881,6 +1881,13 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "152",
+      "name": "notapokemonnn",
+      "img": "152",
+      "height": "3 m",
+      "weight": "25 kg"
     }
   ]
 }
