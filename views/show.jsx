@@ -48,7 +48,6 @@ class Show extends React.Component{
                             <button type="submit" value="Sort">submit</button>
                             </form>
                             <p>{mapPokemonData}</p>
-                            }
                         </div>
                     </div>
                 </body>

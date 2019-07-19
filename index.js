@@ -123,8 +123,8 @@ var homePage = (request,response)=>{
 var individual = (request,response) =>{
     var id = request.params.id;
     jsonfile.readFile(file,(err,obj)=>{
-        var pokemonDetail = obj.pokemon[id-1];
-
+        let arrIndex = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
+        var pokemonDetail = obj.pokemon[arrIndex];
         var data = {
             pokemon: pokemonDetail,
             pokemonId: id
@@ -180,9 +180,10 @@ var edit = (request,response)=>{
     jsonfile.readFile(file,(err,obj)=>{
         // console.log("YOOOO");
         var id = request.params.id;
+        let arrIndex = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
         var pokemonIndex;
         // console.log(obj.pokemon[id]);
-        pokemonIndex = obj.pokemon[id];
+        pokemonIndex = obj.pokemon[arrIndex];
         // console.log(pokemonIndex);
 
         var data = {
@@ -201,7 +202,8 @@ var update = (request,response)=>{
     var url = "/pokemon/"+newUpdate.id;
     // response.send("YOOOOOOO");
     jsonfile.readFile(file,(err,obj)=>{
-        obj.pokemon[id] = newUpdate;
+        let arrIndex = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
+        obj.pokemon[arrIndex] = newUpdate;
         //////update jsonfile
         jsonfile.writeFile(file,obj,(err)=>{
             if(err){
@@ -221,8 +223,8 @@ var remove = (request,response)=>{
     // console.log("accessing remove functions");
     jsonfile.readFile(file,(err,obj)=>{
         var id = request.params.id
-
-        var pokemonIndex = obj.pokemon[id];
+        let arrIndex = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
+        var pokemonIndex = obj.pokemon[arrIndex];
         console.log(pokemonIndex);
         var data = {
             pokemon : pokemonIndex,
@@ -236,7 +238,8 @@ var remove = (request,response)=>{
 var removeUpdate = (request,response)=>{
     var index = parseInt(request.params.id);
     jsonfile.readFile(file,(err,obj)=>{
-        obj.pokemon.splice(index,1);
+        let arrIndex = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == index);
+        obj.pokemon.splice(arrIndex,1);
         jsonfile.writeFile(file,obj,(err)=>{
             if(err){
                 console.log("error in deleting");
@@ -289,7 +292,7 @@ app.get('/pokemon', homePage);
 
 /**
  * ===================================
- * Listen to requests on port 8080
+ * Listen to requests on port 3001
  * ===================================
  */
-app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3001, () => console.log('~~~ Tuning in to the waves of port 3001 ~~~'));

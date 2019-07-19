@@ -16,8 +16,8 @@ class Individual extends React.Component{
         }
         var url = "/pokemon/"+this.props.pokemonId;
         var urlHome = "/pokemon";
-        var urlEdit = "/pokemon/"+((this.props.pokemonId)-1)+"/edit";
-        var urlDelete = "/pokemon/"+((this.props.pokemonId)-1)+"/delete"
+        var urlEdit = "/pokemon/"+this.props.pokemonId+"/edit";
+        var urlDelete = "/pokemon/"+this.props.pokemonId+"/delete"
         return(
             <html>
                 <body style = {styleBody}>
