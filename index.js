@@ -12,6 +12,9 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// Add CSS file in a public folder
+app.use(express.static(__dirname+'/public/'));
+
 // Init React
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
