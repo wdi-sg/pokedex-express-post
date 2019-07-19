@@ -1,0 +1,39 @@
+body {
+	text-align: center;
+	font-family: "Impact";
+}
+
+div.eachPoke {
+	display: inline-block;
+	width: 250px;
+	margin-bottom: 30px;
+	margin-top: 10px;
+}
+
+h3, p {
+	margin: 0;
+}
+
+p {
+	font-size: 12px;
+}
+
+form {
+	margin: 10px;
+}
+
+.buttonLink {
+	border: 1px solid black;
+	padding: 5px 15px;
+	margin: 5px;
+	font-size: 15px;
+}
+
+a.buttonLink{
+	text-decoration: none;
+	color: grey;
+}
+
+a:hover.buttonLink {
+	border: 1px solid white;
+}
