@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-
+const methodOverride = require('method-override')
+app.use(methodOverride( '_method' ));
 /**
  * ===================================
  * Routes
@@ -50,7 +51,7 @@ app.get('/:pokemon', (request, response) => {
     });
 
 app.get('/pokemon/new', (request, response) => {
-    // console.log('Getting the details');
+
 
     let form = '';
     form = '<html>' +
@@ -81,7 +82,21 @@ app.get('/pokemon/new', (request, response) => {
 
 
 app.post('/pokemon', (request, response) => {
-  console.log("Tried");
+ let newPokemonObj = request.body;
+ jsonfile.readFile(file, (err, obj) => {
+   if(err){
+     console.log('Nothing: ${err}');
+   }  else {
+     obj['pokemon'].push(newPokemonObj);
+     jsonfile.writeFile(file,obj, (err) => {
+       if(err){
+         console.log('Nothing: ${err}'));
+       } else {
+         response.send('Added new pokemon! <a hred='../pokemon'>back .. </a>'');
+       }
+     });
+   }
+ });
 
   let form = request.body;
   console.log(form);
@@ -89,8 +104,25 @@ app.post('/pokemon', (request, response) => {
   jsonfile.readFile(file, (err, obj) => {
     if(err) {
       console.log("Error reading");
-      comnsole.log(err);
+      console.log(err);
     }
+
+//NOT COMPLETED
+app.put('/request/:id', (request, response) => {
+  console.log(request.params.id);
+  console.log(request.body);
+  let paramsId = parseInt(request.params.id);
+  let newPokemonObj = request.body;
+  jsonfile.readFile(file, (err.obj) => )
+  if (err){
+    console.log('Error reading: ${err}');
+  } else {
+     let pokeArr = Object.keys(request.body);
+     //for loop
+  }
+})
+
+
 
     obj.pokemon.push(form);
     jsonfile.writeFile(file, obj, (err) => {
