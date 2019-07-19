@@ -9,9 +9,9 @@ class Home extends React.Component {
             <div className = "container">
                 <a href = {url}>
                     <img src = {pokemon.img} />
-                    <p>{pokemon.name}</p>
-                    <p>{pokemon.id}</p>
                 </a>
+                <p>{pokemon.name}</p>
+                <p>{pokemon.id}</p>
             </div>
         );
     });

@@ -42,11 +42,11 @@ var updateData = function (request, response) {
       console.log(err)
     }
 
-    //console.log(obj);
     var id = request.params.id;
+       let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
 
     var data = {
-      pokemonId : obj.pokemon[id]
+      pokemonId : obj.pokemon[index]
     }
 
     response.render('update', data);
@@ -92,9 +92,10 @@ var deleteData = function (request, response){
           console.log (err);
           }
 
-       var id = request.params.id-1;
+       var id = request.params.id;
+       let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
 
-        var pokemon = obj.pokemon[id];
+        var pokemon = obj.pokemon[index];
 
         var output = "" +
         "<h1>Edit Pokemon</h1>"+
@@ -115,7 +116,8 @@ var deleted = function (request, response){
         }
 
         var id = request.params.id;
-        obj.pokemon.splice(id,1)
+        let index = obj.pokemon.findIndex(pokemon => parseInt(pokemon.id) == id);
+        obj.pokemon.splice(index, 1);
 
         jsonfile.writeFile(file, obj, (err) => {
 
@@ -124,7 +126,7 @@ var deleted = function (request, response){
             console.log(err);
 
           }else{
-            response.redirect('/pokemon');
+            response.redirect("/pokemon");
             }
         });
     });
@@ -151,8 +153,6 @@ var checkPokemon = function (request, response) {
     }
 
     if (pokemon === undefined) {
-
-      // send 404 back
       response.status(404);
       response.send("not found");
     } else {
@@ -262,13 +262,13 @@ var defaultHome = function (request, response){
 }
 
 
-app.get('/pokemon/:id', checkPokemon);
-app.post('/pokemon', submitData);
 app.get('/pokemon/:id/edit', updateData);
 app.get('/pokemon/:id/delete', deleteData);
 app.delete('/pokemon/deleted/:id', deleted);
+app.get('/pokemon/:id', checkPokemon);
 app.put('/pokemon/:id', updated);
 app.get('/pokemon/new', makeForm);
+app.post('/pokemon', submitData);
 app.get('/pokemon', defaultHome);
 
 
