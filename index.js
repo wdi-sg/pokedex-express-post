@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(express.static(__dirname+'/public/')); // This is to allow the render to access CSS
+
 
 // Set up method-override for PUT and DELETE forms
 const methodOverride = require('method-override')
@@ -40,6 +42,12 @@ app.set('view engine', 'jsx');
  * Routes and Endpoints
  * ===================================
  */
+
+ app.get('/', (request,response) => {
+
+    response.redirect('/pokemon');
+
+ });
 
 
 app.get('/pokemon', (request, response) => {
@@ -131,6 +139,26 @@ app.get('/pokemon', (request, response) => {
     }
 });
 
+// Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
+
+app.get('/pokemon/new', (request, response) => {
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        const data = {
+            arrayLength: obj.pokemon.length + 1
+        }
+
+        if (err){
+          console.log("error reading file");
+          console.log(err)
+        }
+        else {
+            response.render('form', data)
+        }
+
+    });
+});
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -157,7 +185,7 @@ app.get('/pokemon/:id', (request, response) => {
 
       // send 404 back
       response.status(404);
-      response.send("not found");
+      response.send("Sorry! Pokemon ID not found");
     } else {
 
       response.send(pokemon);
@@ -166,26 +194,6 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 
-// Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-
-app.get('/new', (request, response) => {
-
-    jsonfile.readFile(FILE, (err,obj) => {
-
-        const data = {
-            arrayLength: obj.pokemon.length + 1
-        }
-
-        if (err){
-          console.log("error reading file");
-          console.log(err)
-        }
-        else {
-            response.render('form', data)
-        }
-
-    });
-});
 
 
 app.post('/pokemon', (request,response) => {
