@@ -1,19 +1,25 @@
 {
-  "name": "express-components",
+  "name": "express-test",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonfile": "^4.0.0",
+    "method-override": "^2.3.10"
+  },
+  "description": "We will build a web app using Node.js and Express - a Pokedex app.",
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nbinged/pokedex-express-post.git"
+  },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "express-react-views": "^0.11.0",
-    "jsonfile": "^5.0.0",
-    "method-override": "^3.0.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
-  }
+  "bugs": {
+    "url": "https://github.com/nbinged/pokedex-express-post/issues"
+  },
+  "homepage": "https://github.com/nbinged/pokedex-express-post#readme"
 }
