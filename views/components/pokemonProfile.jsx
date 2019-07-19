@@ -4,18 +4,13 @@ var React = require('react');
 class PokemonProfile extends React.Component {
   render() {
     var url = "/pokemon/"+this.props.data.id;
-    const divStyle = {
-        display: 'inline-block',
-        margin: '30px',
-        textAlign: 'center'
-      };
 
     const aStyle = {
         textDecoration: 'none',
         color: 'black'
       };
     return (
-        <div style={divStyle}>
+        <div className="pokemon">
           <a style={aStyle} href={url}>
             <img src={this.props.data.img}/><br/>
             {this.props.data.id} <br/>

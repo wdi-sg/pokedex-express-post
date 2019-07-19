@@ -276,7 +276,7 @@ var getPokemonById = function(request,response){
 
     console.log(obj);
     var id = parseInt(request.params.id) - 1;
-
+    
     var thisPokemon = obj.pokemon[id];
 
     var data = {

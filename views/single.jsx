@@ -29,7 +29,7 @@ class Single extends React.Component {
             <br/>
             <PokemonDetails data={this.props.pokemon}/>
           </div>
-          <a href={editUrl}>Edit This Pokemon</a>
+          <a href={editUrl}>Edit This Pokemon</a><br/>
           <a href={deleteUrl}>Delete This Pokemon</a>
         </body>
       </html>

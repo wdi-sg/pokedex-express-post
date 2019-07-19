@@ -7,7 +7,7 @@ class Home extends React.Component {
         return <PokemonProfile data={pokemon}/>
     });
     const logo = 'https://vignette.wikia.nocookie.net/fictionalcrossover/images/e/e6/Pokemon_Logo.png/revision/latest?cb=20131018214549';
-    const logoDiv = {
+    {/*const logoDiv = {
       display: 'inline',
       margin: '0 auto',
       textAlign: 'center'
@@ -46,7 +46,7 @@ class Home extends React.Component {
       fontSize: '24px',
       marginTop: '30px',
       textAlign:"center"
-    };
+    };*/}
 
     const sortSelect =
     <select name="sortby">
@@ -61,17 +61,23 @@ class Home extends React.Component {
     var url = "/pokemon/new";
     return (
       <html>
-        <body style = {bodyStyle} >
-        <div style ={logoDiv}>
-          <img style ={logoStyle} src = {logo}/>
+        <head>
+          <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400&display=swap" rel="stylesheet"/>
+          <link rel="stylesheet" type="text/css" href="/style.css"/>
+        </head>
+        <body>
+        <div className="container">
+        <div className="logo">
+          <img className="logo-img" src = {logo}/>
         </div>
         <div>
-        <a style={createButton} href={url}>Create new pokemon</a>
+        <a href={url}>Create new pokemon</a>
         </div>
-        <div style={selectDiv}>
+        <div>
           <form>{sortSelect}{sortSubmit}</form>
           </div>
-          <div>{pokemonList}</div>
+          <div className="pokemon-wrapper">{pokemonList}</div>
+          </div>
         </body>
       </html>
     );
