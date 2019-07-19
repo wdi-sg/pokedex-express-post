@@ -1,28 +1,56 @@
 {
   "pokemon": [
     {
-      "id": 1,
-      "name": "bubulasar",
-      "height": "123cm",
-      "weight": "12kg"
+      "height": "333cm",
+      "name": "bloop",
+      "weight": "22kg"
     },
     {
-      "id": 2,
-      "name": "squritle",
-      "height": "223cm",
-      "weight": "120kg"
+      "height": "1233cm",
+      "name": "johson",
+      "weight": "89897kg"
     },
     {
+      "height": "321cm",
       "id": 3,
-      "name": "charmander",
-      "height": "553cm",
-      "weight": "620kg"
+      "name": "tiger",
+      "weight": "333kg"
     },
     {
+      "height": "333cm",
       "id": 4,
+      "name": "squritle",
+      "weight": "333kg"
+    },
+    {
+      "height": "60cm",
+      "id": 5,
       "name": "snorlax",
-      "height": "1553cm",
-      "weight": "7620kg"
+      "weight": "500kg"
+    },
+    {
+      "height": "778cm",
+      "id": 6,
+      "name": "josh",
+      "weight": "778kg"
+    },
+    {
+      "height": "190cm",
+      "id": 7,
+      "name": "jesus",
+      "weight": "55kg"
+    },
+    {
+      "height": "60cm",
+      "id": 8,
+      "name": "mary",
+      "weight": "10kg"
+    },
+    {
+      "height": "880cm",
+      "id": 9,
+      "name": "littleLamb",
+      "weight": "888kg"
     }
   ]
 }
