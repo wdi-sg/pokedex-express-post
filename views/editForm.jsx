@@ -1,8 +1,11 @@
 var React = require('react');
+const Layout = require('./layout.jsx');
 
 class editForm extends React.Component {
     render() {
         return (
+            <Layout>
+            <div>
         <html>
         <body>
           <div>
@@ -26,6 +29,8 @@ class editForm extends React.Component {
           </div>
         </body>
         </html>
+        </div>
+        </Layout>
         );
     }
 }

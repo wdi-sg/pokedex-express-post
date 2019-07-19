@@ -1,9 +1,17 @@
 var React = require('react');
 
+const Layout = require('./layout.jsx');
+
+
 class Form extends React.Component {
     render() {
         return (
+            <Layout>
+            <div>
         <html>
+        <head>
+
+        </head>
         <body>
           <div>
             <h1>Enter Details of New Pokemon</h1>
@@ -26,6 +34,8 @@ class Form extends React.Component {
           </div>
         </body>
         </html>
+        </div>
+        </Layout>
         );
     }
 }

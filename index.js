@@ -13,6 +13,13 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
+app.use(express.static(__dirname+'/public/'));
+
+app.get('/style.css', (request, response)=>{
+  response.send('body{ background-color:pink; }');
+})
+
 //react syntax to run jsx
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
@@ -28,7 +35,6 @@ app.set('views', __dirname + '/views');
 
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
-
 
 ///////////// form to get pokemon detail//////////
 app.get('/pokemon/new', (request, response) => {
@@ -119,7 +125,7 @@ app.post('/pokemon', (request, response) => {
             });
         };
     });
-  });
+});
 
 
 

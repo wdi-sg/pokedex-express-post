@@ -1,0 +1,29 @@
+body{
+	background-image: url("pikachu.jpg");
+	background-size: cover;
+	text-align: center;
+	margin: auto;
+}
+h1 {
+	font-weight: bold;
+	font-family: sans-serif;
+	letter-spacing: 4px;
+
+}
+
+p {
+	font-size: 24px;
+	font-family: sans-serif;
+	display: block;
+	margin-bottom: 10px;
+}
+
+input {
+	font-size: 20px;
+	border-radius: 5px;
+}
+
+h3 {
+	display: block;
+margin-top: 15px;
+}
