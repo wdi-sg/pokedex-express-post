@@ -21,6 +21,7 @@ app.use(express.urlencoded({
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 app.set('views', __dirname + '/views/');
+
 app.set('view engine', 'jsx');
 
 // Set up method-override for PUT and DELETE forms
