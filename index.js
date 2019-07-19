@@ -92,7 +92,7 @@ var deleteData = function (request, response){
           console.log (err);
           }
 
-       var id = request.params.id;
+       var id = request.params.id-1;
 
         var pokemon = obj.pokemon[id];
 
