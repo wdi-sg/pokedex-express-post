@@ -282,7 +282,7 @@ app.get('/pokemon', homePage);
 
 /**
  * ===================================
- * Listen to requests on port 3000
+ * Listen to requests on port 8080
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(8080, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
