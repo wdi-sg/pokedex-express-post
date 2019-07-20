@@ -1,62 +1,173 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
-
-// Init express app
+const express = require('express');
+const jsonfile = require('jsonfile');
+const FILE = 'pokedex.json';
 const app = express();
-
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 /**
  * ===================================
- * Routes
+ * FUNCTIONS
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+let showAllPokemon = (request, response) => {
+    jsonfile.readFile(FILE, (err,obj) => {
+        let query = request.query.sortby;
+        let pokemon = obj.pokemon;
+        console.log(pokemon);
+        let data = {
+            pokemonKey : pokemon,
+            queryKey : query
+        }
+        response.render('home', data)
+    });
+}
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+let createPokemon = (request, response) => {
+    response.render('createForm');
+}
 
-    var pokemon;
+let createdPokemonResult = (request, response) => {
+    let newPoke = request.body;
+    jsonfile.readFile(FILE, (err,obj) => {
+        newPoke.num = obj.lastKey + 1;
+        obj.lastKey++;
+        obj.pokemon.push(newPoke);
+        console.log('req body:' + request.body.id)
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log('error in writing!');
+            } else {
+                // response.send(`You have created a new Pokemon ${newPoke.name}!`);
+                response.redirect('/pokemon/' + request.body.id + '/')
+            }
+        })
+    });
+}
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+let showPokemon = (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id == obj.pokemon[i].id ){
+                console.log('id2',id)
+                console.log('obj id', obj.pokemon[i].id)
+                let pokemon = obj.pokemon[i];
+                let data = {
+                    pokemon : pokemon
+                }
 
-      let currentPokemon = obj.pokemon[i];
+                response.render('pokemon', data)
+            }
+        }
+    });
+}
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+let editPokemon = (request, response) => {
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id === obj.pokemon[i].id){
+                let pokemon = obj.pokemon[i];
+                let data = {
+                    pokemon : pokemon
+                }
+                response.render('editForm', data)
+            }
+        }
+    })
+}
 
-    if (pokemon === undefined) {
+let editPokemonResult = (request, response) => {
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+    let newPoke = request.body;
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id === obj.pokemon[i].id){
+                obj.pokemon[i] = request.body;
+            }
+        }
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log('error in writing!');
+            } else {
+                response.redirect('/pokemon/'+id+'/');
+            }
+        })
+    })
+}
 
-      response.send(pokemon);
-    }
-  });
-});
+let deletePokemon = (request, response) => {
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id == obj.pokemon[i].id){
+                let pokemon = obj.pokemon[i];
+                let data = {
+                    pokemon : pokemon
+                }
+                response.render('deleteForm', data)
+            }
+        }
+    })
+}
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+let deletePokemonResult = (request, response) => {
+    let newPoke = request.body;
+    jsonfile.readFile (FILE, (err,obj) => {
+        let id = parseInt(request.params.id);
+        for(let i=0; i<obj.pokemon.length; i++) {
+            if ( id === obj.pokemon[i].id){
+                obj.pokemon.splice(i,1);
+                // obj.pokemon[i] = request.body;
+            }
+        }
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log('error in writing!');
+            } else {
+                // response.send(`YOUR POKEMON WAS DELETED!`);
+                response.redirect('/pokemon/')
+
+            }
+        })
+    })
+}
 
 /**
  * ===================================
- * Listen to requests on port 3000
+ * ROUTING
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+app.get('/pokemon', showAllPokemon);
+app.get('/pokemon/new', createPokemon);
+app.post('/pokemon', createdPokemonResult);
+app.get('/pokemon/:id', showPokemon);
+app.get('/pokemon/:id/edit', editPokemon);
+app.put('/pokemon/:id', editPokemonResult)
+app.get('/pokemon/:id/delete', deletePokemon)
+app.delete('/pokemon/:id', deletePokemonResult)
+
+/**
+ * ===================================
+ * Listen to requests on port
+ * ===================================
+ */
+
+let port = 1500;
+app.listen(port, () => console.log(`~~~ Tuning in to the waves of port ${port} ~~~`));
