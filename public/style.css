@@ -1,0 +1,43 @@
+body {
+	font-family: sans-serif;
+}
+
+.main-wrapper {
+	display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+	margin: 0 auto;
+	padding: 0;
+	max-width: 720px;
+	width: 100%;
+	border: 1px solid red;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+}
+
+
+.pokemon {
+	display: flex;
+	flex-wrap: wrap;
+/*	justify-content: center;*/
+	width: 20%;
+	margin: 10px;
+	padding: 20px;
+	border: 1px solid #00ff00;
+}
+
+p {
+	display: block;
+	padding: 0;
+	margin: 5px;
+	border: 1px solid #ff00ff;
+}
+
+img {
+	border: 1px solid #0000ff;
+}
