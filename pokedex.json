@@ -3,15 +3,10 @@
     {
       "id": 1,
       "num": "001",
-      "name": "Bulbasaur",
+      "name": "Small Flower",
       "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
       "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": "25",
-      "egg": "2 km",
-      "avg_spawns": "69",
-      "spawn_time": "20:00"
+      "weight": "6.9 kg"
     },
     {
       "id": 2,
@@ -29,27 +24,18 @@
     {
       "id": 3,
       "num": "003",
-      "name": "Venusaur",
+      "name": "Big Forest",
       "img": "http://www.serebii.net/pokemongo/pokemon/003.png",
       "height": "2.01 m",
-      "weight": "100.0 kg",
-      "candy": "Bulbasaur Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.7,
-      "spawn_time": "11:30"
+      "weight": "100.0 kg"
     },
     {
       "id": 4,
       "num": "004",
-      "name": "Charmander",
+      "name": "Little FIre",
       "img": "http://www.serebii.net/pokemongo/pokemon/004.png",
       "height": "0.61 m",
-      "weight": "8.5 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 25,
-      "egg": "2 km",
-      "avg_spawns": 25.3,
-      "spawn_time": "08:45"
+      "weight": "8.5 kg"
     },
     {
       "id": 5,
@@ -117,15 +103,10 @@
     {
       "id": 10,
       "num": "010",
-      "name": "Caterpie",
+      "name": "Baby Green Worm",
       "img": "http://www.serebii.net/pokemongo/pokemon/010.png",
       "height": "0.30 m",
-      "weight": "2.9 kg",
-      "candy": "Caterpie Candy",
-      "candy_count": 12,
-      "egg": "2 km",
-      "avg_spawns": 303.2,
-      "spawn_time": "16:35"
+      "weight": "2.9 kg"
     },
     {
       "id": 11,
@@ -1881,6 +1862,19 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Chikorita",
+      "img": "",
+      "height": "0.8 m",
+      "weight": "12 kg",
+      "candy": "chikorita candy",
+      "candy_count": "nil",
+      "egg": "100",
+      "avg_spawns": "20",
+      "spawn_time": "10:00"
     }
   ]
 }
