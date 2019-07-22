@@ -1,81 +1,204 @@
-const express = require('express');
 const jsonfile = require('jsonfile');
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
+const express = require('express');
 const app = express();
-const file = 'pokedex.json';
 
-// tell app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
-    extended: true
-}))
+  extended: true
+}));
 
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
-app.get('/pokemon/new', (request, response)=> {
-    console.log('Get request into html input form');
+let file = 'pokedex.json';
 
-    jsonfile.readFile(file, (err, obj)=>{
-        if (err){
-            console.log('Error reading input form: '+err)
-        }
+app.get('/pokemon', (request, response) => {
 
-        let form ='';
-        let ID = obj.pokemon.length + 1;
-        form = '<html>'+
-            '<body>'+
-            '<h1>Wow, a form to fill</h1>'+
-            '<form method="Post" action="/pokemon">'+
-                '<p>ID# ' + ID + '</p>' +
-                '<p>Name</p><input name="name" type="text">'+
-                '<p>Image</p><input name="img" type="url">'+
-                '<p>Height</p><input name="height" type="number">'+
-                '<p>Weight</p><input name="weight" type="number">'+
-                '<p>Click button below to submit all.</p><input type="submit" value="Submit">'+
-            '</form></body>'+
-            '</html>';
-
-            response.send(form);
+    jsonfile.readFile('pokedex.json', (err, dataObj)=>{
+        const data = {
+            pokemonList : dataObj.pokemon
+        };
+        console.log(data);
+        response.render('home', data)
     });
 });
 
-app.post('/pokemon', (request, response)=>{
-    console.log('Post data collected from input form');
+//display new form
+app.get('/pokemon/new', (request, response)=> {
+    console.log('Get new Pokemon request into html input form');
 
     jsonfile.readFile(file, (err, obj)=>{
         if (err){
             console.log('Error reading input form: '+err)
         }
 
-        // read data from input form
-        let inputCollected = request.body;
-        obj.pokemon.push(inputCollected)
+        let pokemon= obj.pokemon[obj.pokemon.length - 1];
+         const data = {
+            index: pokemon.id + 1
+        };
 
-        jsonfile.writeFile(file, obj, (err) => {
-            console.log("write file done");
-            if( err ){
-                console.log("error writing file");
-                console.log(err)
-                response.status(503).send("no!");
-            }else{
-                console.log("~~~~~~~yay saved successfully");
-                response.send("Save successfully!");
-            }
+        response.render('new', data)
+    });
+});
+
+
+//save new pokemon form data to json file
+app.put('/pokemon/new/:id', (request, response)=>{
+
+    console.log("REQUEST BODY-New");
+    console.log( request.body);
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        dataObj.pokemon.push(request.body)
+
+        //dataObj = JSON.stringify(dataObj, null, 2);
+
+        jsonfile.writeFile(file, dataObj, (err)=>{
+            response.send("Save WORKS");
         });
     });
+    response.send('PUT WORKS');
 });
+
+
+//display edit form
+app.get('/pokemon/:id/edit', (request, response)=>{
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        let pokemonIndex = request.params.id;
+        let pokemon;
+        for (let i=0; i<dataObj.pokemon.length; i++)
+        {
+            if (pokemonIndex == dataObj.pokemon[i].id)
+            {
+                pokemon = dataObj.pokemon[i];
+            }
+        }
+
+        const data = {
+            index: pokemonIndex,
+            pokemonData : pokemon
+        };
+
+        console.log( data );
+        response.render('edit', data)
+    });
+});
+
+//edit form data to json file
+app.put('/pokemon/edit/:id', (request, response)=>{
+
+    console.log("REQUEST BODY-Edit");
+    console.log( request.body);
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        pokemonIndex = request.params.id;
+        for (let i=0; i<dataObj.pokemon.length; i++)
+        {
+            if (pokemonIndex == dataObj.pokemon[i].id)
+            {
+                dataObj.pokemon[i] =request.body;
+            }
+        }
+
+        jsonfile.writeFile(file, dataObj, (err)=>{
+            response.send("Edit WORKS");
+        });
+    });
+    response.send('PUT WORKS');
+});
+
+
+//display delete form
+app.get('/pokemon/:id/delete', (request, response)=>{
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        let pokemonIndex = request.params.id;
+        let pokemon;
+        for (let i=0; i<dataObj.pokemon.length; i++)
+        {
+            if (pokemonIndex == dataObj.pokemon[i].id)
+            {
+                pokemon = dataObj.pokemon[i];
+            }
+        }
+
+        const data = {
+            index: pokemonIndex,
+            pokemonData : pokemon
+        };
+
+        console.log( data );
+        response.render('delete', data)
+    });
+});
+
+
+//delete pokemon in json file
+app.put('/pokemon/delete/:id', (request, response)=>{
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        pokemonIndex = request.params.id;
+        for (let i=0; i<dataObj.pokemon.length; i++)
+        {
+            if (pokemonIndex == dataObj.pokemon[i].id)
+            {
+                dataObj.pokemon.splice(i,1);
+            }
+        }
+
+        jsonfile.writeFile(file, dataObj, (err)=>{
+            response.send("Edit WORKS");
+        });
+    });
+    response.send('PUT WORKS');
+});
+
+
+//display delete form
+app.get('/pokemon/:id/detail', (request, response)=>{
+
+    jsonfile.readFile(file, (err, dataObj)=>{
+
+        let pokemonIndex = request.params.id;
+        let pokemon;
+        for (let i=0; i<dataObj.pokemon.length; i++)
+        {
+            if (pokemonIndex == dataObj.pokemon[i].id)
+            {
+                pokemon = dataObj.pokemon[i];
+            }
+        }
+
+        const data = {
+            index: pokemonIndex,
+            pokemonData : pokemon
+        };
+
+        console.log( data );
+        response.render('detail', data)
+    });
+});
+
 
 app.get('/', (request, response)=>{
 console.log('Display all Pokemon');
@@ -89,9 +212,9 @@ console.log('Display all Pokemon');
         form = '<html><body><h1>Pokemon Details</h1>' +
                 '<form method="get" action="/sortPokemon">'+
                 '<select name="sortby">'+ //first-param >> Object.values(request.query)[0];
-                '<option value="name">Name</option>'+
-                '<option value="height">Height</option>'+
-                '<option value="weight">Weight</option>'+
+                    '<option value="name">Name</option>'+
+                    '<option value="height">Height</option>'+
+                    '<option value="weight">Weight</option>'+
                 '</select>' +
                 '<input type="submit" value="Submit">'+ // 2nd param
                 '</form>';
