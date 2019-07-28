@@ -1,7 +1,7 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
+const express = require("express");
+const jsonfile = require("jsonfile");
 
-const FILE = 'pokedex.json';
+const FILE = "pokedex.json";
 
 /**
  * ===================================
@@ -12,46 +12,136 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.static(__dirname + "/public/"));
+
+app.use(express.json());
+
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
+
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
+
+// this tells express where to look for the view files
+app.set("views", __dirname + "/views");
+
+// this line sets react to be the default view engine
+app.set("view engine", "jsx");
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+app.get("/pokemon/new", (request, response) => {
+  console.log("new pokemon form");
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+    }
+    response.render("./newPokeForm.jsx");
+  });
+});
 
+app.get("/pokemon/:id", (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
-    let inputId = parseInt( request.params.id );
+    let inputId = parseInt(request.params.id);
 
     var pokemon;
 
     // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
+    for (let i = 0; i < obj.pokemon.length; i++) {
       let currentPokemon = obj.pokemon[i];
 
-      if( currentPokemon.id === inputId ){
+      if (currentPokemon.id === inputId) {
         pokemon = currentPokemon;
       }
     }
 
     if (pokemon === undefined) {
-
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
-
-      response.send(pokemon);
+        var pokemonIndex = request.params.id;
+        var dataObj = {
+          index: pokemonIndex,
+          pokemonData: obj.pokemon[pokemonIndex - 1]
+        };
+        response.render("./showPokeForm.jsx", dataObj);
+      //response.send(pokemon);
     }
   });
 });
 
-app.get('/', (request, response) => {
+app.get("/pokemon/:id/edit", (request, response) => {
+  console.log("edit pokemon form");
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      console.log(err);
+    }
+    var pokemonIndex = request.params.id;
+    var dataObj = {
+      index: pokemonIndex,
+      pokemonData: obj.pokemon[pokemonIndex - 1]
+    };
+    response.render("./editPokeForm.jsx", dataObj);
+  });
+});
+
+app.get("/", (request, response) => {
   response.send("yay");
+});
+
+app.post("/pokemon", (request, response) => {
+
+    ////Parse text string into integer
+  request.body.id = parseInt(request.body.id);
+  //console.log(request.body);
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.push(request.body);
+    jsonfile.writeFile(FILE, obj, err => {
+      if (err) {
+        console.log(err);
+      } else {
+        response.send("YaY! pokemon added!");
+      }
+    });
+  });
+});
+
+app.put("/pokemon/:id", (request, response) => {
+  console.log("REQUEST BODY before");
+  console.log(request.body);
+
+  ////Parse text string into integer
+  request.body.id = parseInt(request.body.id);
+
+  console.log("REQUEST BODY after");
+  console.log(request.body);
+  jsonfile.readFile(FILE, (err, data) => {
+    //console.log(data);
+    let pokemonIndex = request.params.id;
+    //save data
+    data.pokemon[pokemonIndex - 1] = request.body;
+    jsonfile.writeFile(FILE, data, err => {
+      // response.send("POKEMON EDITED");
+    });
+  });
+  response.send("Pokemon Edited.");
+  //response.redirect("/pokemon");
 });
 
 /**
@@ -59,4 +149,6 @@ app.get('/', (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3000, () =>
+  console.log("~~~ Tuning in to the waves of port 3000 ~~~")
+);
