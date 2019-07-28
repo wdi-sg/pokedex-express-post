@@ -2,11 +2,11 @@ var React = require("react");
 
 //const Layout = require("./layout.jsx");
 
-class Form extends React.Component {
+class newForm extends React.Component {
   render() {
     return (
       <div>
-        <h1>Pokemon</h1>
+        <h1>New Pokemon</h1>
         <form method="POST" action="/pokemon">
           ID:
           <input type="number" name="id" />
@@ -27,4 +27,4 @@ class Form extends React.Component {
   }
 }
 
-module.exports = Form;
+module.exports = newForm;

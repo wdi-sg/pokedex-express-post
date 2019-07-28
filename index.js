@@ -75,7 +75,19 @@ app.get("/pokemon/:name", (request, response) => {
   console.log(request.params.name);
 });
 
-
+app.get("/pokemon/:id/edit", (request, response) => {
+    console.log("edit pokemon form");
+    jsonfile.readFile(FILE, (err, obj) => {
+      if (err) {
+        console.log(err);
+      }
+      var dataObj = {
+        index: request.params.id,
+        pokemonData: data.pokemon[pokemonIndex - 1]
+      };
+      response.render("./editPokeForm.jsx", dataObj);
+    });
+});
 
 app.get('/:id', (request, response) => {
 
@@ -124,6 +136,10 @@ app.post("/pokemon", (request, response) => {
       }
     });
   });
+});
+
+app.put("/pokemon/:id", (request, response) => {
+
 });
 
 /**
