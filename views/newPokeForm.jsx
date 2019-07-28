@@ -9,7 +9,7 @@ class Form extends React.Component {
         <h1>Pokemon</h1>
         <form method="POST" action="/pokemon">
           ID:
-          <input type="text" name="id" />
+          <input type="number" name="id" />
           Num:
           <input type="text" name="num" />
           Name:
