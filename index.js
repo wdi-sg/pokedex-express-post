@@ -49,9 +49,7 @@ app.get("/pokemon/new", (request, response) => {
     if(err){
         console.log(err);
     };
-
-    response.render('./newForm.jsx');
-
+    response.render('./newPokeForm.jsx');
   });
 });
 
@@ -115,19 +113,19 @@ app.get('/', (request, response) => {
   response.send("yay");
 });
 
-app.post('/animals', (request, response) => {
-    jsonfile.readFile(FILE, (err, obj) => {
-        obj.pokemon.push(request.body);
-        jsonfile.writeFile(FILE, obj, (err) => {
-            if(err){
-                console.log(err)
-            }
-            else{
-                response.send("YaY! pokemon added!");
-            }
-        });
+app.post("/pokemon", (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.push(request.body);
+    jsonfile.writeFile(FILE, obj, err => {
+      if (err) {
+        console.log(err);
+      } else {
+        response.send("YaY! pokemon added!");
+      }
     });
+  });
 });
+
 /**
  * ===================================
  * Listen to requests on port 3000
