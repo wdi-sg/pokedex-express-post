@@ -2,11 +2,11 @@ var React = require("react");
 
 //const Layout = require("./layout.jsx");
 
-class editForm extends React.Component {
+class showForm extends React.Component {
   render() {
     return (
       <div>
-        <h1>Edit Pokemon</h1>
+        <h1>View Pokemon</h1>
         <form
           method="POST"
           action={"/pokemon/" + this.props.index + "?_method=PUT"}
@@ -47,11 +47,10 @@ class editForm extends React.Component {
             name="weight"
             value={this.props.pokemonData.height}
           />
-          <input type="submit" value="Submit" />
         </form>
       </div>
     );
   }
 }
 
-module.exports = editForm;
+module.exports = showForm;
