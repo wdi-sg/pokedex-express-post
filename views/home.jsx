@@ -7,16 +7,20 @@ class Home extends React.Component {
       <html>
         <body>
           <div>
+            <form action="/" method="get">
+              <select name="sortby">
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+              <button>
+                  Sort
+              </button>
+            </form>
             {pokeArr.map((data, i) => (
               <div key={i}>
                   <p>{data}</p>
               </div>
             ))}
-            <form action="/" method="get">
-              <button name="sort" value="sort">
-                  Sort
-              </button>
-            </form>
           </div>
         </body>
       </html>

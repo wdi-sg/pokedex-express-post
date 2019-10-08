@@ -81,8 +81,10 @@ app.get("/?", (req, res) => {
     for (let i=0; i<obj.pokemon.length; i++) {
       pokeArr.push(obj.pokemon[i].name);
     }
-    if (req.query["sort"]) {
+    if (req.query["sortby"] === "ascending") {
       pokeArr.sort();
+    } else if (req.query["sortby"] === "descending") {
+      pokeArr.sort().reverse();
     }
     res.render("home", {pokeArr});
   });
