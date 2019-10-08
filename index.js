@@ -1,6 +1,17 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
+
+// Init express app
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+
+
 const FILE = 'pokedex.json';
 
 /**
@@ -9,8 +20,7 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
-// Init express app
-const app = express();
+
 
 /**
  * ===================================
@@ -27,6 +37,9 @@ app.get('/pokemon/:id', (request, response) => {
     let inputId = parseInt( request.params.id );
 
     var pokemon;
+
+
+
 
     // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
@@ -50,8 +63,26 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send(` <form method="POST" action="/pokemon/:new">
+              Submit New Pokemon: <br/>
+              ID:
+              <input type="number" name="id"/> <br/>
+              Number:
+              <input type="number" name="num"/> <br/>
+              Name:
+              <input type="text" name="name"/> <br/>
+              Image URL:
+              <input type="url" name="img"/> <br/>
+              Height:
+              <input type="number" name="height"/> <br/>
+              Weight:
+              <input type="number" name="weight"/> <br/>
+
+              <input type="submit" value="Submit"/>
+            </form>`);
+
 });
 
 /**
