@@ -4,10 +4,17 @@ class Home extends React.Component {
     return (
       <html>
         <body>
-          <div>
-            <h1>Product ID: { this.props.productId }!</h1>
-            <h2>Title: { this.props.title }</h2>
-            <h2>Description: { this.props.description }</h2>
+                  <div>
+                  { this.props.data }
+
+            <h1>Pokedex Post!</h1>
+            <form method="POST" action="http://localhost:3000/pokemon">
+            Pokedex Name:<br/>
+            <input type="text" name="id"/>
+            <input type="submit" value="Submit"/>
+            </form>
+
+
           </div>
         </body>
       </html>

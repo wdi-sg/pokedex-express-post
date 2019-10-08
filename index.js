@@ -12,6 +12,12 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -54,8 +60,9 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-
-      response.send(pokemon);
+ let data = {pokemon: pokemon.name }
+ // console.log("asksi ", pokemon)
+  response.render('output', pokemon);
     }
   });
 });
@@ -64,7 +71,7 @@ app.get('/pokemon/:id', (request, response) => {
 // if empty build the basic screen for input
 app.get('/', (request, response) => {
   // giving home.jsx file an object/context with `name` as a property
-  const data = {name: "Sterling Archer"};
+  const data = {warning: ""};
   response.render('home', data);
 });
 
