@@ -30,6 +30,8 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Further
 
+* create `jsx` files for every page your app displays
+
 * validate the user's input data. If the user makes a mistake (i.e., the name of the pokemon is empty) render the form instead. Display the error that they made and how they can correct it.
 
 * Add a "Sort by name" button to the homepage (`/` route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
