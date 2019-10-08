@@ -1,8 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
-
 /**
  * ===================================
  * Configurations and set up
@@ -11,6 +9,18 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
 /**
  * ===================================
@@ -19,39 +29,52 @@ const app = express();
  */
 
 app.get('/pokemon/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
+    if (request.params.id === "new") {
+        response.render('new');
     } else {
-
-      response.send(pokemon);
+// get json from specified file
+        jsonfile.readFile(FILE, (err, obj) => {
+// obj is the object from the pokedex json file
+// extract input data from request
+            let inputId = parseInt( request.params.id );
+            let data;
+// find pokemon by id from the pokedex json file
+            for( let i=0; i<obj.pokemon.length; i++ ){
+                let currentPokemon = obj.pokemon[i];
+                if( currentPokemon.id === inputId ){
+                data = currentPokemon;
+                }
+            }
+            if (data === undefined) {
+// send 404 back
+                response.status(404);
+                response.send("not found");
+            } else {
+                response.render('page', data);
+            }
+        });
     }
-  });
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+    response.send("ARE YOU TRYING TO LOOK FOR THE POKEDEX? PLEASE GO TO PATH /pokemon");
+});
+
+app.post('/pokemon', function(request, response) {
+//debug code (output request body)
+    console.log(request.body);
+//read the current file
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log(err);
+// push the new pokemon to pokemon array
+        obj.pokemon.push(request.body);
+// write this new obj to pokedex.json
+        jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
+            console.log(err)
+        });
+// endpoint
+    });
+    response.send(request.body);
 });
 
 /**
