@@ -13,64 +13,60 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-// app.get('/pokemon/:id', (request, response) => {
-
-//   // get json from specified file
-//   jsonfile.readFile(FILE, (err, obj) => {
-//     // obj is the object from the pokedex json file
-//     // extract input data from request
-//     let inputId = parseInt( request.params.id );
-
-//     var pokemon;
-
-//     // find pokemon by id from the pokedex json file
-//     for( let i=0; i<obj.pokemon.length; i++ ){
-
-//       let currentPokemon = obj.pokemon[i];
-
-//       if( currentPokemon.id === inputId ){
-//         pokemon = currentPokemon;
-//       }
-//     }
-
-//     if (pokemon === undefined) {
-
-//       // send 404 back
-//       response.status(404);
-//       response.send("not found");
-//     } else {
-
-//       response.send(pokemon);
-//     }
-//   });
-// });
+app.get('/', (request, response) => {
+    console.log("landing page");
+    response.render('landing');
+})
 
 app.get('/pokemon/new', (request, response) => {
     console.log("form created");
     response.render('home');
 });
 
+app.get('/pokemon/:id', (request, response) => {
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+
+      response.send(pokemon);
+    }
+  });
+});
+
+
 app.post('/pokemon', (request, response) => {
     console.log("submitting form details");
     console.log(request.body);
     jsonfile.readFile(FILE, (err, obj) => {
         let newPokemon = request.body;
+        // represent pokedex.json as an object
         let allPokemon = obj;
         console.log("reading file");
-        // // create empty loop
-        // let newPokeList = [];
-        // // create objects list of data
-        // const userData = {
-        //     id: request.body.id,
-        //     num: request.body.num,
-        //     name: request.body.name,
-        //     img: request.body.img,
-        //     height: request.body.height,
-        //     weight: request.body.weight
-        // }
-        // newPokeList.push(userData);
-        // "action part"
+        // push in request.body
         allPokemon.pokemon.push(newPokemon);
+        // FILE is pokedex.json, allPokemon is the new object that is being saved
         jsonfile.writeFile(FILE, allPokemon, (err) => {
             if (err) {
                 console.error(err)
@@ -84,6 +80,12 @@ app.post('/pokemon', (request, response) => {
     console.log("append to main pokedex");
     });
 });
+
+// app.get('/pokemon', (req,res) => {
+//     console.log("displaying user input");
+//     let newPokemon = request.body;
+//     response.render('addition', newPokemon);
+// });
 
 
 
