@@ -5,7 +5,7 @@ class Pokemon extends React.Component {
       <html>
         <body>
           <div>
-          <h1>Pokemon:</h1>
+          <h1>New Pokemon Added:</h1>
           <p>id: {this.props.id}</p> 
           <p>num: {this.props.num}</p>
           <p>name: {this.props.name}</p>

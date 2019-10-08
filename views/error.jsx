@@ -1,5 +1,5 @@
 var React = require("react");
-class NewPokemon extends React.Component {
+class Validate extends React.Component {
   render() {
     return (
       <html>
@@ -16,6 +16,7 @@ class NewPokemon extends React.Component {
              
               <input type="submit" />
             </form>
+            <h2 style={{color:"red"}}>Please fill in all inputs</h2>
           </div>
         </body>
       </html>
@@ -23,4 +24,4 @@ class NewPokemon extends React.Component {
   }
 }
 
-module.exports = NewPokemon;
+module.exports = Validate;
