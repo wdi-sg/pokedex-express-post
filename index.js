@@ -44,7 +44,7 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 //points user to form as homepage
-app.get('/pokemon', (req, res) => {
+app.get('/newpokemon', (req, res) => {
   console.log("hi");
   res.render('form');
 
