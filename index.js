@@ -71,7 +71,7 @@ app.get('/', (request, response) => {
     response.send("yay");
 });
 
-app.post('/new', (request, response) => {
+app.post('/addpokemon', (request, response) => {
     //debug code (output request body)
     console.log(request.body);
 
@@ -83,7 +83,7 @@ app.post('/new', (request, response) => {
             console.error(err);
 
             // now look inside your json file
-            response.send(request.body + "added!");
+            response.send(request.body.name + " added!");
 
         });
     });
