@@ -1,5 +1,5 @@
 var React = require('react');
-class Home extends React.Component {
+class Error extends React.Component {
   render() {
     return (
       <html>
@@ -25,6 +25,8 @@ class Home extends React.Component {
 
              </form>
 
+             <h2 style = {{color:"red"}}>YOU NEED TO FILL IN ALL OF THE ITEMS.</h2>
+
 
           </div>
         </body>
@@ -33,4 +35,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+module.exports = Error;

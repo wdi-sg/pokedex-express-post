@@ -6,24 +6,13 @@ class Pokemon extends React.Component {
         <body>
           <div>
 
-           <h1> POKEMON</h1>
+           <h1> NEW POKEMON</h1>
 
-            <form method="POST" action="/pokemon">
-              ID:
-              <input type="text" name="id" />
-              Number:
-              <input type="text" name="num" />
-              Name:
-              <input type="text" name="name" />
-              Image:
-              <input type="text" name="img" />
-              Height:
-              <input type="text" name="height" />
-              Weight:
-              <input type="text" name="weight" />
-              <input type="submit" value="Submit" />
+           <h2> The Pokemon you have added is {this.props.name}, ID number {this.props.id}/{this.props.num}</h2>
 
-             </form>
+           <h3>Its height is {this.props.height} and its weight is {this.props.weight}</h3>
+
+
 
 
           </div>

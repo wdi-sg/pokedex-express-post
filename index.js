@@ -28,6 +28,8 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+
+
 /**
  * ===================================
  * Routes
@@ -36,20 +38,60 @@ app.set('view engine', 'jsx');
 
 
  app.get('/', (request, response) => {
-  response.send("yay");
+
+  response.render('landing')
+
 });
 
+ // app.get('/?', (request,response) => {
+
+
+ //    jsonfile.readFile(file, (err, obj) => {
+
+ //        console.log(err)
+ //        let pokeList = obj.pokemon
+ //        let pokeArray;
+
+ //        for (let i=0; i<obj.pokemon.length;i++){
+ //            pokeArray.push(pokeList[i]["name"])
+
+ //        }
+
+ //        console.log(pokeArray)
+
+ //  // // save the request body
+ //          jsonfile.writeFile(file, obj, {spaces:2},(err) => {
+ //            console.error(err)
+
+ //    // now look inside your json file
+
+ //         });
+ //    })
+
+ // })
+
 app.get('/pokemon/new', (request,response) => {
-
     response.render('home')
-
 })
+
 
 app.post('/pokemon', function(request, response) {
 
-  //debug code (output request body)
     console.log(request.body);
     let pokeNew = request.body
+
+    let pokeKey = Object.keys(pokeNew)
+    console.log(pokeKey)
+
+    for (let i=0; i<pokeKey.length; i++){
+        let key = pokeKey[i]
+        console.log(key + "key name")
+        console.log(pokeNew[key] + "value of key on request")
+        if (pokeNew[key] === ""){
+            console.log(pokeNew[key] + "empty key")
+             response.render('error')
+        }
+    }
 
     const data = {
         "id": pokeNew.id,
@@ -63,8 +105,8 @@ app.post('/pokemon', function(request, response) {
     jsonfile.readFile(file, (err, obj) => {
 
         console.log(err)
-        // let pokeList = obj.pokemon
-        // console.log(pokeList)
+        let pokeList = obj.pokemon
+
         obj.pokemon.push(pokeNew)
         console.log(obj.pokemon[obj.pokemon.length-1])
 
@@ -77,7 +119,7 @@ app.post('/pokemon', function(request, response) {
          });
     })
     response.render('pokemon', data)
-    console.log()
+
 });
 
 app.get('/pokemon/:id', (request, response) => {
