@@ -1881,6 +1881,30 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "senseiterrence",
+      "img": "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "height": "170cm",
+      "weight": "60kg"
+    },
+    {
+      "id": "153",
+      "num": "153",
+      "name": "terrence",
+      "img": "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "height": "500cm",
+      "weight": "500g"
+    },
+    {
+      "id": "154",
+      "num": "154",
+      "name": "t",
+      "img": "img",
+      "height": "4 feet",
+      "weight": "1 lbs"
     }
   ]
 }
