@@ -62,7 +62,7 @@ app.get('/pokemon/:id', (request, response) => {
             // response.send("not found");
         } else {
 
-            response.send(pokemon);
+            response.render('found', pokemon);
         }
     });
 });
