@@ -36,14 +36,14 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
-app.get('/pokemon/id/:id', (request, response) => {
-
+app.get('/pokemon/id', (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
-    let inputId = parseInt( request.params.id );
-
+    console.log(err);
+    // let inputId = parseInt( request.params.id );
+    let inputId = parseInt( request.query.id )
     var pokemon;
 
     // find pokemon by id from the pokedex json file
@@ -94,7 +94,7 @@ app.post('/pokemon', (request, response) => {
       } else  { 
     data = {warning: "Pokemon Added!"}; 
       }
-  response.render('home', data);
+  response.render('new', data);
   
 
   // add the new data to the read object
