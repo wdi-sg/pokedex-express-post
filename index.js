@@ -54,7 +54,7 @@ app.get('/pokemon/:id', (request, response) => {
             if (data === undefined) {
 // send 404 back
                 response.status(404);
-                response.send("not found");
+                response.send(`<html><body style="text-align: center;"><h1>ERROR 404</h1><img src="https://i.pinimg.com/originals/ed/ca/4b/edca4bc1f1c89aaf399e730f2ebf66d0.png"></body></html>`);
             } else {
                 response.render('show', data);
             }
@@ -63,11 +63,27 @@ app.get('/pokemon/:id', (request, response) => {
 });
 /*
  * ===================================
- * GET landing
+ * GET empty
  * ===================================
  */
 app.get('/', (request, response) => {
     response.send("ARE YOU TRYING TO LOOK FOR THE POKEDEX? PLEASE GO TO PATH /pokemon");
+});
+/*
+ * ===================================
+ * GET index
+ * ===================================
+ */
+app.get('/pokemon', (request, response) => {
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        let list = "";
+        if (err) console.log(err);
+        for (let i=0; i<obj.pokemon.length; i++) {
+            list += `<span>${obj.pokemon[i].name}</span><br/>`;
+        };
+        response.send(`<html><body><h1>Welcome to the online Pokdex!</h1>${list}</body></html>`);
+    });
 });
 /*
  * ===================================
