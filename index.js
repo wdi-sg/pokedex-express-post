@@ -26,33 +26,48 @@ app.get('/pokemon/new', (request, response) => {
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+  // jsonfile.readFile(FILE, (err, obj) => {
+  //   // obj is the object from the pokedex json file
+  //   // extract input data from request
+  //   let inputId = parseInt( request.params.id );
 
-    var pokemon;
+  //   var pokemon;
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+  //   // find pokemon by id from the pokedex json file
+  //   for( let i=0; i<obj.pokemon.length; i++ ){
 
-      let currentPokemon = obj.pokemon[i];
+  //     let currentPokemon = obj.pokemon[i];
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+  //     if( currentPokemon.id === inputId ){
+  //       pokemon = currentPokemon;
+  //     }
+  //   }
 
-    if (pokemon === undefined) {
+  //   if (pokemon === undefined) {
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+  //     // send 404 back
+  //     response.status(404);
+  //     response.send("not found");
+  //   } else {
 
-      response.send(pokemon);
-    }
-  });
+  //     // response.send(pokemon);
+  //   // displaying image from other jsx file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // receive ID input as integer
+        let inputId = parseInt(request.params.id);
+        // create "global variable" to hold data
+        let displayData;
+        // loop through pokemon
+        for (let i = 0; i <obj.pokemon.length; i++) {
+            let selectedPoke = obj.pokemon[i];
+            // condition for matching id's
+            if (inputId === selectedPoke.id) {
+            //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
+                displayData = selectedPoke;
+            }
+        }
+    response.render('display', displayData);
+    });
 });
 
 
@@ -80,15 +95,5 @@ app.post('/pokemon', (request, response) => {
     console.log("append to main pokedex");
     });
 });
-
-// app.get('/pokemon', (req,res) => {
-//     console.log("displaying user input");
-//     let newPokemon = request.body;
-//     response.render('addition', newPokemon);
-// });
-
-
-
-
 
 app.listen(7000, () => console.log('~~~ Tuning in to the waves of port 7000 ~~~'));
