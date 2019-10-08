@@ -77,7 +77,7 @@ app.get("/pokemon/:id", (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-      response.send(pokemon);
+      response.render("profile", pokemon);
     }
   });
 });
