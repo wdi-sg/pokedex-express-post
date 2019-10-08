@@ -12,6 +12,7 @@ The starter code in this repository builds upon the previous exercise's ([pokede
 2.  Run `npm install` to install dependencies
 3.  Look in the starter file called `index.js`, run `nodemon` to start local server on port 3000
 4.  Open `localhost:3000` on your browser and see the home page
+5.  Install the react jsx express libraries described in the gitbook
 
 #### Note on comments:
 
@@ -29,7 +30,7 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Further
 
-* at the root route (GET request) `/` display a list of all the pokemons in the pokedex
+* validate the user's input data. If the user makes a mistake (i.e., the name of the pokemon is empty) render the form instead. Display the error that they made and how they can correct it.
 
 * Add a "Sort by name" button to the homepage (`/` route) that when clicked, sends a GET request with a query parameter specifying "?sortby=name" ( this requests a whole new page )
   - (hint) this button should be a subit button in a form with method GET. You would need to add an input that creates the appropriate request.
@@ -40,6 +41,10 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Add a "Sort by height" button to the homepage
   - what do you need to write to abstract the idea of *sorting* in your code? What is the most elegant way to sort by any field in the pokedex?
+  
+* restrict the user from creating a pokemon with a id, number and name that already exists
+
+* validate all of the incoming user data. Restrict values to reasonable numbers (i.e. height less that 100, etc.) What is the best structure for your app to have this validation code?
 
 * Instead of saving `id` and `num` as random values input by the user via the form, implement the logic that guarantees the uniqueness of `id` and `num` of every newly created pokemon
   * eg. if last pokemon in the `pokedex.json` has `"id": 151` and `"num": "151"`, the new pokemon object could have `"id": 152` and `"num": "152"`
