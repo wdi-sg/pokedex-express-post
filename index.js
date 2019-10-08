@@ -77,12 +77,14 @@ app.get('/', (request, response) => {
 app.get('/pokemon', (request, response) => {
 
     jsonfile.readFile(FILE, (err, obj) => {
-        let list = "";
+        const data = {
+            list: ""
+        }
         if (err) console.log(err);
         for (let i=0; i<obj.pokemon.length; i++) {
-            list += `<span>${obj.pokemon[i].name}</span><br/>`;
+            data.list += `${obj.pokemon[i].name}\n`;
         };
-        response.send(`<html><body><h1>Welcome to the online Pokdex!</h1>${list}</body></html>`);
+        response.render('index', data);
     });
 });
 /*
