@@ -131,6 +131,7 @@ app.get('/pokemon?', (request, response) => {
 
             });
             break;
+
         case 'height':
             jsonfile.readFile(FILE, (err, obj) => {
 
@@ -144,11 +145,21 @@ app.get('/pokemon?', (request, response) => {
                 response.send(results);
             })
             break;
+
         case 'weight':
-            response.send('sortby=weight');
+            jsonfile.readFile(FILE, (err, obj) => {
+
+                for (var j = 0; j < obj.pokemon.length; j++) {
+                    results.push({ name : obj.pokemon[j].name, weight : obj.pokemon[j].weight });
+                }
+
+                results.sort((a,b) => {
+                    return parseFloat(a.weight)-parseFloat(b.weight);
+                });
+                response.send(results);
+            })
             break;
     }
-
 
 })
 
