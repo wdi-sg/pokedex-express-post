@@ -68,7 +68,7 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-    response.send("yay");
+    response.render('home');
 });
 
 app.post('/addpokemon', (request, response) => {
@@ -86,6 +86,25 @@ app.post('/addpokemon', (request, response) => {
             response.render('added', request.body);
 
         });
+    });
+})
+
+app.get('/pokemon?', (request, response) => {
+    //output query field
+    console.log(request.query.sortby);
+    //let field = request.query.sortby;
+    let results = [];
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        // save the request body
+        for ( var i=0; i<obj.pokemon.length; i++) {
+            results.push(obj.pokemon[i].name);
+        }
+
+        results.sort();
+        // render out requested data
+        response.send(results);
+
     });
 })
 
