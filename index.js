@@ -17,7 +17,6 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-
 /**
  * ===================================
  * React template setup
@@ -38,63 +37,45 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
-
-app.post('/pokemon', (request, response) => {
-  const FILE = 'pokedex.json';
-  const newPokemon = request.body;
-
-  jsonfile.readFile(FILE, (err, obj) => {
-    // console.log(obj.pokemon[0]);
-    obj.pokemon.push(newPokemon);
-
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.log(err)
-    });
+app.get('/', (req, res) => {
+  jsonfile.readFile(FILE, (err,obj) => {
+    res.render("home");
   });
+});
 
-  response.render("success");
+app.get('/pokemon', (req, res) => {
+  let sortParam = 'name';
+  sortParam = req.query.sortby;
 
+  jsonfile.readFile(FILE, (err,obj) => {
+    const pokemonSorted = obj.pokemon.sort(
+      (a,b) => (a[sortParam] > b[sortParam]) ? 1 : (a[sortParam] < b[sortParam]) ? -1 : 0
+    );
+  
+    const data = {
+      sortParam : sortParam,
+      pokemonSorted : pokemonSorted
+    };
+    res.render("sorted", data);
+  });
 });
 
 app.get('/pokemon/new', (request, response) => {
   response.render("form");
 });
 
-app.get('/pokemon/:id', (request, response) => {
-
-  // get json from specified file
+app.post('/pokemon', (request, response) => {
+  const newPokemon = request.body;
   jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
+    obj.pokemon.push(newPokemon);
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.log(err);
+      response.render("success");
+    });
   });
+  // response.render("success");
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
 
 
 /**
