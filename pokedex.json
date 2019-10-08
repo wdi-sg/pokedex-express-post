@@ -52,17 +52,11 @@
       "spawn_time": "08:45"
     },
     {
-      "id": 5,
-      "num": "005",
-      "name": "Charmeleon",
-      "img": "http://www.serebii.net/pokemongo/pokemon/005.png",
-      "height": "1.09 m",
-      "weight": "19.0 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.2,
-      "spawn_time": "19:00"
+      "id": "6",
+      "num": "",
+      "name": "Charizard",
+      "height": "1.70 m",
+      "weight": "90.5 kg"
     },
     {
       "id": 6,
@@ -693,17 +687,11 @@
       "spawn_time": "23:06"
     },
     {
-      "id": 56,
-      "num": "056",
-      "name": "Mankey",
-      "img": "http://www.serebii.net/pokemongo/pokemon/056.png",
-      "height": "0.51 m",
-      "weight": "28.0 kg",
-      "candy": "Mankey Candy",
-      "candy_count": 50,
-      "egg": "5 km",
-      "avg_spawns": 92,
-      "spawn_time": "12:52"
+      "id": "57",
+      "num": "057",
+      "name": "Primeape",
+      "height": "0.9888 m",
+      "weight": "32.0 kg"
     },
     {
       "id": 57,
@@ -1881,6 +1869,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
-    }
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "sdfghjk",
+      "height": "20 cm",
+      "weight": "5 kg"
+    },
+    153
   ]
 }
