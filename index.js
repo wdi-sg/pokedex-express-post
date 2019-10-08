@@ -11,6 +11,12 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 
 /**
  * ===================================
@@ -32,10 +38,27 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
+
+app.post('/pokemon', (request, response) => {
+  const FILE = 'pokedex.json';
+  const newPokemon = request.body;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+    // console.log(obj.pokemon[0]);
+    obj.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.log(err)
+    });
+  });
+
+  response.render("success");
+
+});
+
 app.get('/pokemon/new', (request, response) => {
   response.render("form");
 });
-
 
 app.get('/pokemon/:id', (request, response) => {
 
