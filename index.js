@@ -82,8 +82,8 @@ app.post('/addpokemon', (request, response) => {
         jsonfile.writeFile(FILE, obj, (err) => {
             console.error(err);
 
-            // now look inside your json file
-            response.send(request.body.name + " added!");
+            // render out added data
+            response.render('added', request.body);
 
         });
     });
