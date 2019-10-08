@@ -92,20 +92,32 @@ app.post('/addpokemon', (request, response) => {
 app.get('/pokemon?', (request, response) => {
     //output query field
     console.log(request.query.sortby);
-    //let field = request.query.sortby;
+    let field = request.query.sortby;
     let results = [];
 
-    jsonfile.readFile(FILE, (err, obj) => {
-        // save the request body
-        for ( var i=0; i<obj.pokemon.length; i++) {
-            results.push(obj.pokemon[i].name);
-        }
+    switch(field) {
+        case 'name':
+            jsonfile.readFile(FILE, (err, obj) => {
+            // save the request body
+            for ( var i=0; i<obj.pokemon.length; i++) {
+                results.push(obj.pokemon[i].name);
+            }
 
-        results.sort();
-        // render out requested data
-        response.send(results);
+            results.sort();
+            // render out requested data
+            response.send(results);
 
-    });
+            });
+        break;
+        case 'height':
+            response.send('sortby=height');
+        break;
+        case 'weight':
+            response.send('sortby=weight');
+        break;
+    }
+
+
 })
 
 /**
