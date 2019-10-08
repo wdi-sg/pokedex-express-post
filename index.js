@@ -28,7 +28,6 @@ app.use(express.urlencoded({
  */
 
 app.get('/pokemon/new', (request, response) => {
-
   response.render ('new');
   // response.send(`<form method="POST" action="/pokemon">
   // Pokemon details:<br><br>
@@ -75,29 +74,33 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
-
-
-  // jsonfile.writeFile(FILE, obj, function (err) {
-
-  //   if (err) console.error(err)
-  // })
-
-
-
 app.post('/pokemon', (request, response) => {
-  //debug code (output request body)
-  console.log(request.body);
-  jsonfile.readFile(FILE, (err, obj) => {
-  obj.pokemon.push(request.body);
-    // save the request body
-    jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
-      console.error(err)
-      // response.render('home', FILE)
-      // // now look inside your json file
-      
-    });
+  let keys = Object.keys(request.body);
+  let body = request.body;
+  const empty = [];
+  keys.forEach((k) => {
+    if (body[k] === "") {
+      empty.push(k);
+    }
   });
-  response.send(request.body);
+  if (empty.length > 0) {
+    response.send(`${empty.join()} is/are required to be filled`);
+  } else {
+    response.send(request.body);
+
+    //debug code (output request body)
+    console.log(request.body);
+    jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.push(request.body);
+      // save the request body
+      jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
+        console.error(err)
+        // response.render('home', FILE)
+        // // now look inside your json file
+        
+      });
+    });
+  }
 });
 /**
  * ===================================
