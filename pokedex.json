@@ -1953,5 +1953,13 @@
 				"img": "https://cdn.bulbagarden.net/upload/thumb/d/d5/160Feraligatr.png/250px-160Feraligatr.png",
 				"height": "2.3 m",
 				"weight": "88.8 kg"
+		},
+		{
+				"id": 161,
+				"num": "161",
+				"name": "Sentret",
+				"img": "https://cdn.bulbagarden.net/upload/thumb/c/c5/161Sentret.png/250px-161Sentret.png",
+				"height": "0.8 m",
+				"weight": "6.0 kg"
 		}]
 }

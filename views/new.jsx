@@ -6,6 +6,7 @@ class New extends React.Component {
             <html>
                 <body>
                     <h2>New Pokemon!</h2>
+                    <font color="red">{this.props.message}</font>
                     <form method="POST" action="/addpokemon">
                         ID: <input type="number" name="id" required/><br/>
                         Number: <input type="number" name="num" required/><br/>
