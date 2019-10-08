@@ -1,22 +1,50 @@
-const express = require('express');
 const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
-/**
- * ===================================
- * Configurations and set up
- * ===================================
- */
-
-// Init express app
+const express = require('express');
 const app = express();
 
-/**
- * ===================================
- * Routes
- * ===================================
- */
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// app.post('/animals', function(request, response) {
+
+//   //debug code (output request body)
+//   console.log(request.body);
+
+app.get('/pokemon', (request, response) => {
+  // render a template form here
+  // response.send("hello world");
+  response.render('home');
+  //After render is the file name in the open inverted commas.
+});
+
+app.post('/pokemon',(request, response)=>{
+  console.log("EVERYTHING in the form request", request.body );
+  // response.send("WOW THE POST");
+
+  // save the request body
+  jsonfile.writeFile('pokedex.json', request.body, (err) => {
+    console.error(err)
+
+    // now look inside your json file
+    response.send(request.body);
+  });
+
+});
+
+
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -38,6 +66,8 @@ app.get('/pokemon/:id', (request, response) => {
       }
     }
 
+
+
     if (pokemon === undefined) {
 
       // send 404 back
@@ -54,9 +84,10 @@ app.get('/', (request, response) => {
   response.send("yay");
 });
 
+
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(5000, () => console.log('~~~ Tuning in to the waves of port 5000 ~~~'));
