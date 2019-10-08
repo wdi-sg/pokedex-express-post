@@ -22,9 +22,15 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-/**
+/*
  * ===================================
  * Routes
+ * ===================================
+ */
+
+/*
+ * ===================================
+ * GET show
  * ===================================
  */
 
@@ -50,33 +56,40 @@ app.get('/pokemon/:id', (request, response) => {
                 response.status(404);
                 response.send("not found");
             } else {
-                response.render('page', data);
+                response.render('show', data);
             }
         });
     }
 });
-
+/*
+ * ===================================
+ * GET landing
+ * ===================================
+ */
 app.get('/', (request, response) => {
     response.send("ARE YOU TRYING TO LOOK FOR THE POKEDEX? PLEASE GO TO PATH /pokemon");
 });
-
+/*
+ * ===================================
+ * POST create
+ * ===================================
+ */
 app.post('/pokemon', function(request, response) {
 //debug code (output request body)
     console.log(request.body);
 //read the current file
     jsonfile.readFile(FILE, (err, obj) => {
-        console.log(err);
+        if (err) console.log(err);
 // push the new pokemon to pokemon array
         obj.pokemon.push(request.body);
 // write this new obj to pokedex.json
         jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
-            console.log(err)
+            if (err) console.log(err)
         });
-// endpoint
     });
-    response.send(request.body);
+// endpoint
+    response.render('show', request.body);
 });
-
 /**
  * ===================================
  * Listen to requests on port 3000

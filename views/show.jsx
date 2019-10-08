@@ -1,5 +1,5 @@
 var React = require('react');
-class Page extends React.Component {
+class Show extends React.Component {
   render() {
     return (
       <html>
@@ -18,4 +18,4 @@ class Page extends React.Component {
   }
 }
 
-module.exports = Page;
+module.exports = Show;

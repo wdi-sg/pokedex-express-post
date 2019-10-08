@@ -6,12 +6,12 @@ class New extends React.Component {
         <body>
           <div>
             <form method="POST" action="/pokemon">
-                <div>Pokemon Id:</div><input type="text" name="id"/>
-                <div>Pokemon Number:</div><input type="text" name="num"/>
-                <div>Pokemon Name:</div><input type="text" name="name"/>
-                <div>Pokemon Image:</div><input type="text" name="img"/>
-                <div>Pokemon Height:</div><input type="text" name="height"/>
-                <div>Pokemon Weight:</div><input type="text" name="weight"/>
+                <div>Pokemon Id:</div><input type="text" name="id" required/>
+                <div>Pokemon Number:</div><input type="text" name="num" required/>
+                <div>Pokemon Name:</div><input type="text" name="name" required/>
+                <div>Pokemon Image:</div><input type="text" name="img" required/>
+                <div>Pokemon Height:</div><input type="text" name="height" required/>
+                <div>Pokemon Weight:</div><input type="text" name="weight" required/>
                 <div><input type="submit" value="Submit"/></div>
             </form>
           </div>
