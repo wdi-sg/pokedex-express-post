@@ -74,6 +74,8 @@ app.get('/', (request, response) => {
 app.post('/addpokemon', (request, response) => {
     //debug code (output request body)
     console.log(request.body);
+    let newPokemon = request.body;
+    newPokemon.id = parseInt(newPokemon.id);
 
     jsonfile.readFile(FILE, (err, obj) => {
         // save the request body
