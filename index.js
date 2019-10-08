@@ -2,7 +2,6 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
-
 /**
  * ===================================
  * Configurations and set up
@@ -12,6 +11,22 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+
 /**
  * ===================================
  * Routes
@@ -20,38 +35,46 @@ const app = express();
 
 app.get('/pokemon/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+    // if (request.params.id === "new") {
+    //     console.log("Yay, new pokemon! Gotta catch em' all!");
+    //     response.render('new');
+    // } else {
 
-    var pokemon;
+        // get json from specified file
+        jsonfile.readFile(FILE, (err, obj) => {
+            // obj is the object from the pokedex json file
+            // extract input data from request
+            let inputId = parseInt(request.params.id);
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+            var pokemon;
 
-      let currentPokemon = obj.pokemon[i];
+            // find pokemon by id from the pokedex json file
+            for (let i = 0; i < obj.pokemon.length; i++) {
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+                let currentPokemon = obj.pokemon[i];
 
-    if (pokemon === undefined) {
+                if (currentPokemon.id === inputId) {
+                    pokemon = currentPokemon;
+                }
+            }
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+            if (pokemon === undefined || request.params.id === "new") {
 
-      response.send(pokemon);
-    }
-  });
+                console.log("Yay, new pokemon! Gotta catch em' all!");
+                response.render('new');
+                // // send 404 back
+                // response.status(404);
+                // response.send("not found");
+            } else {
+
+                response.send(pokemon);
+            }
+        });
+    //}
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+    response.send("yay");
 });
 
 /**
