@@ -54,7 +54,7 @@ app.get('/pokemon/:id', (request, response) => {
         }
 
         if (pokemon === undefined || request.params.id === "new") {
-            //add new pokemon
+            //add new pokemon if id not taken or new
             console.log("Yay, new pokemon! Gotta catch em' all!");
             response.render('new');
 
@@ -73,10 +73,10 @@ app.get('/', (request, response) => {
 });
 
 app.post('/addpokemon', (request, response) => {
-    //debug code (output request body)
+    // debug code (output request body)
     console.log(request.body);
     let newPokemon = request.body;
-    //check if new id = new num
+    // check if new id = new num
     if (newPokemon.id !== newPokemon.num) {
         let wrong = { message: "ID does not match Number!" };
         response.render('new', wrong);
@@ -86,7 +86,7 @@ app.post('/addpokemon', (request, response) => {
         let nameExist = false;
 
         jsonfile.readFile(FILE, (err, obj) => {
-            //check if name already exist
+            // check if name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
                 if (newPokemon.name === obj.pokemon[i].name) {
                     let wrong = { message: "Name already exist!" };
@@ -95,17 +95,17 @@ app.post('/addpokemon', (request, response) => {
                 }
             }
             // save the request body
-            if ( nameExist===false ) {
+            if (nameExist === false) {
                 obj.pokemon.push(newPokemon);
 
-            jsonfile.writeFile(FILE, obj, (err) => {
-                console.error(err);
+                jsonfile.writeFile(FILE, obj, (err) => {
+                    console.error(err);
 
-                // render out added data
-                response.render('added', newPokemon);
+                    // render out added data
+                    response.render('added', newPokemon);
 
-            });
-        }
+                });
+            }
 
         });
     }
@@ -120,11 +120,11 @@ app.get('/pokemon?', (request, response) => {
     switch (field) {
         case 'name':
             jsonfile.readFile(FILE, (err, obj) => {
-                // save the request body
+                // get name of all pokemons
                 for (var i = 0; i < obj.pokemon.length; i++) {
                     results.push(obj.pokemon[i].name);
                 }
-
+                // sort names alphabetically
                 results.sort();
                 // render out requested data
                 response.send(results);
@@ -132,7 +132,17 @@ app.get('/pokemon?', (request, response) => {
             });
             break;
         case 'height':
-            response.send('sortby=height');
+            jsonfile.readFile(FILE, (err, obj) => {
+
+                for (var j = 0; j < obj.pokemon.length; j++) {
+                    results.push({ name : obj.pokemon[j].name, height : obj.pokemon[j].height });
+                }
+
+                results.sort((a,b) => {
+                    return parseFloat(a.height)-parseFloat(b.height);
+                });
+                response.send(results);
+            })
             break;
         case 'weight':
             response.send('sortby=weight');
