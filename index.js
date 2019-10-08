@@ -14,9 +14,28 @@ const app = express();
 
 /**
  * ===================================
+ * React template setup
+ * ===================================
+ */
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+/**
+ * ===================================
  * Routes
  * ===================================
  */
+app.get('/pokemon/new', (request, response) => {
+  response.render("form");
+});
+
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -53,6 +72,7 @@ app.get('/pokemon/:id', (request, response) => {
 app.get('/', (request, response) => {
   response.send("yay");
 });
+
 
 /**
  * ===================================
