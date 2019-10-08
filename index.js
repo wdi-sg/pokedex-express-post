@@ -30,6 +30,7 @@ app.get("/pokemon/new", (req, res) => {
 });
 
 app.post("/pokemon/new", (req, res) => {
+  let nameUsed = false;
   Object.keys(req.body).forEach((value) => {
     if (req.body[value] === "") {
       res.send(`${value} cannot be empty.`);
@@ -38,15 +39,18 @@ app.post("/pokemon/new", (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
     obj.pokemon.forEach((value) => {
       if (value.name.toLowerCase() === req.body.name.toLowerCase()) {
+        nameUsed = true;
         return res.send(`${value.name} has already been caught.`);
       }
     });
-    req.body.id = obj.pokemon.length + 1;
-    req.body.num = obj.pokemon.length + 1;
-    obj.pokemon.push(req.body);
-    jsonfile.writeFile(FILE, obj, (err) => {
-      res.redirect(`/pokemon/${req.body.id}`);
-    });
+    if (!nameUsed) {
+      req.body.id = obj.pokemon.length + 1;
+      req.body.num = obj.pokemon.length + 1;
+      obj.pokemon.push(req.body);
+      jsonfile.writeFile(FILE, obj, (err) => {
+        res.redirect(`/pokemon/${req.body.id}`);
+      });
+    }
   });
 });
 
