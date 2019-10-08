@@ -35,47 +35,59 @@ app.use(express.urlencoded({
 
 app.get('/pokemon/:id', (request, response) => {
 
-    // if (request.params.id === "new") {
-    //     console.log("Yay, new pokemon! Gotta catch em' all!");
-    //     response.render('new');
-    // } else {
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+        // extract input data from request
+        let inputId = parseInt(request.params.id);
 
-        // get json from specified file
-        jsonfile.readFile(FILE, (err, obj) => {
-            // obj is the object from the pokedex json file
-            // extract input data from request
-            let inputId = parseInt(request.params.id);
+        var pokemon;
 
-            var pokemon;
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
 
-            // find pokemon by id from the pokedex json file
-            for (let i = 0; i < obj.pokemon.length; i++) {
+            let currentPokemon = obj.pokemon[i];
 
-                let currentPokemon = obj.pokemon[i];
-
-                if (currentPokemon.id === inputId) {
-                    pokemon = currentPokemon;
-                }
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
             }
+        }
 
-            if (pokemon === undefined || request.params.id === "new") {
+        if (pokemon === undefined || request.params.id === "new") {
 
-                console.log("Yay, new pokemon! Gotta catch em' all!");
-                response.render('new');
-                // // send 404 back
-                // response.status(404);
-                // response.send("not found");
-            } else {
+            console.log("Yay, new pokemon! Gotta catch em' all!");
+            response.render('new');
+            // // send 404 back
+            // response.status(404);
+            // response.send("not found");
+        } else {
 
-                response.send(pokemon);
-            }
-        });
-    //}
+            response.send(pokemon);
+        }
+    });
 });
 
 app.get('/', (request, response) => {
     response.send("yay");
 });
+
+app.post('/new', (request, response) => {
+    //debug code (output request body)
+    console.log(request.body);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        // save the request body
+        obj.pokemon.push(request.body);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+
+            // now look inside your json file
+            response.send(request.body + "added!");
+
+        });
+    });
+})
 
 /**
  * ===================================
