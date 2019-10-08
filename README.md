@@ -28,6 +28,24 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 * Expose a new endpoint that accepts POST requests to `/pokemon`, which parses the form data and saves the new pokemon data into `pokedex.json`
 
+#### RESTful Routing
+
+RESTful routing is a scheme to structure your URLS that removes duplication, and looks clean. For each type of resource, you can specify a set of routes easily.
+
+| **URL** | **HTTP Verb** |  **Action**| **Description** |
+|------------|-------------|------------|----------------|
+| /photos/         | GET       | index | Display a list of all photos |
+| /photos/new      | GET       | new   | Display a form for creating a photo |
+| /photos          | POST      | create | Accept a request for creating a photo |
+| /photos/:id      | GET       | show | Display a page for a single photo |
+| /photos/:id/edit | GET       | edit | Display a form for editing a specific photo |
+| /photos/:id      | PATCH/PUT | update | Accept a request for new data for a specific photo |
+| /photos/:id      | DELETE    | destroy | Accept a request to delete a specific photo |
+
+
+[Read more on wiki](http://en.wikipedia.org/wiki/Representational_state_transfer)
+
+
 ## Further
 
 * create `jsx` files for every page your app displays
