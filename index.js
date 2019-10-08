@@ -12,6 +12,16 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 /**
  * ===================================
  * Routes
@@ -50,9 +60,17 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+
+// if empty build the basic screen for input
 app.get('/', (request, response) => {
-  response.send("yay");
+  // giving home.jsx file an object/context with `name` as a property
+  const data = {name: "Sterling Archer"};
+  response.render('home', data);
 });
+
+// app.get('/', (request, response) => {
+//   response.send("yay");
+// });
 
 /**
  * ===================================
