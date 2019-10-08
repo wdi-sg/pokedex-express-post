@@ -1,8 +1,8 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-// const file = 'pokedex.json';
-const file = 'data.json'
+const file = 'pokedex.json';
+// const file = 'data.json'
 
 /**
  * ===================================
@@ -85,20 +85,28 @@ app.post('/pokemon', function(request, response) {
 
   //debug code (output request body)
   console.log(request.body);
+ let pokeNew = request.body
 
     jsonfile.readFile(file, (err, obj) => {
 
-        console.log("reading")
+        console.log(err)
+        // let pokeList = obj.pokemon
+        // console.log(pokeList)
+        obj.pokemon.push(pokeNew)
+        console.log(obj.pokemon[obj.pokemon.length-1])
+
+
 
 
   // // save the request body
-          jsonfile.writeFile(file, request.body, (err) => {
+          jsonfile.writeFile(file, obj, (err) => {
             console.error(err)
 
     // now look inside your json file
-            response.send(request.body);
+
          });
     })
+    response.send(request.body);
 });
 
 /**
