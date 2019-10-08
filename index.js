@@ -18,7 +18,7 @@ const app = express();
  * ===================================
  */
 
-app.get('/:id', (request, response) => {
+app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
