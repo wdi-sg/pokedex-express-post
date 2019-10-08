@@ -51,6 +51,15 @@ app.post('/pokemon', function(request, response) {
     console.log(request.body);
     let pokeNew = request.body
 
+    const data = {
+        "id": pokeNew.id,
+        "num": pokeNew.num,
+        "name": pokeNew.name,
+        "img": pokeNew.image,
+        "height": pokeNew.height,
+        "weight": pokeNew.weight
+    }
+
     jsonfile.readFile(file, (err, obj) => {
 
         console.log(err)
@@ -67,7 +76,7 @@ app.post('/pokemon', function(request, response) {
 
          });
     })
-    response.send(request.body);
+    response.render('pokemon', data)
     console.log()
 });
 
