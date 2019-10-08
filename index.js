@@ -36,10 +36,9 @@ app.post("/pokemon/new", (req, res) => {
     }
   });
   jsonfile.readFile(FILE, (err, obj) => {
-    console.log(req.body);
-    req.body.id = parseInt(req.body.id);
+    req.body.id = obj.pokemon.length + 1;
+    req.body.num = obj.pokemon.length + 1;
     obj.pokemon.push(req.body);
-    console.log(obj.pokemon[obj.pokemon.length-1]);
     jsonfile.writeFile(FILE, obj, (err) => {
       res.redirect(`/pokemon/${req.body.id}`);
     });
@@ -52,7 +51,6 @@ app.get("/pokemon/:id", (request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     const inputId = parseInt( request.params.id );
-    console.log(inputId);
 
     let pokemon;
 
@@ -76,8 +74,29 @@ app.get("/pokemon/:id", (request, response) => {
 });
 
 
+app.get("/?", (req, res) => {
+  console.log(req.query);
+  const pokeArr = [];
+  jsonfile.readFile(FILE, (err, obj) => {
+    for (let i=0; i<obj.pokemon.length; i++) {
+      pokeArr.push(obj.pokemon[i].name);
+    }
+    if (req.query["sort"]) {
+      pokeArr.sort();
+    }
+    res.render("home", {pokeArr});
+  });
+});
+
 app.get("/", (request, response) => {
-  response.send("yay");
+  const pokeArr = [];
+  jsonfile.readFile(FILE, (err, obj) => {
+    for (let i=0; i<obj.pokemon.length; i++) {
+      pokeArr.push(obj.pokemon[i].name);
+    }
+    console.log(pokeArr);
+    response.render("home", {pokeArr});
+  });
 });
 
 /**

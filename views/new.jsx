@@ -8,10 +8,6 @@ class New extends React.Component {
           <div>
             <h1>New Pokemon Registration</h1>
             <form action="/pokemon/new" method="post" id="new">
-                <label htmlFor="id">ID: </label>
-                <input type="number" name="id" />
-                <label htmlFor="num">Number: </label>
-                <input type="number" name="num" />
                 <label htmlFor="name">Name: </label>
                 <input type="text" name="name" />
                 <label htmlFor="img">Image: </label>
