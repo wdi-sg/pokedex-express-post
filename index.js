@@ -3,6 +3,10 @@ const express = require('express');
 const app = express();
 const FILE = 'pokedex.json';
 const reactEngine = require('express-react-views').createEngine();
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 app.engine('jsx', reactEngine);
 
 // this tells express where to look for the view files
@@ -55,6 +59,52 @@ app.get('/pokemon', (request, response) => {
   response.render('home');
   //After render is the file name in the open inverted commas.
 });
+
+app.get('/pokemon/:id/edit', (request,response) => {
+    console.log(request.params.id);
+
+    jsonfile.readFile(FILE, (err,obj) => {
+        if (err){
+            console.log("Error");
+        } else {
+            let pokeIndex = parseInt(request.params.id - 1)
+            let data = obj.pokemon[pokeIndex];
+            console.log(data);
+            response.render('editForm.jsx', data);
+        }
+    });
+
+});
+
+
+app.put("/pokemon/:id", (request,response) => {
+    console.log("put!");
+    console.log(request.body);
+    response.send(`<html>Edited!</html>`);
+
+let newPokemon = request.body;
+jsonfile.readFile(FILE, (err,obj) => {
+    if (err) {
+        console.log("errorrrrr");
+        console.log(err);
+    } else {
+        let editedPokeIndex = parseInt(newPokemon.id - 1);
+        console.log(editedPokeIndex);
+        obj.pokemon[editedPokeIndex] = newPokemon;
+        jsonfile.writeFile(FILE,obj, (err) => {
+            if (err) {
+                console.log("aw error");
+                console.log(err);
+                response.status(503).send("Not found");
+            } else {
+
+            }
+        });
+    };
+});
+
+
+})
 
 app.post('/pokemon', (request, response) => {
 
