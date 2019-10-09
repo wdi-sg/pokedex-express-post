@@ -181,10 +181,13 @@ app.post('/pokemon', function(request, response) {
  * ===================================
  */
 app.get('/pokemon/:id/edit',(request, response)=>{
-    let id = parseInt(request.params.id);
+    let index = parseInt(request.params.id);
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.log(err);
-        const data = obj.pokemon[id];
+        const data = {
+            pokemon: obj.pokemon[index],
+            index: index
+        };
     response.render('edit', data);
   });
 });
@@ -207,6 +210,41 @@ app.put("/pokemon/:id", (request, response) => {
 // endpoint
     response.render('show', request.body);
 });
+/*
+ * ===================================
+ * GET destroy
+ * ===================================
+ */
+app.get("/pokemon/:id/delete", (request, response) => {
+    let index = parseInt(request.params.id);
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.log(err);
+        const data = {
+            pokemon: obj.pokemon[index],
+            index: index
+        };
+    response.render('delete', data);
+    });
+})
+/*
+ * ===================================
+ * DELETE destroy
+ * ===================================
+ */
+app.delete("/pokemon/:id", (request,response)=>{
+    let id = request.params.id;
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.log(err);
+// splice the pokemon in the array
+        obj.pokemon.splice(parseInt(id),1);
+// write this new obj to pokedex.json
+        jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
+            if (err) console.log(err)
+        });
+    });
+// endpoint
+    response.send('deleted!!!!')
+})
 /**
  * ===================================
  * Listen to requests on port 3000

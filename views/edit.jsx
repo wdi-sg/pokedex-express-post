@@ -1,7 +1,7 @@
 var React = require('react');
 class Edit extends React.Component {
   render() {
-    let pokemon = this.props;
+    let data = this.props;
 
     return (
         <html>
@@ -10,20 +10,20 @@ class Edit extends React.Component {
             </head>
             <body>
                 <div className="container">
-                    <h1>Editing {pokemon.name}</h1>
+                    <h1>Editing {data.pokemon.name}</h1>
                     <div className="jumbotron">
-                        <form method="POST" action={"/pokemon/"+pokemon.id+'?_method=put'}>
+                        <form method="POST" action={"/pokemon/"+data.index+'?_method=put'}>
                             <div class="pokemon-attribute">
                                 <div><h3>Id:</h3></div>
-                                <input name="id" type="text" value={pokemon.id}/>
+                                <input name="id" type="text" value={data.pokemon.id}/>
                                 <div><h3>Name:</h3></div>
-                                <input name="name" type="text" value={pokemon.name}/>
+                                <input name="name" type="text" value={data.pokemon.name}/>
                                 <div><h3>Image:</h3></div>
-                                <input name="img" type="text" value={pokemon.img}/>
+                                <input name="img" type="text" value={data.pokemon.img}/>
                                 <div><h3>Height:</h3></div>
-                                <input name="height" type="text" value={pokemon.height}/>
+                                <input name="height" type="text" value={data.pokemon.height}/>
                                 <div><h3>Weight:</h3></div>
-                                <input name="weight" type="text" value={pokemon.weight}/>
+                                <input name="weight" type="text" value={data.pokemon.weight}/>
                                 <br/><br/>
                                 <div><input type="submit" value="Submit"/></div>
                             </div>

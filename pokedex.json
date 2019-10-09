@@ -1883,20 +1883,11 @@
       "spawn_time": "N/A"
     },
     {
-      "id": "152",
-      "num": "152",
-      "name": "Adidas",
-      "img": "https://i.pinimg.com/originals/72/3e/ae/723eaedfeebbb2a55b064ed463b7224d.jpg",
-      "height": "123",
-      "weight": "456",
-      "_locals": {}
-    },
-    {
-      "id": "152",
-      "name": "Nike",
-      "img": "https://i.pinimg.com/originals/72/3e/ae/723eaedfeebbb2a55b064ed463b7224d.jpg",
-      "height": "123",
-      "weight": "456",
+      "id": "151",
+      "name": "MewThree",
+      "img": "http://www.serebii.net/pokemongo/pokemon/151.png",
+      "height": "10cm",
+      "weight": "5kg",
       "_locals": {}
     }
   ]
