@@ -6,7 +6,7 @@ class Home extends React.Component {
       <html>
         <body>
           <h1>Edit Pokemon {this.props.pokemon.name}</h1>
-          <form method="POST" action="/">
+          <form method="POST" action={"/pokemon/" + this.props.pokemon.id +"?_method=put"}>
             <label>
               id:
               <input

@@ -1,5 +1,6 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
+var methodOverride = require('method-override');
 
 const FILE = "pokedex.json";
 
@@ -11,6 +12,9 @@ const FILE = "pokedex.json";
 
 // Init express app
 const app = express();
+
+app.use(methodOverride('_method'));
+
 // tell your app to use the module
 app.use(express.json());
 app.use(
@@ -81,6 +85,26 @@ app.get("/pokemon/:id/edit", (req, res) => {
     };
     res.render("edit", data);
   });
+});
+
+app.put("/pokemon/:id", (req,res) => {
+  // console.log("req.body!!!",req.body);
+  const editedPokemon = req.body;
+  const editedPokemonId = parseInt(editedPokemon.id);
+  jsonfile.readFile(FILE, (err,obj) => {
+    const indexOfPokemonToBeEdited = obj.pokemon.find( (pokemon, index) => {
+      if (pokemon.id === editedPokemonId) { 
+        return index 
+      };
+    });
+    obj.pokemon.splice(indexOfPokemonToBeEdited, 1, editedPokemon);
+
+    jsonfile.writeFile(FILE, obj, err => {
+      console.log(err);
+      res.send("Pokedex updated!!!!");
+    })
+  })
+
 });
 
 app.post("/pokemon", (request, response) => {
