@@ -7,7 +7,7 @@ class Newform extends React.Component {
         <body>
           <div>
             <h1>Hello pokelovers</h1>
-            <form method="POST" action="/pokemon/new/added">
+            <form method="POST" action="/pokemon">
               Pokemon info:<br/>
               <input type="text" name="id" placeholder="id"/><br/>
               <input type="number" name="num" placeholder="num"/><br/>
