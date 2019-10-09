@@ -29,13 +29,54 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-/*app.get('/pokemon/:id', (request, response) => {
+// GET method to display all pokemons by default - Seems like have problem displaying all
+app.get('/pokemon/', (request, response) => {
+
+    // Read the file and display
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        response.send(obj.pokemon);
+    });
+});
+
+// GET method to get all the form elements for display
+app.get('/pokemon/new', (request, response) => {
+
+    // Render a form
+    response.render('add');
+});
+
+// POST method to save the form data
+app.post('/pokemon', (request, response) => {
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        // obj is the object from the pokedex json file
+        console.log(obj.pokemon);
+        const newPokemon = request.body;
+        obj["pokemon"].push(newPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("Error: " + err);
+            response.send(request.body);
+        });
+    });
+});
+
+app.get('/pokemon/:id', (request, response) => {
+
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -66,43 +107,41 @@ app.set('view engine', 'jsx');
       response.send(pokemon);
     }
   });
-});*/
-
-// GET method to display all pokemons by default - Seems like have problem displaying all
-app.get('/pokemon/', (request, response) => {
-
-    // Read the file and display
-    // get json from specified file
-    jsonfile.readFile(FILE, (err, obj) => {
-
-        response.send(obj.pokemon);
-    });
 });
 
-// GET method to get all the form elements for display
-app.get('/pokemon/new', (request, response) => {
+app.get('/pokemon/:id/edit', (request, response) => {
 
-    // Render a form
-    response.render('form');
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+    let toEditPokemon = obj.pokemon[inputId - 1];
+
+    // Get the ID input and put it in the object that we want to use
+    const data = {
+        id: toEditPokemon.id,
+        num: toEditPokemon.num,
+        name: toEditPokemon.name,
+        image: toEditPokemon.img,
+        height: toEditPokemon.height,
+        weight: toEditPokemon.weight,
+    };
+
+    console.log(data);
+    console.log(data.id);
+    console.log(data.num);
+    console.log(data.name);
+    console.log(data.image);
+    console.log(data.height);
+    console.log(data.weight);
+
+    // Show the edit form with the current data
+    response.render('edit', data);
+  });
 });
 
-// POST method to save the form data
-app.post('/pokemon', (request, response) => {
-
-    // get json from specified file
-    jsonfile.readFile(FILE, (err, obj) => {
-
-        // obj is the object from the pokedex json file
-        console.log(obj.pokemon);
-        const newPokemon = request.body;
-        obj["pokemon"].push(newPokemon);
-
-        jsonfile.writeFile(FILE, obj, (err) => {
-            console.log("Error: " + err);
-            response.send(request.body);
-        });
-    });
-});
 /**
  * ===================================
  * Listen to requests on port 3000
