@@ -15,53 +15,20 @@ app.use(express.urlencoded({
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
 
-// @@@@@@@@@@@@@@@@@@@@@@@@
-
 // landing page
-
 app.get('/', (request, response) => {
     console.log("landing page");
     response.render('landing');
 })
 
-
-// get pokemon by id
-
-app.get('/pokemon/:id', (request, response) => {
-    jsonfile.readFile(FILE, (err, obj) => {
-        // receive ID input as integer
-        let inputId = parseInt(request.params.id);
-        // create "global variable" to hold data
-        let displayData;
-        // loop through pokemon
-        for (let i = 0; i <obj.pokemon.length; i++) {
-            let selectedPoke = obj.pokemon[i];
-            // condition for matching id's
-            if (inputId === selectedPoke.id) {
-            //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
-                displayData = selectedPoke;
-            }
-        }
-    response.render('display', displayData);
-    });
-});
-
-// create form for editing
-app.get('/pokemon/:id/edit', (request, response) => {
-    console.log("edit form created!")
-    response.render('editform');
-})
-
-// search form for new pokemon
-
-app.get('/pokemon/new/entry', (request, response) => {
+// add pokemon form
+app.get('/pokemon/new', (request, response) => {
     console.log("form created");
     response.render('newform');
 });
 
-// writing new pokemon to the current batch of 151
-
-app.post('/pokemon/new/added', (request, response) => {
+// write new pokemon into array
+app.post('/pokemon', (request, response) => {
     console.log("submitting form details");
     console.log(request.body);
     jsonfile.readFile(FILE, (err, obj) => {
@@ -85,5 +52,65 @@ app.post('/pokemon/new/added', (request, response) => {
     console.log("append to main pokedex");
     });
 });
+
+// search pokemon by id
+// app.get('/pokemon/:id', (request, response) => {
+
+
+//     jsonfile.readFile(FILE, (err, obj) => {
+//         // receive ID input as integer
+//         let inputId = parseInt(request.params.id);
+//         // create "global variable" to hold data
+//         let displayData;
+//         // loop through pokemon
+//         for (let i = 0; i <obj.pokemon.length; i++) {
+//             let selectedPoke = obj.pokemon[i];
+//             // condition for matching id's
+//             if (inputId === selectedPoke.id) {
+//             //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
+//                 displayData = selectedPoke;
+//             }
+//         }
+//     response.render('display', displayData);
+//     });
+// });
+
+// create edit form
+app.get('/pokemon/:id/edit', (request, response) => {
+    console.log("edit form created");
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE, (err, obj) =>{
+        console.log("this is the pokemon id number:", obj.pokemon[id-1].name)
+        // because index [0] is actually first pokemon
+        const data = {
+            id: obj.pokemon[id-1].id,
+            num: obj.pokemon[id-1].num,
+            name: obj.pokemon[id-1].name,
+            img: obj.pokemon[id-1].img,
+            height: obj.pokemon[id-1].height,
+            weight: obj.pokemon[id-1].weight
+        };
+        response.render('editform', data);
+    })
+});
+
+// this is actually app.put, but i don't understand objects well. so. it will be app.post, cause that has worked.
+
+app.post('/pokemon/:id', (request, response) => {
+    var pokeIndexId = request.params.id;
+    var editedPokemon = request.body;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log("pokemon being edited is", obj.pokemon[pokeIndexId-1]);
+
+        obj.pokemon[pokeIndexId-1] = editedPokemon;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log(err);
+            response.send("YAY EDITED!!")
+        })
+    })
+})
+
 
 app.listen(7000, () => console.log('~~~ Tuning in to the waves of port 7000 ~~~'));
