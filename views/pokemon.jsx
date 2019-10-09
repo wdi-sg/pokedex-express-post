@@ -6,12 +6,14 @@ class Pokemon extends React.Component {
         <body>
           <div>
 
-           <h1> NEW POKEMON</h1>
-
-           <h2> The Pokemon you have added is {this.props.name}, ID number {this.props.id}/{this.props.num}</h2>
-
-           <h3>Its height is {this.props.height} and its weight is {this.props.weight}</h3>
-
+           <h1> {this.props.name}</h1>
+           <ul>
+                <li>ID number: {this.props.id}</li>
+                <li>Num: {this.props.num}</li>
+                <li>Height: {this.props.height}</li>
+                <li>Weight:{this.props.weight}</li>
+           </ul>
+           <img src={this.props.img}/>
 
 
 
