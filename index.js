@@ -29,8 +29,8 @@ app.use(
   })
 );
 
-const methodOverride = require('method-override')
-app.use(methodOverride('_method'));
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 
 /**
  * ===================================
@@ -40,29 +40,36 @@ app.use(methodOverride('_method'));
 
 // Home Route
 app.get("/home", (request, response) => {
-  response.render("home");
-});
 
-// sort by name route
 
-app.get("/?", (request, response) => {
-console.log(request.query.sortby)
-  let result = [];
   jsonfile.readFile(FILE, (err, obj) => {
-    if (err) {
-      console.log("err", err);
-    }
-    
     const pokedex = obj.pokemon;
-    for(let i = 0; i<pokedex.length; i++){
-      result.push(pokedex[i]["name"])
-    }
-   
-    response.send(result.sort())
-    
-  });
 
-});
+    const data = {
+      pokedex: pokedex,
+    }
+    response.render("home", data);
+  })
+})
+
+  // sort by name route
+
+  app.get("/?", (request, response) => {
+    console.log(request.query.sortby);
+    let result = [];
+    jsonfile.readFile(FILE, (err, obj) => {
+      if (err) {
+        console.log("err", err);
+      }
+
+      const pokedex = obj.pokemon;
+      for (let i = 0; i < pokedex.length; i++) {
+        result.push(pokedex[i]["name"]);
+      }
+
+      response.render("home",);
+    });
+  });
 
 
 // Render initial form
@@ -111,84 +118,74 @@ app.post("/pokemon", (request, response) => {
   });
 });
 
-app.get("/pokemon/:id/edit", (request, response) =>{
-  const id = (request.params.id) - 1; 
+app.get("/pokemon/:id/edit", (request, response) => {
+  const id = request.params.id - 1;
   jsonfile.readFile(FILE, (err, obj) => {
     const pokedex = obj.pokemon;
-    
-  const data = {
-    id: pokedex[id].id,
-    num: pokedex[id].num,
-    name: pokedex[id].name,
-    img: pokedex[id].img,
-    height: pokedex[id].height,
-    weight: pokedex[id].weight,
-    candy: pokedex[id].candy,
-    egg: pokedex[id].egg,
-    spawns: pokedex[id].avg_spawns,
-    spawntime: pokedex[id].spawn_time
- 
-  }
-  response.render("edit", data)
- 
-  });
-  
-})
 
-app.put("/pokemon/:id", (request, response) =>{
+    const data = {
+      id: pokedex[id].id,
+      num: pokedex[id].num,
+      name: pokedex[id].name,
+      img: pokedex[id].img,
+      height: pokedex[id].height,
+      weight: pokedex[id].weight,
+      candy: pokedex[id].candy,
+      egg: pokedex[id].egg,
+      spawns: pokedex[id].avg_spawns,
+      spawntime: pokedex[id].spawn_time
+    };
+    response.render("edit", data);
+  });
+});
+
+app.put("/pokemon/:id", (request, response) => {
   var id = request.params.id - 1;
   var editedPoke = request.body;
 
-jsonfile.readFile(FILE, (err, obj) => {
-   
+  jsonfile.readFile(FILE, (err, obj) => {
     obj.pokemon[id] = editedPoke;
 
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.log(err)
-     response.render("home")
+    jsonfile.writeFile(FILE, obj, err => {
+      console.log(err);
+      response.render("home");
     });
-
   });
-})
+});
 
 app.get("/pokemon/:id/delete", (request, response) => {
-  const id = (request.params.id) - 1; 
+  let id = request.params.id - 1;
   jsonfile.readFile(FILE, (err, obj) => {
     const pokedex = obj.pokemon;
-    
-  const data = {
-    id: pokedex[id].id,
-    num: pokedex[id].num,
-    name: pokedex[id].name,
-    img: pokedex[id].img,
-    height: pokedex[id].height,
-    weight: pokedex[id].weight,
-    candy: pokedex[id].candy,
-    egg: pokedex[id].egg,
-    spawns: pokedex[id].avg_spawns,
-    spawntime: pokedex[id].spawn_time
- 
-  }
-  response.render("delete", data)
- 
-  });
-})
 
-app.delete("/pokemon/:id", (request, response)=>{
+    const data = {
+      id: pokedex[id].id,
+      num: pokedex[id].num,
+      name: pokedex[id].name,
+      img: pokedex[id].img,
+      height: pokedex[id].height,
+      weight: pokedex[id].weight,
+      candy: pokedex[id].candy,
+      egg: pokedex[id].egg,
+      spawns: pokedex[id].avg_spawns,
+      spawntime: pokedex[id].spawn_time
+    };
+    response.render("delete", data);
+  });
+});
+
+app.delete("/pokemon/:id", (request, response) => {
   var id = request.params.id - 1;
-  
 
-jsonfile.readFile(FILE, (err, obj) => {
-   
-    obj.pokemon.splice(id, 1 )
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.splice(id, 1);
 
-    jsonfile.writeFile(FILE, obj, (err) => {
-      console.log(err)
-     response.render("home")
+    jsonfile.writeFile(FILE, obj, err => {
+      console.log(err);
+      response.render("home");
     });
-
   });
-}) 
+});
 /**
  * ===================================
  * Listen to requests on port 3000

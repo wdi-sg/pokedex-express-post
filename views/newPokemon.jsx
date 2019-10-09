@@ -4,14 +4,15 @@ class NewPokemon extends React.Component {
     return (
       <html>
         <body>
+          <h1>Add a New Pokemon</h1>
           <div>
             <form method="POST" action="/pokemon">
-              <p>ID: <input type="text" name="id" /></p>
-              <p>NUM: <input type="text" name="num" /></p>
-              <p> NAME: <input type="text" name="name"  /></p>
-              <p>IMG: <input type="text" name="img" /></p>
-              <p>Height: <input type="text" name="height" /></p>
-              <p> Weight: <input type="text" name="weight" /></p>
+              <p>ID: <input type="text" name="id" required/></p>
+              <p>NUM: <input type="text" name="num" required/></p>
+              <p> NAME: <input type="text" name="name"  required/></p>
+              <p>IMG: <input type="text" name="img" required /></p>
+              <p>Height: <input type="text" name="height" required/></p>
+              <p> Weight: <input type="text" name="weight" required/></p>
             
              
               <input type="submit" />
