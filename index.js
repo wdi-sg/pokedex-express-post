@@ -71,9 +71,41 @@ app.get("/pokemon/:id/edit", (req, res) => {
       res.status(404);
       res.send("not found");
     } else {
-      console.log("get edit", pokemon);
       res.render("edit", pokemon);
     }
+  });
+});
+
+app.get("/pokemon/:id/delete", (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    const inputId = parseInt(req.params.id);
+    let pokemon;
+    for (let i = 0; i < obj.pokemon.length; i++) {
+      const currentPokemon = obj.pokemon[i];
+      if (currentPokemon.id === inputId) {
+        pokemon = currentPokemon;
+      }
+    }
+    if (pokemon === undefined) {
+      // send 404 back
+      res.status(404);
+      res.send("not found");
+    } else {
+      res.render("delete", pokemon);
+    }
+  });
+});
+
+app.delete("/pokemon/:id", (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.forEach((value, i) => {
+      if (value.id === Number(req.params.id)) {
+        obj.pokemon.splice(i, 1);
+      }
+    });
+    jsonfile.writeFile(FILE, obj, (err) => {
+      res.redirect(`/pokemon/${req.params.id}`);
+    });
   });
 });
 
