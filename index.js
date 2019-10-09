@@ -69,15 +69,15 @@ app.set('view engine', 'jsx');
 });*/
 
 // GET method to display all pokemons by default - Seems like have problem displaying all
-/*app.get('/pokemon/', (request, response) => {
+app.get('/pokemon/', (request, response) => {
 
     // Read the file and display
     // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
 
-        response.render('pokedex.json');
+        response.send(obj.pokemon);
     });
-});*/
+});
 
 // GET method to get all the form elements for display
 app.get('/pokemon/new', (request, response) => {
@@ -89,13 +89,20 @@ app.get('/pokemon/new', (request, response) => {
 // POST method to save the form data
 app.post('/pokemon', (request, response) => {
 
-    jsonfile.writeFile('pokedex.json', request.body, (err) => {
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
 
-        response.send(request.body);
+        // obj is the object from the pokedex json file
+        console.log(obj.pokemon);
+        const newPokemon = request.body;
+        obj["pokemon"].push(newPokemon);
 
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("Error: " + err);
+            response.send(request.body);
+        });
     });
 });
-
 /**
  * ===================================
  * Listen to requests on port 3000
