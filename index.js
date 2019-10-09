@@ -193,6 +193,23 @@ app.get('/pokemon/:id/edit', (request, response) => {
     })
 })
 
+app.put('/pokemon/:id', (request, response) => {
+
+    let updateId = parseInt(request.params.id)-1;
+    let updatedPokemon = request.body;
+    updatedPokemon.id = parseInt(updatedPokemon.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        //replace updated pokemon with new data
+        obj.pokemon.splice(updateId, 1, updatedPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        })
+    })
+
+    response.send("Pokemon updated!");
+})
 
 /**
  * ===================================
