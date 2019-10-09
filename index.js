@@ -184,7 +184,7 @@ app.get('/pokemon/:id/edit',(request, response)=>{
     let id = parseInt(request.params.id);
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.log(err);
-        const data = obj.pokemon[id-1];
+        const data = obj.pokemon[id];
     response.render('edit', data);
   });
 });
@@ -193,10 +193,20 @@ app.get('/pokemon/:id/edit',(request, response)=>{
  * PUT edit
  * ===================================
  */
-// app.put("/pokemon/:id/edit", (request, response) => {
-//     let id = request.params.id;
-//     console.log(request.body);
-// });
+app.put("/pokemon/:id", (request, response) => {
+    let id = request.params.id;
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.log(err);
+// write over the edited pokemon to pokemon array
+        obj.pokemon[parseInt(id)] = request.body;
+// write this new obj to pokedex.json
+        jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
+            if (err) console.log(err)
+        });
+    });
+// endpoint
+    response.render('show', request.body);
+});
 /**
  * ===================================
  * Listen to requests on port 3000

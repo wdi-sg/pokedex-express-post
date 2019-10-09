@@ -2,7 +2,7 @@ var React = require('react');
 class Edit extends React.Component {
   render() {
     let pokemon = this.props;
-    console.log(pokemon);
+
     return (
         <html>
             <head>
@@ -10,20 +10,22 @@ class Edit extends React.Component {
             </head>
             <body>
                 <div className="container">
-                    <h1>Editing NAME OF POKEMON HERE</h1>
+                    <h1>Editing {pokemon.name}</h1>
                     <div className="jumbotron">
-                        <form method="POST" action="/pokemon/'+pokemon.id+'?_method=put">
+                        <form method="POST" action={"/pokemon/"+pokemon.id+'?_method=put'}>
                             <div class="pokemon-attribute">
                                 <div><h3>Id:</h3></div>
-                                <input name="id" type="text" value=""/>
+                                <input name="id" type="text" value={pokemon.id}/>
                                 <div><h3>Name:</h3></div>
-                                <input name="name" type="text" value=""/>
+                                <input name="name" type="text" value={pokemon.name}/>
                                 <div><h3>Image:</h3></div>
-                                <input name="img" type="text" value=""/>
+                                <input name="img" type="text" value={pokemon.img}/>
                                 <div><h3>Height:</h3></div>
-                                <input name="height" type="text" value=""/>
+                                <input name="height" type="text" value={pokemon.height}/>
                                 <div><h3>Weight:</h3></div>
-                                <input name="weight" type="text" value=""/>
+                                <input name="weight" type="text" value={pokemon.weight}/>
+                                <br/><br/>
+                                <div><input type="submit" value="Submit"/></div>
                             </div>
                         </form>
                     </div><br/>
