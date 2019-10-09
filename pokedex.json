@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "151",
+      "name": "MewThree",
+      "img": "http://www.serebii.net/pokemongo/pokemon/151.png",
+      "height": "10cm",
+      "weight": "5kg",
+      "_locals": {}
     }
   ]
 }
