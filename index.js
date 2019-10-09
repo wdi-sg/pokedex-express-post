@@ -156,7 +156,7 @@ app.post('/pokemon', (request, response) => {
   // 
   // save the request body
   // beautify(obj, null, 2, 80)
-  jsonfile.writeFile(obj, (err) => {
+  jsonfile.writeFile(FILE,obj, (err) => {
     console.error(err)
   });
 
@@ -199,7 +199,7 @@ app.put('/pokemon/:id', (request, response) => {
   // save the request body
   // beautify(obj, null, 2, 80)
 
-  jsonfile.writeFile(obj, (err) => {
+  jsonfile.writeFile(FILE,obj, (err) => {
     console.error(err)
   });
 
