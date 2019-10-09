@@ -121,10 +121,27 @@ app.get('/pokemon', (request, response) => {
                 response.render('sortByHeight',data)
             });
             break;
-    //     case weight:
-    //         response.render('index', data);
-    //         break;
-    //     default:
+        case "weight":
+            jsonfile.readFile(FILE, (err, obj) => {
+                if (err) console.log(err);
+                let output = obj.pokemon.map(element=>{
+                    return element;
+                });
+                output.sort((a,b)=>{
+                    if (a["weight"]>b["weight"]) {
+                        return 1;
+                    }
+                    if (b["weight"]>a["weight"]) {
+                        return -1;
+                    }
+                });
+                const data = {
+                    pokemon: output
+                };
+                response.render('sortByWeight',data)
+            });
+            break;
+        default:
     }
     jsonfile.readFile(FILE, (err, obj) => {
         const data = {
