@@ -1,6 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
+const validator = require('is-my-json-valid')
 
 const FILE = 'pokedex.json';
 const datafile = 'data.json'
@@ -27,8 +27,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 app.get('/', (req, res) => {
-  // running this will let express to run home.handlebars file in your views folder
-  res.render('home')
+    // running this will let express to run home.handlebars file in your views folder
+    res.render('home')
 })
 
 
@@ -79,23 +79,72 @@ app.get('/pokemon/new', (request, response) => {
 
 app.post('/pokemon', function(request, response) {
 
-    //debug code (output request body)
-    console.log(request.body);
     let newPokemon = request.body;
+
+    //debug code (output request body)
+    console.log(`The new pokemon is: ${JSON.stringify(newPokemon)}`);
+
+    var validate = validator({
+        required: true,
+        type: 'object',
+        properties: {
+            id: {
+                required: true,
+                type: 'number'
+            },
+            num: {
+                required: true,
+                type: 'string'
+            },
+            name: {
+                required: true,
+                type: 'string'
+            },
+            img: {
+                required: true,
+                type: 'string'
+            },
+            height: {
+                required: true,
+                type: 'string'
+            },
+            weight: {
+                required: true,
+                type: 'string'
+            }
+        }
+    })
+
+    console.log('validating...', validate(newPokemon))
+
+    let error = {err: validate(newPokemon)}
+    console.log(JSON.stringify(error))
+
+    if (validate(newPokemon) !== true) {
+    response.send(`${JSON.stringify(validate.errors)}`)
+    return;
+    }
+
+    // get the last list of errors by checking validate.errors
+    // the following will print [{field: 'data.hello', message: 'is required'}]
+    console.log(validate.errors)
+
     jsonfile.readFile(datafile, (err, obj) => {
         if (err) {
             console.log(err)
         }
-    obj['animals'].push(newPokemon);
-    // save the request body
-    jsonfile.writeFile(datafile, obj, (err) => {
-        console.error(`Error is ${err}`)
+        // pushes the newPokemon (array of objects) into the pokemon object
+        obj['animals'].push(newPokemon);
+        // save the request body
+        jsonfile.writeFile(datafile, obj, (err) => {
+            if (err) {
+            console.error(`Error is ${err}`)
+}
+            // now look inside your json file
+            response.send(request.body);
+        });
 
-        // now look inside your json file
-    response.send(request.body);
     });
-
-});
 
 });
 

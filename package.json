@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-react-views": "^0.11.0",
+    "is-my-json-valid": "^2.20.0",
     "jsonfile": "^4.0.0",
     "method-override": "^2.3.10",
     "react": "^16.10.2",
