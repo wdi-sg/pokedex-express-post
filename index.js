@@ -29,6 +29,9 @@ app.use(
   })
 );
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
@@ -107,6 +110,42 @@ app.post("/pokemon", (request, response) => {
     });
   });
 });
+
+app.get("/pokemon/:id/edit", (request, response) =>{
+  const id = (request.params.id) - 1; 
+  jsonfile.readFile(FILE, (err, obj) => {
+    const pokedex = obj.pokemon;
+    
+  const data = {
+    id: pokedex[id].id,
+    num: pokedex[id].num,
+    name: pokedex[id].name,
+    img: pokedex[id].img,
+    height: pokedex[id].height,
+    weight: pokedex[id].weight
+ 
+  }
+  response.render("edit", data)
+ 
+  });
+  
+})
+
+app.put("/pokemon/:id", (request, response) =>{
+  var id = request.params.id;
+  var editedPoke = request.body;
+
+jsonfile.readFile(file, (err, obj) => {
+   
+    obj.pokemon[id] = editedPoke;
+
+    jsonfile.writeFile(file, obj, (err) => {
+      console.log(err)
+     response.send("EDITED")
+    });
+
+  });
+})
 
 /**
  * ===================================
