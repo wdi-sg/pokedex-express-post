@@ -122,7 +122,11 @@ app.get("/pokemon/:id/edit", (request, response) =>{
     name: pokedex[id].name,
     img: pokedex[id].img,
     height: pokedex[id].height,
-    weight: pokedex[id].weight
+    weight: pokedex[id].weight,
+    candy: pokedex[id].candy,
+    egg: pokedex[id].egg,
+    spawns: pokedex[id].avg_spawns,
+    spawntime: pokedex[id].spawn_time
  
   }
   response.render("edit", data)
@@ -141,12 +145,50 @@ jsonfile.readFile(FILE, (err, obj) => {
 
     jsonfile.writeFile(FILE, obj, (err) => {
       console.log(err)
-     response.send("EDITED")
+     response.render("home")
     });
 
   });
 })
 
+app.get("/pokemon/:id/delete", (request, response) => {
+  const id = (request.params.id) - 1; 
+  jsonfile.readFile(FILE, (err, obj) => {
+    const pokedex = obj.pokemon;
+    
+  const data = {
+    id: pokedex[id].id,
+    num: pokedex[id].num,
+    name: pokedex[id].name,
+    img: pokedex[id].img,
+    height: pokedex[id].height,
+    weight: pokedex[id].weight,
+    candy: pokedex[id].candy,
+    egg: pokedex[id].egg,
+    spawns: pokedex[id].avg_spawns,
+    spawntime: pokedex[id].spawn_time
+ 
+  }
+  response.render("delete", data)
+ 
+  });
+})
+
+app.delete("/pokemon/:id", (request, response)=>{
+  var id = request.params.id - 1;
+  
+
+jsonfile.readFile(FILE, (err, obj) => {
+   
+    obj.pokemon.splice(id, 1 )
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.log(err)
+     response.render("home")
+    });
+
+  });
+}) 
 /**
  * ===================================
  * Listen to requests on port 3000

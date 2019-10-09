@@ -9,6 +9,10 @@ class Edit extends React.Component {
     var img = props.img;
     var height = props.height;
     var weight = props.weight;
+    var candy = props.candy;
+    var egg = props.egg;
+    var spawn = props.spawns;
+    var spawntime = props.spawntime;
  
     return (
       <html>
@@ -22,6 +26,10 @@ class Edit extends React.Component {
              
               <p>Height: <input type="text" name="height" value={height} /></p>
               <p> Weight: <input type="text" name="weight" value={weight} /></p>
+              <p> Candy: <input type="text" name="weight" value={candy} /></p>
+              <p> Egg: <input type="text" name="weight" value={egg} /></p>
+              <p> Average Spawn: <input type="text" name="weight" value={spawn} /></p>
+              <p> Spawn Time: <input type="text" name="weight" value={spawntime} /></p>
               <p> <img src={img} alt=""/></p>
             
               <input type="submit" />
