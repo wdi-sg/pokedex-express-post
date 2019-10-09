@@ -32,12 +32,18 @@ class Home extends React.Component {
             <h1>Sort Poke!</h1>
           </div>
 
+          <form method="POST" action="/pokemon/channel">
+            EDIT A POKEMON! 
+              <input type="text" name="dexNo"/>
+              <input type="submit"/>
+          </form>
+
           <div>
             <form action="/pokemon/new">
                 <button type="submit">Create Pokemon </button>
             </form>
 
-            <form method="GET">
+            <form method="GET" action="/pokemon">
                 <select name="sortby">
                     <option value="id">Id</option>
                     <option value="name">Name</option>

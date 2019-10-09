@@ -36,6 +36,14 @@ let showAllPokemon = (request, response) => {
     });
 }
 
+let checkRoute = (request, response) => {
+    console.log('woohoo')
+    console.log(request.body);
+    let x = request.body.dexNo;
+    let url = `/pokemon/${x}/edit`
+    response.redirect(url);
+}
+
 let createPokemon = (request, response) => {
     response.render('createForm');
 }
@@ -69,6 +77,7 @@ let showPokemon = (request, response) => {
                 let data = {
                     pokemon : pokemon
                 }
+
 
                 response.render('pokemon', data)
             }
@@ -156,6 +165,7 @@ let deletePokemonResult = (request, response) => {
 
 app.get('/pokemon', showAllPokemon);
 app.get('/pokemon/new', createPokemon);
+app.post('/pokemon/channel', checkRoute);
 app.post('/pokemon', createdPokemonResult);
 app.get('/pokemon/:id', showPokemon);
 app.get('/pokemon/:id/edit', editPokemon);
