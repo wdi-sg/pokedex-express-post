@@ -1,5 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+var beautify = require("json-beautify");
 
 const FILE = 'pokedex.json';
 
@@ -81,7 +82,7 @@ app.get('/', (request, response) => {
 app.get('/pokemon/new', (request, response) => {
   // giving home.jsx file an object/context with `name` as a property
   const data = {warning: ""};
-  response.render('home', data);
+  response.render('new', data);
 });
 
 // if empty build the basic screen for input
@@ -113,7 +114,8 @@ app.post('/pokemon', (request, response) => {
   // run the file write
   // 
   // save the request body
-  jsonfile.writeFile(FILE, obj, (err) => {
+  // beautify(obj, null, 2, 80)
+  jsonfile.writeFile(FILE, beautify(obj, null, 2, 80), (err) => {
     console.error(err)
   });
 
