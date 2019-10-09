@@ -12,46 +12,22 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+// @@@@@@@@@@@@@@@@@@@@@@@@
+
+// landing page
 
 app.get('/', (request, response) => {
     console.log("landing page");
     response.render('landing');
 })
 
-app.get('/pokemon/new', (request, response) => {
-    console.log("form created");
-    response.render('home');
-});
+
+// get pokemon by id
 
 app.get('/pokemon/:id', (request, response) => {
-
-  // get json from specified file
-  // jsonfile.readFile(FILE, (err, obj) => {
-  //   // obj is the object from the pokedex json file
-  //   // extract input data from request
-  //   let inputId = parseInt( request.params.id );
-
-  //   var pokemon;
-
-  //   // find pokemon by id from the pokedex json file
-  //   for( let i=0; i<obj.pokemon.length; i++ ){
-
-  //     let currentPokemon = obj.pokemon[i];
-
-  //     if( currentPokemon.id === inputId ){
-  //       pokemon = currentPokemon;
-  //     }
-  //   }
-
-  //   if (pokemon === undefined) {
-
-  //     // send 404 back
-  //     response.status(404);
-  //     response.send("not found");
-  //   } else {
-
-  //     // response.send(pokemon);
-  //   // displaying image from other jsx file
     jsonfile.readFile(FILE, (err, obj) => {
         // receive ID input as integer
         let inputId = parseInt(request.params.id);
@@ -70,8 +46,22 @@ app.get('/pokemon/:id', (request, response) => {
     });
 });
 
+// create form for editing
+app.get('/pokemon/:id/edit', (request, response) => {
+    console.log("edit form created!")
+    response.render('editform');
+})
 
-app.post('/pokemon', (request, response) => {
+// search form for new pokemon
+
+app.get('/pokemon/new/entry', (request, response) => {
+    console.log("form created");
+    response.render('newform');
+});
+
+// writing new pokemon to the current batch of 151
+
+app.post('/pokemon/new/added', (request, response) => {
     console.log("submitting form details");
     console.log(request.body);
     jsonfile.readFile(FILE, (err, obj) => {
