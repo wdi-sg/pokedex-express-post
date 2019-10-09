@@ -1,6 +1,7 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
 const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
 
 const FILE = "pokedex.json";
 
@@ -18,6 +19,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "jsx");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 /**
  * ===================================
@@ -51,6 +53,43 @@ app.post("/pokemon/new", (req, res) => {
         res.redirect(`/pokemon/${req.body.id}`);
       });
     }
+  });
+});
+
+app.get("/pokemon/:id/edit", (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    const inputId = parseInt(req.params.id);
+    let pokemon;
+    for (let i = 0; i < obj.pokemon.length; i++) {
+      const currentPokemon = obj.pokemon[i];
+      if (currentPokemon.id === inputId) {
+        pokemon = currentPokemon;
+      }
+    }
+    if (pokemon === undefined) {
+      // send 404 back
+      res.status(404);
+      res.send("not found");
+    } else {
+      console.log("get edit", pokemon);
+      res.render("edit", pokemon);
+    }
+  });
+});
+
+app.put("/pokemon/:id", (req, res) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.forEach((value) => {
+      if (value.id === Number(req.params.id)) {
+        value.name = req.body.name;
+        value.img = req.body.img;
+        value.height = req.body.height;
+        value.weight = req.body.weight;
+      }
+    });
+    jsonfile.writeFile(FILE, obj, (err) => {
+      res.redirect(`/pokemon/${req.params.id}`);
+    });
   });
 });
 
