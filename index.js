@@ -49,11 +49,12 @@ app.get('/pokemon/:id', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
     let inputId = parseInt( request.params.id );
     var pokemon;
+    let pokeDex = obj.pokemon;
 
     // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+    pokeDex.forEach(function (pokething) {
 
-      let currentPokemon = obj.pokemon[i];
+      let currentPokemon = pokething;
 
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
@@ -67,7 +68,7 @@ app.get('/pokemon/:id', (request, response) => {
         }
         response.render('pokemon', data)
       }
-    }
+    })
 
     if (pokemon === undefined && request.params.id!== "new") {
       // send 404 back
