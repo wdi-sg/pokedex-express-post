@@ -2,23 +2,33 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
+const app = express();
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+ extended: true
+}));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
-
-// Init express app
-const app = express();
-
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-app.get('/pokemon/:id', (request, response) => {
+/*app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -48,11 +58,33 @@ app.get('/pokemon/:id', (request, response) => {
       response.send(pokemon);
     }
   });
+});*/
+
+app.get('/pokemon/new', (request, response) => {
+    response.render('form');
 });
 
-app.get('/', (request, response) => {
-  response.send("yay");
+
+app.post('/pokemon', function(request, response) {
+
+  console.log(request.body);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    //let inputId = parseInt( request.params.id );
+    let pokedexLength = obj.pokemon.length;
+    console.log(pokedexLength);
+
+    jsonfile.writeFile('pokedex.json', request.body, (err) => {
+    console.error(err)
+
+    // now look inside your json file
+    response.send(pokedexLength.push(request.body));
+  });
 });
+});
+
 
 /**
  * ===================================
