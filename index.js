@@ -191,9 +191,40 @@ app.put('/pokemon/:id', (request,response) =>{
 
 app.get('/pokemon/:id/delete', (request, response) => {
 
+    let inputId = request.params.id
+    let index = parseInt(inputId) - 1
 
-        response.render('delete', data)
 
+    jsonfile.readFile(file, (err,obj) =>{
+
+        let pokeName = obj.pokemon[index].name;
+        console.log(pokeName)
+
+        const data = {
+        name: pokeName,
+        img: obj.pokemon[index].img
+        }
+
+    response.render('delete', data)
+    })
+})
+
+app.delete('/pokemon/:id', (request,response) =>{
+    let identifier = request.params.id;
+    let index = identifier-1
+
+
+    jsonfile.readFile(file, (err,obj) =>{
+         let pokeDex = obj.pokemon
+         pokeDex.splice(index,1)
+
+        jsonfile.writeFile(file,obj,{spaces:2},(err)=>{
+
+            console.log(err)
+            response.send("DELETED FOREVER")
+        })
+
+    })
 })
 
 /**
