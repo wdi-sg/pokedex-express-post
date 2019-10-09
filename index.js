@@ -37,6 +37,22 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
+app.get('/pokemon', (request,response)=>{
+    jsonfile.readFile(file, (err, obj) => {
+
+        const data = {
+
+            pokeDex: obj.pokemon
+        }
+         response.render('index', data)
+
+    })
+
+
+
+
+})
+
 //add new pokemon
 app.get('/pokemon/new', (request, response) => {
     response.render('home')
@@ -88,14 +104,17 @@ app.post('/pokemon', function(request, response) {
     let pokeKey = Object.keys(pokeNew)
     console.log(pokeKey)
 
-    for (let i=0; i<pokeKey.length; i++){
-        let key = pokeKey[i]
 
-        if (pokeNew[key] === ""){
+    pokeKey.forEach((item)=> {
+         if (pokeNew[item] === ""){
 
             return response.render('error')
         }
-    }
+
+    }) //this works but throws a "cannot set headers after sent to client" error - probably because it's checking for each...
+
+
+
 
     const data = {
         "id": pokeNew.id,
