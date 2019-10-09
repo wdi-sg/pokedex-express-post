@@ -166,8 +166,9 @@ app.post('/pokemon', (request, response) => {
 
 // overwrite existgin poke
 // if empty build the basic screen for input
-app.put('/pokemon', (request, response) => {
+app.put('/pokemon/:id', (request, response) => {
     console.log('edit pokemon started');
+    var pokeIndex = request.params.id -1;
   // giving home.jsx file an object/context with `name` as a property
   let data = {warning: ""};
   if (request.body.name === "" || request.body.img === "" || request.body.height === "" || request.body.weight === "") {
@@ -188,16 +189,23 @@ app.put('/pokemon', (request, response) => {
   // obj["pokemon"].push(request.body);
     // console.log('new object:', obj)
   // run the file write
-  // 
+    obj["pokemon"][pokeIndex].name = request.body.name;
+    obj["pokemon"][pokeIndex].img = request.body.img;
+    obj["pokemon"][pokeIndex].height = request.body.height;
+    obj["pokemon"][pokeIndex].weight = request.body.weight;
+ // obj["pokemon"][pokeIndex] = request.body;
+    
+    // console.error('new object', obj["pokemon"][pokeIndex])                                                           
   // save the request body
   // beautify(obj, null, 2, 80)
 
-  // jsonfile.writeFile(obj, (err) => {
-  //   console.error(err)
-  // });
+  jsonfile.writeFile(obj, (err) => {
+    console.error(err)
+  });
 
   });
 
+console.log('completed writing')
 });
 
 // app.get('/', (request, response) => {
