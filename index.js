@@ -132,14 +132,14 @@ app.get("/pokemon/:id/edit", (request, response) =>{
 })
 
 app.put("/pokemon/:id", (request, response) =>{
-  var id = request.params.id;
+  var id = request.params.id - 1;
   var editedPoke = request.body;
 
-jsonfile.readFile(file, (err, obj) => {
+jsonfile.readFile(FILE, (err, obj) => {
    
     obj.pokemon[id] = editedPoke;
 
-    jsonfile.writeFile(file, obj, (err) => {
+    jsonfile.writeFile(FILE, obj, (err) => {
       console.log(err)
      response.send("EDITED")
     });

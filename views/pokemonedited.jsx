@@ -1,5 +1,6 @@
+
 var React = require("react");
-class PokemonEdited extends React.Component {
+class Edit extends React.Component {
   render() {
       var props = this.props
     var id = props.id;
@@ -14,7 +15,7 @@ class PokemonEdited extends React.Component {
         <body>
           <div>
               <h1>Edit Pokemon: {name}</h1>
-            <form method="PUT" action="/pokemon/:id">
+            <form method="POST" action={"/pokemon/"+{id}+'?_method=put'}>
               <p>ID: <input type="text" name="id" value= {id}/></p>
               <p>NUM: <input type="text" name="num" value ={num}/></p>
               <p> NAME: <input type="text" name="name" value = {name} /></p>
@@ -32,4 +33,4 @@ class PokemonEdited extends React.Component {
   }
 }
 
-module.exports = PokemonEdited;
+module.exports = Edit;
