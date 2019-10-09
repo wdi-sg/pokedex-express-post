@@ -6,17 +6,16 @@ class Form extends React.Component {
             <html>
         <body>
           <div>
-            <h1>Hello. Enter the details of your new pokemon.</h1>
+            <h1>Enter the details of your new pokemon.</h1>
                 <form method="POST" action="/pokemon">
               New Pokemon:<br/>
-              ID : <input type="number" name="id"/><br/>
-              No. : <input type="number" name="num"/><br/>
-              Name : <input type="text" name="name"/><br/>
-              Image URL : <input type="text" name="img"/><br/>
-              Height: <input type="number" name="height"/><br/>
-              Weight: <input type="number" name="weight"/><br/>
+              ID : <input type="number" name="id" required/><br/>
+              No. : <input type="number" name="num" required/><br/>
+              Name : <input type="text" name="name" required/><br/>
+              Image URL : <input type="text" name="img" required/><br/>
+              Height : <input type="number" name="height" required/><br/>
+              Weight : <input type="number" name="weight" /><br/>
               <input type="submit" value="Submit"/>
-              <p>Error: {this.props.err}</p>
             </form>
           </div>
         </body>
