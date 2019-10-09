@@ -7,6 +7,7 @@ class forms extends React.Component {
           <div>
             <h1>Create Your Pokemon!!</h1>
             <img style={{width: 10 + '%'}} src="https://ih1.redbubble.net/image.288502627.1221/flat,550x550,075,f.u2.jpg"/><br/><br/>
+            <h3 style={{color: "red"}}>ID and Number doesn't match!</h3>
             <form method='POST' action='/pokemon'>
                 ID: <br/><input type='number' name='id' required/><br/><br/>
                 Number: <br/><input type='number' name='num' required/><br/><br/>
