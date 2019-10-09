@@ -1,6 +1,9 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-var beautify = require("json-beautify");
+// var beautify = require("json-beautify");
+
+const methodOverride = require('method-override')
+
 
 const FILE = 'pokedex.json';
 
@@ -12,6 +15,8 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+
+app.use(methodOverride('_method'));
 
 const writeData = {};
 
@@ -36,6 +41,42 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
+
+app.get('/pokemon/:id/edit', (request, response) => {
+  // get json from specified file
+      console.log("id: ",request.params.id);
+  jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    console.log(err);
+    // let inputId = parseInt( request.params.id );
+    let inputId = parseInt( request.params.id )
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.status(404);
+      response.send("not found");
+    } else {
+ // let data = {pokemon: pokemon.name }
+ // console.log("asksi ", pokemon)
+  response.render('edit', pokemon);
+    }
+  });
+});
+
+
 
 app.get('/pokemon/id', (request, response) => {
   // get json from specified file
@@ -115,9 +156,45 @@ app.post('/pokemon', (request, response) => {
   // 
   // save the request body
   // beautify(obj, null, 2, 80)
-  jsonfile.writeFile(FILE, beautify(obj, null, 2, 80), (err) => {
+  jsonfile.writeFile(obj, (err) => {
     console.error(err)
   });
+
+  });
+
+});
+
+// overwrite existgin poke
+// if empty build the basic screen for input
+app.put('/pokemon', (request, response) => {
+    console.log('edit pokemon started');
+  // giving home.jsx file an object/context with `name` as a property
+  let data = {warning: ""};
+  if (request.body.name === "" || request.body.img === "" || request.body.height === "" || request.body.weight === "") {
+    data = {warning: "Empty name or other data..."}; 
+      } else  { 
+    data = {warning: "Pokemon Edited!"}; 
+      }
+  response.render('edit', data);
+  
+
+  // add the new data to the read object
+  // whats the current last ID?
+  jsonfile.readFile(FILE, (err, obj) => {
+
+  // console.log('obj pokemon: ', obj["pokemon"]);
+  // write over existing array item..
+
+  // obj["pokemon"].push(request.body);
+    // console.log('new object:', obj)
+  // run the file write
+  // 
+  // save the request body
+  // beautify(obj, null, 2, 80)
+
+  // jsonfile.writeFile(obj, (err) => {
+  //   console.error(err)
+  // });
 
   });
 
