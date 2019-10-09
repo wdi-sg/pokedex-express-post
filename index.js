@@ -94,7 +94,7 @@ app.post('/addpokemon', (request, response) => {
         jsonfile.readFile(FILE, (err, obj) => {
             // check if ID or name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
-                if ( newPokemon.id === i || newPokemon.name === obj.pokemon[i].name) {
+                if ( newPokemon.id === i+1 || newPokemon.name === obj.pokemon[i].name) {
                     let wrong = { message: "Record already exist!" };
                     response.render('new', wrong);
                     nameExist = true;
@@ -194,7 +194,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 })
 
 app.put('/pokemon/:id', (request, response) => {
-
+    // get index of pokemon to be updated
     let updateId = parseInt(request.params.id)-1;
     let updatedPokemon = request.body;
     updatedPokemon.id = parseInt(updatedPokemon.id);
@@ -210,6 +210,66 @@ app.put('/pokemon/:id', (request, response) => {
 
     response.send("Pokemon updated!");
 })
+
+app.get('/pokemon/:id/delete', (request, response) => {
+    // extract input data from request
+    let inputId = parseInt(request.params.id);
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+
+        var pokemon;
+
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        response.render('delete', pokemon);
+    })
+})
+
+app.delete('/pokemon/:id', (request, response) => {
+    // get index of pokemon to be deleted
+    let deleteId = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        //replace updated pokemon with new data
+        var pokemon;
+        var arrayOfPokemon = [];
+
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            arrayOfPokemon.push(obj.pokemon[i].name);
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === deleteId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        let deleteIndex = arrayOfPokemon.indexOf(pokemon.name);
+        console.log (deleteIndex + pokemon.name);
+        obj.pokemon.splice(deleteIndex, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        })
+        response.send(`Pokemon ${pokemon.name} deleted!`);
+
+    })
+
+
+})
+
 
 /**
  * ===================================
