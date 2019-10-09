@@ -41,7 +41,6 @@ app.get('/pokemon', (request,response)=>{
     jsonfile.readFile(file, (err, obj) => {
 
         const data = {
-
             pokeDex: obj.pokemon
         }
          response.render('index', data)
