@@ -34,8 +34,17 @@ app.set('view engine', 'jsx');
 
 app.get('/pokemon', (req, res) => {
     // running this will let express to run home.handlebars file in your views folder
-    res.render('home')
+    jsonfile.readFile(datafile, (err, obj) => {
+        if (err) {
+            console.log(err);
+        }
+        data = {
+            pokemon: obj.pokemon
+        }
+        res.render('home', data)
+    })
 })
+
 
 
 
@@ -145,6 +154,37 @@ app.put('/pokemon/:id', (request, response) => {
         })
     })
 })
+
+app.get('/pokemon/:id/delete', (request, response) => {
+    let inputId = parseInt(request.params.id) - 1;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log(obj.pokemon[inputId])
+
+        const data = {
+            id: inputId,
+            pokemon: obj.pokemon[inputId]
+        }
+        response.render('delete', data)
+
+    })
+})
+
+app.delete('/pokemon/:id', (request, response) => {
+    let index = parseInt(request.params.id) - 1;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.pokemon.splice(index, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log(err)
+            }
+            response.send("Deleted")
+            })
+    })
+})
+
 
 /**
  * ===================================
