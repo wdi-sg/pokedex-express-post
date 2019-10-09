@@ -88,8 +88,8 @@ app.post('/addpokemon', (request, response) => {
         jsonfile.readFile(FILE, (err, obj) => {
             // check if name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
-                if (newPokemon.name === obj.pokemon[i].name) {
-                    let wrong = { message: "Name already exist!" };
+                if ( newPokemon.id === i || newPokemon.name === obj.pokemon[i].name) {
+                    let wrong = { message: "Record already exist!" };
                     response.render('new', wrong);
                     nameExist = true;
                 }
