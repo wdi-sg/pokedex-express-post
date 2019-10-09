@@ -1881,6 +1881,15 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Agumon",
+      "img": "https://vignette.wikia.nocookie.net/p__/images/a/af/Agumon_DA_The_Movie.png/revision/latest?cb=20190707155018&path-prefix=protagonist",
+      "weight": "20kg",
+      "height": "100m",
+      "_locals": {}
     }
   ]
 }
