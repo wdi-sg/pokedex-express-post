@@ -3,6 +3,7 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
+
 /**
  * ===================================
  * Configurations and set up
@@ -38,6 +39,7 @@ app.set('view engine', 'jsx');
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
+
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = parseInt( request.params.id );
@@ -66,9 +68,16 @@ app.set('view engine', 'jsx');
   });
 });*/
 
-app.get('/', (request, response) => {
-    response.send("yay");
-});
+// GET method to display all pokemons by default - Seems like have problem displaying all
+/*app.get('/pokemon/', (request, response) => {
+
+    // Read the file and display
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        response.render('pokedex.json');
+    });
+});*/
 
 // GET method to get all the form elements for display
 app.get('/pokemon/new', (request, response) => {
