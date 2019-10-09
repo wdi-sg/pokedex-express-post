@@ -27,12 +27,22 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+// Home page
+app.get('/', (request, response) => {
+    response.render('home');
+});
+
+// Pokemon pages
 app.get('/pokemon/:id', (request, response) => {
 
     // get json from specified file
@@ -68,10 +78,6 @@ app.get('/pokemon/:id', (request, response) => {
     });
 });
 
-app.get('/', (request, response) => {
-    response.render('home');
-});
-
 app.post('/addpokemon', (request, response) => {
     // debug code (output request body)
     console.log(request.body);
@@ -86,7 +92,7 @@ app.post('/addpokemon', (request, response) => {
         let nameExist = false;
 
         jsonfile.readFile(FILE, (err, obj) => {
-            // check if name already exist
+            // check if ID or name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
                 if ( newPokemon.id === i || newPokemon.name === obj.pokemon[i].name) {
                     let wrong = { message: "Record already exist!" };
@@ -162,6 +168,31 @@ app.get('/pokemon?', (request, response) => {
     }
 
 })
+
+//edit Pokemon
+app.get('/pokemon/:id/edit', (request, response) => {
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+        // extract input data from request
+        let inputId = parseInt(request.params.id);
+
+        var pokemon;
+
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        response.render('update', pokemon);
+    })
+})
+
 
 /**
  * ===================================

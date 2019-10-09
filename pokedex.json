@@ -1969,5 +1969,13 @@
 				"img": "https://cdn.bulbagarden.net/upload/thumb/4/4b/162Furret.png/250px-162Furret.png",
 				"height": "1.8 m",
 				"weight": "32.5 kg"
+		},
+		{
+				"id": 163,
+				"num": "163",
+				"name": "Hoothoot",
+				"img": "https://cdn.bulbagarden.net/upload/thumb/5/53/163Hoothoot.png/250px-163Hoothoot.png",
+				"height": "0.7 m",
+				"weight": "21.2 kg"
 		}]
 }
