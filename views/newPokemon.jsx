@@ -1,6 +1,8 @@
 var React = require("react");
 class NewPokemon extends React.Component {
   render() {
+
+    
     return (
       <html>
         <body>

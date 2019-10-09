@@ -47,6 +47,7 @@ app.get("/home", (request, response) => {
 
     const data = {
       pokedex: pokedex,
+      query: request.query.sortby
     }
     response.render("home", data);
   })
