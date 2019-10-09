@@ -109,6 +109,7 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+// Method to get pokemon information to update
 app.get('/pokemon/:id/edit', (request, response) => {
 
   // get json from specified file
@@ -129,17 +130,36 @@ app.get('/pokemon/:id/edit', (request, response) => {
         weight: toEditPokemon.weight,
     };
 
-    console.log(data);
-    console.log(data.id);
-    console.log(data.num);
-    console.log(data.name);
-    console.log(data.image);
-    console.log(data.height);
-    console.log(data.weight);
-
     // Show the edit form with the current data
     response.render('edit', data);
   });
+});
+
+// Method to update pokemon information
+app.put('/pokemon/:id', (request, response) => {
+
+    // Read the file and look for the pokemon with the requested ID
+    jsonfile.readFile(FILE, (err, obj) => {
+
+            // Get ID from parameter
+    let inputId = parseInt( request.params.id - 1 );
+
+    //console.log(toUpdatePokemon);
+
+    // Get the data that will be updated into the information
+    let updatedData = request.body;
+
+        // Assign the updated data into the object
+        obj.pokemon[inputId] = updatedData;
+
+        // Write it into the file
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("Error: " + err);
+            response.send(updatedData);
+        });
+
+    });
+
 });
 
 /**
