@@ -5,7 +5,7 @@ const methodOverride = require('method-override')
 
 
 const FILE = 'pokedex.json';
-const datafile = 'data.json';
+const datafile = 'pokedex.json';
 
 
 /**
@@ -84,9 +84,12 @@ app.get('/pokemon/:id', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         // obj is the object from the pokedex json file
         // extract input data from request
-        let inputId = parseInt(request.params.id);
+        let inputId = parseInt(request.params.id) - 1;
 
         var pokemon;
+        const data = {
+            pokemon: obj.pokemon[inputId]
+        }
 
         // find pokemon by id from the pokedex json file
         for (let i = 0; i < obj['pokemon'].length; i++) {
@@ -105,7 +108,7 @@ app.get('/pokemon/:id', (request, response) => {
             response.send("not found");
         } else {
 
-            response.send(pokemon);
+            response.render('show', data)
         }
     });
 });
@@ -125,6 +128,23 @@ app.get('/pokemon/:id/edit', (request, response) => {
     })
 })
 
+app.put('/pokemon/:id', (request, response) => {
+    let index = parseInt(request.params.id) - 1;
+    let editedPokemon = request.body
+    console.log(request.body)
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.pokemon[index+1] = editedPokemon;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) {
+                console.log(err)
+            }
+        console.log("done writing the file")
+        response.send(`Done writing the file. Edited ${obj.pokemon[index+1].name} with this new info: ${JSON.stringify(editedPokemon)}`)
+        })
+    })
+})
 
 /**
  * ===================================
