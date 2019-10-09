@@ -12,8 +12,8 @@ class Home extends React.Component {
             <h3>Pokemon Name</h3>
              <form action="/pokemon" method="POST">
                 <input type="text" name="name"/><br/>
-                <input type="number" name="height"/><br/>
-                <input type="number" name="weight"/><br/>
+                <input type="text" name="height"/><br/>
+                <input type="text" name="weight"/><br/>
                 <input type="number" name="id"/><br/>
                 <input type="number" name="num"/><br/>
                  <input type="text" name="img"/><br/>

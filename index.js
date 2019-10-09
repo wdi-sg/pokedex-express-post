@@ -1,14 +1,7 @@
 const jsonfile = require('jsonfile');
 const express = require('express');
 const app = express();
-
-// tell your app to use the module
-app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
-
-// this line below, sets a layout look to your express project
+const FILE = 'pokedex.json';
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 
@@ -18,11 +11,44 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
-// app.post('/animals', function(request, response) {
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
-//   //debug code (output request body)
-//   console.log(request.body);
+app.get('/pokemon/:id', (request,response) => {
+    if (request.params.id === "newPoke") {
+        response.render("newPoke");
+    } else {
+        jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+        // extract input data from request
+            let inputId = parseInt( request.params.id );
 
+            var pokemon;
+
+            // find pokemon by id from the pokedex json file
+            for( let i=0; i<obj.pokemon.length; i++ ){
+
+              let currentPokemon = obj.pokemon[i];
+
+              if( currentPokemon.id === inputId ){
+                pokemon = currentPokemon;
+              }
+            }
+
+            if (pokemon === undefined) {
+
+              // send 404 back
+              response.status(404);
+              response.send("not found");
+            } else {
+
+              response.send(pokemon);
+            }
+        });
+    }
+});
 app.get('/pokemon', (request, response) => {
   // render a template form here
   // response.send("hello world");
@@ -30,64 +56,29 @@ app.get('/pokemon', (request, response) => {
   //After render is the file name in the open inverted commas.
 });
 
-app.post('/pokemon',(request, response)=>{
-  console.log("EVERYTHING in the form request", request.body );
-  // response.send("WOW THE POST");
+app.post('/pokemon', (request, response) => {
 
-  // save the request body
-  jsonfile.writeFile('pokedex.json', request.body, (err) => {
-    console.error(err)
+    console.log(request.body);
+//read the current file
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) {
+            console.log(err);
+        } else {
+// push the new pokemon to pokemon array
+        let newPokemon = request.body;
+        obj.pokemon.push(newPokemon);
+        jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
+            if (err){
+            console.log(err)
+        } else {
+            response.send(request.body);
+        }
+        });
+// endpoint
+    };
 
-    // now look inside your json file
     response.send(request.body);
-  });
-
+});
 });
 
-
-
-app.get('/pokemon/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-});
-
-app.get('/', (request, response) => {
-  response.send("yay");
-});
-
-
-/**
- * ===================================
- * Listen to requests on port 3000
- * ===================================
- */
 app.listen(5000, () => console.log('~~~ Tuning in to the waves of port 5000 ~~~'));
