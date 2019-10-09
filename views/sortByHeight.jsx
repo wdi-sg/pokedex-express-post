@@ -1,9 +1,9 @@
 var React = require('react');
-class Index extends React.Component {
+class SortByHeight extends React.Component {
   render() {
 
-    let list2 = this.props.list.map(name => {
-        return <li>{name}</li>
+    let list2 = this.props.pokemon.map(element => {
+        return <li>Name: {element.name} <br/>Height: {element.height}</li>
     });
 
     return (
@@ -34,4 +34,4 @@ class Index extends React.Component {
   }
 }
 
-module.exports = Index;
+module.exports = SortByHeight;

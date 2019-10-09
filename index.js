@@ -75,14 +75,64 @@ app.get('/', (request, response) => {
  * ===================================
  */
 app.get('/pokemon', (request, response) => {
-
+    let sortMethod = request.query.sortby;
+// preparing object to export it to jsx
+    switch (sortMethod) {
+        case 'name':
+            jsonfile.readFile(FILE, (err, obj) => {
+                if (err) console.log(err);
+// create new array to store pokemon names
+                let names = obj.pokemon.map(element=>{
+                    return element["name"];
+                })
+// function to sort the pokemon names
+                names.sort((a,b)=>{
+                    if (a>b) {
+                        return 1;
+                    }
+                    if (b>a) {
+                        return -1;
+                    }
+                })
+                const data = {
+                    names: names
+                };
+// send the response
+                response.render('sortByName',data)
+            });
+            break;
+        case "height":
+            jsonfile.readFile(FILE, (err, obj) => {
+                if (err) console.log(err);
+                let output = obj.pokemon.map(element=>{
+                    return element;
+                });
+                output.sort((a,b)=>{
+                    if (a["height"]>b["height"]) {
+                        return 1;
+                    }
+                    if (b["height"]>a["height"]) {
+                        return -1;
+                    }
+                });
+                const data = {
+                    pokemon: output
+                };
+                response.render('sortByHeight',data)
+            });
+            break;
+    //     case weight:
+    //         response.render('index', data);
+    //         break;
+    //     default:
+    }
     jsonfile.readFile(FILE, (err, obj) => {
         const data = {
-            list: ""
+            list: []
         }
         if (err) console.log(err);
         for (let i=0; i<obj.pokemon.length; i++) {
-            data.list += `${obj.pokemon[i].name}\n`;
+            data.list.push(obj.pokemon[i].name);
         };
         response.render('index', data);
     });
@@ -108,6 +158,27 @@ app.post('/pokemon', function(request, response) {
 // endpoint
     response.render('show', request.body);
 });
+
+jsonfile.readFile(FILE, (err, obj) => {
+    if (err) console.log(err);
+    let output = obj.pokemon.map(element=>{
+        return element;
+    });
+    output.sort((a,b)=>{
+        if (a["height"]>b["height"]) {
+            return 1;
+        }
+        if (b["height"]>a["height"]) {
+            return -1;
+        }
+    });
+    const data = {
+        pokemon: output
+    }
+});
+
+
+
 /**
  * ===================================
  * Listen to requests on port 3000

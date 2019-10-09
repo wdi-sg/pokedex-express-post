@@ -1,8 +1,8 @@
 var React = require('react');
-class Index extends React.Component {
+class SortByName extends React.Component {
   render() {
 
-    let list2 = this.props.list.map(name => {
+    let list2 = this.props.names.map(name => {
         return <li>{name}</li>
     });
 
@@ -34,4 +34,4 @@ class Index extends React.Component {
   }
 }
 
-module.exports = Index;
+module.exports = SortByName;
