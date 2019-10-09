@@ -1,12 +1,12 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
+const methodOverride = require('method-override')
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
-
 // Init express app
 const app = express();
 // this line below, sets a layout look to your express project
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-
+app.use(methodOverride('_method'));
 /*
  * ===================================
  * Routes
@@ -175,27 +175,28 @@ app.post('/pokemon', function(request, response) {
 // endpoint
     response.render('show', request.body);
 });
-
-jsonfile.readFile(FILE, (err, obj) => {
-    if (err) console.log(err);
-    let output = obj.pokemon.map(element=>{
-        return element;
-    });
-    output.sort((a,b)=>{
-        if (a["height"]>b["height"]) {
-            return 1;
-        }
-        if (b["height"]>a["height"]) {
-            return -1;
-        }
-    });
-    const data = {
-        pokemon: output
-    }
+/*
+ * ===================================
+ * GET edit
+ * ===================================
+ */
+app.get('/pokemon/:id/edit',(request, response)=>{
+    let id = parseInt(request.params.id);
+    jsonfile.readFile(FILE, (err, obj) => {
+        if (err) console.log(err);
+        const data = obj.pokemon[id-1];
+    response.render('edit', data);
+  });
 });
-
-
-
+/*
+ * ===================================
+ * PUT edit
+ * ===================================
+ */
+// app.put("/pokemon/:id/edit", (request, response) => {
+//     let id = request.params.id;
+//     console.log(request.body);
+// });
 /**
  * ===================================
  * Listen to requests on port 3000
