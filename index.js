@@ -31,81 +31,23 @@ app.set('view engine', 'jsx');
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
 
-
-
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
-
- app.get('/', (request, response) => {
-
-  response.render('landing')
-
-});
-
-// app.get('/pokemon/new', (request,response) => {
-//     response.render('home')
-// })
+//add new pokemon
+app.get('/pokemon/new', (request, response) => {
+    response.render('home')
+})
 
 
-app.post('/pokemon', function(request, response) {
-
-    console.log(request.body);
-    let pokeNew = request.body
-
-    let pokeKey = Object.keys(pokeNew)
-    console.log(pokeKey)
-
-    for (let i=0; i<pokeKey.length; i++){
-        let key = pokeKey[i]
-        console.log(key + "key name")
-        console.log(pokeNew[key] + "value of key on request")
-        if (pokeNew[key] === ""){
-            console.log(pokeNew[key] + "empty key")
-            return response.render('error')
-        }
-    }
-
-    const data = {
-        "id": pokeNew.id,
-        "num": pokeNew.num,
-        "name": pokeNew.name,
-        "img": pokeNew.image,
-        "height": pokeNew.height,
-        "weight": pokeNew.weight
-    }
-
-    jsonfile.readFile(file, (err, obj) => {
-
-        console.log(err)
-        let pokeList = obj.pokemon
-
-        obj.pokemon.push(pokeNew)
-        console.log(obj.pokemon[obj.pokemon.length-1])
-
-  // // save the request body
-          jsonfile.writeFile(file, obj, {spaces:2},(err) => {
-            console.error(err)
-
-    // now look inside your json file
-
-         });
-    })
-    response.render('pokemon', data)
-
-});
-
+//find a pokemon
 app.get('/pokemon/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(file, (err, obj) => {
-    // obj is the object from the pokedex json file
-    // extract input data from request
+    jsonfile.readFile(file, (err, obj) => {
     let inputId = parseInt( request.params.id );
-
     var pokemon;
 
     // find pokemon by id from the pokedex json file
@@ -128,23 +70,63 @@ app.get('/pokemon/:id', (request, response) => {
     }
 
     if (pokemon === undefined && request.params.id!== "new") {
-
       // send 404 back
       response.status(404);
       response.send("I don't think that's a Pokemon...");
     }
-
-    if (request.params.id === "new"){
-        response.render('home')
-    }
   });
 });
 
+app.post('/pokemon', function(request, response) {
+
+    console.log(request.body);
+    let pokeNew = request.body
+    let integer = parseInt(pokeNew.id)
+    pokeNew.id = integer
+
+    let pokeKey = Object.keys(pokeNew)
+    console.log(pokeKey)
+
+    for (let i=0; i<pokeKey.length; i++){
+        let key = pokeKey[i]
+
+        if (pokeNew[key] === ""){
+
+            return response.render('error')
+        }
+    }
+
+    const data = {
+        "id": pokeNew.id,
+        "num": pokeNew.num,
+        "name": pokeNew.name,
+        "img": pokeNew.image,
+        "height": pokeNew.height,
+        "weight": pokeNew.weight
+    }
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        console.log(err)
+        let pokeList = obj.pokemon
+
+        obj.pokemon.push(pokeNew)
+        console.log(obj.pokemon[obj.pokemon.length-1])
+
+          jsonfile.writeFile(file, obj, {spaces:2},(err) => {
+            console.error(err)
+
+         });
+    })
+    response.render('pokemon', data)
+
+});
+
+//edit pokemon page
 app.get('/pokemon/:id/edit', (request, response) => {
 
     let identifier = request.params.id;
     let index = parseInt(identifier)-1
-
 
     jsonfile.readFile(file, (err,obj) => {
 
@@ -159,11 +141,11 @@ app.get('/pokemon/:id/edit', (request, response) => {
     })
 })
 
+//update pokemon entry
 app.put('/pokemon/:id', (request,response) =>{
     let identifier = request.params.id;
     let index = identifier-1
     let pokeEdit = request.body;
-
 
     jsonfile.readFile(file, (err,obj) =>{
         pokeEdit.id = parseInt(pokeEdit.id)
@@ -189,6 +171,7 @@ app.put('/pokemon/:id', (request,response) =>{
     })
 })
 
+//delete pokemon page
 app.get('/pokemon/:id/delete', (request, response) => {
 
     let inputId = request.params.id
@@ -209,10 +192,10 @@ app.get('/pokemon/:id/delete', (request, response) => {
     })
 })
 
+//delete pokemon forever
 app.delete('/pokemon/:id', (request,response) =>{
     let identifier = request.params.id;
     let index = identifier-1
-
 
     jsonfile.readFile(file, (err,obj) =>{
          let pokeDex = obj.pokemon
@@ -223,7 +206,6 @@ app.delete('/pokemon/:id', (request,response) =>{
             console.log(err)
             response.send("DELETED FOREVER")
         })
-
     })
 })
 
