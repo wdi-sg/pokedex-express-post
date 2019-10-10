@@ -1,18 +1,19 @@
 var React = require('react');
 
 class Home extends React.Component {
-  render() {
+    render() {
 
-let pokemonArr = this.props.pokemon;
-let allPokemon;
+        let pokemonArr = this.props;
+//        let allPokemon;
+        console.log(this.props.pokemon);
+        let allPokemon = pokemonArr.pokemon.map(function(pokemon) {
+            return <p>{pokemon.name}</p>;
+//            return allPokemon;
+        })
 
-pokemonArr.map(function(pokemon) {
-    allPokemon = <p>{pokemon.name}</p>
-})
 
-
-    return (
-      <html>
+        return (
+            <html>
         <body>
           <div>
             <h1>Hello</h1>
@@ -22,8 +23,8 @@ pokemonArr.map(function(pokemon) {
           </div>
         </body>
       </html>
-    );
-  }
+        );
+    }
 }
 
 module.exports = Home;
