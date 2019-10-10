@@ -145,7 +145,7 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
                 // get name of all pokemons
                 for (var i = 0; i < obj.pokemon.length; i++) {
-                    results.push({ name : obj.pokemon[i].name, img : obj.pokemon[i].img });
+                    results.push( obj.pokemon[i] );
                 }
                 // sort names alphabetically
                 results.sort((a,b) => {
@@ -164,8 +164,8 @@ app.get('/pokemon?', (request, response) => {
         case 'height':
             jsonfile.readFile(FILE, (err, obj) => {
 
-                for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, img : obj.pokemon[j].img, height : obj.pokemon[j].height });
+                for (var i = 0; i < obj.pokemon.length; i++) {
+                    results.push( obj.pokemon[i] );
                 }
 
                 results.sort((a,b) => {
@@ -180,8 +180,8 @@ app.get('/pokemon?', (request, response) => {
         case 'weight':
             jsonfile.readFile(FILE, (err, obj) => {
 
-                for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, img : obj.pokemon[j].img, weight : obj.pokemon[j].weight });
+                for (var i = 0; i < obj.pokemon.length; i++) {
+                    results.push( obj.pokemon[i] );
                 }
 
                 results.sort((a,b) => {
