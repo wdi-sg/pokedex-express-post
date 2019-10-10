@@ -3,8 +3,8 @@
     {
       "id": 1,
       "num": "001",
-      "name": "Bulbasaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
+      "name": "http://www.serebii.net/pokemongo/pokemon/001.png",
+      "img": "Bulbasaurasd",
       "height": "0.71 m",
       "weight": "6.9 kg",
       "candy": "Bulbasaur Candy",
@@ -16,8 +16,8 @@
     {
       "id": 2,
       "num": "002",
-      "name": "Ivysaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/002.png",
+      "name": "http://www.serebii.net/pokemongo/pokemon/002.png",
+      "img": "Ivysaurasdasda",
       "height": "0.99 m",
       "weight": "13.0 kg",
       "candy": "Bulbasaur Candy",
@@ -1652,8 +1652,8 @@
     {
       "id": 133,
       "num": "133",
-      "name": "Eevee",
-      "img": "http://www.serebii.net/pokemongo/pokemon/133.png",
+      "name": "http://www.serebii.net/pokemongo/pokemon/133.png",
+      "img": "Eeveezxczasdasdsaasdda",
       "height": "0.30 m",
       "weight": "6.5 kg",
       "candy": "Eevee Candy",
@@ -1676,10 +1676,10 @@
     },
     {
       "id": 135,
-      "num": "135",
-      "name": "Jolteon",
-      "img": "http://www.serebii.net/pokemongo/pokemon/135.png",
-      "height": "0.79 m",
+      "num": "1352",
+      "name": "http://wdasdww.serebii.net/pokemongo/pokemon/135.png",
+      "img": "Jolteonaasdasdsdsasdd",
+      "height": "0.79 ms",
       "weight": "24.5 kg",
       "candy": "None",
       "egg": "Not in Eggs",
@@ -1894,6 +1894,14 @@
       "id": "",
       "num": "",
       "name": "sdf",
+      "img": "",
+      "height": "",
+      "weight": ""
+    },
+    {
+      "id": "",
+      "num": "",
+      "name": "sd",
       "img": "",
       "height": "",
       "weight": ""

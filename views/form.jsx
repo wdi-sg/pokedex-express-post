@@ -8,7 +8,7 @@ class Home extends React.Component {
           <div>
             <h1>Pokemon</h1>
             <h3>pokemon</h3>
-            <form action="/pokemon" method="POST">
+            <form action="/pokemon" method="PUT">
                 ID:<input type="number" name="id"/><br/>
                 Number:<input type="number" name="num"/><br/>
                 Name: <input type="text" name="name"/><br/>

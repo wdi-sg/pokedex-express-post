@@ -11,6 +11,13 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
+
+const methodOverride = require('method-override')
+
+app.use(methodOverride('_method'));
+
+
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 
@@ -89,6 +96,39 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 
+app.get('/pokemon/:id/edit',(request, response)=> {
+
+    jsonfile.readFile(FILE, (err,obj) => {
+
+        let pokemonInputId = parseInt(request.params.id);
+        console.log(pokemonInputId)
+        let editPokemon = obj.pokemon[pokemonInputId-1];
+        response.render("editForm", editPokemon)
+    });
+});
+
+
+app.put('/pokemon/:id', (request,response) => {
+    let inputId =  parseInt(request.params.id);
+    let editedPokemon = request.body;
+
+    jsonfile.readFile(FILE,(err,obj) => {
+        let oldPokemon = obj.pokemon[inputId-1];
+
+        oldPokemon.num = editedPokemon.num;
+        oldPokemon.name = editedPokemon.name;
+        oldPokemon.img = editedPokemon.img;
+        oldPokemon.height = editedPokemon.height;
+        oldPokemon.weight = editedPokemon.weight;
+
+        jsonfile.writeFile(FILE, obj,{spaces: 2},(err) => {
+            console.log(err)
+            response.render("editedPokemon", oldPokemon);
+        })
+    })
+
+})
+
 
 
 
@@ -97,4 +137,4 @@ app.get('/pokemon/:id', (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(4000, () => console.log('~~~ Tuning in to the waves of port 4000 ~~~'));
