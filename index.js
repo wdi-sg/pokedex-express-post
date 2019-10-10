@@ -132,12 +132,12 @@ app.post('/pokemon', (request, response) => {
   // giving home.jsx file an object/context with `name` as a property
   let data = {warning: ""};
   if (request.body.name === "" || request.body.img === "" || request.body.height === "" || request.body.weight === "") {
-    data = {warning: "Empty name or other data..."}; 
-      } else  { 
-    data = {warning: "Pokemon Added!"}; 
+    data = {warning: "Empty name or other data..."};
+      } else  {
+    data = {warning: "Pokemon Added!"};
       }
   response.render('new', data);
-  
+
 
   // add the new data to the read object
   // whats the current last ID?
@@ -153,7 +153,7 @@ app.post('/pokemon', (request, response) => {
   obj["pokemon"].push(request.body);
     // console.log('new object:', obj)
   // run the file write
-  // 
+  //
   // save the request body
   // beautify(obj, null, 2, 80)
   jsonfile.writeFile(FILE,obj, (err) => {
@@ -172,12 +172,12 @@ app.put('/pokemon/:id', (request, response) => {
   // giving home.jsx file an object/context with `name` as a property
   let data = {warning: ""};
   if (request.body.name === "" || request.body.img === "" || request.body.height === "" || request.body.weight === "") {
-    data = {warning: "Empty name or other data..."}; 
-      } else  { 
-    data = {warning: "Pokemon Edited!"}; 
+    data = {warning: "Empty name or other data..."};
+      } else  {
+    data = {warning: "Pokemon Edited!"};
       }
   response.render('edit', data);
-  
+
 
   // add the new data to the read object
   // whats the current last ID?
@@ -194,8 +194,8 @@ app.put('/pokemon/:id', (request, response) => {
     obj["pokemon"][pokeIndex].height = request.body.height;
     obj["pokemon"][pokeIndex].weight = request.body.weight;
  // obj["pokemon"][pokeIndex] = request.body;
-    
-    // console.error('new object', obj["pokemon"][pokeIndex])                                                           
+
+    // console.error('new object', obj["pokemon"][pokeIndex])
   // save the request body
   // beautify(obj, null, 2, 80)
 
@@ -207,6 +207,8 @@ app.put('/pokemon/:id', (request, response) => {
 
 console.log('completed writing')
 });
+
+console.log("Me Too");
 
 // app.get('/', (request, response) => {
 //   response.send("yay");
