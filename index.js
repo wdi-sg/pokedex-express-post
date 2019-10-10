@@ -64,6 +64,8 @@ app.get('/pokemon/new', (request, response) => {
 app.post('/pokemon', function(request, response) {
 
     let newPokemon = request.body;
+    //change id from string to integer
+    newPokemon.id = parseInt(newPokemon.id);
 
     //debug code (output request body)
     console.log(`The new pokemon is: ${JSON.stringify(newPokemon)}`);
