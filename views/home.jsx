@@ -6,7 +6,7 @@ class Home extends React.Component {
            <html>
        <body >
           <main >
-          <form method="GET" action="/pokemon">
+          <form id="myForm" method="GET" action="/pokemon">
               Submit New Pokemon: <br/>
               ID:
               <input type="number" name="id"/> <br/>
@@ -21,7 +21,7 @@ class Home extends React.Component {
               Weight:
               <input type="number" name="weight"/> <br/>
 
-              <input type="submit" value="Submit"/>
+              <input type="submit" form="myForm" value="Submit"/>
             </form>
           </main>
         </body>
