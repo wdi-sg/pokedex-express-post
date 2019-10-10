@@ -2,6 +2,8 @@ var React = require('react');
 
 class Found extends React.Component {
     render() {
+        let formAction = '/pokemon/' + this.props.id + '/edit';
+
         return (
             <html>
                 <body>
@@ -13,6 +15,9 @@ class Found extends React.Component {
                         Height: { this.props.height }<br/>
                         Weight: { this.props.weight }<br/>
                     </p>
+                    <form method="GET" action={formAction}>
+                        <input type="submit" value="Edit Pokemon"/>
+                    </form>
                 </body>
             </html>
         );

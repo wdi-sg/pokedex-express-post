@@ -6,7 +6,12 @@ class Home extends React.Component {
 
     render() {
         const allPokemon = this.props.pokemon.map(pokemon => {
-            return <li>{pokemon.name}<br/><img src={pokemon.img}></img> </li>;
+            let formAction = '/pokemon/' + pokemon.id;
+            return (
+                <li>{pokemon.name}<br/>
+                <a href={formAction}><img src={pokemon.img}></img></a>
+                </li>
+            );
         })
         return (
             <html>
@@ -20,13 +25,15 @@ class Home extends React.Component {
                             <option value="weight">Weight</option>
                         </select>
                         <input type="submit"/>
-                        <h3>Pokemon in Pokedex</h3>
-                        <ul>
-                        {allPokemon}
-                        </ul>
-
-
                     </form>
+                    <form method="GET" action="/pokemon/new">
+                        <input type="submit" value="Add New Pokemon"/>
+                    </form>
+                    <h3>Pokemon in Pokedex</h3>
+                    <p><em>Click on image for details</em></p>
+                    <ul>
+                    {allPokemon}
+                    </ul>
                 </body>
             </html>
         )
