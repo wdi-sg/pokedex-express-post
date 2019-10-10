@@ -45,8 +45,16 @@ app.get("/pokemon/", (request, response) => {
   // Read the file and display
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    response.send(obj.pokemon);
+    // response.send(obj.pokemon);
+    let pokedex = obj.pokemon;
+    const data = {
+      pokedex: pokedex,
+      name: pokedex.name,
+      img: pokedex.img
+    }
+    response.render("home", data)
   });
+
 });
 
 // GET method to get all the form elements for display
