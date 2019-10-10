@@ -30,7 +30,7 @@ app.set('view engine', 'jsx');
 
 //ON LOADING LOCALHOST:3000==================================================================================================================
 app.get('/', (request, response) => {
-  response.send("Welcome");
+  response.send("HI BANANA");
 });
 
 
@@ -89,8 +89,8 @@ app.post('/pokemon', function(request, response) {
   jsonfile.readFile(FILE, (err,obj) => {
     console.log(err);
     obj.pokemon.push(request.body);
-      
-    
+
+
   // save the request body
     jsonfile.writeFile( FILE, obj, (err) => {
       console.error(err);
