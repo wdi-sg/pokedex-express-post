@@ -41,7 +41,7 @@ app.use(methodOverride("_method"));
  */
 
 // GET method to display all pokemons by default - Seems like have problem displaying all
-app.get("/pokemon/", (request, response) => {
+app.get("/pokemon", (request, response) => {
   // Read the file and display
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -49,8 +49,7 @@ app.get("/pokemon/", (request, response) => {
     let pokedex = obj.pokemon;
     const data = {
       pokedex: pokedex,
-      name: pokedex.name,
-      img: pokedex.img
+      query: request.query.sortby
     }
     response.render("home", data)
   });
