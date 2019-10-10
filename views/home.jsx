@@ -7,16 +7,20 @@ class Home extends React.Component {
         <body>
           <div>
             <h1>Welcome to Kelly Lim's Pokedex</h1>
-            <button>Pokemon</button>
-            <a href="http://google.com">click me</a>
-            <h3>Pokemon Name</h3>
+            <h2>Pokemon Name</h2>
              <form action="/pokemon" method="POST">
-                <input type="text" name="name"/><br/>
-                <input type="text" name="height"/><br/>
-                <input type="text" name="weight"/><br/>
-                <input type="number" name="id"/><br/>
-                <input type="number" name="num"/><br/>
-                 <input type="text" name="img"/><br/>
+                <h4>Name:</h4>
+                <input type="text" name="name" required/><br/>
+                <h4>Height:</h4>
+                <input type="text" name="height" required/><br/>
+                <h4>Weight:</h4>
+                <input type="text" name="weight" required/><br/>
+                <h4>ID:</h4>
+                <input type="number" name="id" required/><br/>
+                <h4>Num:</h4>
+                <input type="number" name="num" required/><br/>
+                <h4>Img:</h4>
+                <input type="url" name="img" required/><br/><br/>
                 <input type="submit"/>
             </form>
           </div>

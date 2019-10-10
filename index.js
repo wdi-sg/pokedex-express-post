@@ -65,12 +65,12 @@ app.get('/pokemon/:id/edit', (request,response) => {
 
     jsonfile.readFile(FILE, (err,obj) => {
         if (err){
-            console.log("Error");
+            console.log("Error"); //wow edit
         } else {
             let pokeIndex = parseInt(request.params.id - 1)
             let data = obj.pokemon[pokeIndex];
             console.log(data);
-            response.render('editForm.jsx', data);
+            response.render('editForm.jsx', data); //banana
         }
     });
 
@@ -79,13 +79,13 @@ app.get('/pokemon/:id/edit', (request,response) => {
 
 app.put("/pokemon/:id", (request,response) => {
     console.log("put!");
-    console.log(request.body);
+    console.log(request.body); //woah apples
     response.send(`<html>Edited!</html>`);
 
 let newPokemon = request.body;
 jsonfile.readFile(FILE, (err,obj) => {
     if (err) {
-        console.log("errorrrrr");
+        console.log("errorrrrr"); //errrorrrrrrrrrrrrrrr hah i win
         console.log(err);
     } else {
         let editedPokeIndex = parseInt(newPokemon.id - 1);
