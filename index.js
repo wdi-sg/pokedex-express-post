@@ -236,21 +236,18 @@ app.get('/pokemon/:id/delete', (request, response) => {
 })
 
 app.delete('/pokemon/:id', (request, response) => {
-    // get index of pokemon to be deleted
+    // get ID of pokemon to be deleted
     let deleteId = parseInt(request.params.id);
 
     jsonfile.readFile(FILE, (err, obj) => {
-        //replace updated pokemon with new data
+        // get index of pokemon to be deleted
         var pokemon;
         var arrayOfPokemon = [];
 
         // find pokemon by id from the pokedex json file
         for (let i = 0; i < obj.pokemon.length; i++) {
-
             arrayOfPokemon.push(obj.pokemon[i].name);
-
             let currentPokemon = obj.pokemon[i];
-
             if (currentPokemon.id === deleteId) {
                 pokemon = currentPokemon;
             }
