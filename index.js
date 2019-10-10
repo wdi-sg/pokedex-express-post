@@ -1,11 +1,10 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
+const methodOverride = require('method-override')
 const FILE = 'pokedex.json';
 
 // Set up method-override for PUT and DELETE forms
-const methodOverride = require('method-override')
-app.use(methodOverride('_method'));
+
 
 /**
  * ===================================
@@ -15,6 +14,8 @@ app.use(methodOverride('_method'));
 
 // Init express app
 const app = express();
+
+app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({
  extended: true
@@ -48,16 +49,14 @@ app.get('/pokemon/new', (request, response) => {
     response.render('forms');
 });
 
-app.post('/pokemon', (request, response) => {
+app.get('/pokemon', (request, response) => {
     console.log("EVERYTHING in the form request", request.body);
     // response.send("WOW THE POST");
-
-    // save the request body
-    jsonfile.writeFile('data.json', request.body, (err) => {
-        console.error(err)
-
-        // now look inside your json file
-        response.send(request.body);
+    jsonfile.readFile(FILE, (err, obj) => {
+      const data = {
+        pokedex : obj.pokemon
+      }
+      response.render('index', data);
     });
 
 });
@@ -99,6 +98,7 @@ app.get("/pokemon/:id/edit", (request, response) => {
         response.render("edit", data);
     });
 });
+
 app.put("/pokemon/:id", (request, response) => {
     var pokeId = parseInt(request.params.id);
     var pokemonId = pokeId - 1;
@@ -106,21 +106,34 @@ app.put("/pokemon/:id", (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         console.log("editing in progress", obj.pokemon[pokemonId]);
         obj.pokemon[pokemonId] = edit;
-        jsonfile.writeFile(FILE, obj, (err) => {
+        jsonfile.writeFile(FILE, obj, {space:2}, (err) => { //add spaces to format json file
             console.log(err)
             response.send("GOT ITTTT!");
         });
     });
 });
+
 app.get("/pokemon/:id/delete", (request, response) => {
     var id = request.params.id;
     jsonfile.readFile(FILE, (err, obj) => {
         console.log(obj.pokemon[id])
         const pokemon = obj.pokemon[id];
-        response.render("delete", pokemon);
+        response.render("delete", pokemon); 
     })
 })
 
+//missing app.delete
+app.delete("/pokemon/:id", (request, response) => {
+  var pokeId = parseInt(request.params.id);
+  var pokemonId = pokeId - 1;
+  jsonfile.readFile(FILE, (err, obj) => {
+      obj.pokemon.splice(pokemonId, 1);
+      jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => { //add spaces to format json file
+          console.log(err)
+          response.send("deleted");
+      });
+  });
+});
 
 // get json from specified file
 
