@@ -1,17 +1,10 @@
 {
   "pokemon": [
     {
-      "id": 1,
-      "num": "001",
-      "name": "Bulbasaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": "25",
-      "egg": "2 km",
-      "avg_spawns": "69",
-      "spawn_time": "20:00"
+      "name": "Ivysaur",
+      "img": "http://www.serebii.net/pokemongo/pokemon/002.png",
+      "weight": "13.0 kg",
+      "height": "0.99 m"
     },
     {
       "id": 2,
@@ -1883,84 +1876,12 @@
       "spawn_time": "N/A"
     },
     {
-      "id": 152,
+      "id": "152",
       "num": "152",
       "name": "senseiterrence",
       "img": "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       "height": "170cm",
       "weight": "60kg"
-    },
-    {
-      "id": "153",
-      "num": "153",
-      "name": "terrence",
-      "img": "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "height": "500cm",
-      "weight": "500g"
-    },
-    {
-      "id": "154",
-      "num": "154",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "155",
-      "num": "155",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "155",
-      "num": "155",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "155",
-      "num": "155",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "156",
-      "num": "155",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "156",
-      "num": "155",
-      "name": "t",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "156",
-      "num": "153",
-      "name": "1232131",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
-    },
-    {
-      "id": "156",
-      "num": "153",
-      "name": "2",
-      "img": "img",
-      "height": "4 feet",
-      "weight": "1 lbs"
     }
   ]
 }
