@@ -6,7 +6,7 @@ class Home extends React.Component {
       <html>
         <body>
           <div>
-            <h1>Pokedex</h1>
+            <h1>Welcome to Kelly Lim's Pokedex</h1>
             <button>Pokemon</button>
             <a href="http://google.com">click me</a>
             <h3>Pokemon Name</h3>
