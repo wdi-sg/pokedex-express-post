@@ -152,37 +152,46 @@ app.get("/pokemon/:id/delete", (request, response) => {
     // extract input data from request
     let inputId = parseInt(request.params.id);
     let toDeletePokemon = obj.pokemon[inputId - 1];
-
+    const data = {
+      id: toDeletePokemon.id
+      // num: toEditPokemon.num,
+      // name: toEditPokemon.name,
+      // image: toEditPokemon.img,
+      // height: toEditPokemon.height,
+      // weight: toEditPokemon.weight
+    };
+console.log(obj.pokemon.length)
     // Show the edit form with the current data
     response.render("delete", data);
   });
+  
 });
 
 // Method to delete pokemon information
-/*app.delete('/pokemon/:id', (request, response) => {
-
+app.delete('/pokemon/:id', (request, response) => {
+  let inputId = parseInt( request.params.id - 1 );
     // Read the file and look for the pokemon with the requested ID
     jsonfile.readFile(FILE, (err, obj) => {
 
             // Get ID from parameter
-    let inputId = parseInt( request.params.id - 1 );
+  
+    obj.pokemon.splice(inputId, 1)
 
-
-    // Get the data that will be updated into the information
-    let updatedData = request.body;
+   
 
         // Assign the updated data into the object
-        obj.pokemon[inputId] = updatedData;
+        
 
         // Write it into the file
         jsonfile.writeFile(FILE, obj, (err) => {
             console.log("Error: " + err);
-            response.send(updatedData);
+            
+           
         });
 
     });
 
-});*/
+});
 
 /**
  * ===================================
