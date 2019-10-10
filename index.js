@@ -15,12 +15,48 @@ const FILE = 'pokedex.json';
 const app = express();
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'));
+
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+app.get('/pokemon',(request,response)=>{
+    response.render("home")
+})
+app.get('/pokemon/sort?', (request, response) => {
+    console.log(request.query)
+    console.log(request.query.sortby)
+    //Height & Weight only
+    if (request.query.sortby === "height") {
+        jsonfile.readFile(FILE, (err, obj) => {
+            let str = "List of pokemon by height: <br>";
+            let tempArr = obj["pokemon"];
+            tempArr.sort((a, b) => (parseFloat(a["height"]) < parseFloat(b["height"])) ? 1 : -1);
+            tempArr.forEach(function(a) {
+                str = str + `<img src="${a["img"]}">` + "<br>" + "Name: " + a["name"] + "  Height: " + a["height"] + "<br>"
+
+            })
+            response.send(str);
+        })
+    } else if (request.query.sortby === "weight"){
+        jsonfile.readFile(FILE, (err, obj) => {
+            let str = "List of pokemon by weight: <br>";
+            let tempArr = obj["pokemon"];
+            tempArr.sort((a, b) => (parseFloat(a["weight"]) < parseFloat(b["weight"])) ? 1 : -1);
+            tempArr.forEach(function(a) {
+                str = str + `<img src="${a["img"]}">` + "<br>" + "Name: " + a["name"] + "  Weight: " + a["weight"] + "<br>"
+
+            })
+            response.send(str);
+        })
+    }
+})
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file

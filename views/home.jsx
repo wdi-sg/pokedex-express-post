@@ -6,9 +6,9 @@ class Home extends React.Component {
       return (
           <html>
               <body>
-                  <h1>Welcome to the Pokedex</h1>
+                  <h1>Welcome to Brandon's Pokedex</h1>
                   <h3>Sort by </h3>
-                  <form method="GET" action="/pokemon?">
+                  <form method="GET" action="/pokemon/sort">
                       <select name="sortby">
                           <option value="name">Name</option>
                           <option value="height">Height</option>
