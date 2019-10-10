@@ -13,8 +13,8 @@ class Form extends React.Component {
               No. : <input type="number" name="num" required/><br/>
               Name : <input type="text" name="name" required/><br/>
               Image URL : <input type="text" name="img" required/><br/>
-              Height : <input type="number" name="height" required/><br/>
-              Weight : <input type="number" name="weight" /><br/>
+              Height : <input type="number" step="0.1" name="height" required/><br/>
+              Weight : <input type="number" step="0.1" name="weight" /><br/>
               <input type="submit" value="Submit"/>
             </form>
           </div>

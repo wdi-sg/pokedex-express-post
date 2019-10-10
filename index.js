@@ -73,7 +73,7 @@ app.post('/pokemon', function(request, response) {
             console.log(err)
         }
         // pushes the newPokemon (array of objects) into the pokemon object
-        obj['animals'].push(newPokemon);
+        obj['pokemon'].push(newPokemon);
         // save the request body
         jsonfile.writeFile(datafile, obj, { spaces: 2 }, (err) => {
             if (err) {
