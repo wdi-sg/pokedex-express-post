@@ -1,9 +1,6 @@
 var React = require('react');
 
 class Home extends React.Component {
-
-
-
     render() {
         const allPokemon = this.props.pokemon.map(pokemon => {
             let formAction = '/pokemon/' + pokemon.id;
