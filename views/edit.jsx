@@ -12,7 +12,7 @@ class Edit extends React.Component {
     var egg = props.egg;
     var spawn = props.spawns;
     var spawntime = props.spawntime;
- 
+
     return (
       <html>
         <body>
@@ -22,15 +22,15 @@ class Edit extends React.Component {
               <p>ID: <input type="text" name="id" value= {id}/></p>
               <p>NUM: <input type="text" name="num" value ={num}/></p>
               <p> NAME: <input type="text" name="name" value = {name} /></p>
-             
+
               <p>Height: <input type="text" name="height" value={height} /></p>
               <p> Weight: <input type="text" name="weight" value={weight} /></p>
-              <p> Candy: <input type="text" name="weight" value={candy} /></p>
-              <p> Egg: <input type="text" name="weight" value={egg} /></p>
-              <p> Average Spawn: <input type="text" name="weight" value={spawn} /></p>
-              <p> Spawn Time: <input type="text" name="weight" value={spawntime} /></p>
+              <p> Candy: <input type="text" name="candy" value={candy} /></p>
+              <p> Egg: <input type="text" name="egg" value={egg} /></p>
+              <p> Average Spawn: <input type="text" name="avg_spawns" value={spawn} /></p>
+              <p> Spawn Time: <input type="text" name="spawn_time" value={spawntime} /></p>
               <p> <img src={img} alt=""/></p>
-            
+
               <input type="submit" />
             </form>
           </div>

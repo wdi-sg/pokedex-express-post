@@ -1,16 +1,22 @@
 var React = require('react');
 class Home extends React.Component {
   render() {
-    
 
 
-    //  
+
+    //
     let list;
     let pokeList;
-    let sortArr = []
+    let sortArr = [];
+
+    /*= this.props.pokedex.map(pokemon => {
+        return pokemon.name;
+    });*/
     this.props.pokedex.forEach(pokemon => {
       sortArr.push(pokemon.name)
     })
+
+
     var sortedList = sortArr.sort()
 
     if(this.props.query === "name") {
@@ -26,7 +32,7 @@ class Home extends React.Component {
       list = this.props.pokedex.map(pokemon => {
 
             var pokeList = pokemon.name
-    
+
           return (
             <li>
               <img src={pokemon.img} alt=""/>
@@ -44,7 +50,7 @@ class Home extends React.Component {
         <body>
           <div>
          <h1>HOME</h1>
-        <form method="GET" action="/home" >
+        <form method="GET" action="/pokemon/home" >
         <input type="submit" name="sortby" value="name" />
         </form>
         <h1>List of Pokemon</h1>

@@ -39,7 +39,7 @@ app.use(methodOverride("_method"));
  */
 
 // Home Route
-app.get("/home", (request, response) => {
+app.get("/pokemon/home", (request, response) => {
 
 
   jsonfile.readFile(FILE, (err, obj) => {
@@ -120,7 +120,7 @@ app.post("/pokemon", (request, response) => {
 });
 
 app.get("/pokemon/:id/edit", (request, response) => {
-  const id = request.params.id - 1;
+  const id = parseInt(request.params.id - 1);
   jsonfile.readFile(FILE, (err, obj) => {
     const pokedex = obj.pokemon;
 
@@ -149,9 +149,11 @@ app.put("/pokemon/:id", (request, response) => {
 
     jsonfile.writeFile(FILE, obj, err => {
       console.log(err);
-      response.render("home");
+      response.redirect("home");
     });
+
   });
+
 });
 
 app.get("/pokemon/:id/delete", (request, response) => {
@@ -183,7 +185,7 @@ app.delete("/pokemon/:id", (request, response) => {
 
     jsonfile.writeFile(FILE, obj, err => {
       console.log(err);
-      response.render("home");
+      response.redirect("home");
     });
   });
 });
@@ -192,6 +194,6 @@ app.delete("/pokemon/:id", (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () =>
+app.listen(2999, () =>
   console.log("~~~ Tuning in to the waves of port 3000 ~~~")
 );
