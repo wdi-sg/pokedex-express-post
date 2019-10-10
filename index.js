@@ -96,6 +96,7 @@ app.get('/pokemon/:id', (request, response) => {
 app.post('/pokemon', function(request, response) {
 
     console.log(request.body);
+    console.log("TEST");
     let pokeNew = request.body
     let integer = parseInt(pokeNew.id)
     pokeNew.id = integer
