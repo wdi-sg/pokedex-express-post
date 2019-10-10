@@ -7,16 +7,17 @@ class Home extends React.Component {
                 <body>
                     <div>
                         <h1>Welcome to the SUPER AMAZING POKEDEX V3000</h1>
-                        <p>To add new pokemon, click here: </p>
+                        <p>Choose the following: </p>
                         <form method="GET" action="/pokemon/new">
                             <input type="submit" value="Add pokemon"/>
                         </form>
                         <form method="GET" action="/pokemon/show">
                             <input type="submit" value="Show all pokemon"/>
                         </form>
-                        <form method="GET" action="/pokemon">
+                        <form method="GET" action="/pokemon/sort">
                             <select name="path">
-                                <option value="height">Height</option>
+                                <option value="height">Max Height</option>
+                                <option value="weight">Max Weight</option>
                             </select>
                             <input type="submit"/>
                         </form>

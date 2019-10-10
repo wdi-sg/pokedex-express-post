@@ -15,6 +15,9 @@ class addPokemon extends React.Component {
                             Num: <input type="text" name="num"/><br/>
                             <input type="submit" value="Add pokemon"/>
                         </form>
+                        <form action="/pokemon" method="GET">
+                            <input type="submit" value="back"/>
+                        </form>
 
 
                     </div>
