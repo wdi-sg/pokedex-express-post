@@ -14,7 +14,7 @@ class DefaultLayout extends React.Component {
         <body id="page-top">
         <div className="container">
         <div className="rowrow mx-auto">
-        <div className="col-8">
+        <div className="col-8 border">
         {this.props.children}
         </div>
         </div>
