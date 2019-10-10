@@ -2,8 +2,11 @@ var React = require("react");
 class Home extends React.Component {
   render() {
     let pokeList;
+
+    // Sort By Name
     if (this.props.query === "name") {
       let sortArr = [];
+      
       this.props.pokedex.forEach(pokemon => {
         sortArr.push(pokemon.name);
       });
@@ -16,12 +19,13 @@ class Home extends React.Component {
         );
       });
       console.log(pokeList);
+    //   Render the entire List of Pokemon
     } else {
       pokeList = this.props.pokedex.map(pokemon => {
         return (
           <li>
             <p>{pokemon.name}</p>
-            <img src={pokemon.img}></img>{" "}
+            <img src={pokemon.img}></img>
           </li>
         );
       });
