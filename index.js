@@ -1,28 +1,35 @@
-//jshint esversion:6
-const jsonfile = require('jsonfile');
 const express = require('express');
+const jsonfile = require('jsonfile');
+
 const FILE = 'pokedex.json';
-const newPokedex = 'newpokemon.json';
+
+/**
+ * ===================================
+ * Configurations and set up
+ * ===================================
+ */
+
+// Init express app
 const app = express();
-//react engine
-const reactEngine = require('express-react-views').createEngine();
-app.engine('jsx', reactEngine);
-
-// this tells express where to look for the view files
-app.set('views', __dirname + '/views');
-
-// this line sets react to be the default view engine
-app.set('view engine', 'jsx');
-
-app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+/**
+ * ===================================
+ * Routes
+ * ===================================
+ */
 
 app.get('/pokemon/:id', (request, response) => {
+
+  // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
+    // obj is the object from the pokedex json file
+    // extract input data from request
     let inputId = parseInt( request.params.id );
+
     var pokemon;
+
+    // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
 
       let currentPokemon = obj.pokemon[i];
@@ -43,47 +50,107 @@ app.get('/pokemon/:id', (request, response) => {
     }
   });
 });
-//points user to form as homepage
-app.get('/newpokemon', (req, res) => {
-  console.log("hi");
-  res.render('form');
 
-});
+app.get('/pokemon/:id/edit', (request, response) => {
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+        // obj is the object from the pokedex json file
+        // request
+        let inputId = parseInt(request.params.id);
 
-//adds new pokemon to newpokedex.json(wanted to test the function out so i created a sepereate file)
-app.post('/pokemon',(request, response)=>{
-    console.log("EVERYTHING in the form request", request.body );
-    console.log(request.body);
-  jsonfile.writeFile('newPokedex.json', request.body, (err) => {
-    console.log(err);
-    response.send(request.body);
-  });
-});
+        var pokemon;
 
-//function to capture form submisson
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
 
-// app.get('/',(request,respond)=>{
-//
-//
-// });
-// ///ccess the photos in the array
-// jsonfile.readFile(FILE, (err, obj) => {
-// app.get('/photos', (req, res) => {
-//   // loops through  obj
-//   for( let i=0; i<obj.pokemon.length; i++ ){
-//     let currentPokemon = obj.pokemon[i].img;
-//     }
-  // });
-//
-// });
-///////////////////////////////////////////////////////////////////
-// app.get('/photos', (req, res) => {
-//   // loops through  obj
-//   for( let i=0; i<obj.pokemon.length; i++ ){
-//     let currentPokemon = obj.pokemon[i].img;
-//     }
-//
-//   });
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        response.render('update', pokemon);
+    })
+})
+
+app.put('/pokemon/:id', (request, response) => {
+    // get index of pokemon to be updated
+    let updateId = parseInt(request.params.id)-1;
+    let updatedPokemon = request.body;
+    updatedPokemon.id = parseInt(updatedPokemon.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        //update pokemon with new data
+        obj.pokemon.splice(updateId, 1, updatedPokemon);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        })
+    })
+
+    response.send("Pokemon updated!");
+})
+
+app.get('/pokemon/:id/delete', (request, response) => {
+    //input data from request
+    let inputId = parseInt(request.params.id);
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        var pokemon;
+
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        response.render('delete', pokemon);
+    })
+})
+
+
+app.delete('/pokemon/:id', (request, response) => {
+    // pokemon to be deleted
+    let deleteId = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        //replace updated pokemon with new data
+        var pokemon;
+        var arrPokemon = [];
+
+        // find pokemon by id
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            arrPokemon.push(obj.pokemon[i].name);
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === deleteId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        let deleteIndex = arrayOfPokemon.indexOf(pokemon.name);
+        console.log (deleteIndex + pokemon.name);
+        obj.pokemon.splice(deleteIndex, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        })
+        response.send(`Pokemon ${pokemon.name} deleted!`);
+
+    })
+
+
+})
+
 /**
  * ===================================
  * Listen to requests on port 3000

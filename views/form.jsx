@@ -1,29 +1,25 @@
 var React = require('react');
 
-class form extends React.Component {
-  render() {
-
-    let message = "welcome!";
-
-    return (
-      <div>
-      <form action="/pokemon" method='POST' id ="something">
-      <input type="text" name="pokemon.Id" placeholder="pokemon Id"/><br/>
-      <input type="text" name="pokemon.num" placeholder="pokemon num"/><br/>
-      <input type="text" name="pokemon.name" placeholder="pokemon name"/><br/>
-      <input type="text" name="pokemon.image" placeholder="pokemon image"/><br/>
-      <input type="text" name="pokemon.height" placeholder="pokemon height"/><br/>
-      <input type="text" name="pokemon.weight" placeholder="pokemon weight"/>
-      <button type="submit" form="something" value="submit">
-               Submit
-           </button><br/>
-      </form>
-      <h1>Hello, New Pokemon!</h1>
-      <h1>{ message }</h1>
-      </div>
-    );
-  }
+class Form extends React.Component {
+    render() {
+        return (
+            <html>
+                <body>
+                    <h2>New Pokemon!</h2>
+                    <font color="red">{this.props.message}</font>
+                    <form method="POST" action="/addpokemon">
+                        ID: <input type="number" name="id" required/><br/>
+                        Number: <input type="number" name="num" required/><br/>
+                        Name: <input type="text" name="name" required/><br/>
+                        Img URL: <input type="url" name="img" required/><br/>
+                        Height: <input type="text" name="height" placeholder="in metres" required/><br/>
+                        Weight: <input type="text" name="weight" placeholder="in kilograms" required/><br/>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </body>
+            </html>
+        );
+    }
 }
 
-module.exports = form;
-//
+module.exports = Form;
