@@ -7,7 +7,7 @@ class editForm extends React.Component {
         <html>
         <body>
             <div>
-                <h1>Enter details of new pokemon</h1>
+                <h1>Updated details of pokemon</h1>
                 <form method="POST" action={"/pokemon/" + this.props.index + "?_method=PUT"}>
                     <p> Pokemon ID</p>
                     <input name="id" value ={this.props.id}/>
