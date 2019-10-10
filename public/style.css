@@ -1,0 +1,21 @@
+body {
+    background-color: lightcyan;
+    text-align: center;
+}
+
+form {
+    font-size: 20px;
+    margin-bottom: 30px;
+    margin-right: 20px;
+}
+
+div {
+    background-color: lightblue;
+    display: inline-block;
+    text-align: center;
+    width: 200px;
+    height: 320px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding-top: 20px;
+}
