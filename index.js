@@ -42,7 +42,16 @@ app.use(methodOverride('_method'));
 
 // Home page
 app.get('/', (request, response) => {
-    response.render('home');
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        const data = {
+            pokeobj: obj
+        }
+
+
+            response.render('home', data);
+        })
+
 });
 
 // Pokemon pages
