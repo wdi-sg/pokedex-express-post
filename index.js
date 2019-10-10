@@ -1,3 +1,6 @@
+
+// HELLO SIM YEN! Your code is awesome
+
 const express = require('express');
 const jsonfile = require('jsonfile');
 
@@ -39,7 +42,16 @@ app.use(methodOverride('_method'));
 
 // Home page
 app.get('/', (request, response) => {
-    response.render('home');
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        const data = {
+            pokeobj: obj
+        }
+
+
+            response.render('home', data);
+        })
+
 });
 
 // Pokemon pages
@@ -117,6 +129,8 @@ app.post('/addpokemon', (request, response) => {
     }
 })
 
+// Jasmine: this is from home page to sort pokemon
+// Jasmine: switch is if statements
 app.get('/pokemon?', (request, response) => {
     //output query field
     console.log(request.query.sortby);
