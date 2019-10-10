@@ -103,18 +103,6 @@
 				"spawn_time": "07:02"
 		},
 		{
-				"id": 9,
-				"num": "009",
-				"name": "Blastoise",
-				"img": "http://www.serebii.net/pokemongo/pokemon/009.png",
-				"height": "1.60 m",
-				"weight": "85.5 kg",
-				"candy": "Squirtle Candy",
-				"egg": "Not in Eggs",
-				"avg_spawns": 0.67,
-				"spawn_time": "00:06"
-		},
-		{
 				"id": 10,
 				"num": "010",
 				"name": "Caterpie",

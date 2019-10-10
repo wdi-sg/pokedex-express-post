@@ -1,4 +1,3 @@
-
 // HELLO SIM YEN! Your code is awesome
 
 const express = require('express');
@@ -43,14 +42,11 @@ app.use(methodOverride('_method'));
 // Home page
 app.get('/', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
-
         const data = {
             pokeobj: obj
         }
-
-
-            response.render('home', data);
-        })
+        response.render('home', data);
+    })
 
 });
 
@@ -90,6 +86,7 @@ app.get('/pokemon/:id', (request, response) => {
     });
 });
 
+// maybe change it to app.post('/pokemon' ...) following RESTful routing
 app.post('/addpokemon', (request, response) => {
     // debug code (output request body)
     console.log(request.body);
@@ -106,7 +103,7 @@ app.post('/addpokemon', (request, response) => {
         jsonfile.readFile(FILE, (err, obj) => {
             // check if ID or name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
-                if ( newPokemon.id === i+1 || newPokemon.name === obj.pokemon[i].name) {
+                if (newPokemon.id === i + 1 || newPokemon.name === obj.pokemon[i].name) {
                     let wrong = { message: "Record already exist!" };
                     response.render('new', wrong);
                     nameExist = true;
@@ -156,11 +153,11 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
 
                 for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, height : obj.pokemon[j].height });
+                    results.push({ name: obj.pokemon[j].name, height: obj.pokemon[j].height });
                 }
 
-                results.sort((a,b) => {
-                    return parseFloat(a.height)-parseFloat(b.height);
+                results.sort((a, b) => {
+                    return parseFloat(a.height) - parseFloat(b.height);
                 });
                 response.send(results);
             })
@@ -170,11 +167,11 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
 
                 for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, weight : obj.pokemon[j].weight });
+                    results.push({ name: obj.pokemon[j].name, weight: obj.pokemon[j].weight });
                 }
 
-                results.sort((a,b) => {
-                    return parseFloat(a.weight)-parseFloat(b.weight);
+                results.sort((a, b) => {
+                    return parseFloat(a.weight) - parseFloat(b.weight);
                 });
                 response.send(results);
             })
@@ -209,7 +206,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
 app.put('/pokemon/:id', (request, response) => {
     // get index of pokemon to be updated
-    let updateId = parseInt(request.params.id)-1;
+    let updateId = parseInt(request.params.id) - 1;
     let updatedPokemon = request.body;
     updatedPokemon.id = parseInt(updatedPokemon.id);
 
@@ -268,7 +265,7 @@ app.delete('/pokemon/:id', (request, response) => {
         }
 
         let deleteIndex = arrayOfPokemon.indexOf(pokemon.name);
-        console.log (deleteIndex + pokemon.name);
+        console.log(deleteIndex + pokemon.name);
         obj.pokemon.splice(deleteIndex, 1);
 
         jsonfile.writeFile(FILE, obj, (err) => {

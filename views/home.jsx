@@ -6,8 +6,15 @@ class Home extends React.Component {
 
     render() {
 
-        const allPokemon = this.props.pokeobj.pokemon.map(pokemon => {
-            return <li>{pokemon.name}<br/><img src={pokemon.img}></img> </li>;
+        const allPokemon = this.props.pokeobj.pokemon.map( (pokemon, index) => {
+
+            return <div>
+            {/* adds URL to pokemon name  */}
+                    <a href={"localhost:3000/pokemon/"+pokemon.id}><li>{pokemon.id}: {pokemon.name}</li></a>
+                   <img src={pokemon.img}></img>
+                </div>
+
+
         })
         return (
             <html>
