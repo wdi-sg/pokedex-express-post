@@ -6,7 +6,7 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
-
+const MARIA = "HELLO MARIA";
 
 
 /**
