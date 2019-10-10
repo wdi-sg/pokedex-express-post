@@ -8,12 +8,12 @@ class Display extends React.Component {
             <div>
                 <h1>This is your pokemon</h1><br/>
                 <img src="https://media.giphy.com/media/j2xgBIuAgmrpS/giphy.gif"></img><br/>
-                <h2>Id: { this.props.pokemon.id }</h2>
-                <h2>Number: { this.props.pokemon.num }</h2>
-                <h2>Name: { this.props.pokemon.name }</h2>
-                <img src= {this.props.pokemon.img }/><br/>
-                <h3>Height: { this.props.pokemon.height }</h3>
-                <h3>Weight: { this.props.pokemon.weight }</h3>
+                <h2>Id: { this.props.id }</h2>
+                <h2>Number: { this.props.num }</h2>
+                <h2>Name: { this.props.name }</h2>
+                <img src= {this.props.img }/><br/>
+                <h3>Height: { this.props.height }</h3>
+                <h3>Weight: { this.props.weight }</h3>
             </div>
         </body>
       </html>

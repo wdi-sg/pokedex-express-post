@@ -53,32 +53,25 @@ app.post('/pokemon', (request, response) => {
     });
 });
 
-// search pokemon by id
+//search pokemon by id
 app.get('/pokemon/:id', (request, response) => {
-    console.log("start*****************")
+
 
     jsonfile.readFile(FILE, (err, obj) => {
         // receive ID input as integer
         let inputId = parseInt(request.params.id);
         // create "global variable" to hold data
-        // let displayData = {};
-        let selectedPoke = {};
+        let displayData;
         // loop through pokemon
         for (let i = 0; i <obj.pokemon.length; i++) {
-            let pokemonUnderSelection = obj.pokemon[i];
-
+            let selectedPoke = obj.pokemon[i];
             // condition for matching id's
-            if (inputId === parseInt(pokemonUnderSelection.id)) {
+            if (inputId === parseInt(selectedPoke.id)) {
             //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
-                selectedPoke = pokemonUnderSelection;
+                displayData = selectedPoke;
             }
         }
-
-        const data = {
-            pokemon: selectedPoke
-        };
-
-    response.render('display', data);
+    response.render('display', displayData);
     });
 });
 
