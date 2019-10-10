@@ -1,5 +1,5 @@
 var React = require('react');
-class Home extends React.Component {
+class Form extends React.Component {
   render() {
     return (
       <html>
@@ -22,4 +22,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+module.exports = Form;
