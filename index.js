@@ -54,26 +54,33 @@ app.post('/pokemon', (request, response) => {
 });
 
 // search pokemon by id
-// app.get('/pokemon/:id', (request, response) => {
+app.get('/pokemon/:id', (request, response) => {
+    console.log("start*****************")
 
+    jsonfile.readFile(FILE, (err, obj) => {
+        // receive ID input as integer
+        let inputId = parseInt(request.params.id);
+        // create "global variable" to hold data
+        // let displayData = {};
+        let selectedPoke = {};
+        // loop through pokemon
+        for (let i = 0; i <obj.pokemon.length; i++) {
+            let pokemonUnderSelection = obj.pokemon[i];
 
-//     jsonfile.readFile(FILE, (err, obj) => {
-//         // receive ID input as integer
-//         let inputId = parseInt(request.params.id);
-//         // create "global variable" to hold data
-//         let displayData;
-//         // loop through pokemon
-//         for (let i = 0; i <obj.pokemon.length; i++) {
-//             let selectedPoke = obj.pokemon[i];
-//             // condition for matching id's
-//             if (inputId === selectedPoke.id) {
-//             //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
-//                 displayData = selectedPoke;
-//             }
-//         }
-//     response.render('display', displayData);
-//     });
-// });
+            // condition for matching id's
+            if (inputId === parseInt(pokemonUnderSelection.id)) {
+            //equate "global value" to data, remember that selectedPoke holds keys that will be rendered with response.render
+                selectedPoke = pokemonUnderSelection;
+            }
+        }
+
+        const data = {
+            pokemon: selectedPoke
+        };
+
+    response.render('display', data);
+    });
+});
 
 // create edit form
 app.get('/pokemon/:id/edit', (request, response) => {
@@ -96,7 +103,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
 // this is actually app.put, but i don't understand objects well. so. it will be app.post, cause that has worked.
 
-app.post('/pokemon/:id', (request, response) => {
+app.put('/pokemon/:id', (request, response) => {
     var pokeIndexId = request.params.id;
     var editedPokemon = request.body;
 
