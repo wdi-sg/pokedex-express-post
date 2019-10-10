@@ -1,4 +1,4 @@
-vvar React = require('react');
+var React = require('react');
 
 class Edit extends React.Component {
   render() {
