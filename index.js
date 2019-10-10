@@ -6,6 +6,12 @@ const FILE = 'pokedex.json';
 
 const app = express();
 
+
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+
+
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
@@ -100,9 +106,54 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+app.get("/pokemon/:id/edit", (request, response) => {
+    var id = request.params.id;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log(obj.pokemon[id]);
+        const person = obj.pokemon[id];
+
+        const data = {
+            id:id,
+            person : person
+        };
+
+        response.render("edit", data);
+    });
+});
 
 
+app.put("/pokemon/:id", (request, response) => {
 
+    var pokeId = parseInt(request.params.id);
+    var pokemonId = pokeId - 1;
+    var edit = request.body;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log("editing in progress", obj.pokemon[pokemonId]);
+
+        obj.pokemon[pokemonId] = edit;
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log(err)
+
+            response.send("FINALLY");
+        });
+    });
+});
+
+
+app.get("/pokemon/:id/delete", (request, response) => {
+    var id = request.params.id;
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log(obj.pokemon[id])
+        const pokemon = obj.pokemon[id];
+
+        response.render("delete", pokemon);
+
+    })
+})
 
 app.get('/', (request, response) => {
   response.send("yay");
