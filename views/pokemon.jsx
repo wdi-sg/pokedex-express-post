@@ -7,6 +7,7 @@ class Pokemon extends React.Component {
           <div>
 
            <h1> {this.props.name}</h1>
+           <h2><a href={"/pokemon/" + this.props.id + "/edit"}>Edit This Pokemon</a></h2>
            <ul>
                 <li>ID number: {this.props.id}</li>
                 <li>Num: {this.props.num}</li>
