@@ -1,3 +1,4 @@
+//jshint esversion:6
 const express = require('express');
 const jsonfile = require('jsonfile');
 // Init express app
@@ -21,6 +22,7 @@ app.use(express.urlencoded({
     extended: true,
 }));
 
+// react engine for rendering
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 app.set('views', __dirname+'/views');
@@ -33,15 +35,12 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
-
+//route to home page
 app.get('/pokemon', (request,response)=>{
     console.log(request.body);
     response.render('home.jsx');
-})
+});
 
-app.post('/pokemon', (request,response)=>{
-    response.send(request.body)
-})
 
 app.get('/pokemon/sort?',(request,response)=>{
     console.log("My request query",request.query);
@@ -50,8 +49,9 @@ app.get('/pokemon/sort?',(request,response)=>{
         jsonfile.readFile(FILE, (err,obj)=>{
             let str = "List of pokemon by height: <br>";
 
-            let tempArr = obj["pokemon"]
-            tempArr.sort((a,b) => (parseFloat(a["height"]) < parseFloat(b["height"])) ? 1: -1)
+            let tempArr = obj["pokemon"];
+            // sorts pokemon by height tallest to shortest
+            tempArr.sort((a,b) => (parseFloat(a["height"]) < parseFloat(b["height"])) ? 1: -1);
 
             tempArr.forEach(function(a){
                 str = str + `<img src="${a["img"]}">` + "<br>" + "Name: " +a["name"] + "  Height: " + a["height"] +"<br>"
@@ -64,7 +64,7 @@ app.get('/pokemon/sort?',(request,response)=>{
         console.log("Wow weight");
         jsonfile.readFile(FILE, (err,obj)=>{
             let str = "List of pokemon by weight: <br>";
-
+            // sorts pokemon by height heaviest to shortest
             let tempArr = obj["pokemon"]
             tempArr.sort((a,b) => (parseFloat(a["weight"]) < parseFloat(b["weight"])) ? 1: -1)
 
@@ -76,7 +76,7 @@ app.get('/pokemon/sort?',(request,response)=>{
         })
     }
 })
-
+// points to add new pokemon page
 app.get('/pokemon/new?', (request,response)=>{
     response.render('addPokemon.jsx');
 })
@@ -108,6 +108,7 @@ app.post('/pokemon/new', (request, response) => {
 
 app.get('/pokemon/show', (request, response)=>{
     jsonfile.readFile(FILE, (err,obj)=>{
+      //shows all pokemon
         let dex = obj["pokemon"];
         let str = "List of pokemon:<br>"
 
@@ -150,6 +151,7 @@ app.get('/pokemon/:id', (request,response)=>{
 
 })
 
+//makes edit submitted by user
 app.put('/pokemon/:id',(request,response)=>{
     var pokemonId = request.params.id;
     var dataReceived = request.body;
@@ -166,7 +168,68 @@ app.put('/pokemon/:id',(request,response)=>{
         jsonfile.writeFile(FILE, obj,(err) =>{
             response.send(`New weight of ${pokemon.name}: ${pokemon.weight}`)
         })
+    });
+});
+
+// added delete option
+
+app.get('/pokemon/:id/delete', (request, response) => {
+    //input data from request
+    let inputId = parseInt(request.params.id);
+
+    // get json from specified file
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        var pokemon;
+
+        // find pokemon by id from the pokedex json file
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === inputId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        response.render('delete', pokemon);
     })
+})
+
+
+app.delete('/pokemon/:id', (request, response) => {
+    // pokemon to be deleted
+    let deleteId = parseInt(request.params.id);
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        //replace updated pokemon with new data
+        var pokemon;
+        var arrPokemon = [];
+
+        // find pokemon by id
+        for (let i = 0; i < obj.pokemon.length; i++) {
+
+            arrPokemon.push(obj.pokemon[i].name);
+
+            let currentPokemon = obj.pokemon[i];
+
+            if (currentPokemon.id === deleteId) {
+                pokemon = currentPokemon;
+            }
+        }
+
+        let deleteIndex = arrayOfPokemon.indexOf(pokemon.name);
+        console.log (deleteIndex + pokemon.name);
+        obj.pokemon.splice(deleteIndex, 1);
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.error(err);
+        })
+        response.send(`Pokemon ${pokemon.name} deleted `);
+
+    })
+
+
 })
 
 
