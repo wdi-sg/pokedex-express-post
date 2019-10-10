@@ -33,6 +33,28 @@ app.get('/', (request, response) => {
   response.send("HI BANANA");
 });
 
+/*
+====================
+====================
+    KEVIN'S EDITS
+====================
+====================
+*/
+app.get('/pokemon',(req,res)=>{
+    jsonfile.readFile(FILE, (err, obj) => {
+        const list = obj.pokemon.map((element)=>{
+            return element["name"];
+        });
+        res.send(list);
+    })
+})
+/*
+====================
+====================
+    KEVIN'S EDITS
+====================
+====================
+*/
 
 //ON LOADING LOCALHOST:3000/POKEMON/NEW==================================================================================================================
 app.get('/pokemon/new', (request, response) => {
