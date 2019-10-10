@@ -1,3 +1,5 @@
+// I already check out your works nightly. Big Fan.==================
+
 const express = require('express');
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
