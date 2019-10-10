@@ -182,8 +182,12 @@ app.post('/pokemon', function(request, response) {
  * GET edit
  * ===================================
  */
+
+ //YIJIN: I noticed this while doing my own. Maybe because we used the for loop to get /pokemon/:id, the path id tallies with the id.
+ //YIJIN: But when we do /pokemon/:id/edit, the path will bring us to 1 pokemon before. eg. /pokemon/1/edit will bring user to editing id2 - Ivysaur 
 app.get('/pokemon/:id/edit',(request, response)=>{
-    let index = parseInt(request.params.id);
+    let index = parseInt(request.params.id-1);
+//YIJIN: adding a "-1" was my quick fix. not sure if it screws up some other part
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.log(err);
         const data = {
@@ -193,6 +197,9 @@ app.get('/pokemon/:id/edit',(request, response)=>{
     response.render('edit', data);
   });
 });
+//YIJIN: I notice that the original pokedex.json file puts the object "id" value without inverted commas""
+//YIJIN: And when this particular pokemon was edited,the id is now between "", rendering impossible to use /pokemon/3 path thereafter
+//YIJIN: I only notice the problem with no solution to offer. sorry!
 /*
  * ===================================
  * PUT edit
@@ -218,7 +225,9 @@ app.put("/pokemon/:id", (request, response) => {
  * ===================================
  */
 app.get("/pokemon/:id/delete", (request, response) => {
-    let index = parseInt(request.params.id);
+    let index = parseInt(request.params.id-1);
+//YIJIN: same as above for /pokemon/:id/edit
+//YIJIN: after i changed this part, I'm unable to delete already. In fact, when I try to delete id=25, the error message says "Cannot DELETE /pokemon/24"
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) console.log(err);
         const data = {
@@ -233,20 +242,7 @@ app.get("/pokemon/:id/delete", (request, response) => {
  * DELETE destroy
  * ===================================
  */
-app.delete("/pokemon/:id", (request,response)=>{
-    let id = request.params.id;
-    jsonfile.readFile(FILE, (err, obj) => {
-        if (err) console.log(err);
-// splice the pokemon in the array
-        obj.pokemon.splice(parseInt(id),1);
-// write this new obj to pokedex.json
-        jsonfile.writeFile(FILE, obj, {spaces:2}, (err) => {
-            if (err) console.log(err)
-        });
-    });
-// endpoint
-    response.send('deleted!!!!')
-})
+
 /**
  * ===================================
  * Listen to requests on port 3000

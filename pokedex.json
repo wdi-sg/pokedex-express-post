@@ -27,16 +27,12 @@
       "spawn_time": "07:00"
     },
     {
-      "id": 3,
-      "num": "003",
-      "name": "Venusaur",
+      "id": "3",
+      "name": "VenusaurEX",
       "img": "http://www.serebii.net/pokemongo/pokemon/003.png",
       "height": "2.01 m",
       "weight": "100.0 kg",
-      "candy": "Bulbasaur Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.7,
-      "spawn_time": "11:30"
+      "_locals": {}
     },
     {
       "id": 4,
