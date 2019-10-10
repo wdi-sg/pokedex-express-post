@@ -144,8 +144,6 @@ app.put('/pokemon/:id', (request, response) => {
             // Get ID from parameter
     let inputId = parseInt( request.params.id - 1 );
 
-    //console.log(toUpdatePokemon);
-
     // Get the data that will be updated into the information
     let updatedData = request.body;
 
@@ -161,6 +159,48 @@ app.put('/pokemon/:id', (request, response) => {
     });
 
 });
+
+// Method to get pokemon information to delete
+app.get('/pokemon/:id/delete', (request, response) => {
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+    let toDeletePokemon = obj.pokemon[inputId - 1];
+
+    // Show the edit form with the current data
+    response.render('delete', data);
+  });
+});
+
+// Method to delete pokemon information
+/*app.delete('/pokemon/:id', (request, response) => {
+
+    // Read the file and look for the pokemon with the requested ID
+    jsonfile.readFile(FILE, (err, obj) => {
+
+            // Get ID from parameter
+    let inputId = parseInt( request.params.id - 1 );
+
+
+    // Get the data that will be updated into the information
+    let updatedData = request.body;
+
+        // Assign the updated data into the object
+        obj.pokemon[inputId] = updatedData;
+
+        // Write it into the file
+        jsonfile.writeFile(FILE, obj, (err) => {
+            console.log("Error: " + err);
+            response.send(updatedData);
+        });
+
+    });
+
+});*/
 
 /**
  * ===================================
