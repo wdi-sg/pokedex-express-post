@@ -1,6 +1,11 @@
 var React = require('react');
 class Home extends React.Component {
   render() {
+
+    let pokemon = {this.props.pokeDex.name}
+
+
+
     return (
       <html>
         <body>
@@ -8,22 +13,9 @@ class Home extends React.Component {
 
            <h1> POKEMON</h1>
 
-            <form method="POST" action="/pokemon">
-              ID:
-              <input type="text" name="id" /><br/>
-              Number:
-              <input type="text" name="num" /><br/>
-              Name:
-              <input type="text" name="name" /><br/>
-              Image:
-              <input type="text" name="img" /><br/>
-              Height:
-              <input type="text" name="height" /><br/>
-              Weight:
-              <input type="text" name="weight" /><br/>
-              <input type="submit" value="Submit" />
-
-             </form>
+            <ul>
+                <li>{pokemon}</li>
+            <ul>
 
 
           </div>
