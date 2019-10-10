@@ -14,9 +14,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-
-
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 
 app.use(methodOverride('_method'));
 
@@ -46,6 +44,11 @@ const FILE = 'pokedex.json';
  * Routes
  * ===================================
  */
+
+//intro screen
+app.get('/', (request, response) => {
+    response.render("intro");
+});
 
 
 
