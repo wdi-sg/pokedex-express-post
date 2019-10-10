@@ -40,6 +40,44 @@ app.use(express.urlencoded({
  * Routes
  * ===================================
  */
+
+//I created this app.get. I dunno why you didnt have this in the first place but when i type out http://localhost:3000/pokemon/new .There is a page.???
+
+ app.get('/pokemon/new', (request, response) => {
+    response.render('new');
+ })
+
+ //
+
+// Tried to create but doesnt work!
+//
+ // app.post('/pokemon',(request,response) => {
+ //    let createNewPokemon = request.body;
+ //    let currentPoke ;
+ //    let oldId;
+ //    createNewPokemon.id = parseInt(create.id);
+ //    let newNumber = parseInt(createPoke.num);
+
+ //    jsonfile.readFile = (FILE,(err,obj) =>{
+ //        for (i=0;i<obj.pokemon.length;i++){
+ //            currentPoke = obj.pokemon[i];
+ //            oldId = parseInt(currentPoke.id);
+ //            if(oldId === createNewPokemon.id){
+ //                response.render("pokeExisted");
+ //            }
+ //        }
+ //        if(createPoke.id === newNumber){
+ //            obj.pokemon.push(request.body);
+ //            response.render("newPokemon")
+ //        }
+ //        jsonfile.writeFile = (FILE,obj,{spaces :2}, (err) =>{
+ //            console.log(err);
+ //        })
+ //    })
+ // })
+
+
+
 // app.get('/pokemon/new', (request, response) => {
 //   response.render ('new');
 //   // response.send(`<form method="GET" action="/pokemon">
@@ -107,7 +145,7 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 
-// new
+new
 app.get('/pokemon', (request, response) => {
 
     jsonfile.readFile(FILE, (err, obj) => {
