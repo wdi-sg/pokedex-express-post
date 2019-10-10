@@ -120,6 +120,8 @@ app.post('/addpokemon', (request, response) => {
     }
 })
 
+// Jasmine: this is from home page to sort pokemon
+// Jasmine: switch is if statements
 app.get('/pokemon?', (request, response) => {
     //output query field
     console.log(request.query.sortby);
