@@ -76,7 +76,12 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.get('/pokemon', (request, response) => {
-  
+  jsonfile.readFile(FILE, (err, obj) => {
+    data = {
+      pokedex : obj.pokemon
+    }
+    response.render ('index', data);
+  });
 });
 
 app.post('/pokemon', (request, response) => {
