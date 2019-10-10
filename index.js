@@ -44,10 +44,10 @@ app.use(methodOverride('_method'));
 app.get('/', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
 
-        const data = {
-            pokeobj: obj
-        }
-
+        // const data = {
+        //     pokeobj: obj
+        // }
+        let data = obj;
 
             response.render('home', data);
         })
@@ -72,6 +72,7 @@ app.get('/pokemon/:id', (request, response) => {
 
             if (currentPokemon.id === inputId) {
                 pokemon = currentPokemon;
+                pokemon.message = "Found";
             }
         }
 
@@ -90,7 +91,8 @@ app.get('/pokemon/:id', (request, response) => {
     });
 });
 
-app.post('/addpokemon', (request, response) => {
+app.post('/pokemon/new', (request, response) => {
+    //let inputId = parseInt(request.params.id);
     // debug code (output request body)
     console.log(request.body);
     let newPokemon = request.body;
@@ -101,12 +103,13 @@ app.post('/addpokemon', (request, response) => {
 
     } else {
         newPokemon.id = parseInt(newPokemon.id);
+        newPokemon.message = "Added";
         let nameExist = false;
 
         jsonfile.readFile(FILE, (err, obj) => {
             // check if ID or name already exist
             for (let i = 0; i < obj.pokemon.length; i++) {
-                if ( newPokemon.id === i+1 || newPokemon.name === obj.pokemon[i].name) {
+                if ( newPokemon.id === obj.pokemon[i].id || newPokemon.name === obj.pokemon[i].name) {
                     let wrong = { message: "Record already exist!" };
                     response.render('new', wrong);
                     nameExist = true;
@@ -120,7 +123,7 @@ app.post('/addpokemon', (request, response) => {
                     console.error(err);
 
                     // render out added data
-                    response.render('added', newPokemon);
+                    response.render('found', newPokemon);
 
                 });
             }
@@ -142,13 +145,13 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
                 // get name of all pokemons
                 for (var i = 0; i < obj.pokemon.length; i++) {
-                    results.push(obj.pokemon[i].name);
+                    results.push({ name : obj.pokemon[i].name, img : obj.pokemon[i].img });
                 }
                 // sort names alphabetically
                 results.sort();
+                let pokeobj = { "pokemon": results };
                 // render out requested data
-                response.send(results);
-
+                response.render('home', pokeobj);
             });
             break;
 
@@ -156,13 +159,15 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
 
                 for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, height : obj.pokemon[j].height });
+                    results.push({ name : obj.pokemon[j].name, img : obj.pokemon[j].img, height : obj.pokemon[j].height });
                 }
 
                 results.sort((a,b) => {
                     return parseFloat(a.height)-parseFloat(b.height);
                 });
-                response.send(results);
+                let pokeobj = { "pokemon": results };
+                // render out requested data
+                response.render('home', pokeobj);
             })
             break;
 
@@ -170,13 +175,15 @@ app.get('/pokemon?', (request, response) => {
             jsonfile.readFile(FILE, (err, obj) => {
 
                 for (var j = 0; j < obj.pokemon.length; j++) {
-                    results.push({ name : obj.pokemon[j].name, weight : obj.pokemon[j].weight });
+                    results.push({ name : obj.pokemon[j].name, img : obj.pokemon[j].img, weight : obj.pokemon[j].weight });
                 }
 
                 results.sort((a,b) => {
                     return parseFloat(a.weight)-parseFloat(b.weight);
                 });
-                response.send(results);
+                let pokeobj = { "pokemon": results };
+                // render out requested data
+                response.render('home', pokeobj);
             })
             break;
     }
@@ -211,6 +218,7 @@ app.put('/pokemon/:id', (request, response) => {
     // get index of pokemon to be updated
     let updateId = parseInt(request.params.id)-1;
     let updatedPokemon = request.body;
+    updatedPokemon.message = "Edited";
     updatedPokemon.id = parseInt(updatedPokemon.id);
 
     jsonfile.readFile(FILE, (err, obj) => {
@@ -222,7 +230,7 @@ app.put('/pokemon/:id', (request, response) => {
         })
     })
 
-    response.send("Pokemon updated!");
+    response.render("found", updatedPokemon);
 })
 
 app.get('/pokemon/:id/delete', (request, response) => {
@@ -264,6 +272,7 @@ app.delete('/pokemon/:id', (request, response) => {
             let currentPokemon = obj.pokemon[i];
             if (currentPokemon.id === deleteId) {
                 pokemon = currentPokemon;
+                pokemon.message = "Deleted";
             }
         }
 
@@ -274,7 +283,7 @@ app.delete('/pokemon/:id', (request, response) => {
         jsonfile.writeFile(FILE, obj, (err) => {
             console.error(err);
         })
-        response.send(`Pokemon ${pokemon.name} deleted!`);
+        response.render('found', pokemon);
 
     })
 

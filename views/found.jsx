@@ -5,7 +5,7 @@ class Found extends React.Component {
         return (
             <html>
                 <body>
-                    <h2>Pokemon Matched!</h2>
+                    <h2>Pokemon { this.props.message }</h2>
                     <p>ID: { this.props.id }<br/>
                         Number: { this.props.num }<br/>
                         Name: { this.props.name }<br/>

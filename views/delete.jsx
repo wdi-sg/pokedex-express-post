@@ -6,7 +6,14 @@ class Delete extends React.Component {
         return (
             <html>
                 <body>
-                    <h2>Deleting {this.props.name}!!!</h2>
+                    <h2>Confirm delete?!!</h2>
+                    <p>ID: { this.props.id }<br/>
+                        Number: { this.props.num }<br/>
+                        Name: { this.props.name }<br/>
+                        <img src={ this.props.img }/><br/>
+                        Height: { this.props.height }<br/>
+                        Weight: { this.props.weight }<br/>
+                    </p>
                     <form method="POST" action={formAction}>
                         <input type="submit" value="Delete"/>
                     </form>

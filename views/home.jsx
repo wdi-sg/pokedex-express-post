@@ -5,8 +5,7 @@ class Home extends React.Component {
 
 
     render() {
-
-        const allPokemon = this.props.pokeobj.pokemon.map(pokemon => {
+        const allPokemon = this.props.pokemon.map(pokemon => {
             return <li>{pokemon.name}<br/><img src={pokemon.img}></img> </li>;
         })
         return (
