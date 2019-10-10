@@ -10,18 +10,5 @@
     "method-override": "^2.3.10",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
-  },
-  "description": "We will build a web app using Node.js and Express - a Pokedex app.",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/edenlim/pokedex-express-post.git"
-  },
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/edenlim/pokedex-express-post/issues"
-  },
-  "homepage": "https://github.com/edenlim/pokedex-express-post#readme"
+  }
 }
