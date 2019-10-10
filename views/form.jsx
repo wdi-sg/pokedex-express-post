@@ -6,6 +6,7 @@ class Form extends React.Component {
         <body>
           <div>
             <h1>Pokemon Data</h1>
+            <h1>HELLO I AM COLLABORATING</h1>
             <form method="POST" action="/pokemon">
             ID: <input type="text" name="id"/><br />
             Num: <input type="text" name="num"/><br />
