@@ -32,6 +32,10 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
+app.get('/pokemon/new', (request, response) => {
+    response.render('form');
+});
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -60,9 +64,7 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
-app.get('/pokemon/new', (request, response) => {
-    response.render('Form');
-});
+
 
 app.post('/pokemon', (request, response) => {
     console.log(request.body);
