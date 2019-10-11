@@ -6,7 +6,7 @@ class Home extends React.Component {
            <html>
        <body >
           <main >
-          <form id="myForm" method="GET" action="/pokemon">
+          <form method="GET" action="/">
               Submit New Pokemon: <br/>
               ID:
               <input type="number" name="id"/> <br/>

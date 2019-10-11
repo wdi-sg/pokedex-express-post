@@ -5,8 +5,8 @@ class New extends React.Component {
         return (
            <html>
         <body>
-          <main>
-          <form method="POST" action="/pokemon/:new">
+           <main >
+          <form id="myForm" method="POST" action="/pokemon">
               Submit New Pokemon: <br/>
               ID:
               <input type="number" name="id"/> <br/>
@@ -21,7 +21,7 @@ class New extends React.Component {
               Weight:
               <input type="number" name="weight"/> <br/>
 
-              <input type="submit" value="Submit"/>
+              <input type="submit" form="myForm" value="Submit"/>
             </form>
           </main>
         </body>

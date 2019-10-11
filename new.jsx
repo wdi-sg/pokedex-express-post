@@ -6,7 +6,7 @@ class New extends React.Component {
            <html>
         <body >
           <main>
-          <form method="POST" action="/pokemon">
+          <form method="POST" action="http://localhost:3000/pokemon">
               Submit New Pokemon: <br/>
               ID:
               <input type="number" name="id"/> <br/>
