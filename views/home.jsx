@@ -2,18 +2,24 @@ var React = require('react');
 
 class Home extends React.Component {
 
-
-
     render() {
+
+        let style = {
+            display: "inline-block",
+            margin: "2rem",
+            "text-align": "center"
+        }
+        let style2 = {
+            "text-decoration": "none"
+        }
 
         const allPokemon = this.props.pokeobj.pokemon.map( (pokemon, index) => {
 
-            return <div>
-            {/* adds URL to pokemon name  */}
-                    <a href={"localhost:3000/pokemon/"+pokemon.id}><li>{pokemon.id}: {pokemon.name}</li></a>
-                   <img src={pokemon.img}></img>
-                </div>
-
+            return (
+                <li style={style}>{pokemon.name}<br/>
+                <a style={style2} href={"localhost:3000/pokemon/"+pokemon.id}><img src={pokemon.img}></img></a>
+                </li>
+                )
 
         })
         return (
