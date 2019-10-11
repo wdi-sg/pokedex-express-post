@@ -1,3 +1,5 @@
+### WEEEE ~~~~ EDITED BY SIEW LING HAHA
+
 # Pokedex Express App (with CRUD)
 
 We will build a web app using Node.js and Express - a Pokedex app.
@@ -61,7 +63,7 @@ RESTful routing is a scheme to structure your URLS that removes duplication, and
 
 * Add a "Sort by height" button to the homepage
   - what do you need to write to abstract the idea of *sorting* in your code? What is the most elegant way to sort by any field in the pokedex?
-  
+
 * restrict the user from creating a pokemon with a id, number and name that already exists
 
 * validate all of the incoming user data. Restrict values to reasonable numbers (i.e. height less that 100, etc.) What is the best structure for your app to have this validation code?

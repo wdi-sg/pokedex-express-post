@@ -5,7 +5,12 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.3",
+    "express-react": "^1.0.2",
+    "express-react-views": "^0.11.0",
     "jsonfile": "^4.0.0",
-    "method-override": "^2.3.10"
+    "method-override": "^2.3.10",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "views": "^1.0.2"
   }
 }
