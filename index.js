@@ -209,6 +209,31 @@ app.put('/pokemon/:id', (request, response) => {
 console.log('completed writing')
 });
 
+// Still a work in progress. cant get the delete page to render
+// app.get("/pokemon/:id/delete", (request, response) => {
+//             console.log(request.params.id)
+
+//     jsonfile.readFile(FILE, (err, obj) => {
+//         const Id = parseInt(request.params.id);
+//         let pokemon;
+
+//         for (let i = 0; i < obj.pokemon.length; i++) {
+//             const currentPokemon = obj.pokemon[i];
+//             if (currentPokemon.id === Id) {
+//                 pokemon = currentPokemon;
+//             }
+//         }
+//             if (pokemon === undefined) {
+
+//                 res.status(404);
+//                 res.send("not found");
+//             }
+//             else {
+//                 res.render("delete", pokemon);
+//             }
+//         });
+// });
+
 // app.get('/', (request, response) => {
 //   response.send("yay");
 // });

@@ -5,7 +5,7 @@ class New extends React.Component {
       <html>
         <body>
                   <div>
-            
+
             <h1>Edit Pokemon: { this.props.name }</h1>
             <form method="POST" action={"/pokemon/"+this.props.id+"?_method=put"}>
             <br/>
