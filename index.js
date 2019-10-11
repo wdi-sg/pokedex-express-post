@@ -44,7 +44,6 @@ app.set('view engine', 'jsx');
 
 app.get('/pokemon/:id/edit', (request, response) => {
   // get json from specified file
-      console.log("id: ",request.params.id);
   jsonfile.readFile(FILE, (err, obj) => {
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -85,6 +84,7 @@ app.get('/pokemon/id', (request, response) => {
     // extract input data from request
     console.log(err);
     // let inputId = parseInt( request.params.id );
+    console.log(request.query)
     let inputId = parseInt( request.query.id )
     var pokemon;
 
@@ -179,6 +179,31 @@ app.put('/pokemon/:id', (request, response) => {
   response.render('edit', data);
 
 
+// Still a work in progress. cant get the delete page to render
+// app.get("/pokemon/:id/delete", (request, response) => {
+//             console.log(request.params.id)
+
+//     jsonfile.readFile(FILE, (err, obj) => {
+//         const Id = parseInt(request.params.id);
+//         let pokemon;
+
+//         for (let i = 0; i < obj.pokemon.length; i++) {
+//             const currentPokemon = obj.pokemon[i];
+//             if (currentPokemon.id === Id) {
+//                 pokemon = currentPokemon;
+//             }
+//         }
+//             if (pokemon === undefined) {
+
+//                 res.status(404);
+//                 res.send("not found");
+//             }
+//             else {
+//                 res.render("delete", pokemon);
+//             }
+//         });
+// });
+
   // add the new data to the read object
   // whats the current last ID?
   jsonfile.readFile(FILE, (err, obj) => {
@@ -207,8 +232,6 @@ app.put('/pokemon/:id', (request, response) => {
 
 console.log('completed writing')
 });
-
-console.log("Me Too");
 
 // app.get('/', (request, response) => {
 //   response.send("yay");
