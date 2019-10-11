@@ -1881,6 +1881,38 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "name": "Kellysaur",
+      "height": "1",
+      "weight": "23",
+      "id": "152",
+      "num": "152",
+      "img": "3"
+    },
+    {
+      "name": "Hoothoot",
+      "height": "2",
+      "weight": "32",
+      "id": "153",
+      "num": "153",
+      "img": "2"
+    },
+    {
+      "id": "154",
+      "num": "154",
+      "name": "Lipsysaur",
+      "img": "4",
+      "height": "3",
+      "weight": "60"
+    },
+    {
+      "name": "156",
+      "height": "156",
+      "weight": "Agumon",
+      "id": "7",
+      "num": "7",
+      "img": "https://i.imgur.com/VPHzsUq.png?1"
     }
   ]
 }
