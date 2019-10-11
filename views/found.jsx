@@ -2,7 +2,8 @@ var React = require('react');
 
 class Found extends React.Component {
     render() {
-        let formAction = '/pokemon/' + this.props.id + '/edit';
+        let formEdit = '/pokemon/' + this.props.id + '/edit';
+        let formDelete = '/pokemon/' + this.props.id + '/delete';
 
         return (
             <html>
@@ -15,8 +16,11 @@ class Found extends React.Component {
                         Height: { this.props.height }<br/>
                         Weight: { this.props.weight }<br/>
                     </p>
-                    <form method="GET" action={formAction}>
+                    <form method="GET" action={formEdit}>
                         <input type="submit" value="Edit Pokemon"/>
+                    </form>
+                    <form method="GET" action={formDelete}>
+                        <input type="submit" value="Delete Pokemon"/>
                     </form>
                 </body>
             </html>
