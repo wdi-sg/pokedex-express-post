@@ -1881,6 +1881,14 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": "546",
+      "num": "546",
+      "name": "meowmon",
+      "img": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/160.png",
+      "height": "345",
+      "weight": "234"
     }
   ]
 }
