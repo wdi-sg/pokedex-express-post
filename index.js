@@ -74,8 +74,15 @@ app.get('/pokemon/:id', (request, response) => {
             response.status(404);
             response.send("not found");
         } else {
-
-            response.send(pokemon);
+            let data = {
+                id : pokemon.id,
+                num : pokemon.num,
+                name : pokemon.name,
+                img : pokemon.img,
+                height: pokemon.height,
+                weight: pokemon.weight
+            }
+            response.render('pokemon', data);
         }
     });
 });
@@ -86,7 +93,7 @@ app.post('/pokemon', (request, response) => {
         let pokemon = request.body;
         console.log(pokemon);
         let pokeData = {
-            id: pokemon.id,
+            id: parseInt(pokemon.id),
             num: pokemon.num,
             name: pokemon.name,
             img: pokemon.img,

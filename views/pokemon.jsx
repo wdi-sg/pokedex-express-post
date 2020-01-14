@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Data extends React.Component {
+class Pokemon extends React.Component {
     render() {
         return (
             <html>
@@ -10,6 +10,14 @@ class Data extends React.Component {
                 <body>
                     <div class="container">
                         <h1>Pokemon Data</h1>
+                        <div class="pokemonData">
+                            <div>ID : {this.props.id}</div>
+                            <div>Num : {this.props.num}</div>
+                            <div>Name : {this.props.name}</div>
+                            <img src={this.props.img} alt="{this.props.name} img"/>
+                            <div>Height : {this.props.height}</div>
+                            <div>Weight: {this.props.weight}</div>
+                        </div>
                     </div>
                 </body>
             </html>
@@ -17,4 +25,4 @@ class Data extends React.Component {
     }
 }
 
-module.exports = Data;
+module.exports = Pokemon;

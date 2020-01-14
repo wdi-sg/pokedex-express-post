@@ -22,7 +22,7 @@ class New extends React.Component {
                                 </div>
                                 <div class="form-group">
                                     <label>Num :</label>
-                                    <input type="text" class="form-control" placeholder="eg. #152" name="num"/>
+                                    <input type="text" class="form-control" placeholder="eg. 007" name="num"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Img :</label>
