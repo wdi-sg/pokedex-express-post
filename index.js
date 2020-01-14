@@ -91,7 +91,6 @@ app.get('/pokemon/:id', (request, response) => {
 app.post('/pokemon', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
         let pokemon = request.body;
-        console.log(pokemon);
         let pokeData = {
             id: parseInt(pokemon.id),
             num: pokemon.num,
@@ -107,11 +106,26 @@ app.post('/pokemon', (request, response) => {
     })
 })
 
+app.get('/pokemon/list' , (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        const pokedex = obj.pokemon;
+        const data = {
+            id : [],
+            name : []
+        };
+        for (let i = 0; i < pokedex.length; i++) {
+            data.id.push(pokedex[i].id);
+            data.name.push(pokedex[i].name);
+        }
+        response.render('list', data)
+    })
+})
 
 
 
 
-app.get('/', (request, response) => {
+
+app.get('*', (request, response) => {
     response.render("home");
 });
 
