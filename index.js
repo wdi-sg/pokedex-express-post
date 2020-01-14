@@ -45,14 +45,125 @@ function allLetter(word) {
 	  }
 }
 
-function checkPokemonLength(obj){
-	obj.pokemon.length 
-}
+function compareValues(key, order = 'asc') {
+	return function innerSort(a, b) {
+	  if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+		// property doesn't exist on either object
+		return 0;
+	  }
+  
+	  const varA = (typeof a[key] === 'string')
+		? a[key].toUpperCase() : a[key];
+	  const varB = (typeof b[key] === 'string')
+		? b[key].toUpperCase() : b[key];
+  
+	  let comparison = 0;
+	  if (varA > varB) {
+		comparison = 1;
+	  } else if (varA < varB) {
+		comparison = -1;
+	  }
+	  return (
+		(order === 'desc') ? (comparison * -1) : comparison
+	  );
+	};
+  }
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+app.post('/pokemon/sort/', (request, response) => {
+	if(request.query.sort == "name" ){
+		jsonfile.readFile(FILE, (err, obj) => {
+			let pokemonArray = obj.pokemon; 
+			pokemonArray = pokemonArray.sort(compareValues('name'));
+			let htmlString = "";
+
+			for(let i = 0; i < pokemonArray.length; i++){
+				let name = obj.pokemon[i].name;
+				let id = obj.pokemon[i].id
+				let link = String("/pokemon/" + (id)) ;
+
+			htmlString += `<a href= ${link} className="list-group-item list-group-item-action">${name}</a><br>`
+
+			}
+
+			const data = {
+				string: htmlString
+			}
+			response.render('pokemonList',data)
+		})
+	} else if(request.query.sort == "weight"){
+		jsonfile.readFile(FILE, (err, obj) => {
+			let pokemonArray = obj.pokemon; 
+			pokemonArray = pokemonArray.sort(compareValues('weight'));
+			let htmlString = "";
+
+			for(let i = 0; i < pokemonArray.length; i++){
+				let name = obj.pokemon[i].name;
+				let id = obj.pokemon[i].id
+				let link = String("/pokemon/" + (id)) ;
+
+			htmlString += `<a href= ${link} className="list-group-item list-group-item-action">${name}</a><br>`
+
+			}
+
+			const data = {
+				string: htmlString
+			}
+			response.render('pokemonList',data)
+		})
+	} else if(request.query.sort == "height"){
+		jsonfile.readFile(FILE, (err, obj) => {
+			let pokemonArray = obj.pokemon; 
+			pokemonArray = pokemonArray.sort(compareValues('height'));
+			let htmlString = "";
+
+			for(let i = 0; i < pokemonArray.length; i++){
+				let name = obj.pokemon[i].name;
+				let id = obj.pokemon[i].id
+				let link = String("/pokemon/" + (id)) ;
+
+			htmlString += `<a href= ${link} className="list-group-item list-group-item-action">${name}</a><br>`
+			}
+
+			const data = {
+				string: htmlString
+			}
+			response.render('pokemonList',data)
+		})
+	}
+})//end appget
+
+app.get('/pokemon', (request, response) => {
+	jsonfile.readFile(FILE, (err, obj) => {
+
+		// check to make sure the file was properly read
+		if (err) {
+		  console.log("error with json read file:", err);
+		  response.status(503).send("error reading filee");
+		  return;
+		}
+
+		let htmlString = "";
+
+		for(let i = 0; i < obj.pokemon.length; i++){
+			let name = obj.pokemon[i].name;
+			let link = String("./pokemon/" + (i+1)) ;
+
+			htmlString += `<a href= ${link} className="list-group-item list-group-item-action">${name}</a><br>`
+
+		}
+
+		const data = {
+			string: htmlString
+		}
+
+		response.render('pokemonList',data)
+	})//end readFile
+  })//end app.get;
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -97,7 +208,8 @@ app.get('/pokemon/:id', (request, response) => {
 		response.status(404);
 		response.send("not found");
 	  } else {
-		response.send(pokemon);
+		const data = pokemon
+		response.render('showPokemon',data);
 	  }
 	}
 
