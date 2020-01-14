@@ -54,7 +54,7 @@ class New extends React.Component {
                 <input type="text" placeholder="Pokemon Weight" name="weight" />
               </div>
               <div>
-                <input type="submit" value="Submit!" />
+                <input type="submit" value="Create!" />
                 <button>
                   <a href="/">Go Home</a>
                 </button>

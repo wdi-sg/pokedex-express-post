@@ -2,6 +2,7 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
+    const type = this.props.sortType;
     const pokemons = this.props.pokemon.map(function(pokemon) {
       return <li>{pokemon}</li>;
     });
@@ -14,7 +15,7 @@ class New extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-          <title>Pokemon Not Found!</title>
+          <title>Sorted Pokemon</title>
           <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -28,6 +29,7 @@ class New extends React.Component {
           ></script>
         </head>
         <body>
+        <h1>Pokemon Sorted by {type}</h1>
           <ul>{pokemons}</ul>
         </body>
       </html>

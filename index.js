@@ -38,7 +38,8 @@ app.get("/sortby", (request, response) => {
   const sortBy = request.query.sortby;
   let data;
   let names = [];
-  let weight = [];
+  let pokemonObj = [];
+  let sortedByWeight = [];
   jsonfile.readFile(file, (err, obj) => {
     if (sortBy === "name") {
       for (let i = 0; i < obj.pokemon.length; i++) {
@@ -46,18 +47,30 @@ app.get("/sortby", (request, response) => {
       }
       console.log(names[names.length - 1]);
       data = {
+        sortType: "Alphabet",
         pokemon: names.sort()
       };
     } else if (sortBy === "weight") {
       for (let i = 0; i < obj.pokemon.length; i++) {
-        weight.push(obj.pokemon[i].weight);
+        pokemonObj.push({
+          name: obj.pokemon[i].name,
+          weight: obj.pokemon[i].weight
+        });
       }
+      pokemonObj.sort(function(a, b) {
+        return parseFloat(a.weight) - parseFloat(b.weight);
+      });
+
+      for (let i = 0; i < pokemonObj.length; i++) {
+        sortedByWeight.push(pokemonObj[i].name + " " + pokemonObj[i].weight);
+      }
+
+      console.log(sortedByWeight);
       data = {
-        pokemon: weight.sort()
+        sortType: "Weight",
+        pokemon: sortedByWeight
       };
     }
-
-    console.log(data.pokemon);
     response.render("sort", data);
   });
 });
@@ -75,8 +88,6 @@ app.post("/pokemon", (req, res) => {
     height: req.body.height,
     weight: req.body.weight
   };
-
-
 
   const errors = [];
 

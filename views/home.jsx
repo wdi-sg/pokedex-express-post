@@ -27,15 +27,38 @@ class New extends React.Component {
         <body>
           <div style={{ margin: `20px` }}>
             <h1 style={{ textAlign: `center` }}>Welcome to the Pokedex!</h1>
-            <div style={{ textAlign: `center` }}>
-              <form action="/sortby" method="GET">
-                <select name="sortby">
-                  <option value="name">Name</option>
-                  <option value="weight">Weight</option>
-                </select>
-                <input style={{borderRadius: `5px`}} type="submit" value="Sort" />
-              </form>
+            <div
+              style={{
+                display: `flex`,
+                alignItems: `center`,
+                justifyContent: `center`
+              }}
+            >
+              <img
+                style={{ width: `30%` }}
+                src="https://img.pokemondb.net/artwork/large/eevee-lets-go.jpg"
+              ></img>
+              <div style={{ textAlign: `center` }}>
+                <form action="/sortby" method="GET">
+                  <select name="sortby">
+                    <option value="name">Name</option>
+                    <option value="weight">Weight</option>
+                  </select>
+                  <input
+                    style={{ borderRadius: `5px` }}
+                    type="submit"
+                    value="Sort"
+                  />
+                </form>
+              </div>
             </div>
+            <form action="/pokemon/new" method="GET">
+              <input
+                style={{ borderRadius: `5px`, margin: `0 auto`, display: `block`, marginTop:`20px`}}
+                type="submit"
+                value="Create New Pokemon"
+              />
+            </form>
           </div>
         </body>
       </html>
