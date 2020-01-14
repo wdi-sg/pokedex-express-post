@@ -45,7 +45,6 @@ app.get("/sortby", (request, response) => {
       for (let i = 0; i < obj.pokemon.length; i++) {
         names.push(obj.pokemon[i].name);
       }
-      console.log(names[names.length - 1]);
       data = {
         sortType: "Alphabet",
         pokemon: names.sort()
@@ -64,8 +63,6 @@ app.get("/sortby", (request, response) => {
       for (let i = 0; i < pokemonObj.length; i++) {
         sortedByWeight.push(pokemonObj[i].name + " " + pokemonObj[i].weight);
       }
-
-      console.log(sortedByWeight);
       data = {
         sortType: "Weight",
         pokemon: sortedByWeight
@@ -80,6 +77,7 @@ app.get("/pokemon/new", (req, res) => {
 });
 
 app.post("/pokemon", (req, res) => {
+  let duplicate = false;
   const pokemonData = {
     id: req.body.id,
     num: req.body.num,
@@ -108,16 +106,32 @@ app.post("/pokemon", (req, res) => {
     You forgot to input: ${newErr.join(", ")}`
   };
 
-  if (errors.length > 0) {
+  if (errors.length > 0 && !duplicate) {
     res.render("new", errObj);
   } else {
     pokemonData.num = parseInt(req.body.num);
     jsonfile.readFile(file, (err, obj) => {
-      obj.pokemon.push(pokemonData);
+      for (let i = 0; i < obj.pokemon.length; i++) {
+        if (
+          obj.pokemon[i].name.toLowerCase() ===
+            pokemonData.name.toLowerCase() ||
+          obj.pokemon[i].id === pokemonData.id ||
+          obj.pokemon[i].num === pokemonData.num
+        ) {
+          duplicate = true;
+          errObj.errorMessage = `There was an error!
+          ${pokemonData.name} or ${pokemonData.id} or ${pokemonData.num} already exists!`;
+        }
+      }
+      if (duplicate) {
+        res.render("new", errObj);
+      } else {
+        obj.pokemon.push(pokemonData);
 
-      jsonfile.writeFile(file, obj, err => {});
-      res.render("home", pokemonData);
-      console.log(obj.pokemon.length - 1);
+        jsonfile.writeFile(file, obj, err => {});
+        res.render("home", pokemonData);
+        console.log(obj.pokemon.length - 1);
+      }
     });
   }
 });
