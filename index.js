@@ -46,25 +46,67 @@ app.get('/pokemon/new', (request, response) => {
   response.send(myForm);
 });
 
+app.get('/pokemon/?', (request,response) => {
+  const sortBy = request.query.sortby;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+    let allPokemonByName = [];
+    let allPokemonByWeight = [];
+    let sortAll = [];
+    let listOfPokemon = obj.pokemon;
+    console.log(sortBy);
+
+    if (sortBy === "weight") {
+      for (i = 0; i < listOfPokemon.length; i++) {
+        let currentPokemonWeight = listOfPokemon[i].weight;
+        let currentPokemon = listOfPokemon[i].name;
+        sortAll.push({
+          name: currentPokemon,
+          weight: currentPokemonWeight
+        })
+      }
+      sortAll.sort((a,b) => {
+        return parseFloat(a.weight)-parseFloat(b.weight);
+      });
+      for (let i = 0; i < sortAll.length; i++) {
+        allPokemonByWeight.push(sortAll[i].name + " " + sortAll[i].weight);
+      }
+      let data = {
+        name: allPokemonByWeight
+      }
+      response.render('all', data);
+    } else if (sortBy === "name") {
+      for (i = 0; i < listOfPokemon.length; i++) {
+        let currentPokemon = listOfPokemon[i].name;
+        allPokemonByName.push(currentPokemon);
+        //console.log(currentPokemon);
+      }
+      let data = {
+        name: allPokemonByName.sort()
+      }
+      console.log(data);
+      response.render('all', data);
+    }
+  });
+});
+
 app.get('/pokemon', (request,response) => {
   console.log("hello");
   //obj.pokemon.push(data);
   jsonfile.readFile(FILE, (err, obj) => {
     let allPokemon = [];
-    for (i = 0; i < obj.pokemon.length; i++) {
-      let currentPokemon = obj.pokemon[i].name;
+    let listOfPokemon = obj.pokemon;
+    for (i = 0; i < listOfPokemon.length; i++) {
+      let currentPokemon = listOfPokemon[i].name;
       allPokemon.push(currentPokemon);
-      console.log(currentPokemon);
+      //console.log(currentPokemon);
     }
 
-    console.log(obj.pokemon.length)
-    //response.send(allPokemon)
-
-    let data2 = {
+    let data = {
       name: allPokemon
     }
 
-    response.render('all', data2);
+    response.render('all', data);
   });
 });
 
@@ -83,8 +125,6 @@ app.post('/pokemon', (request,response) => {
     "height": newPokemonHeight,
     "weight": newPokemonWeight,
   }
-
-  console.log("hello");
 
   jsonfile.readFile(FILE, (err, obj) => {
     // save the request body
