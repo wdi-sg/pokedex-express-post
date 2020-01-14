@@ -83,8 +83,8 @@ app.post("/pokemon", (req, res) => {
     num: req.body.num,
     name: req.body.name,
     img: req.body.img,
-    height: req.body.height,
-    weight: req.body.weight
+    height: req.body.height + " m",
+    weight: req.body.weight + ".0 kg"
   };
 
   const errors = [];

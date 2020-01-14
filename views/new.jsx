@@ -32,12 +32,6 @@ class New extends React.Component {
             {this.props.errorMessage}
             <form action="/pokemon" method="POST">
               <div>
-                <input type="text" placeholder="Pokemon ID" name="id" />
-              </div>
-              <div>
-                <input type="text" placeholder="Pokemon Number" name="num" />
-              </div>
-              <div>
                 <input type="text" placeholder="Pokemon Name" name="name" />
               </div>
               <div>

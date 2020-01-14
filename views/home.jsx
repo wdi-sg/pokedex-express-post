@@ -52,7 +52,7 @@ class New extends React.Component {
                 </form>
               </div>
             </div>
-            <form action="/pokemon/new" method="GET">
+            <form action="/pokemon/new/" method="GET">
               <input
                 style={{ borderRadius: `5px`, margin: `0 auto`, display: `block`, marginTop:`20px`}}
                 type="submit"

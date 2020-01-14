@@ -25,7 +25,9 @@ class Created extends React.Component {
           ></script>
         </head>
         <body>
-          <h2 style={{ margin: "10px" }}>You searched for {this.props.name}!</h2>
+          <h2 style={{ margin: "10px" }}>
+            You searched for {this.props.name}!
+          </h2>
           <ul>
             <li>Id: {this.props.id}</li>
             <li>Num: {this.props.num}</li>
@@ -37,7 +39,10 @@ class Created extends React.Component {
               ></img>
             </li>
             <li>Height: {this.props.height}</li>
-            <li>Num: {this.props.weight}</li>
+            <li>Weight: {this.props.weight}</li>
+            <button>
+              <a href="/">Go Home</a>
+            </button>
           </ul>
         </body>
       </html>
