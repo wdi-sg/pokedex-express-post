@@ -6,12 +6,19 @@
 
 const express = require('express');
 const jsonfile = require('jsonfile');
-
-
-// Init express app
 const app = express();
 const FILE = 'pokedex.json';
 
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// for request.body to work
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -24,34 +31,37 @@ app.use(express.urlencoded({
  */
 
 const display = (request, response) => {
+    let empty = false;
+    let info = request.body
+    for(let i = 0; i < Object.keys(info).length; i++){
+    if (Object.values(info)[i] === ""){
+        empty = true;
+        }
+    };
     jsonfile.readFile('pokedex.json', (err,obj) => {
-        obj.pokemon.push(request.body)
-        response.send("worked!")
-        jsonfile.writeFile('pokedex.json', obj, (err) => {
-        });
+        if(empty === true){
+            response.render('home')
+        } else{
+            let data = {
+            "height": info.height,
+            "id": info.id,
+            "img": info.img,
+            "weight": info.weight,
+            "num": parseInt(info.num),
+            "name": info.name
+            }
+            obj.pokemon.push(data)
+            response.send("worked!")
+            jsonfile.writeFile('pokedex.json', obj, (err) => {
+            });
+        }
     });
 }
 
 app.post('/pokemon', display)
 
 const form = (request,response) => {
-    response.send(`
-        <form method="POST" action="/pokemon">
-        ID: <br>
-        <input type="text" name="id"><br>
-        Num: <br>
-        <input type="text" name="num"><br>
-        Name: <br>
-        <input type="text" name="name"><br>
-        Img: <br>
-        <input type="text" name="img"><br>
-        Height: <br>
-        <input type="text" name="height"><br>
-        Weight: <br>
-        <input type="text" name="weight"><br>
-        <input type="submit" value="Submit">
-        </form>
-        `)
+    response.render('home')
 }
 
 app.get('/pokemon/new', form)
