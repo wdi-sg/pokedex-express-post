@@ -42,8 +42,27 @@ app.set('view engine', 'jsx');
 
 app.get('/pokemon/new', (request, response) => {
   // id, num, name, img, height, weight
-  let myForm = '<html><body><form action="/pokemon" method="POST">Pokemon Name: <input type="text" name="name"/><br> ID:<input type="text" name="id"/><br> Number:<input type="text" name="num"/><br>Image URL:<input type="text" type="text" name="img"/><br> Height:<input type="text" name="height"/><br> Weight:<input name="weight"/><br><input type="submit"/></form></body></html>';
-  response.send(myForm);
+  response.render("form");
+});
+
+app.get('/pokemon', (request,response) => {
+  console.log("hello");
+  //obj.pokemon.push(data);
+  jsonfile.readFile(FILE, (err, obj) => {
+    let allPokemon = [];
+    let listOfPokemon = obj.pokemon;
+    for (i = 0; i < listOfPokemon.length; i++) {
+      let currentPokemon = listOfPokemon[i].name;
+      allPokemon.push(currentPokemon);
+      //console.log(currentPokemon);
+    }
+
+    let data = {
+      name: allPokemon
+    }
+
+    response.render('all', data);
+  });
 });
 
 app.get('/pokemon/?', (request,response) => {
@@ -107,26 +126,6 @@ app.get('/pokemon/?', (request,response) => {
       }
       response.render('all', data);
     }
-  });
-});
-
-app.get('/pokemon', (request,response) => {
-  console.log("hello");
-  //obj.pokemon.push(data);
-  jsonfile.readFile(FILE, (err, obj) => {
-    let allPokemon = [];
-    let listOfPokemon = obj.pokemon;
-    for (i = 0; i < listOfPokemon.length; i++) {
-      let currentPokemon = listOfPokemon[i].name;
-      allPokemon.push(currentPokemon);
-      //console.log(currentPokemon);
-    }
-
-    let data = {
-      name: allPokemon
-    }
-
-    response.render('all', data);
   });
 });
 
