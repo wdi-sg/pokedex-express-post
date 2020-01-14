@@ -29,6 +29,13 @@ app.set('view engine', 'jsx');
 
 /**
  * ===================================
+ * Functions
+ * ===================================
+ */
+
+
+/**
+ * ===================================
  * Routes
  * ===================================
  */
@@ -39,9 +46,29 @@ app.get('/pokemon/new', (request, response) => {
   response.send(myForm);
 });
 
-app.post('/pokemon', (request,response) => {
-  let contents = request.body;
+app.get('/pokemon', (request,response) => {
+  console.log("hello");
+  //obj.pokemon.push(data);
+  jsonfile.readFile(FILE, (err, obj) => {
+    let allPokemon = [];
+    for (i = 0; i < obj.pokemon.length; i++) {
+      let currentPokemon = obj.pokemon[i].name;
+      allPokemon.push(currentPokemon);
+      console.log(currentPokemon);
+    }
 
+    console.log(obj.pokemon.length)
+    //response.send(allPokemon)
+
+    let data2 = {
+      name: allPokemon
+    }
+
+    response.render('all', data2);
+  });
+});
+
+app.post('/pokemon', (request,response) => {
   let newPokemonName = request.body.name;
   let newPokemonId = parseInt(request.body.id);
   let newPokemonNum = parseInt(request.body.num);
@@ -57,13 +84,16 @@ app.post('/pokemon', (request,response) => {
     "weight": newPokemonWeight,
   }
 
+  console.log("hello");
+
   jsonfile.readFile(FILE, (err, obj) => {
     // save the request body
-    console.log(data);
-    //response.send(data);
-    obj.pokemon.push(data);
 
-    response.render('pokemon', data);
+    if (newPokemonName === "") {
+      console.log("WRONG")
+      response.redirect(301, '/pokemon/new');
+      return false;
+    }
 
     jsonfile.writeFile(FILE, obj, err => {
       console.error(err)
@@ -96,20 +126,28 @@ app.get('/pokemon/:id', (request, response) => {
     for( let i=0; i<obj.pokemon.length; i++ ){
 
       let currentPokemon = obj.pokemon[i];
+      let data = {
+        "id": currentPokemon.id,
+        "num": currentPokemon.num,
+        "name": currentPokemon.name,
+        "img": currentPokemon.img,
+        "height": currentPokemon.height,
+        "weight": currentPokemon.weight,
+      }
 
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
+        response.render('pokemon', data);
       }
     }
 
     if (pokemon === undefined) {
-
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      //response.send(pokemon);
     }
   });
 });

@@ -7,6 +7,7 @@ class PokemonPages extends React.Component {
           <div>
             <h1>Pokemon Name: { this.props.name }</h1>
             <h2>Details</h2>
+            <img src={this.props.img}></img>
             <ul>
               <li>ID: {this.props.id}</li>
               <li>Number: {this.props.num}</li>
