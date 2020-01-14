@@ -12,23 +12,37 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+app.get('/pokemon/new', (request, response) => {
+
+  response.render('home');
+});
 
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    
+
     // check to make sure the file was properly read
     if( err ){
-      
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -59,8 +73,47 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send("This is the Pokedex Express App");
 });
+
+
+
+app.post('/pokemon', (request, response) => {
+  console.log(request.body);
+
+   jsonfile.readFile(FILE, (err, obj) => {
+    let idNum = parseInt(request.body.ID);
+    let pokeNum = parseInt(request.body.Number);
+    let pokeName = request.body.name;
+    let img = request.body.Image;
+    let height = parseInt(request.body.Height);
+    let weight = parseInt(request.body.Weight);
+
+    //create new object for newly added pokemon
+    let newPokemon = {};
+        newPokemon.id = idNum;
+        newPokemon.num = pokeNum;
+        newPokemon.name = pokeName;
+        newPokemon.img = img;
+        newPokemon.height = height;
+        newPokemon.weight = weight;
+
+    //push object into pokemon array in pokedex
+    obj.pokemon.push(newPokemon);
+
+    jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err);
+      console.log(obj);
+
+      // now look inside your json file
+      // response.send(request.body);
+      response.send('New Pokemon Added');
+    });
+
+  });
+
+});
+
 
 /**
  * ===================================
