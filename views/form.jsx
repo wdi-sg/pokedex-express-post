@@ -14,38 +14,38 @@ class Form extends React.Component {
                 {/* Start form */}
                 <div className="form-group">
                     <label htmlFor="id-form">ID</label>
-                    <input name="id" type="text" className="form-control" id="id-form" placeholder="Enter ID"/>
-                    <small className="text-danger">{this.props.id}</small>
+                    <input name="id" type="text" className="form-control-plaintext" id="id-form" readOnly value={this.props.idValue}/>
+                    <small className="text-danger">{this.props.idErrorMessage}</small>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="num-form">Num</label>
-                    <input name="num" type="text" className="form-control" id="num-form" placeholder="Enter Num"/>
-                    <small className="text-danger">{this.props.num}</small>
+                    <input name="num" type="text" className="form-control-plaintext" id="num-form" readOnly value= {this.props.numValue}/>
+                    <small className="text-danger">{this.props.numErrorMessage}</small>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="name-form">Name</label>
                     <input name="name" type="text" className="form-control" id="name-form" placeholder="Enter Name"/>
-                    <small className="text-danger">{this.props.name}</small>
+                    <small className="text-danger">{this.props.nameErrorMessage}</small>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="img-form">Image</label>
                     <input name="image" type="text" className="form-control" id="img-form" placeholder="Enter Image"/>
-                    <small className="text-danger">{this.props.image}</small>
+                    <small className="text-danger">{this.props.imageErrorMessage}</small>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="height-form">Height</label>
                     <input name="height" type="text" className="form-control" id="height-form" placeholder="Enter Height"/>
-                    <small className="text-danger">{this.props.height}</small>
+                    <small className="text-danger">{this.props.heightErrorMessage}</small>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="weight-form">Weight</label>
                     <input name="weight" type="text" className="form-control" id="weight-form" placeholder="Enter Weight"/>
-                    <small className="text-danger">{this.props.weight}</small>
+                    <small className="text-danger">{this.props.weightErrorMessage}</small>
                 </div>
         
                 <button type="submit" className="btn btn-primary">Submit Information</button>

@@ -44,6 +44,10 @@ function allLetter(word) {
 		return false
 	  }
 }
+
+function checkPokemonLength(obj){
+	obj.pokemon.length 
+}
 /**
  * ===================================
  * Routes
@@ -66,8 +70,15 @@ app.get('/pokemon/:id', (request, response) => {
 	// If it is, render the input form 
 	// If not, it should be a number, and the object containing the details of the pokemon should be rendered.
 	if (request.params.id == "new") {
+		const pokeIndex = obj.pokemon.length
+		console.log(pokeIndex)
 
-	  response.render('form');
+		const data = {
+			idValue: pokeIndex + 1,
+			numValue: pokeIndex + 1
+		}
+
+	  response.render('form',data);
 
 	} else {
 
@@ -98,44 +109,51 @@ app.get('/', (request, response) => {
 });
 
 app.post('/pokemon', (request, response) => {
-  jsonfile.readFile(FILE, (err, obj) => {
+	
+	jsonfile.readFile(FILE, (err, obj) => {
+	
+	const pokeIndex = obj.pokemon.length
+
 	let currInput = request.body;
 
 	if (!allLetter(currInput.name) || isNaN(currInput.id) || isNaN(currInput.num) || isNaN(currInput.height) || isNaN(currInput.weight)) {
 		
 		let reply =  {
-			id: "",
-			num: "",
-			height: "",
-			weight: "",
-			name: "",
-			image: ""
+			idValue: pokeIndex + 1,
+			numValue: pokeIndex + 1,
+			idErrorMessage: "",
+			numErrorMessage: "",
+			heightErrorMessage: "",
+			weightErrorMessage: "",
+			nameErrorMessage: "",
+			imageErrorMessage: ""
 		}
 
 		if(!allLetter(currInput.name)){
-			reply["name"] = "Please key in valid name, no numbers and SPACING!"
+			reply["nameErrorMessage"] = "Please key in valid name, no numbers and SPACING!"
 		}
 
 		if(isNaN(currInput.id)){
-			reply["id"] = "Please key in valid id, ONLY numbers!"
+			reply["idErrorMessage"] = "Please key in valid id, ONLY numbers!"
 		}
 
 		if(isNaN(currInput.num)){
-			reply["num"] = "Please key in valid num, ONLY numbers!"
+			reply["numErrorMessage"] = "Please key in valid num, ONLY numbers!"
 		}
 
 		if(isNaN(currInput.height)){
-			reply["height"] = "Please key in valid height, ONLY numbers!"
+			reply["heightErrorMessage"] = "Please key in valid height, ONLY numbers!"
 		}
 
 		if(isNaN(currInput.weight)){
-			reply["weight"] = "Please key in valid weight, ONLY numbers"
+			reply["weightErrorMessage"] = "Please key in valid weight, ONLY numbers"
 		}
 
 		response.render('form',reply);
 
 	} else {
-	  // Start else
+	  
+	  currInput["id"] = parseInt(currInput["id"])
 	  // Rounding off height to 2.d.p
 	  currInput["height"] = Math.round(currInput["height"] * 100) / 100 + " m"
 	  // Rounding off weight to 1.d.p 
@@ -149,10 +167,13 @@ app.post('/pokemon', (request, response) => {
 
 	  obj.pokemon.push(currInput)
 	  // Check result by looking at last 2 elements in the pokemon array
-	  let n = obj.pokemon.length;
-	  console.log(obj.pokemon.slice(n - 2, n))
-	  response.send(obj.pokemon.slice(n - 2, n));
-	  // end else
+
+	  jsonfile.writeFile(FILE, obj, (err) => {
+		console.log(err)
+		let n = obj.pokemon.length;
+		console.log(obj.pokemon.slice(n - 2, n))
+		response.send(obj.pokemon.slice(n - 2, n));
+	  });
 	}
 
 
