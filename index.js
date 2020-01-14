@@ -52,6 +52,7 @@ app.get('/pokemon/?', (request,response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     let allPokemonByName = [];
     let allPokemonByWeight = [];
+    let allPokemonByHeight = [];
     let sortAll = [];
     let listOfPokemon = obj.pokemon;
     console.log(sortBy);
@@ -85,6 +86,25 @@ app.get('/pokemon/?', (request,response) => {
         name: allPokemonByName.sort()
       }
       console.log(data);
+      response.render('all', data);
+    } else if (sortBy === "height") {
+      for (i = 0; i < listOfPokemon.length; i++) {
+        let currentPokemonHeight = listOfPokemon[i].height;
+        let currentPokemon = listOfPokemon[i].name;
+        sortAll.push({
+          name: currentPokemon,
+          height: currentPokemonHeight
+        })
+      }
+      sortAll.sort((a,b) => {
+        return parseFloat(a.height)-parseFloat(b.height);
+      });
+      for (let i = 0; i < sortAll.length; i++) {
+        allPokemonByHeight.push(sortAll[i].name + " " + sortAll[i].height);
+      }
+      let data = {
+        name: allPokemonByHeight
+      }
       response.render('all', data);
     }
   });
