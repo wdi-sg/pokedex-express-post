@@ -126,6 +126,10 @@ app.post("/pokemon", (req, res) => {
       if (duplicate) {
         res.render("new", errObj);
       } else {
+        pokemonData.id = obj.pokemon[obj.pokemon.length - 1].id + 1;
+        pokemonData.num = (
+          parseInt(obj.pokemon[obj.pokemon.length - 1].num) + 1
+        ).toString();
         obj.pokemon.push(pokemonData);
 
         jsonfile.writeFile(file, obj, err => {});
