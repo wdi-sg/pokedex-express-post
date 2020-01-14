@@ -17,40 +17,15 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-const htmlform = `<!DOCTYPE html>
-<html lang="en">
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Submit new pokemon</title>
-</head>
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
 
-<body>
-    <div class="container">
-        <form action="/pokemon" method="POST">
-            <p>Id
-            <input type="text" name="id"></p>
-            <p>num
-            <input type="text" name="num"></p>
-            <p>name
-            <input type="text" name="name"></p>
-            <p>img
-            <input type="text" name="img"></p>
-            <p>height
-            <input type="text" name="height"></p>
-            <p>weight
-            <input type="text" name="weight"></p>
-            <input type="submit">
-        </form>
-    </div>
-</body>
-
-</html>`;
-
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 /**
  * ===================================
@@ -59,7 +34,7 @@ const htmlform = `<!DOCTYPE html>
  */
 
 app.get('/pokemon/new', (request, response) => {
-    response.send(htmlform);
+    response.render('pokemonnew');
 })
 
 
@@ -85,8 +60,15 @@ app.post('/pokemon/', (request, response) => {
             return;
         }
 
-        obj.pokemon.push(newPokemon);
+        // Temporarily going to comment out actually adding the pokemon.
+        // obj.pokemon.push(newPokemon);
+        console.log('pokemon to add:');
+        console.log(newPokemon);
+        const data = {message: 'New pokemon submitted'};
+        response.render('home', data);
+        return;
 
+        // Not going to write the file, change this later after checking the Pokemon exists.
         jsonfile.writeFile(FILE, obj, (err) => {
             if (err) console.log(err);
             console.log('successfully written ' + newPokemon);
@@ -97,6 +79,7 @@ app.post('/pokemon/', (request, response) => {
 })
 
 
+// get a Pokemon by ID.
 app.get('/pokemon/:id', (request, response) => {
 
     // get json from specified file
@@ -139,7 +122,8 @@ app.get('/pokemon/:id', (request, response) => {
 
 
 app.get('/', (request, response) => {
-    response.send("yay");
+  data = {message : "yay"};  
+  response.render('home', data);
 });
 
 /**
