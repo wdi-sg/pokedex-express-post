@@ -27,6 +27,44 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+
+const isValidInput = (pokemon) => {
+  // id: request.body.id,
+  // num: request.body.num,
+  // name: request.body.name,
+  // img: request.body.img,
+  // height: request.body.height,
+  // weight: request.body.weight
+
+  // if ID is not an integer.
+  if (!parseInt(pokemon.id)) {
+    return false;
+  }
+  // if num is not an integer.
+  if (!parseInt(pokemon.id)) {
+    return false;
+  }
+  // if name is empty
+  if (!pokemon.name.trim()) {
+    return false;
+  }
+  // if img is empty
+  if (!pokemon.img.trim()) {
+    return false;
+  }
+  // if height is not a number
+  if (isNaN(pokemon.height)) {
+    return false;
+  }
+  if (isNaN(pokemon.weight)) {
+    return false;
+  }
+
+  // if all is 
+  return true;
+
+}
+
 /**
  * ===================================
  * Routes
@@ -49,6 +87,13 @@ app.post('/pokemon/', (request, response) => {
         height: request.body.height,
         weight: request.body.weight
     }
+
+    // validate the inputs here to make sure it's correct.
+    if (!isValidInput(newPokemon)) {
+      console.log('invalid input');
+      response.status(401).send("error with input for some reason");
+    }
+
 
     jsonfile.readFile(FILE, (err, obj) => {
 
@@ -113,7 +158,10 @@ app.get('/pokemon/:id', (request, response) => {
             // send 404 back
             response.status(404);
             response.send("Error 404 Pokemon not found");
+
         } else {
+
+            // render pokemon page from pokemon.jsx
             const data = {pokemon: pokemon};
             response.render('pokemon', data);
         }
