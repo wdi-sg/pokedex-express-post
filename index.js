@@ -118,11 +118,11 @@ app.get('/pokemon/:id', (request, response) => {
 
     if (pokemon === undefined) {
       // send 404 back
-      response.status(404);
-      response.send("not found");
+      response.render('404')
+      // response.status(404);
+      // response.send("not found");
     } else {
-
-      response.send(pokemon);
+      response.render('id', pokemon)
     }
   });
 });
