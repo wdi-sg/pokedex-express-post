@@ -34,6 +34,33 @@ app.get("/", (req, res) => {
 
 //  Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 
+app.get("/sortby", (request, response) => {
+  const sortBy = request.query.sortby;
+  let data;
+  let names = [];
+  let weight = [];
+  jsonfile.readFile(file, (err, obj) => {
+    if (sortBy === "name") {
+      for (let i = 0; i < obj.pokemon.length; i++) {
+        names.push(obj.pokemon[i].name);
+      }
+      data = {
+        pokemon: names.sort()
+      };
+    } else if (sortBy === "weight") {
+      for (let i = 0; i < obj.pokemon.length; i++) {
+        weight.push(obj.pokemon[i].weight);
+      }
+      data = {
+        pokemon: weight.sort()
+      };
+    }
+
+    console.log(data.pokemon);
+    response.render("sort", data);
+  });
+});
+
 app.get("/pokemon/new", (req, res) => {
   res.render("new");
 });
@@ -48,7 +75,7 @@ app.post("/pokemon", (req, res) => {
     weight: req.body.weight
   };
 
-  res.render("pokedex")
+  res.render("pokedex");
 
   const errors = [];
 
@@ -110,7 +137,7 @@ app.get("/pokemon/:id", (request, response) => {
 });
 
 app.get("/", (request, response) => {
-  response.send("yay");
+  response.render("home");
 });
 
 /**
