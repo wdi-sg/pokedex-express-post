@@ -45,7 +45,7 @@ app.use(express.urlencoded({
 
 
 
-app.get('/pokemon/new', (request, response) => {
+/*app.get('/pokemon/new', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
@@ -83,11 +83,15 @@ app.get('/pokemon/new', (request, response) => {
       response.send(pokemon);
     }
   });
-});
+});*/
 
-app.get('/', (request, response) => {
+
+
+
+
+/*app.get('/', (request, response) => {
   response.send("yay");
-});
+});*/
 
 
 // Deliverables:
@@ -166,7 +170,7 @@ app.post('/pokemon/', (request, response) => {
 })
 
 
-app.get('/pokemon/', (request, response) => {
+app.get('/pokemon/new', (request, response) => {
 
   let myForm  ='<form method="POST" action="/pokemon">id:<input type="text" name="id"><br/>num:<input type="text" name="num"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="img"><br/>height:<input type="text" name="height"><br/>weight:<input type="text" name="weight"></br><input type="submit" value="Submit"></form>';
 
