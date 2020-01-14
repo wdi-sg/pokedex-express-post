@@ -16,6 +16,14 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
 /**
  * ===================================
  * Routes
@@ -63,22 +71,21 @@ app.use(express.urlencoded({
     }
 
     for(const pokemon of obj.pokemon){
-      names.push(`<li>${pokemon.name}</li>`)
+      names.push(pokemon.name)
     }
-    response.send(`<ul>${names.join('')}</ul>`)
+
+    const data = {
+      pokemon: names
+    }
+
+    response.render('pokemon', data)
+    // response.send(`<ul>${data.pokemon.join('')}</ul>`)
   })
  })
 
  app.get('/pokemon/new', (request,response)=>{
-   response.send(`<form method="POST" action="/pokemon">
-   Pokemon ID: <input type="text" name="id"><br>
-   Pokemon Number: <input type="text" name="num"><br>
-   Pokemon Name: <input type="text" name="name"><br>
-   Pokemon Image: <input type="text" name="img"><br>
-   Pokemon Height: <input type="text" name="height"><br>
-   Pokemon Weight: <input type="text" name="weight"><br>
-   <input type="submit" value="Submit">
- </form>`)
+
+  response.render('new')
  })
 
 app.get('/pokemon/:id', (request, response) => {
