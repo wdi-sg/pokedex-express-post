@@ -193,7 +193,8 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  //response.send("yay");
+  response.render("home");
 });
 
 /**
