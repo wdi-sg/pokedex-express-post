@@ -60,8 +60,10 @@ app.post('/pokemon', (request,response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     // save the request body
     console.log(data);
-    response.send(data);
+    //response.send(data);
     obj.pokemon.push(data);
+
+    response.render('pokemon', data);
 
     jsonfile.writeFile(FILE, obj, err => {
       console.error(err)
