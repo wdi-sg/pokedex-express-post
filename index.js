@@ -112,10 +112,10 @@ app.get('/pokemon/:id', (request, response) => {
 
             // send 404 back
             response.status(404);
-            response.send("not found");
+            response.send("Error 404 Pokemon not found");
         } else {
-
-            response.send(pokemon);
+            const data = {pokemon: pokemon};
+            response.render('pokemon', data);
         }
     });
 });
