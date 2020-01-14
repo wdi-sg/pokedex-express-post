@@ -1,16 +1,21 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
 
+const express = require('express');
+const jsonfile = require('jsonfile');
+
+
 // Init express app
 const app = express();
+const FILE = 'pokedex.json';
+
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 /**
  * ===================================
@@ -18,17 +23,51 @@ const app = express();
  * ===================================
  */
 
+const display = (request, response) => {
+    jsonfile.readFile('pokedex.json', (err,obj) => {
+        obj.pokemon.push(request.body)
+        response.send("worked!")
+        jsonfile.writeFile('pokedex.json', obj, (err) => {
+        });
+    });
+}
+
+app.post('/pokemon', display)
+
+const form = (request,response) => {
+    response.send(`
+        <form method="POST" action="/pokemon">
+        ID: <br>
+        <input type="text" name="id"><br>
+        Num: <br>
+        <input type="text" name="num"><br>
+        Name: <br>
+        <input type="text" name="name"><br>
+        Img: <br>
+        <input type="text" name="img"><br>
+        Height: <br>
+        <input type="text" name="height"><br>
+        Weight: <br>
+        <input type="text" name="weight"><br>
+        <input type="submit" value="Submit">
+        </form>
+        `)
+}
+
+app.get('/pokemon/new', form)
+
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -47,12 +86,10 @@ app.get('/pokemon/:id', (request, response) => {
     }
 
     if (pokemon === undefined) {
-
       // send 404 back
       response.status(404);
       response.send("not found");
     } else {
-
       response.send(pokemon);
     }
   });
