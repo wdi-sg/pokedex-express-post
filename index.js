@@ -34,10 +34,27 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-// app.get('/pokemon', (request, response => {
-//   let pokemon= `<html><body><form method="POST" action="/pokemon">Pokemon<input type="text" name="id" placeholder="id"><input type="text" name="num" placeholder="num"><input type="text" name="name" placeholder="name"><input type="text" name="img" placeholder="img"><input type="text" name="height" placeholder="height"><input type="text" name="weight" placeholder="weight"><input type="submit" value="Submit"></form></body></html>`
-//   response.send(form);
-// }));
+app.get('/pokemon', (request, response => {
+  let pokemon= `<html><body><form method="POST" action="/pokemon">Pokemon<input type="text" name="id" placeholder="id"><input type="text" name="num" placeholder="num"><input type="text" name="name" placeholder="name"><input type="text" name="img" placeholder="img"><input type="text" name="height" placeholder="height"><input type="text" name="weight" placeholder="weight"><input type="submit" value="Submit"></form></body></html>`
+  response.send(form);
+}));
+
+let addPokemon = (request, response) => {
+  let newPoke = request.body;
+
+  jsonfile.readFile(FILE, (err,obj) => {
+      newPokemon.num = obj.lastKey + 1;
+      obj.lastKey++;
+      obj.pokemon.push(newPokemon);
+      jsonfile.writeFile(FILE, obj, (err) => {
+          if (err) {
+              console.log('error');
+          } else {
+              response.send(`You have created new Pokemon ${newPoke.name}!`);
+          }
+      })
+  });
+}
 
 app.get('/pokemon/:id', (request, response => {
 
@@ -69,7 +86,7 @@ app.get('/pokemon/:id', (request, response => {
       response.send(pokemon);
     }
   });
-}));
+});
 
 
 /**
