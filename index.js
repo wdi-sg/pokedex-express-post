@@ -44,6 +44,7 @@ app.get("/sortby", (request, response) => {
       for (let i = 0; i < obj.pokemon.length; i++) {
         names.push(obj.pokemon[i].name);
       }
+      console.log(names[names.length - 1]);
       data = {
         pokemon: names.sort()
       };
@@ -75,7 +76,7 @@ app.post("/pokemon", (req, res) => {
     weight: req.body.weight
   };
 
-  res.render("pokedex");
+
 
   const errors = [];
 
@@ -104,7 +105,7 @@ app.post("/pokemon", (req, res) => {
       obj.pokemon.push(pokemonData);
 
       jsonfile.writeFile(file, obj, err => {});
-      res.render("created", pokemonData);
+      res.render("home", pokemonData);
       console.log(obj.pokemon.length - 1);
     });
   }
