@@ -32,6 +32,25 @@ app.set('view engine', 'jsx');
 
  app.post('/pokemon', (request, response) =>{
    const newPokemon = request.body
+  console.log(newPokemon)
+  //check for missing input
+   for (let [key, value] of Object.entries(newPokemon)) {
+     if(!value){
+       let data = {
+         missingKey: key
+       }
+       return response.render('new', data)
+     }
+  }
+
+  for (let [key, value] of Object.entries(newPokemon)){
+    if(key === "id" && value === newPokemon.id){
+      let data = {
+        double: "ID Already exists!"
+      }
+      return response.render('new', data)
+    }
+  }
 
    jsonfile.readFile(file, (err, obj) =>{
      // check to make sure the file was properly read
@@ -79,7 +98,6 @@ app.set('view engine', 'jsx');
     }
 
     response.render('pokemon', data)
-    // response.send(`<ul>${data.pokemon.join('')}</ul>`)
   })
  })
 

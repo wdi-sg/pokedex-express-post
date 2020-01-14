@@ -1,25 +1,35 @@
 var React = require('react');
 class NewPokemon extends React.Component {
 render() {
+    let missingKey
+    if (this.props.missingKey){
+        missingKey = `Please type in a ${this.props.missingKey}`
+    }
+
+    let doubleEntry
+    if (this.props.double){
+        doubleEntry = 'ID Already used'
+    }
 return (
 <html>
-
 <body>
     <form method="POST" action="/pokemon">
-        <label for="id" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon ID: </label>
+        <label htmlFor="id" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon ID: </label>
         <input type="text" name="id"/><br/>
-        <label for="num" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Number: </label>
+        <label htmlFor="num" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Number: </label>
         <input type="text" name="num"/><br/>
-        <label for="name" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Name: </label>
+        <label htmlFor="name" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Name: </label>
         <input type="text" name="name"/><br/>
-        <label for="img" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Image: </label>
+        <label htmlFor="img" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Image: </label>
         <input type="text" name="img"/><br/>
-        <label for="height" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Height: </label>
+        <label htmlFor="height" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Height: </label>
         <input type="text" name="height"/><br/>
-        <label for="weight" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Weight: </label>
+        <label htmlFor="weight" style={{display: 'inline-block', textAlign: 'right', width: "140px"}}>Pokemon Weight: </label>
         <input type="text" name="weight"/><br/>
         <input type="submit" value="Submit" style={{display: 'inline-block', textAlign: 'center', width: "140px", marginLeft: "75px"}}/>
     </form>
+    <div style={{color: "red", fontSize: "50px", marginTop: "15px"}}>{missingKey}</div>
+    <div style={{color: "red", fontSize: "50px", marginTop: "15px"}}>{doubleEntry}</div>
 </body>
 </html>
 );
