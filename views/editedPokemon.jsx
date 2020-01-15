@@ -1,11 +1,8 @@
 const React = require("react");
 
-class New extends React.Component {
+class Created extends React.Component {
   render() {
-    const type = this.props.sortType;
-    const pokemons = this.props.pokemon.map(function(pokemon) {
-      return <li>{pokemon}</li>;
-    });
+    console.log(this.props.pokemon);
     return (
       <html lang="en">
         <head>
@@ -15,7 +12,7 @@ class New extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-          <title>Sorted Pokemon</title>
+          <title>Created Pokemon!</title>
           <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -29,12 +26,31 @@ class New extends React.Component {
           ></script>
         </head>
         <body>
-          <h1>Pokemon Sorted by {type}</h1>
-          <ul>{pokemons}</ul>
+          <div style={{ margin: `20px` }}>
+            <h2 style={{ margin: "10px" }}>
+              You edited {this.props.pokemon.name}!
+            </h2>
+            <ul>
+              <li>Id: {this.props.pokemon.id}</li>
+              <li>Num: {this.props.pokemon.num}</li>
+              <li>
+                Image:{" "}
+                <img
+                  style={{ maxWidth: `30%`, maxHeight: `100px` }}
+                  src={this.props.img}
+                ></img>
+              </li>
+              <li>Height: {this.props.pokemon.height}</li>
+              <li>Weight: {this.props.pokemon.weight}</li>
+            </ul>
+            <button style={{ borderRadius: `5px`, marginLeft:`20px` }}>
+              <a href="/">Go Home</a>
+            </button>
+          </div>
         </body>
       </html>
     );
   }
 }
 
-module.exports = New;
+module.exports = Created;

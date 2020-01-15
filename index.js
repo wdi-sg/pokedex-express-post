@@ -3,6 +3,7 @@ const jsonfile = require("jsonfile");
 const app = express();
 const file = "pokedex.json";
 const reactEngine = require("express-react-views").createEngine();
+const methodOverride = require("method-override");
 
 app.use(express.json());
 app.use(
@@ -10,6 +11,7 @@ app.use(
     extended: true
   })
 );
+app.use(methodOverride("_method"));
 
 app.engine("jsx", reactEngine);
 app.set("views", __dirname + "/views");
@@ -45,9 +47,12 @@ app.get("/sortby", (request, response) => {
       for (let i = 0; i < obj.pokemon.length; i++) {
         names.push(obj.pokemon[i].name);
       }
+      names.sort(function(a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      });
       data = {
         sortType: "Alphabet",
-        pokemon: names.sort()
+        pokemon: names
       };
     } else if (sortBy === "weight") {
       for (let i = 0; i < obj.pokemon.length; i++) {
@@ -126,8 +131,8 @@ app.post("/pokemon", (req, res) => {
       if (duplicate) {
         res.render("new", errObj);
       } else {
-        pokemonData.height += " m"
-        pokemonData.weight += ".0 kg"
+        pokemonData.height += " m";
+        pokemonData.weight += ".0 kg";
         pokemonData.id = obj.pokemon[obj.pokemon.length - 1].id + 1;
         pokemonData.num = (
           parseInt(obj.pokemon[obj.pokemon.length - 1].num) + 1
@@ -168,13 +173,49 @@ app.get("/pokemon/:id", (request, response) => {
   });
 });
 
+app.get("/pokemon/:id/edit", (request, response) => {
+  let index = request.params.id;
+  jsonfile.readFile(file, (err, obj) => {
+    const pokemon = obj.pokemon[index];
+    const data = {
+      id: pokemon.id,
+      name: pokemon.name,
+      img: pokemon.img,
+      height: pokemon.height,
+      weight: pokemon.weight
+    };
+    response.render("edit", data);
+  });
+});
+
+app.put("/pokemon/:id", (request, response) => {
+  const index = request.params.id;
+  const changedName = request.body.name;
+  const changedImage = request.body.img;
+  const changedHeight = request.body.height;
+  const changedWeight = request.body.weight;
+  console.log(changedName, changedImage, changedHeight, changedWeight);
+  jsonfile.readFile(file, (err, obj) => {
+    const pokemon = obj.pokemon[index];
+    pokemon.name = changedName;
+    pokemon.image = changedImage;
+    pokemon.height = changedHeight;
+    pokemon.weight = changedWeight;
+
+    const data = {
+      pokemon: pokemon
+    };
+    response.render("editedPokemon", data);
+  });
+});
+
 app.get("/", (request, response) => {
   response.render("home");
 });
 
-app.get("*", (request, response)=>{
-  response.render("404")
-})
+app.get("*", (request, response) => {
+  response.render("404");
+});
 
 /**
  * ===================================

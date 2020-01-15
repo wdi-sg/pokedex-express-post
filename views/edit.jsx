@@ -2,6 +2,12 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
+    const id = this.props.id;
+    const name = this.props.name;
+    const image = this.props.img;
+    const height = this.props.height;
+    const weight = this.props.weight;
+    const filePath = "/pokemon/" + id + "?_method=put";
     return (
       <html lang="en">
         <head>
@@ -28,33 +34,49 @@ class New extends React.Component {
           <div
             style={{ margin: `20px`, display: `flex`, flexDirection: `column` }}
           >
-            <h1>Create a new Pokemon!</h1>
+            <h1>Edit a Pokemon!</h1>
             <div style={{ marginBottom: `10px` }}>
               {this.props.errorMessage}
             </div>
 
-            <form action="/pokemon" method="POST">
+            <form action={filePath} method="POST">
               <div style={{ paddingBottom: `10px` }}>
-                <input type="text" placeholder="Pokemon name" name="name" />
+                <input
+                  type="text"
+                  placeholder="Pokemon name"
+                  name="name"
+                  value={name}
+                />
               </div>
               <div style={{ paddingBottom: `10px` }}>
                 <input
                   type="text"
                   placeholder="Pokemon image link"
                   name="img"
+                  value={image}
                 />
               </div>
               <div style={{ paddingBottom: `10px` }}>
-                <input type="text" placeholder="Pokemon height" name="height" />
+                <input
+                  type="text"
+                  placeholder="Pokemon height"
+                  name="height"
+                  value={height}
+                />
               </div>
               <div style={{ paddingBottom: `10px` }}>
-                <input type="text" placeholder="Pokemon weight" name="weight" />
+                <input
+                  type="text"
+                  placeholder="Pokemon weight"
+                  name="weight"
+                  value={weight}
+                />
               </div>
               <div>
                 <input
                   type="submit"
-                  value="Create!"
-                  style={{ borderRadius: `5px`, marginRight:`10px`}}
+                  value="Change!"
+                  style={{ borderRadius: `5px`, marginRight: `10px` }}
                 />
                 <button style={{ borderRadius: `5px` }}>
                   <a href="/">Go Home</a>

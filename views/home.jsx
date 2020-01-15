@@ -40,12 +40,12 @@ class New extends React.Component {
               ></img>
               <div style={{ textAlign: `center` }}>
                 <form action="/sortby" method="GET">
-                  <select name="sortby">
+                  <select style={{ height: `30px`, marginRight:`5px` }} name="sortby">
                     <option value="name">Name</option>
                     <option value="weight">Weight</option>
                   </select>
-                  <input
-                    style={{ borderRadius: `5px` }}
+                  <input class="btn-primary"
+                    style={{ height: `30px`, borderRadius: `5px` }}
                     type="submit"
                     value="Sort"
                   />
@@ -54,7 +54,12 @@ class New extends React.Component {
             </div>
             <form action="/pokemon/new/" method="GET">
               <input
-                style={{ borderRadius: `5px`, margin: `0 auto`, display: `block`, marginTop:`20px`}}
+                style={{
+                  borderRadius: `5px`,
+                  margin: `0 auto`,
+                  display: `block`,
+                  marginTop: `20px`
+                }}
                 type="submit"
                 value="Create New Pokemon"
               />

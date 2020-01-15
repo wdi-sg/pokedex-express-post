@@ -11,7 +11,7 @@ class New extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-          <title>Pokemon Not Found!</title>
+          <title>404: Page Not Found!</title>
           <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -32,18 +32,27 @@ class New extends React.Component {
               margin: 20 + "px"
             }}
           >
-            Pokemon Not Found!
+            404: Page Not Found!
           </h1>
           <div>
             <img
               style={{
                 margin: "0 " + "auto",
                 display: "block",
-                width: "50" + "%"
+                width: "40" + "%"
               }}
               src="http://wallpoper.com/images/00/41/43/46/pokemon-snorlax_00414346.png"
               alt=""
             />
+            <button
+              style={{
+                margin: "0 " + "auto",
+                display: "block",
+                borderRadius:`5px`
+              }}
+            ><a href="/">Go Home</a>
+              
+            </button>
           </div>
         </body>
       </html>
