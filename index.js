@@ -56,13 +56,41 @@ app.get('/pokemon/list' , (request, response) => {
 })
 
 app.get('/pokemon/:id/edit', (request, response) => {
-    jsonfile.read(FILE, (err, obj) => {
+    jsonfile.readFile(FILE, (err, obj) => {
         if( err ){
             console.log("error with json read file:",err);
             response.status(503).send("error reading filee");
             return;
         }
-
+        let inputId = parseInt( request.params.id );
+        var pokemon;
+        // find pokemon by id from the pokedex json file
+        for( let i=0; i<obj.pokemon.length; i++ ){
+            let currentPokemon = obj.pokemon[i];
+            if( currentPokemon.id === inputId ){
+                pokemon = currentPokemon;
+            }
+        }
+        if (pokemon === undefined) {
+            // send 404 back
+            response.status(404);
+            response.send("not found");
+        } else {
+            let data = {
+                id : parseInt(pokemon.id),
+                num : pokemon.num,
+                name : pokemon.name,
+                img : pokemon.img,
+                height: pokemon.height,
+                weight: pokemon.weight,
+                candy: pokemon.candy,
+                candy_count: parseInt(pokemon.candy_count),
+                egg: pokemon.egg,
+                avg_spawns: parseInt(pokemon.avg_spawns),
+                spawn_time: pokemon.spawn_time
+            }
+            response.render('edit', data);
+        }
     })
 })
 
@@ -90,22 +118,21 @@ app.get('/pokemon/:id', (request, response) => {
             }
         }
         if (pokemon === undefined) {
-            console.log("why am i happening?")
             // send 404 back
             response.status(404);
             response.send("not found");
         } else {
             let data = {
-                id : pokemon.id,
+                id : parseInt(pokemon.id),
                 num : pokemon.num,
                 name : pokemon.name,
                 img : pokemon.img,
                 height: pokemon.height,
                 weight: pokemon.weight,
                 candy: pokemon.candy,
-                candy_count: pokemon.candy_count,
+                candy_count: parseInt(pokemon.candy_count),
                 egg: pokemon.egg,
-                avg_spawns: pokemon.avg_spawns,
+                avg_spawns: parseInt(pokemon.avg_spawns),
                 spawn_time: pokemon.spawn_time
             }
             response.render('pokemon', data);
@@ -125,9 +152,9 @@ app.post('/pokemon', (request, response) => {
             height: pokemon.height,
             weight: pokemon.weight,
             candy: pokemon.candy,
-            candy_count: pokemon.candy_count,
+            candy_count: parseInt(pokemon.candy_count),
             egg: pokemon.egg,
-            avg_spawns: pokemon.avg_spawns,
+            avg_spawns: parseInt(pokemon.avg_spawns),
             spawn_time: pokemon.spawn_time
         }
         obj.pokemon.push(pokeData);
@@ -148,14 +175,14 @@ app.put('/pokemon', (request, response) => {
             height: pokemon.height,
             weight: pokemon.weight,
             candy: pokemon.candy,
-            candy_count: pokemon.candy_count,
+            candy_count: parseInt(pokemon.candy_count),
             egg: pokemon.egg,
-            avg_spawns: pokemon.avg_spawns,
+            avg_spawns: parseInt(pokemon.avg_spawns),
             spawn_time: pokemon.spawn_time
         }
-        obj.pokemon[pokemon.id] = pokeData;
+        obj.pokemon[pokemon.id - 1] = pokeData;
         jsonfile.writeFile(FILE, obj, (err) => {
-            response.send("Pokemon Added to Pokedex")
+            response.send("Pokemon Info Updated")
         })
     })
 })

@@ -8,7 +8,7 @@ class Pokemon extends React.Component {
                     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
                 </head>
                 <body>
-                    <div class="container">
+                    <div className="container">
                         <h1>Pokemon Data</h1>
                         <div className="pokemonData">
                             <div>ID : {this.props.id}</div>
@@ -21,7 +21,7 @@ class Pokemon extends React.Component {
                             <div>Candy Count : {this.props.candy_count}</div>
                             <div>Egg : {this.props.egg}</div>
                             <div>Average Spawns : {this.props.avg_spawns}</div>
-                            <div>Spawn Time : {this.props.spawn_time}<div>
+                            <div>Spawn Time : {this.props.spawn_time}</div>
                         </div>
                     </div>
                 </body>
