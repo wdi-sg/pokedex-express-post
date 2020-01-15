@@ -34,23 +34,21 @@ const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
 //function
-var idExist = (id, obj)=>{
-
+var idIndex = (id, obj)=>{
     let pokemon;
+    let pokemonIndex;
+
+    console.log(pokemonIndex);
     for( let i=0; i<obj.pokemon.length; i++ ){
 
       let currentPokemon = obj.pokemon[i];
-
+      console.log(currentPokemon.id);
       if( currentPokemon.id === id){
         pokemon = currentPokemon;
+        pokemonIndex=i;
       }
     }
-
-    if (pokemon === undefined) {
-        return false;
-    } else {
-        return true;
-    }
+        return pokemonIndex;
 }
 const sort = (request,response)=>{
     jsonfile.readFile(file, (err,obj)=>{
@@ -67,18 +65,23 @@ const sort = (request,response)=>{
 }
 const edit = (request,response)=>{
      jsonfile.readFile(file, (err,obj)=>{
-        let pokemonIndex = request.params.id;
-        let currentPokemon = obj.pokemon[pokemonIndex];
-        response.render("Edit",currentPokemon);
+        let pokemonIndex = parseInt(request.params.id);
+        if(idIndex(pokemonIndex, obj)!== undefined){
+            pokemonIndex = idIndex(pokemonIndex, obj);
+            let currentPokemon = obj.pokemon[pokemonIndex];
+        response.render("Edit",currentPokemon);}
+        else{
+            response.send('Index does not exist');
+        }
     });
 }
 const writeEdit = (request,response)=>{
     jsonfile.readFile(file, (err,obj)=>{
-        let pokemonIndex = request.params.id;
+        let pokemonIndex = parseInt(request.params.id);
+        pokemonIndex= idIndex(pokemonIndex, obj);
         let contents = request.body;
-
         obj.pokemon[pokemonIndex].name = contents.name;
-        obj.pokemon[pokemonIndex].id = contents.id;
+        obj.pokemon[pokemonIndex].id = parseInt(contents.id);
         obj.pokemon[pokemonIndex].num = contents.num;
         obj.pokemon[pokemonIndex].weight = contents.weight;
         obj.pokemon[pokemonIndex].height = contents.height;
@@ -89,14 +92,28 @@ const writeEdit = (request,response)=>{
         });
     });
 }
+
 const DELETE = (request,response)=>{
-  let pokemonIndex = request.params.id;
+  let pokemonIndex = parseInt(request.params.id);
   jsonfile.readFile(file, (err, obj) => {
+    pokemonIndex = idIndex(pokemonIndex, obj);
     obj.pokemon.splice(pokemonIndex, 1);
     jsonfile.writeFile(file, obj, (err) => {
       console.error(err);
       response.send('DELETED');
     });
+  });
+}
+const showDeletePokemon = (request, response)=>{
+    let pokemonIndex = parseInt(request.params.id);
+      jsonfile.readFile(file, (err, obj) => {
+        if(idIndex(pokemonIndex,obj)!== undefined){
+            pokemonIndex = idIndex(pokemonIndex,obj);
+        let pokemon = obj.pokemon[pokemonIndex];
+        response.render("deletePokemon", pokemon);
+    }else{
+        response.send("Pokemon does not exist");
+    }
   });
 }
 /**
@@ -107,6 +124,7 @@ const DELETE = (request,response)=>{
  app.get('/pokemon/num',sort);
  app.get('/pokemon/:id/edit',edit);
 app.put('/pokemon/:id',writeEdit);
+app.get('/pokemon/:id/delete', showDeletePokemon)
 app.delete('/pokemon/:id',DELETE);
 app.get('/pokemon',(request,response)=>{
      response.render("Home");
@@ -118,7 +136,7 @@ app.post('/pokemon',(request, response)=>{
         let id = parseInt(request.body.id);
         let name = request.body.name;
         console.log("reading file");
-        if((isNaN(id) || id === "")|| name !=="")
+        if((isNaN(id) || id === "")|| name ==="")
         {
             let errorType = "";
             if(isNaN(id)){
@@ -129,7 +147,7 @@ app.post('/pokemon',(request, response)=>{
             let newPath = "pokemon/new/"+ errorType;
             response.redirect(newPath);
         }
-      else if(idExist(id, obj)===false){
+      else if(idIndex(id, obj)=== undefined){
         let newPokemon = request.body;
         newPokemon.id = id;
         obj.pokemon.push(newPokemon);

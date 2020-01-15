@@ -18,27 +18,27 @@ class deletePokemon extends React.Component {
                 <h1>Delete Pokemon</h1>
                 <div className="form-group">
                     <label >ID</label>
-                    <input type="text" className="form-control" name="id" value={this.props.id}/>
+                    <input type="text" className="form-control" name="id" value={this.props.id} readonly="readonly"/>
                 </div>
                 <div className="form-group">
                     <label >Num</label>
-                    <input type="num" className="form-control" name="num" value={this.props.num}/>
+                    <input type="num" className="form-control" name="num" value={this.props.num} readonly="readonly"/>
                 </div>
                  <div className="form-group">
                     <label>Name</label>
-                    <input type="name" className="form-control" name="name" value={this.props.name}/>
+                    <input type="name" className="form-control" name="name" value={this.props.name} readonly="readonly"/>
                 </div>
                                 <div className="form-group">
                     <label>Image</label>
-                    <input type="img" className="form-control" name="img" value={this.props.img}/>
+                    <input type="img" className="form-control" name="img" value={this.props.img} readonly="readonly"/>
                 </div>
                                 <div className="form-group">
                     <label>Weight</label>
-                    <input type="weight" className="form-control" name="weight" value={this.props.weight}/>
+                    <input type="weight" className="form-control" name="weight" value={this.props.weight} readonly="readonly"/>
                 </div>
                                 <div className="form-group">
                     <label>Height</label>
-                    <input type="height" className="form-control" name="height" value={this.props.height}/>
+                    <input type="height" className="form-control" name="height" value={this.props.height} readonly="readonly"/>
                 </div>
                 <button type="submit" className="btn btn-primary btn-customized">Delete</button>
             </form>
