@@ -213,6 +213,17 @@ app.put("/pokemon/:id", (request, response) => {
   });
 });
 
+app.get("/pokemon/:id/delete", (request, response) => {
+  const index = request.params.id;
+  jsonfile.readFile(file, (err, obj) => {
+    const name = obj.pokemon[index].name;
+    const data = {
+      name: name
+    };
+    response.render("delete", data);
+  });
+});
+
 app.get("/", (request, response) => {
   response.render("home");
 });
