@@ -34,6 +34,48 @@ app.use(methodOverride('_method'));
  * ===================================
  */
 
+ app.get('/', (request, response)=>{
+   response.render('home')
+ })
+
+app.get('/pokemon/sort', (request, response) => {
+  console.log(request.query)
+  if (request.query.sortby === "name") {
+    const names = []
+
+    jsonfile.readFile(file, (err, obj) => {
+
+      for (const pokemon of obj.pokemon) {
+        names.push(pokemon.name)
+      }
+
+      names.sort(
+        function (a, b) {
+          if (a.toLowerCase() < b.toLowerCase()) {
+            return -1;
+          } else if (a.toLowerCase() > b.toLowerCase()) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      );
+
+      const data = {
+        pokemon: names
+      }
+
+      response.render('sorted', data)
+    })
+
+  } else {
+    response.send("yay")
+  }
+
+
+
+});
+
 app.post('/pokemon', (request, response) => {
   const newPokemon = request.body
   //check for missing input
@@ -168,7 +210,7 @@ app.get('/pokemon/:id/delete', (request, response)=>{
 
   jsonfile.readFile(file, (err,obj)=>{
     let id = request.params.id
-    let data = obj.pokemon[id-1]
+    let data = obj.pokemon[parseInt(id)-1]
 
     response.render('delete', data)
   })
@@ -241,43 +283,7 @@ app.put('/pokemon/:id', (request,response)=>{
   })
 })
 
-app.get('/', (request, response) => {
 
-  if (request.query.sortby === "name") {
-    const names = []
-
-    jsonfile.readFile(file, (err, obj) => {
-
-      for (const pokemon of obj.pokemon) {
-        names.push(pokemon.name)
-      }
-
-      names.sort(
-        function (a, b) {
-          if (a.toLowerCase() < b.toLowerCase()) {
-            return -1;
-          } else if (a.toLowerCase() > b.toLowerCase()) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }
-      );
-
-      const data = {
-        pokemon: names
-      }
-
-      response.render('sorted', data)
-    })
-
-  } else {
-    response.send("yay")
-  }
-
-
-
-});
 
 /**
  * ===================================

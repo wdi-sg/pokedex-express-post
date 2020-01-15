@@ -33,7 +33,7 @@ return (
                 </ul>
             </div>
             <div className="col-9">
-                <form method="get" action="/?sortby=name">
+                <form method="get" action="/pokemon/sort">
                     <input type="submit" value="Sort!" className="btn btn-outline-dark"></input>
                     <input type="hidden" name="sortby" value="name"></input>
                 </form>
