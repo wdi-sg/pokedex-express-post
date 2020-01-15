@@ -116,6 +116,29 @@ app.post('/pokemon', (request, response) => {
     })
 })
 
+app.put('/pokemon', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokemon = request.body;
+        let pokeData = {
+            id: parseInt(pokemon.id),
+            num: pokemon.num,
+            name: pokemon.name,
+            img: pokemon.img,
+            height: pokemon.height,
+            weight: pokemon.weight,
+            candy: pokemon.candy,
+            candy_count: pokemon.candy_count,
+            egg: pokemon.egg,
+            avg_spawns: pokemon.avg_spawns,
+            spawn_time: pokemon.spawn_time
+        }
+        obj.pokemon[pokemon.id] = pokeData;
+        jsonfile.writeFile(FILE, obj, (err) => {
+            response.send("Pokemon Added to Pokedex")
+        })
+    })
+})
+
 
 
 
