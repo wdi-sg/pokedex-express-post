@@ -23,6 +23,10 @@ class Pokemon extends React.Component {
                             <div>Average Spawns : {this.props.avg_spawns}</div>
                             <div>Spawn Time : {this.props.spawn_time}</div>
                         </div>
+                        <form action="/pokemon?_method=delete" method="POST">
+                            <input type="hidden" name="id" value={this.props.id}/>
+                            <button type="submit" className="btn btn-primary">Delete</button>
+                        </form>
                     </div>
                 </body>
             </html>
