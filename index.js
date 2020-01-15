@@ -12,6 +12,11 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
@@ -79,7 +84,8 @@ app.get('/', (request, response) => {
 
 
 app.post('/pokemon', (request, response) => {
-  console.log(request.body);
+    console.log(request);
+    console.log(request.body);
 
    jsonfile.readFile(FILE, (err, obj) => {
     let idNum = parseInt(request.body.ID);
