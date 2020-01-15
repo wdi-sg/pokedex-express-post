@@ -16,7 +16,12 @@ class Pokemon extends React.Component {
                             <div>Name : {this.props.name}</div>
                             <img src={this.props.img} alt="{this.props.name} img"/>
                             <div>Height : {this.props.height}</div>
-                            <div>Weight: {this.props.weight}</div>
+                            <div>Weight : {this.props.weight}</div>
+                            <div>Candy : {this.props.candy}</div>
+                            <div>Candy Count : {this.props.candy_count}</div>
+                            <div>Egg : {this.props.egg}</div>
+                            <div>Average Spawns : {this.props.avg_spawns}</div>
+                            <div>Spawn Time : {this.props.spawn_time}<div>
                         </div>
                     </div>
                 </body>

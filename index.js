@@ -55,6 +55,17 @@ app.get('/pokemon/list' , (request, response) => {
     });
 })
 
+app.get('/pokemon/:id/edit', (request, response) => {
+    jsonfile.read(FILE, (err, obj) => {
+        if( err ){
+            console.log("error with json read file:",err);
+            response.status(503).send("error reading filee");
+            return;
+        }
+
+    })
+})
+
 
 
 //looking at pokemon from their IDs
@@ -90,7 +101,12 @@ app.get('/pokemon/:id', (request, response) => {
                 name : pokemon.name,
                 img : pokemon.img,
                 height: pokemon.height,
-                weight: pokemon.weight
+                weight: pokemon.weight,
+                candy: pokemon.candy,
+                candy_count: pokemon.candy_count,
+                egg: pokemon.egg,
+                avg_spawns: pokemon.avg_spawns,
+                spawn_time: pokemon.spawn_time
             }
             response.render('pokemon', data);
         }
@@ -107,7 +123,12 @@ app.post('/pokemon', (request, response) => {
             name: pokemon.name,
             img: pokemon.img,
             height: pokemon.height,
-            weight: pokemon.weight
+            weight: pokemon.weight,
+            candy: pokemon.candy,
+            candy_count: pokemon.candy_count,
+            egg: pokemon.egg,
+            avg_spawns: pokemon.avg_spawns,
+            spawn_time: pokemon.spawn_time
         }
         obj.pokemon.push(pokeData);
         jsonfile.writeFile(FILE, obj, (err) => {

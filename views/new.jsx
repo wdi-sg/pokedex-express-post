@@ -36,6 +36,26 @@ class New extends React.Component {
                                     <label>Weight :</label>
                                     <input type="text" className="form-control" placeholder="Weight" name="weight"/>
                                 </div>
+                                <div className="form-group">
+                                    <label>Candy :</label>
+                                    <input type="text" className="form-control" placeholder="Candy" name="candy"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Candy Count :</label>
+                                    <input type="number" className="form-control" placeholder="Candy Count" name="candy_count"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Egg :</label>
+                                    <input type="text" className="form-control" placeholder="Egg" name="egg"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Avg Spawns :</label>
+                                    <input type="text" className="form-control" placeholder="Average Spawns" name="avg_spawns"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Spawn Time :</label>
+                                    <input type="text" className="form-control" placeholder="Spawn Time" name="spawn_time"/>
+                                </div>
                                 <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                         </div>
