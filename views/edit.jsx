@@ -2,7 +2,7 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
-    const id = this.props.id;
+    const id = this.props.id - 1;
     const name = this.props.name;
     const image = this.props.img;
     const height = this.props.height;

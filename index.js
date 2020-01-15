@@ -194,18 +194,22 @@ app.put("/pokemon/:id", (request, response) => {
   const changedImage = request.body.img;
   const changedHeight = request.body.height;
   const changedWeight = request.body.weight;
-  console.log(changedName, changedImage, changedHeight, changedWeight);
+
   jsonfile.readFile(file, (err, obj) => {
     const pokemon = obj.pokemon[index];
     pokemon.name = changedName;
-    pokemon.image = changedImage;
+    pokemon.img = changedImage;
     pokemon.height = changedHeight;
     pokemon.weight = changedWeight;
 
     const data = {
       pokemon: pokemon
     };
-    response.render("editedPokemon", data);
+
+    jsonfile.writeFile(file, obj, err => {
+      console.log(err);
+      response.render("home");
+    });
   });
 });
 
