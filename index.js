@@ -1,12 +1,11 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
-
 const FILE = 'pokedex.json';
 
 /**
- * ===================================
+ * ==========================
  * Configurations and set up
- * ===================================
+ * ==========================
  */
 
 // Init express app
@@ -20,121 +19,29 @@ app.use(express.urlencoded({
 }));
 
 
-
-/**
- * ===================================
- * Routes
- * ===================================
- */
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 
 
-/*app.post('/pokemon', function(request, response) {
-
-  //debug code (output request body)
-  console.log(request.body);
-
-
-  // save the request body
-  jsonfile.writeFile('data.json', request.body, (err) => {
-    console.error(err)
-
-    // now look inside your json file
-    response.send(request.body);
-  });
-});*/
+// Init REACT
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
 
 
 
-/*app.get('/pokemon/new', (request, response) => {
+app.get("/", (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+jsonfile.readFile('pokedex.json', (err, obj) => {
+  console.log("OBJ ITEM ID~~: "+ obj.pokemon[0].id );
+  // put render here
+})
 
-    // check to make sure the file was properly read
-    if( err ){
-
-      console.log("error with json read file:",err);
-      response.status(503).send("error reading file");
-      return;
-    }
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-
-      response.send(pokemon);
-    }
-  });
-});*/
-
-
-
-
-
-/*app.get('/', (request, response) => {
-  response.send("yay");
-});*/
-
-
-// Deliverables:
-// Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
-//Point the form to submit data to the (/pokemon) route using POST method
-
-
-
-/*app.get('/pokemon/', (request, response) => {
-
-  let myForm  ='<form method="POST" action="/pokemon">id:<input type="text" name="name"><br/>num:<input type="text" name="name"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="name"><br/>height:<input type="text" name="name"><br/>weight:<input type="text" name="name"></br><input type="submit" value="Submit"></form>';
-
-  response.send(myForm);
-
-});*/
-
-
-
-// Expose a new endpoint that accepts POST requests to /pokemon, which parses the form data and saves the new pokemon data into pokedex.json
-
-
-/*app.post('/pokemon', (request, response)=>{
-  console.log("HEY POST REQUEST", request.body)
-  console.log('*******');
-
-  jsonfile.readFile(file, (err, obj) => {
-    // save the request body
-
-    let contents = request.body.stuff;
-
-    obj.pokemon.push( contents );
-
-    jsonfile.writeFile('/pokedex.json', obj, (err) => {
-      console.error(err)
-
-      // now look inside your json file
-      // response.send(request.body);
-      response.send('WOW WORKSS!!!');
-    });
-  });
-})*/
-
-
+})
 
 app.post('/pokemon/', (request, response) => {
     console.log('Received POST');
@@ -172,18 +79,36 @@ app.post('/pokemon/', (request, response) => {
 
 app.get('/pokemon/new', (request, response) => {
 
-  let myForm  ='<form method="POST" action="/pokemon">id:<input type="text" name="id"><br/>num:<input type="text" name="num"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="img"><br/>height:<input type="text" name="height"><br/>weight:<input type="text" name="weight"></br><input type="submit" value="Submit"></form>';
+  let myForm ='<form method="POST" action="/pokemon">id:<input type="text" name="id"><br/>num:<input type="text" name="num"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="img"><br/>height:<input type="text" name="height"><br/>weight:<input type="text" name="weight"></br><input type="submit" value="Submit"></form>';
 
   response.send(myForm);
 
 });
 
 
+/// ADD A FORM AT THE PATH: /pokemon/:id/edit \\\
+app.get('/pokemon/:id/edit',(request, response) => {
+    let index = request.params.id
+    jsonfile.readFile(FILE, (err, obj) => {
+        console.log(obj)
+        let pokemon = obj.pokemon[index];
+        let html = '<form method="POST" action="/putrequest?_method=put"><input name="id" type="text" value="Id"/><input type="submit" value="Edit this"/><br/><input name="number" type="text" value="Num"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Name"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Img"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Height"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Weight"/><input type="submit" value="Edit this"/></form>';
+      response.send(html);
+    })
+});
 
+///// THE FORM SHOULD MAKE A REQUEST (THE FORM ACTION ) TO THE CORRECT ROUTE ( A PUT REQUEST TO  /pokemon/:id) \\\\\
+/*app.put('/pokemon/:id' , (request, response) => {
+    let id = request.body.change;
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.names.splice(id, 1);
 
+        jsonfile.writeFile(file, obj, err => {});
 
-
-
+        response.send('yes');
+  })
+  //read the file in and write out to it
+});*/
 
 /**
  * ===================================
