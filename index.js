@@ -28,6 +28,10 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override');
+
+app.use(methodOverride('_method'));
 
 //function
 var idExist = (id, obj)=>{
@@ -48,12 +52,64 @@ var idExist = (id, obj)=>{
         return true;
     }
 }
+const sort = (request,response)=>{
+    jsonfile.readFile(file, (err,obj)=>{
+        let displayPokemon = "";
+        for(let i =0;i <obj.pokemon.length;i++){
+            let pokemonName = obj.pokemon[i].name;
+            displayPokemon += `<br><a href="/pokemon/${pokemonName}">${pokemonName}</a>`;
+        }
+        const data ={
+            pokemonList : displayPokemon
+        }
+         response.render("Home",data);
+    });
+}
+const edit = (request,response)=>{
+     jsonfile.readFile(file, (err,obj)=>{
+        let pokemonIndex = request.params.id;
+        let currentPokemon = obj.pokemon[pokemonIndex];
+        response.render("Edit",currentPokemon);
+    });
+}
+const writeEdit = (request,response)=>{
+    jsonfile.readFile(file, (err,obj)=>{
+        let pokemonIndex = request.params.id;
+        let contents = request.body.stuff;
+        obj.pokemon[pokemonIndex] = contents;
+        console.log("In write edit");
+    jsonfile.writeFile('data.json', obj.pokemon[pokemonIndex], (err) => {
+      console.error(err);
+            response.send('Edited');
+        });
+    });
+}
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+ app.get('/pokemon/num',sort);
+ app.get('/pokemon/:id/edit',edit);
+app.put('/pokemon/:id',writeEdit);
+ // app.get('/pokemon',(request,response)=>{
+ //    response.render("Home");
+ // })
+app.post('/pokemon', (request, response)=>{
+  jsonfile.readFile(file, (err, obj) => {
+    // save the request body
 
+    let contents = request.body.stuff;
+
+//    obj.fruits.push( contents );
+
+    jsonfile.writeFile('data.json', obj, (err) => {
+      console.error(err)
+    });
+  });
+
+})
 app.post('/pokemon',(request, response)=>{
     let alreadyExist = false;
     console.log("posting");

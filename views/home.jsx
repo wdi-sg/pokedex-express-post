@@ -3,19 +3,22 @@ var React = require('react');
 
 class Home extends React.Component {
   render() {
+        let pokemonDisplay = {this.props.pokemonList};
     return (
       <html>
+      <head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      </head>
         <body>
           <div>
-          <form method="POST" action="/pokemon">
-            <p>Id:   </p><input type="number" name="id" min="1"/><br/>
-            <p>Num:   </p><input type="number" min="1" name="num"/><br/>
-            <p>Name:  </p><input type="text" name="name"/><br/>
-            <p>Img:   </p><input type="text" name="img"/><br/>
-            <p>Height:</p><input type="text" name="height"/><br/>
-            <p>Weight:</p><input type="text" name="weight"/><br/>
-            <input type="submit" value="Submit"/>
-          </form>
+          <h1>Pokemon</h1>
+                <a className="btn btn-primary" href="/pokemon/sortByID">Sort By ID</a>
+                <a className="btn btn-primary" href="/pokemon/sortByName">Sort By Name</a>
+                <a className="btn btn-primary" href="/pokemon/sortByNum">Sort By Num</a>
+               <div>
+               {pokemonDisplay}
           </div>
         </body>
       </html>
