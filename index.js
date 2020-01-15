@@ -104,6 +104,28 @@ app.put("/pokemon_edit/:id", (request, response) => {
 
 });
 
+app.delete("/pokemon/:id/delete", (request, response) => {
+  //read the file in and write out to it
+  let data;
+  let id = parseInt(request.params.id)-1;
+  jsonfile.readFile(file, (err,obj)=>{
+    delete obj.pokemon[i];
+    for (let i = 0; i < obj.pokemon.length; i++) {
+    if (obj.pokemon[i] == null) obj.pokemon.splice(i, 1);
+    }
+    jsonfile.writeFile(FILE, obj, err => {
+    if (err) console.log(err);
+    response.send("Deleted!");
+    });
+ 
+   jsonfile.writeFile(file, obj, function(err) {
+       if (err) return console.log(err);      
+       response.send("Successful!");
+     });
+  });
+ 
+ });
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -146,14 +168,11 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-
       //response.send(pokemon);
     }
   });
 });
-// app.listen(3000);
 
-//  response.render("Edit", pokedex);
 
 
 

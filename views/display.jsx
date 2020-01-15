@@ -16,7 +16,7 @@ return (
 <li>Weight: {this.props.height}</li>
 </ul>
 </div>
-<form action={formUrl} method="POST"><input type="submit"/></form>
+<form action={formUrl} method="DELETE"><input name ="Delete" input type="submit"/></form>
 
 </body>
 </html>
