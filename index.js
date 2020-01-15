@@ -168,7 +168,7 @@ app.get('/pokemon/:id/delete', (request, response)=>{
 
   jsonfile.readFile(file, (err,obj)=>{
     let id = request.params.id
-    let data = obj.pokemon[id]
+    let data = obj.pokemon[id-1]
 
     response.render('delete', data)
   })
