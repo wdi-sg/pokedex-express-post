@@ -29,40 +29,76 @@ app.set('view engine', 'jsx');
 
 
 const isValidInput = (pokemon) => {
-  // id: request.body.id,
-  // num: request.body.num,
-  // name: request.body.name,
-  // img: request.body.img,
-  // height: request.body.height,
-  // weight: request.body.weight
 
-  // if ID is not an integer.
-  if (!parseInt(pokemon.id)) {
-    return false;
-  }
-  // if num is not an integer.
-  if (!parseInt(pokemon.id)) {
-    return false;
-  }
-  // if name is empty
-  if (!pokemon.name.trim()) {
-    return false;
-  }
-  // if img is empty
-  if (!pokemon.img.trim()) {
-    return false;
-  }
-  // if height is not a number
-  if (isNaN(pokemon.height)) {
-    return false;
-  }
-  if (isNaN(pokemon.weight)) {
-    return false;
-  }
+    // if ID is not an integer.
+    if (!parseInt(pokemon.id)) {
+        return false;
+    }
+    // if num is not an integer.
+    if (!parseInt(pokemon.num)) {
+        return false;
+    }
+    // if name is empty
+    if (!pokemon.name.trim()) {
+        return false;
+    }
+    // if img is empty
+    if (!pokemon.img.trim()) {
+        return false;
+    }
+    // if height is not a number
+    if (isNaN(pokemon.height)) {
+        return false;
+    }
+    // if weight is not a number
+    if (isNaN(pokemon.weight)) {
+        return false;
+    }
 
-  // if all is 
-  return true;
+    // if all is
+    return true;
 
+}
+
+const retrievePokemon = (request, response, err, obj) => {
+
+    // check to make sure the file was properly read
+    if (err) {
+
+        console.log("error with json read file:", err);
+        return {
+            error: "error reading file"
+        };
+    }
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt(request.params.id);
+
+    let pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for (let i = 0; i < obj.pokemon.length; i++) {
+
+        let currentPokemon = obj.pokemon[i];
+
+        if (currentPokemon.id === inputId) {
+            pokemon = currentPokemon;
+        }
+    }
+
+    if (pokemon === undefined) {
+
+        // send 404 back
+        return {
+            error: "Error 404 Pokemon not found"
+        };
+
+    } else {
+        
+        // render pokemon page from pokemon.jsx
+        pokemon.error = null;
+        return pokemon;
+    }
 }
 
 /**
@@ -90,8 +126,9 @@ app.post('/pokemon/', (request, response) => {
 
     // validate the inputs here to make sure it's correct.
     if (!isValidInput(newPokemon)) {
-      console.log('invalid input');
-      response.status(401).send("error with input for some reason");
+        console.log('invalid input');
+        response.status(401).send("error with input for some reason");
+        return;
     }
 
 
@@ -109,7 +146,9 @@ app.post('/pokemon/', (request, response) => {
         // obj.pokemon.push(newPokemon);
         console.log('pokemon to add:');
         console.log(newPokemon);
-        const data = {message: 'New pokemon submitted'};
+        const data = {
+            message: 'New pokemon submitted'
+        };
         response.render('home', data);
         return;
 
@@ -126,53 +165,31 @@ app.post('/pokemon/', (request, response) => {
 
 // get a Pokemon by ID.
 app.get('/pokemon/:id', (request, response) => {
-
-    // get json from specified file
     jsonfile.readFile(FILE, (err, obj) => {
-
-        // check to make sure the file was properly read
-        if (err) {
-
-            console.log("error with json read file:", err);
-            response.status(503).send("error reading filee");
-            return;
-        }
-        // obj is the object from the pokedex json file
-        // extract input data from request
-        let inputId = parseInt(request.params.id);
-
-        var pokemon;
-
-        // find pokemon by id from the pokedex json file
-        for (let i = 0; i < obj.pokemon.length; i++) {
-
-            let currentPokemon = obj.pokemon[i];
-
-            if (currentPokemon.id === inputId) {
-                pokemon = currentPokemon;
-            }
-        }
-
-        if (pokemon === undefined) {
-
-            // send 404 back
-            response.status(404);
-            response.send("Error 404 Pokemon not found");
-
-        } else {
-
-            // render pokemon page from pokemon.jsx
-            const data = {pokemon: pokemon};
-            response.render('pokemon', data);
-        }
+        // get json from specified file
+        const pokemonReceived = retrievePokemon(request, response, err, obj);
+        const data = {
+            pokemon: pokemonReceived
+        };
+        response.render('pokemon', data)
     });
 });
 
 
+app.get('/pokemon/:id/edit', (request, response) => {
+
+    // retrieve pokemon from specified file.
+    const pokemonReceived = retrievePokemon(request, response);
+
+})
+
 app.get('/', (request, response) => {
-  data = {message : "yay"};  
-  response.render('home', data);
+    data = {
+        message: "yay"
+    };
+    response.render('home', data);
 });
+
 
 /**
  * ===================================
