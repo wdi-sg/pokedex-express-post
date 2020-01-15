@@ -5,38 +5,38 @@ class New extends React.Component {
         return (
             <html>
                 <head>
-                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
                 </head>
                 <body>
-                    <div class="container">
+                    <div className="container">
                         <h1>Input Data for New Pokemon Here</h1>
-                        <div class="col-6">
+                        <div className="col-6">
                             <form action="/pokemon" method="POST">
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>Name :</label>
-                                    <input type="text" class="form-control" placeholder="Pokemon Name" name="name"/>
+                                    <input type="text" className="form-control" placeholder="Pokemon Name" name="name"/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>ID :</label>
-                                    <input type="number" class="form-control" placeholder="ID" name="id"/>
+                                    <input type="number" className="form-control" placeholder="ID" name="id"/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>Num :</label>
-                                    <input type="text" class="form-control" placeholder="eg. 007" name="num"/>
+                                    <input type="text" className="form-control" placeholder="eg. 007" name="num"/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>Img :</label>
-                                    <input type="text" class="form-control" placeholder="ID" name="img"/>
+                                    <input type="text" className="form-control" placeholder="ID" name="img"/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>Height :</label>
-                                    <input type="text" class="form-control" placeholder="Height" name="height"/>
+                                    <input type="text" className="form-control" placeholder="Height" name="height"/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label>Weight :</label>
-                                    <input type="text" class="form-control" placeholder="Weight" name="weight"/>
+                                    <input type="text" className="form-control" placeholder="Weight" name="weight"/>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                         </div>
                     </div>

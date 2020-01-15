@@ -5,14 +5,14 @@ class Home extends React.Component {
         return (
             <html>
                 <head>
-                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
                 </head>
                 <body>
-                    <div class="container">
-                        <h1 class="pl-5">Welcome to the Pokedex</h1>
+                    <div className="container">
+                        <h1 className="pl-5">Welcome to the Pokedex</h1>
                         <div>
                             <label>Would you like to Browse the list of Pokemons?</label>
-                            <a href="/pokemon">Pokemon List</a>
+                            <a href="/pokemon/list">Pokemon List</a>
                         </div>
                         <div>
                             <label>Would you like to add a new Pokemon to your Pokedex?</label>

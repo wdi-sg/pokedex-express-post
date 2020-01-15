@@ -5,12 +5,12 @@ class Pokemon extends React.Component {
         return (
             <html>
                 <head>
-                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
                 </head>
                 <body>
                     <div class="container">
                         <h1>Pokemon Data</h1>
-                        <div class="pokemonData">
+                        <div className="pokemonData">
                             <div>ID : {this.props.id}</div>
                             <div>Num : {this.props.num}</div>
                             <div>Name : {this.props.name}</div>
