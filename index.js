@@ -1,5 +1,6 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
+const methodOverride = require('method-override')
 
 const FILE = 'pokedex.json';
 
@@ -8,6 +9,7 @@ const FILE = 'pokedex.json';
  * Configurations and set up
  * ===================================
  */
+
 // Init express app
 const app = express();
 
@@ -26,31 +28,40 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+// Set up method-override for PUT and DELETE forms
+app.use(methodOverride('_method'));
 
+// check our input is valid from PUT and PUSH forms.
 const isValidInput = (pokemon) => {
 
     // if ID is not an integer.
     if (!parseInt(pokemon.id)) {
+      console.log('failed id');
         return false;
     }
     // if num is not an integer.
     if (!parseInt(pokemon.num)) {
+      console.log('failed num');
         return false;
     }
     // if name is empty
     if (!pokemon.name.trim()) {
+      console.log('failed name');
         return false;
     }
     // if img is empty
     if (!pokemon.img.trim()) {
+      console.log('failed img');
         return false;
     }
     // if height is not a number
-    if (isNaN(pokemon.height)) {
+    if (!pokemon.height) {
+      console.log('failed height');
         return false;
     }
     // if weight is not a number
-    if (isNaN(pokemon.weight)) {
+    if (!pokemon.weight) {
+      console.log('failed weight');
         return false;
     }
 
@@ -115,12 +126,13 @@ app.post('/pokemon/', (request, response) => {
     console.log('Received POST');
     console.log(request.body);
     const newPokemon = {
-        id: request.body.id,
+        id: parseInt(request.body.id),
         num: request.body.num,
         name: request.body.name,
         img: request.body.img,
         height: request.body.height,
-        weight: request.body.weight
+        weight: request.body.weight,
+        candy: "none"
     }
 
     // validate the inputs here to make sure it's correct.
@@ -162,6 +174,58 @@ app.post('/pokemon/', (request, response) => {
 })
 
 
+app.put('/pokemon/:id', (request, response) => {
+    console.log('Received PUT for id ' + request.params.id);
+
+    const newPokemon = {
+        id: parseInt(request.body.id),
+        num: request.body.num,
+        name: request.body.name,
+        img: request.body.img,
+        height: request.body.height,
+        weight: request.body.weight,
+        candy: "none"
+    }
+
+    console.log(newPokemon);
+
+    // validate the inputs here to make sure it's correct.
+    if (!isValidInput(newPokemon)) {
+        console.log('invalid input');
+        response.status(401).send("error with input for some reason");
+        return;
+    }
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        // check to make sure the file was properly read
+        if (err) {
+
+            console.log("error with json read file:", err);
+            response.status(503).send("error reading file");
+            return;
+        }
+
+        // Temporarily going to comment out actually adding the pokemon.
+        obj.pokemon[request.params.id - 1] = newPokemon;
+        console.log('pokemon edited:');
+        const data = {
+            message: 'Pokemon ' + newPokemon.name + ' submitted'
+        };
+        // response.render('home', data);
+
+        // Not going to write the file, change this later after checking the Pokemon exists.
+        jsonfile.writeFile(FILE, obj, (err) => {
+            if (err) console.log(err);
+            console.log('successfully written ' + newPokemon);
+            response.redirect(`/pokemon/${request.params.id}`);
+            return;
+        });
+    });
+});
+
+
+
 // get a Pokemon by ID.
 app.get('/pokemon/:id', (request, response) => {
     jsonfile.readFile(FILE, (err, obj) => {
@@ -187,12 +251,14 @@ app.get('/pokemon/:id/edit', (request, response) => {
     });
 })
 
+
 app.get('/', (request, response) => {
     const data = {
         message: "yay"
     };
     response.render('Home', data);
 });
+
 
 app.get('*', function(request, response) {
     const message = '404 Dunno';

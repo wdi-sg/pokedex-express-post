@@ -11,8 +11,8 @@ class Pokemon extends React.Component {
             <title>Submit new pokemon</title>
         </head>
         <body>
-            <div class="container">
-                <div class="display-4">
+            <div className="container">
+                <div className="display-4">
                      {this.props.pokemon.name} <span className="text-muted"> #{this.props.pokemon.num}</span>
                 </div>
                 <img src={this.props.pokemon.img} className="img-fluid"/>
