@@ -83,8 +83,8 @@ app.post("/pokemon", (req, res) => {
     num: req.body.num,
     name: req.body.name,
     img: req.body.img,
-    height: req.body.height + " m",
-    weight: req.body.weight + ".0 kg"
+    height: req.body.height,
+    weight: req.body.weight
   };
 
   const errors = [];
@@ -126,6 +126,8 @@ app.post("/pokemon", (req, res) => {
       if (duplicate) {
         res.render("new", errObj);
       } else {
+        pokemonData.height += " m"
+        pokemonData.weight += ".0 kg"
         pokemonData.id = obj.pokemon[obj.pokemon.length - 1].id + 1;
         pokemonData.num = (
           parseInt(obj.pokemon[obj.pokemon.length - 1].num) + 1
@@ -169,6 +171,10 @@ app.get("/pokemon/:id", (request, response) => {
 app.get("/", (request, response) => {
   response.render("home");
 });
+
+app.get("*", (request, response)=>{
+  response.render("404")
+})
 
 /**
  * ===================================
