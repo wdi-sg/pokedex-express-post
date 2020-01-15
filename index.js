@@ -24,6 +24,10 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+
+// Init Method-Override for PUT and DELETE
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
 /**
  * ===================================
  * Routes
@@ -159,6 +163,34 @@ app.get('/pokemon/:id', (request, response) => {
     }
   });
 });
+
+app.get('/pokemon/:id/edit', (request, response)=>{
+
+  jsonfile.readFile(file, (err,obj)=>{
+    let id = request.params.id
+    let data = obj.pokemon[id]
+
+    response.render('edit', data)
+  })
+})
+
+app.put('/pokemon/:id', (request,response)=>{
+  let newData = request.body
+  jsonfile.readFile(file, (err,obj)=>{
+
+    let id = request.params.id
+    Object.assign(obj.pokemon[id], newData)
+    
+    jsonfile.writeFile(file, obj, (err)=>{
+      if (err){
+        return console.log(err)
+      }
+
+    })
+
+   response.send('<a href="/pokemon">Show all Pokemon</a>')
+  })
+})
 
 app.get('/', (request, response) => {
 

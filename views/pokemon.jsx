@@ -1,10 +1,10 @@
 var React = require('react');
 class NewPokemon extends React.Component {
 render() {
+    const pokemon = this.props.pokemon.map( pokemon => {
+        return <li>{pokemon}</li>
+        });
 
-const pokemon = this.props.pokemon.map( pokemon => {
-return <li>{pokemon}</li>
-});
 
 return (
 
