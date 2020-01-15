@@ -8,7 +8,6 @@ const FILE = 'pokedex.json';
  * Configurations and set up
  * ===================================
  */
-
 // Init express app
 const app = express();
 
@@ -94,7 +93,7 @@ const retrievePokemon = (request, response, err, obj) => {
         };
 
     } else {
-        
+
         // render pokemon page from pokemon.jsx
         pokemon.error = null;
         return pokemon;
@@ -180,6 +179,10 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
     // retrieve pokemon from specified file.
     const pokemonReceived = retrievePokemon(request, response);
+    const data = {
+      pokemon: pokemonReceived
+    };
+    response.render('pokemonedit', data);
 
 })
 
@@ -190,10 +193,15 @@ app.get('/', (request, response) => {
     response.render('home', data);
 });
 
+app.get('*', function (request, response) {
+  console.log('dunno');
+  response.send('Dunno lah');
+})
+
 
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+ app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
