@@ -3,9 +3,12 @@ var React = require('react');
 
 class Home extends React.Component {
   render() {
-        // let pokemonDisplay = {this.props.pokemonList};
 
-               // {pokemonDisplay}
+         const pokemonList = this.props.pokemonList;
+         const pokemonElements = pokemonList.map(pokemon=>{
+            return (<li>{pokemon.name}</li>);
+         });
+
     return (
       <html>
       <head>
@@ -16,9 +19,13 @@ class Home extends React.Component {
         <body>
           <div>
           <h1>Pokemon</h1>
-                <a className="btn btn-primary" href="/pokemon/sortByID">Sort By ID</a>
-                <a className="btn btn-primary" href="/pokemon/sortByName">Sort By Name</a>
-                <a className="btn btn-primary" href="/pokemon/sortByNum">Sort By Num</a>
+
+                <a className="btn btn-primary mr-1" href="/pokemon/home/sortByID">Sort By ID</a>
+                <a className="btn btn-primary mr-1" href="/pokemon/home/sortByName">Sort By Name</a>
+                <a className="btn btn-primary mr-1" href="/pokemon/home/sortByNum">Sort By Num</a>
+                <div class="row ml-5">
+                <ul>{pokemonElements}</ul>
+                </div>
           </div>
         </body>
       </html>

@@ -40,9 +40,7 @@ var idIndex = (id, obj)=>{
 
     console.log(pokemonIndex);
     for( let i=0; i<obj.pokemon.length; i++ ){
-
       let currentPokemon = obj.pokemon[i];
-      console.log(currentPokemon.id);
       if( currentPokemon.id === id){
         pokemon = currentPokemon;
         pokemonIndex=i;
@@ -52,13 +50,22 @@ var idIndex = (id, obj)=>{
 }
 const sort = (request,response)=>{
     jsonfile.readFile(file, (err,obj)=>{
-        let displayPokemon = "";
-        for(let i =0;i <obj.pokemon.length;i++){
-            let pokemonName = obj.pokemon[i].name;
-            displayPokemon += `<br><a href="/pokemon/${pokemonName}">${pokemonName}</a>`;
+        let pokemonElements = obj.pokemon;
+        let sortType = request.params.sort;
+        let property;
+        if(sortType === "sortByName"){
+            property = "name";
+        }else if(sortType === "sortByNum"){
+            property = "num";
         }
+        else{
+            property = "id";
+        }
+            pokemonElements.sort(function(a, b){
+                return a[property] == b[property] ? 0 : +(a[property] > b[property]) || -1;
+            });
         const data ={
-            pokemonList : displayPokemon
+            pokemonList : pokemonElements,
         }
          response.render("Home",data);
     });
@@ -116,120 +123,68 @@ const showDeletePokemon = (request, response)=>{
     }
   });
 }
+const add = (request, response)=>{
+    let alreadyExist = false;
+    console.log("posting");
+    jsonfile.readFile(file, (err, obj) => {
+     if( err ){
+       console.log("error with json read file:",err);
+       response.status(503).send("error reading file");
+       return;
+      }
+        let id = parseInt(request.body.id);
+        let name = request.body.name;
+        console.log("reading file");
+        if(isNaN(id)|| name ==="" || idIndex(id, obj)!== undefined)
+        {
+            let currentError = isNaN(id)?" Please enter a valid ID.":"";
+            currentError += idIndex(id, obj)!== undefined?"ID already exist!":"";
+            currentError+= name===""? " Please enter valid name.": "";
+            console.log(currentError);
+                const data ={
+            classDisplay: "alert alert-danger",
+            errorMsg: currentError}
+
+        response.render("addForm",data);
+        }
+      else{
+        let newPokemon = request.body;
+        newPokemon.id = id;
+        obj.pokemon.push(newPokemon);
+    jsonfile.writeFile(file , obj, (err) => {
+      console.error(err);
+    });
+        console.log("Done reading");
+        response.send("Added");
+    }
+    });
+}
 /**
  * ===================================
  * Routes
  * ===================================
  */
- app.get('/pokemon/num',sort);
+ //home
+ app.get('/pokemon/home/:sort',sort);
+ //edit pokemon
  app.get('/pokemon/:id/edit',edit);
 app.put('/pokemon/:id',writeEdit);
 app.get('/pokemon/:id/delete', showDeletePokemon)
-app.delete('/pokemon/:id',DELETE);
-app.get('/pokemon',(request,response)=>{
-     response.render("Home");
-  })
-app.post('/pokemon',(request, response)=>{
-    let alreadyExist = false;
-    console.log("posting");
-    jsonfile.readFile(file, (err, obj) => {
-        let id = parseInt(request.body.id);
-        let name = request.body.name;
-        console.log("reading file");
-        if((isNaN(id) || id === "")|| name ==="")
-        {
-            let errorType = "";
-            if(isNaN(id)){
-                errorType = 2;
-            }else{
-                errorType = 3;
-            }
-            let newPath = "pokemon/new/"+ errorType;
-            response.redirect(newPath);
-        }
-      else if(idIndex(id, obj)=== undefined){
-        let newPokemon = request.body;
-        newPokemon.id = id;
-        obj.pokemon.push(newPokemon);
-    console.log(request.body);
-    jsonfile.writeFile(file , obj, (err) => {
-      console.error(err);
-    });
-    console.log("Done reading");
-    response.send("Added");
-    }else{
-        let newPath = "pokemon/new/"+ 1;
-        response.redirect(newPath);
-    }
-});
-});
-
-app.get('/pokemon/new/:error',(request,response) => {
-    console.log("sending error");
-    let errorType = parseInt(request.params.error);
-    let currentError = request.params.error;
-    if(errorType === 1){
-        currentError = "Please enter a different ID number. It already exist!";
-    }else{
-        let missingInput = "";
-        if(errorType === 2){
-            missingInput = "id"
-        }else if(errorType === 3){
-            missingInput = "name"
-        }
-        currentError = "Please enter the "+missingInput+"!";
-    }
-    const data ={
-            classDisplay: "alert alert-danger",
-            errorMsg: currentError
-        }
-    response.render("addForm", data);
-});
-
-
 app.get('/pokemon/new', (request,response) => {
-    console.log("sending form");
+    console.log("sending add form");
     response.render("addForm");
 });
 
-app.get('/pokemon/:id', (request, response) => {
-
-  // get json from specified file
-  jsonfile.readFile(file, (err, obj) => {
-
-    // check to make sure the file was properly read
-    if( err ){
-
-      console.log("error with json read file:",err);
-      response.status(503).send("error reading file");
-      return;
-    }
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
-
-    var pokemon;
-
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
-      response.send(pokemon);
-    }
-  });
-});
+app.delete('/pokemon/:id',DELETE);
+app.get('/pokemon',(request,response)=>{
+    jsonfile.readFile(file, (err,obj)=>{
+        const data ={
+            pokemonList : obj.pokemon,
+        }
+     response.render("Home", data);
+    });
+})
+app.post('/pokemon',add);
 
 /**
  * ===================================
