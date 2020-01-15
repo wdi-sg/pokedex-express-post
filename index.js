@@ -33,20 +33,21 @@ app.set('view engine', 'jsx');
  * Routes
  * ===================================
  */
+ //new pokemon form page --> !!! CREATE VALIDATION in input
 app.get('/pokemon/new', (request, response) => {
-
-  response.render('home');
+  response.render('NewPokemon');
 });
 
-app.get('/pokemon/:id', (request, response) => {
 
+//!!! CREATE JSX TO DISPLAY POKEMON!!!//
+app.get('/pokemon/:id', (request, response) => {
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
 
     // check to make sure the file was properly read
     if( err ){
       console.log("error with json read file:",err);
-      response.status(503).send("error reading filee");
+      response.status(503).send("error reading file");
       return;
     }
     // obj is the object from the pokedex json file
@@ -66,25 +67,26 @@ app.get('/pokemon/:id', (request, response) => {
     }
 
     if (pokemon === undefined) {
-
       // send 404 back
       response.status(404);
       response.send("not found");
-    } else {
 
+    } else {
       response.send(pokemon);
     }
   });
 });
 
+//!!! CREATE JSX FOR HOME PAGE!!!//
 app.get('/', (request, response) => {
+  //response.render('home') //this is the home page
   response.send("This is the Pokedex Express App");
 });
+// add Sort by name button for later
 
 
-
+// validate the user's input data. If the user makes a mistake (i.e., the name of the pokemon is empty) render the form instead. Display the error that they made and how they can correct it.
 app.post('/pokemon', (request, response) => {
-    console.log(request);
     console.log(request.body);
 
    jsonfile.readFile(FILE, (err, obj) => {
@@ -92,8 +94,12 @@ app.post('/pokemon', (request, response) => {
     let pokeNum = parseInt(request.body.Number);
     let pokeName = request.body.name;
     let img = request.body.Image;
-    let height = parseInt(request.body.Height);
-    let weight = parseInt(request.body.Weight);
+    let height = request.body.Height;
+    let weight = request.body.Weight;
+
+//if any of the input fields are empty/invalid, display error and how they can correct it and still render form
+    var idValidation = (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
+
 
     //create new object for newly added pokemon
     let newPokemon = {};
@@ -112,7 +118,7 @@ app.post('/pokemon', (request, response) => {
       console.log(obj);
 
       // now look inside your json file
-      // response.send(request.body);
+      //render jsx file to go back to home page
       response.send('New Pokemon Added');
     });
 
