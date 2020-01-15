@@ -34,7 +34,7 @@ class New extends React.Component {
           <div
             style={{ margin: `20px`, display: `flex`, flexDirection: `column` }}
           >
-            <h1>Edit a Pokemon!</h1>
+            <h1>Edit {name}!</h1>
             <div style={{ marginBottom: `10px` }}>
               {this.props.errorMessage}
             </div>

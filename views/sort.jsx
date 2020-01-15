@@ -2,10 +2,31 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
-    const type = this.props.sortType;
-    const pokemons = this.props.pokemon.map(function(pokemon) {
-      return <li>{pokemon}</li>;
-    });
+    console.log(this.props.sortType);
+    let pokemon;
+    if (this.props.sortType === "Alphabet") {
+      pokemon = this.props.pokemon.map(poke => {
+        const dir = "/pokemon";
+        const id = poke.id;
+        const route = dir + id;
+        return (
+          <li>
+            <a href={route}>{poke.name}</a>
+          </li>
+        );
+      });
+    } else if (this.props.sortType === "Weight") {
+      pokemon = this.props.pokemon.map(poke => {
+        const dir = "/pokemon";
+        const id = poke.id;
+        const route = dir + id;
+        return (
+          <li>
+            <a href={route}>{poke.name}, {poke.weight}</a>
+          </li>
+        );
+      });
+    }
     return (
       <html lang="en">
         <head>
@@ -29,8 +50,14 @@ class New extends React.Component {
           ></script>
         </head>
         <body>
-          <h1>Pokemon Sorted by {type}</h1>
-          <ul>{pokemons}</ul>
+          <div style={{margin:`20px`}}>
+            <h1>Pokemon Sorted by {this.props.sortType}</h1>
+          </div>
+
+          <ul>{pokemon}</ul>
+          <button style={{marginLeft:`20px`, borderRadius:`5px`}}>
+          <a href="/">Go Home</a>
+          </button>
         </body>
       </html>
     );

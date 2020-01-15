@@ -2,6 +2,10 @@ const React = require("react");
 
 class Created extends React.Component {
   render() {
+    console.log(this.props.id);
+    const id = this.props.id - 1;
+    const editPath = "/pokemon/" + id + "/edit";
+    const pokemonName = this.props.name
     return (
       <html lang="en">
         <head>
@@ -11,7 +15,7 @@ class Created extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-          <title>Created Pokemon!</title>
+          <title>{pokemonName}!</title>
           <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -26,7 +30,7 @@ class Created extends React.Component {
         </head>
         <body>
           <h2 style={{ margin: "10px" }}>
-            You searched for {this.props.name}!
+            {this.props.name}!
           </h2>
           <ul>
             <li>Id: {this.props.id}</li>
@@ -40,10 +44,10 @@ class Created extends React.Component {
             </li>
             <li>Height: {this.props.height}</li>
             <li>Weight: {this.props.weight}</li>
-            <button>
-              <a href="/">Go Home</a>
-            </button>
           </ul>
+          <button style={{ borderRadius: `5px`, marginLeft:`20px` }}>
+            <a href={editPath}>Edit {pokemonName}</a>
+          </button>
         </body>
       </html>
     );

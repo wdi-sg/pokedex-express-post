@@ -3,7 +3,7 @@ const React = require("react");
 class New extends React.Component {
   render() {
     const pokemon = this.props.pokemon.map(poke => {
-      const dir = "pokemon/";
+      const dir = "" + "pokemon/";
       const id = poke.id;
       const route = dir + id;
       return (
@@ -37,10 +37,40 @@ class New extends React.Component {
         </head>
 
         <body>
-          <div style={{margin:`20px`}}>
-            <h1>Pokedex</h1>
-            <ul>{pokemon}</ul>
+          <div style={{ margin: `20px` }}>
+            <h1 style={{ fontSize: `3rem` }}>Pokedex</h1>
+
+            <form
+              style={{ marginTop: `10px` }}
+              action="/pokemon/sortby"
+              method="GET"
+            >
+              <select
+                style={{ height: `30px`, marginRight: `5px` }}
+                name="sortby"
+              >
+                <option value="name">Alphabet</option>
+                <option value="weight">Weight</option>
+              </select>
+              <input
+                class="btn-primary"
+                style={{
+                  height: `30px`,
+                  borderRadius: `5px`,
+                  marginRight: `5px`
+                }}
+                type="submit"
+                value="Sort"
+              />
+            </form>
+
+            <button className="btn btn-success" style={{ marginTop: `10px` }}>
+              <a href="pokemon/new" style={{ color: `white` }}>
+                Create New Pokemon!
+              </a>
+            </button>
           </div>
+          <ul>{pokemon}</ul>
         </body>
       </html>
     );

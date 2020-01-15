@@ -36,20 +36,24 @@ app.set("view engine", "jsx");
 app.get("/pokemon/sortby", (request, response) => {
   const sortBy = request.query.sortby;
   let data;
-  let names = [];
   let pokemonObj = [];
   let sortedByWeight = [];
   jsonfile.readFile(file, (err, obj) => {
     if (sortBy === "name") {
       for (let i = 0; i < obj.pokemon.length; i++) {
-        names.push(obj.pokemon[i].name);
+        pokemonObj.push({
+          name: obj.pokemon[i].name,
+          id: obj.pokemon[i].id
+        });
       }
-      names.sort(function(a, b) {
-        return a.toLowerCase().localeCompare(b.toLowerCase());
+
+      pokemonObj.sort(function(a, b) {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
+
       data = {
         sortType: "Alphabet",
-        pokemon: names
+        pokemon: pokemonObj
       };
     } else if (sortBy === "weight") {
       for (let i = 0; i < obj.pokemon.length; i++) {
@@ -62,12 +66,9 @@ app.get("/pokemon/sortby", (request, response) => {
         return parseFloat(a.weight) - parseFloat(b.weight);
       });
 
-      for (let i = 0; i < pokemonObj.length; i++) {
-        sortedByWeight.push(pokemonObj[i].name + " " + pokemonObj[i].weight);
-      }
       data = {
         sortType: "Weight",
-        pokemon: sortedByWeight
+        pokemon: pokemonObj
       };
     }
     response.render("sort", data);
@@ -137,7 +138,7 @@ app.post("/pokemon", (req, res) => {
         obj.pokemon.push(pokemonData);
 
         jsonfile.writeFile(file, obj, err => {});
-        res.render("home", pokemonData);
+        res.redirect(`/pokemon/${pokemonData.id}`);
         console.log(obj.pokemon.length - 1);
       }
     });
@@ -199,13 +200,12 @@ app.put("/pokemon/:id", (request, response) => {
     pokemon.height = changedHeight;
     pokemon.weight = changedWeight;
 
-    const data = {
-      pokemon: pokemon
-    };
-
     jsonfile.writeFile(file, obj, err => {
-      console.log(err);
-      response.render("home");
+      const data = {
+        pokemon: obj.pokemon
+      };
+      console.log(data);
+      response.redirect(`/pokemon/${parseInt(index) + 1}`);
     });
   });
 });
@@ -213,10 +213,11 @@ app.put("/pokemon/:id", (request, response) => {
 app.get("/pokemon/:id/delete", (request, response) => {
   const index = request.params.id;
   jsonfile.readFile(file, (err, obj) => {
-    const name = obj.pokemon[index].name;
+    const pokemon = obj.pokemon[index];
+    console.log("index is", index);
     const data = {
-      name: name,
-      id: index
+      name: pokemon.name,
+      id: pokemon.index
     };
     response.render("delete", data);
   });
@@ -227,7 +228,10 @@ app.delete("/pokemon/:id", (request, response) => {
   jsonfile.readFile(file, (err, obj) => {
     obj.pokemon.splice(index, 1);
     jsonfile.writeFile(file, obj, err => {
-      response.render("home");
+      const data = {
+        pokemon: obj.pokemon
+      };
+      response.render("index", data);
     });
   });
 });
