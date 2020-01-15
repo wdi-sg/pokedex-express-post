@@ -75,16 +75,30 @@ const edit = (request,response)=>{
 const writeEdit = (request,response)=>{
     jsonfile.readFile(file, (err,obj)=>{
         let pokemonIndex = request.params.id;
-        let contents = request.body.stuff;
-        obj.pokemon[pokemonIndex] = contents;
+        let contents = request.body;
+
+        obj.pokemon[pokemonIndex].name = contents.name;
+        obj.pokemon[pokemonIndex].id = contents.id;
+        obj.pokemon[pokemonIndex].num = contents.num;
+        obj.pokemon[pokemonIndex].weight = contents.weight;
+        obj.pokemon[pokemonIndex].height = contents.height;
         console.log("In write edit");
-    jsonfile.writeFile('data.json', obj.pokemon[pokemonIndex], (err) => {
+    jsonfile.writeFile(file, obj, (err) => {
       console.error(err);
-            response.send('Edited');
+            response.render("Home");
         });
     });
 }
-
+const DELETE = (request,response)=>{
+  let pokemonIndex = request.params.id;
+  jsonfile.readFile(file, (err, obj) => {
+    obj.pokemon.splice(pokemonIndex, 1);
+    jsonfile.writeFile(file, obj, (err) => {
+      console.error(err);
+      response.send('DELETED');
+    });
+  });
+}
 /**
  * ===================================
  * Routes
@@ -93,23 +107,10 @@ const writeEdit = (request,response)=>{
  app.get('/pokemon/num',sort);
  app.get('/pokemon/:id/edit',edit);
 app.put('/pokemon/:id',writeEdit);
- // app.get('/pokemon',(request,response)=>{
- //    response.render("Home");
- // })
-app.post('/pokemon', (request, response)=>{
-  jsonfile.readFile(file, (err, obj) => {
-    // save the request body
-
-    let contents = request.body.stuff;
-
-//    obj.fruits.push( contents );
-
-    jsonfile.writeFile('data.json', obj, (err) => {
-      console.error(err)
-    });
-  });
-
-})
+app.delete('/pokemon/:id',DELETE);
+app.get('/pokemon',(request,response)=>{
+     response.render("Home");
+  })
 app.post('/pokemon',(request, response)=>{
     let alreadyExist = false;
     console.log("posting");
@@ -172,7 +173,7 @@ app.get('/pokemon/new', (request,response) => {
     console.log("sending form");
     response.render("addForm");
 });
-/*
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -207,12 +208,11 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-
       response.send(pokemon);
     }
   });
 });
-*/
+
 /**
  * ===================================
  * Listen to requests on port 3000

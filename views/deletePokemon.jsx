@@ -1,9 +1,9 @@
 
 var React = require('react');
 
-class Edit extends React.Component {
+class deletePokemon extends React.Component {
   render() {
-    let formUrl = "/pokemon/"+this.props.id+"?_method=put";
+    let formUrl = "/pokemon/"+this.props.id+"?_method=delete";
     return (
       <html>
       <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
@@ -15,7 +15,7 @@ class Edit extends React.Component {
     <div className="row h-100 justify-content-center align-items-center">
         <div className="col-10 col-md-8 col-lg-6">
             <form method="POST" action={formUrl}>
-                <h1>Edit Pokemon</h1>
+                <h1>Delete Pokemon</h1>
                 <div className="form-group">
                     <label >ID</label>
                     <input type="text" className="form-control" name="id" value={this.props.id}/>
@@ -40,7 +40,7 @@ class Edit extends React.Component {
                     <label>Height</label>
                     <input type="height" className="form-control" name="height" value={this.props.height}/>
                 </div>
-                <button type="submit" className="btn btn-primary btn-customized">Edit</button>
+                <button type="submit" className="btn btn-primary btn-customized">Delete</button>
             </form>
         </div>
     </div>
@@ -51,4 +51,4 @@ class Edit extends React.Component {
   }
 }
 
-module.exports = Edit;
+module.exports = deletePokemon;

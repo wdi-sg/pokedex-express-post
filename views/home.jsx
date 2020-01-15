@@ -3,7 +3,9 @@ var React = require('react');
 
 class Home extends React.Component {
   render() {
-        let pokemonDisplay = {this.props.pokemonList};
+        // let pokemonDisplay = {this.props.pokemonList};
+
+               // {pokemonDisplay}
     return (
       <html>
       <head>
@@ -17,8 +19,6 @@ class Home extends React.Component {
                 <a className="btn btn-primary" href="/pokemon/sortByID">Sort By ID</a>
                 <a className="btn btn-primary" href="/pokemon/sortByName">Sort By Name</a>
                 <a className="btn btn-primary" href="/pokemon/sortByNum">Sort By Num</a>
-               <div>
-               {pokemonDisplay}
           </div>
         </body>
       </html>
