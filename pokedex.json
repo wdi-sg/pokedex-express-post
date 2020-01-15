@@ -1,33 +1,6 @@
 {
   "pokemon": [
     {
-      "id": 1,
-      "num": "001",
-      "name": "Bulbasaursssss",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": "25",
-      "egg": "2 km",
-      "avg_spawns": "69",
-      "spawn_time": "20:00"
-    },
-    {
-      "id": 2,
-      "num": "002",
-      "name": "Bulbasaursssss",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 4.2,
-      "spawn_time": "07:00",
-      "image": "http://www.serebii.net/pokemongo/pokemon/001.png"
-    },
-    {
       "id": 3,
       "num": "003",
       "name": "Bulbasaurasda12312sdasd1111",
@@ -38,33 +11,6 @@
       "egg": "Not in Eggs",
       "avg_spawns": 1.7,
       "spawn_time": "11:30"
-    },
-    {
-      "id": 4,
-      "num": "004",
-      "name": "Charmander",
-      "img": "http://www.serebii.net/pokemongo/pokemon/004.png",
-      "height": "0.61 m",
-      "weight": "8.5 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 25,
-      "egg": "2 km",
-      "avg_spawns": 25.3,
-      "spawn_time": "08:45"
-    },
-    {
-      "id": 5,
-      "num": "005",
-      "name": "Charmanderasdasd",
-      "img": "http://www.serebii.net/pokemongo/pokemon/005.png",
-      "height": "0.61 m",
-      "weight": "8.5 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.2,
-      "spawn_time": "19:00",
-      "image": "http://www.serebii.net/pokemongo/pokemon/004.png"
     },
     {
       "id": 6,

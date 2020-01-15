@@ -218,9 +218,20 @@ app.get("/pokemon/:id/delete", (request, response) => {
   jsonfile.readFile(file, (err, obj) => {
     const name = obj.pokemon[index].name;
     const data = {
-      name: name
+      name: name,
+      id: index
     };
     response.render("delete", data);
+  });
+});
+
+app.delete("/pokemon/:id", (request, response) => {
+  const index = request.params.id;
+  jsonfile.readFile(file, (err, obj) => {
+    obj.pokemon.splice(index, 1);
+    jsonfile.writeFile(file, obj, err => {
+      response.render("home");
+    });
   });
 });
 

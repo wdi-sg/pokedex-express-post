@@ -2,6 +2,9 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
+    const index = this.props.id;
+    const filePath = "/pokemon/" + index + "?_method=delete";
+    console.log(filePath);
     return (
       <html lang="en">
         <head>
@@ -30,7 +33,7 @@ class New extends React.Component {
           >
             <h1>Delete {this.props.name}?</h1>
 
-            <form action="/pokemon" method="POST">
+            <form action={filePath} method="POST">
               <div>
                 <input
                   type="submit"
