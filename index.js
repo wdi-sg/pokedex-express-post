@@ -168,34 +168,39 @@ app.get('/pokemon/:id', (request, response) => {
         // get json from specified file
         const pokemonReceived = retrievePokemon(request, response, err, obj);
         const data = {
-            pokemon: pokemonReceived
+            pokemon: pokemonReceived,
         };
-        response.render('pokemon', data)
+        // response.send('Hello ' + data.pokemon.name);
+        response.render('pokemon', data);
     });
 });
 
 
 app.get('/pokemon/:id/edit', (request, response) => {
-
-    // retrieve pokemon from specified file.
-    const pokemonReceived = retrievePokemon(request, response);
-    const data = {
-      pokemon: pokemonReceived
-    };
-    response.render('pokemonedit', data);
-
+    jsonfile.readFile(FILE, (err, obj) => {
+        // retrieve pokemon from specified file.
+        const pokemonReceived = retrievePokemon(request, response, err, obj);
+        const data = {
+            pokemon: pokemonReceived
+        };
+        response.render('pokemonedit', data);
+    });
 })
 
 app.get('/', (request, response) => {
-    data = {
+    const data = {
         message: "yay"
     };
-    response.render('home', data);
+    response.render('Home', data);
 });
 
-app.get('*', function (request, response) {
-  console.log('dunno');
-  response.send('Dunno lah');
+app.get('*', function(request, response) {
+    const message = '404 Dunno';
+    const data = {
+        message: message
+    };
+    response.render('Home', data);
+    // response.send('Dunno lah');
 })
 
 
@@ -204,4 +209,4 @@ app.get('*', function (request, response) {
  * Listen to requests on port 3000
  * ===================================
  */
- app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));

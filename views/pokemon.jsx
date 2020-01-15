@@ -1,16 +1,18 @@
 var React = require('react');
 
-class Home extends React.Component {
+class Pokemon extends React.Component {
   render() {
     return (
-        <html lang="en">        
+
+
+        <html lang="en">
         <head>
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
             <title>Submit new pokemon</title>
-        </head>        
+        </head>
         <body>
-            <div className="container">
-                <div className="display-4">
+            <div class="container">
+                <div class="display-4">
                      {this.props.pokemon.name} <span className="text-muted"> #{this.props.pokemon.num}</span>
                 </div>
                 <img src={this.props.pokemon.img} className="img-fluid"/>
@@ -35,11 +37,11 @@ class Home extends React.Component {
                     </dd>
                 </dl>
             </div>
-        </body>       
+        </body>
         </html>
     );
   }
 }
 
-module.exports = Home;
 
+module.exports = Pokemon;
