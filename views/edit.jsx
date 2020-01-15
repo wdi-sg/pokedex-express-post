@@ -26,31 +26,31 @@ return (
         <div className="row">
             <div className="col">
                 <form method="POST" action={actionURL}>
-                    <div>
-                        <label htmlFor="id">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="id">ID: </label>    
                         <input type="text" value={this.props.id} onChange="" name="id" />
                     </div>
-                    <div>
-                        <label htmlFor="num">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="num">Number: </label>
                         <input type="text" value={this.props.num} onChange="" name="num" />
                     </div>
-                    <div>
-                        <label htmlFor="name">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="name">Name: </label>
                         <input type="text" value={this.props.name} onChange="" name="name" />
                     </div>
-                    <div>
-                        <label htmlFor="img">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="img">Image: </label>
                         <input type="text" value={this.props.img} onChange="" name="img" />
                     </div>
-                    <div>
-                        <label htmlFor="height">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="height">Height: </label>
                         <input type="text" value={this.props.height} onChange="" name="height" />
                     </div>
-                    <div>
-                        <label htmlFor="weight">ID: </label>
+                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="weight">Weight: </label>
                         <input type="text" value={this.props.weight} onChange="" name="weight" />
                     </div>
-                    <input type="submit" value="Edit!" readOnly className="btn btn-outline-dark"/>
+                    <input type="submit" value="Edit!" readOnly className="btn btn-outline-dark" style={{marginLeft: "635px"}}/>
                 </form>
             </div>
         </div>

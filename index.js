@@ -164,6 +164,16 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+app.get('/pokemon/:id/delete', (request, response)=>{
+
+  jsonfile.readFile(file, (err,obj)=>{
+    let id = request.params.id
+    let data = obj.pokemon[id]
+
+    response.render('delete', data)
+  })
+})
+
 app.get('/pokemon/:id/edit', (request, response)=>{
 
   jsonfile.readFile(file, (err,obj)=>{
@@ -171,6 +181,45 @@ app.get('/pokemon/:id/edit', (request, response)=>{
     let data = obj.pokemon[id]
 
     response.render('edit', data)
+  })
+})
+
+app.delete('/pokemon/:id', (request, response)=>{
+  const names = []
+  const id = request.params.id
+
+  jsonfile.readFile(file, (err,obj)=>{
+    if (err){
+      return console.log(err)
+    }
+
+    obj.pokemon.splice(id, 1)
+
+    let newId = 1
+    for (const pokemon of obj.pokemon) {
+      pokemon.id = newId
+      newId++
+    }
+
+    jsonfile.writeFile(file, obj, (err)=>{
+      if (err){
+        return console.log(err)
+      }
+
+      
+    })
+
+    for (const pokemon of obj.pokemon) {
+      names.push(pokemon.name)
+    }
+
+    const data = {
+      pokemon: names
+    }
+
+    response.render('pokemon', data)
+
+    
   })
 })
 
