@@ -39,7 +39,7 @@ class New extends React.Component {
                 src="https://img.pokemondb.net/artwork/large/eevee-lets-go.jpg"
               ></img>
               <div style={{ textAlign: `center` }}>
-                <form action="/sortby" method="GET">
+                <form action="/pokemon/sortby" method="GET">
                   <select style={{ height: `30px`, marginRight:`5px` }} name="sortby">
                     <option value="name">Name</option>
                     <option value="weight">Weight</option>

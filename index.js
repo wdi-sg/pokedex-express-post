@@ -16,9 +16,6 @@ app.use(methodOverride("_method"));
 app.engine("jsx", reactEngine);
 app.set("views", __dirname + "/views");
 app.set("view engine", "jsx");
-app.get("/", (req, res) => {
-  res.render("home");
-});
 
 /**
  * ===================================
@@ -36,7 +33,7 @@ app.get("/", (req, res) => {
 
 //  Expose a new endpoint that intercepts GET requests to /pokemon/new, which responds with a HTML page with a form that has these fields: id, num, name, img, height, and weight
 
-app.get("/sortby", (request, response) => {
+app.get("/pokemon/sortby", (request, response) => {
   const sortBy = request.query.sortby;
   let data;
   let names = [];
@@ -236,7 +233,12 @@ app.delete("/pokemon/:id", (request, response) => {
 });
 
 app.get("/", (request, response) => {
-  response.render("home");
+  jsonfile.readFile(file, (err, obj) => {
+    const data = {
+      pokemon: obj.pokemon
+    };
+    response.render("index", data);
+  });
 });
 
 app.get("*", (request, response) => {
