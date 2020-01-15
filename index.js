@@ -31,27 +31,30 @@ app.use(express.urlencoded({
  */
 
 const display = (request, response) => {
-    let empty = false;
+    let invalid = false;
     let info = request.body
+    let data = {
+    "height": info.height,
+    "id": parseInt(info.id),
+    "img": info.img,
+    "weight": info.weight,
+    "num": info.num,
+    "name": info.name
+    }
+
     for(let i = 0; i < Object.keys(info).length; i++){
-    if (Object.values(info)[i] === ""){
-        empty = true;
+        if (Object.values(info)[i] === "" || isNaN(Object.values(data)[i]) === true){
+            invalid = true;
         }
     };
+
     jsonfile.readFile('pokedex.json', (err,obj) => {
-        if(empty === true){
-            response.render('home')
+        if(invalid === true){
+            response.render('form')
         } else{
-            let data = {
-            "height": info.height,
-            "id": info.id,
-            "img": info.img,
-            "weight": info.weight,
-            "num": parseInt(info.num),
-            "name": info.name
-            }
             obj.pokemon.push(data)
             response.send("worked!")
+            console.log(data);
             jsonfile.writeFile('pokedex.json', obj, (err) => {
             });
         }
@@ -61,7 +64,7 @@ const display = (request, response) => {
 app.post('/pokemon', display)
 
 const form = (request,response) => {
-    response.render('home')
+    response.render('form')
 }
 
 app.get('/pokemon/new', form)
@@ -105,8 +108,29 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+app.get('/pokemon/?', (request,response) => {
+const sortBy = request.query.sortby;
+  jsonfile.readFile(FILE, (err, obj) => {
+    let pokemonByName = [];
+    let sortAll = [];
+    let listOfPokemon = obj.pokemon;
+
+    if (sortBy === "name") {
+      for (i = 0; i < listOfPokemon.length; i++) {
+        let currentPokemon = listOfPokemon[i].name;
+        pokemonByName.push(currentPokemon);
+        //console.log(currentPokemon);
+      }
+      let data = {
+        name: pokemonByName.sort()
+      }
+      response.send(data);
+    }
+  });
+})
+
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.render('home');
 });
 
 /**
