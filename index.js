@@ -228,7 +228,8 @@ app.delete("/pokemon/:id", (request, response) => {
   console.log("index is", index);
 
   jsonfile.readFile(file, (err, obj) => {
-    console.log("deleted", obj.pokemon[index].name);
+    console.log("deleted", obj.pokemon[index]);
+    //Joyce edited the console.log to remove the .name because it was causing an error
     obj.pokemon.splice(index - 1, 1);
     for (let i = 0; i < obj.pokemon.length; i++) {
       obj.pokemon[i].id = i+1;
