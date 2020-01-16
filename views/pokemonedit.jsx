@@ -2,9 +2,12 @@ var React = require('react');
 
 class PokemonEdit extends React.Component {
     render() {
-      const pokemonID = this.props.pokemon.id;
-      const postURL = `/pokemon/${pokemonID}?_method=put`
+        const pokemonID = this.props.pokemon.id;
+        const postURL = `/pokemon/${pokemonID}?_method=put`;
 
+        let oldWay = "I want to add " + this.thing + " and this string.";
+        let newWay = `I want to add ${this.thing} and this string.`;
+        let wrongWay = 'I want to add ${this.thing} and this string.';
 
         return (<html lang="en">
             <head>

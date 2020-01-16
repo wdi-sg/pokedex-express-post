@@ -90,7 +90,7 @@ const retrievePokemon = (request, response, err, obj) => {
     for (let i = 0; i < obj.pokemon.length; i++) {
 
         let currentPokemon = obj.pokemon[i];
-
+        console.log(currentPokemon);
         if (currentPokemon.id === inputId) {
             pokemon = currentPokemon;
         }
@@ -154,18 +154,12 @@ app.post('/pokemon/', (request, response) => {
         }
 
         // Temporarily going to comment out actually adding the pokemon.
-        // obj.pokemon.push(newPokemon);
-        console.log('pokemon to add:');
+        obj.pokemon.push(newPokemon);
         console.log(newPokemon);
-        const data = {
-            message: 'New pokemon submitted'
-        };
-        response.render('home', data);
-        return;
 
         // Not going to write the file, change this later after checking the Pokemon exists.
         jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) console.log(err);
+            if (err) {console.log(err)};
             console.log('successfully written ' + newPokemon);
             response.send('Successfully added new pokemon ' + newPokemon.name);
             return;
@@ -175,8 +169,10 @@ app.post('/pokemon/', (request, response) => {
 
 
 app.put('/pokemon/:id', (request, response) => {
-    console.log('Received PUT for id ' + request.params.id);
-
+    // console.log('Received PUT for id ' + request.params.id);
+    console.log('*****************');
+    console.log('Received request.body:');
+    console.log(request.body);
     const newPokemon = {
         id: parseInt(request.body.id),
         num: request.body.num,
@@ -223,8 +219,6 @@ app.put('/pokemon/:id', (request, response) => {
         });
     });
 });
-
-
 
 // get a Pokemon by ID.
 app.get('/pokemon/:id', (request, response) => {
