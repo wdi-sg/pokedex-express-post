@@ -11,12 +11,15 @@ class Edit extends React.Component {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       </head>
         <body>
+          <a className="btn btn-primary ml-1 mr-1" href="/pokemon/home">Home</a>
 <div className="container h-100">
     <div className="row h-100 justify-content-center align-items-center">
         <div className="col-10 col-md-8 col-lg-6">
+
             <form method="POST" action={formUrl}>
-                <h1>Edit Pokemon</h1>
+
                 <div className="form-group">
+                       <h1>Edit Pokemon</h1>
                     <label >ID</label>
                     <input type="text" className="form-control" name="id" value={this.props.id}/>
                 </div>
