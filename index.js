@@ -59,6 +59,9 @@ app.post('/pokemon/', (request, response) => {
     //we can just use the request.body as it's content
     const newPokemon = request.body
 
+    //make Pokemon ID into an integer, just like in the standard Pokedex
+    newPokemon.id = parseInt(newPokemon.id)
+
     jsonfile.readFile(FILE, (err, obj) => {
 
         // check to make sure the file was properly read
