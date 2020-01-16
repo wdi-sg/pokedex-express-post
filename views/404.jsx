@@ -4,7 +4,13 @@ render() {
 return (
 <html>
 <body>
-    <div style={{width: "50%", margin: "100px auto"}}>ERROR 404 / PAGE NOT FOUND</div>
+
+<div>
+<h1 style={{color: "red", width: "50%", margin: "100px auto"}}>ERROR 404 / PAGE NOT FOUND
+</h1>
+
+</div>
+
 </body>
 </html>
 );

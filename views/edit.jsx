@@ -26,31 +26,31 @@ return (
         <div className="row">
             <div className="col">
                 <form method="POST" action={actionURL}>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="id">ID: </label>    
-                        <input type="text" value={this.props.id} onChange="" name="id" />
+                    <div style={{textAlign: "left", width: "25%", margin: "30px auto 5px auto"}}>
+                        <label htmlFor="id" style={{color: "red"}}>ID</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.id} onChange="" name="id" />
                     </div>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="num">Number: </label>
-                        <input type="text" value={this.props.num} onChange="" name="num" />
+                    <div style={{textAlign: "left", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="num" style={{color: "red"}}>Number</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.num} onChange="" name="num" />
                     </div>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="name">Name: </label>
-                        <input type="text" value={this.props.name} onChange="" name="name" />
+                    <div style={{textAlign: "left", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="name" style={{color: "red"}}>Name</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.name} onChange="" name="name" />
                     </div>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="img">Image: </label>
-                        <input type="text" value={this.props.img} onChange="" name="img" />
+                    <div style={{textAlign: "left", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="img" style={{color: "red"}}>Image</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.img} onChange="" name="img" />
                     </div>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="height">Height: </label>
-                        <input type="text" value={this.props.height} onChange="" name="height" />
+                    <div style={{textAlign: "left", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="height" style={{color: "red"}}>Height</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.height} onChange="" name="height" />
                     </div>
-                    <div style={{textAlign: "right", width: "25%", margin: "10px auto 5px auto"}}>
-                        <label htmlFor="weight">Weight: </label>
-                        <input type="text" value={this.props.weight} onChange="" name="weight" />
+                    <div style={{textAlign: "left", width: "25%", margin: "10px auto 5px auto"}}>
+                        <label htmlFor="weight" style={{color: "red"}}>Weight</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.weight} onChange="" name="weight" />
                     </div>
-                    <input type="submit" value="Edit!" readOnly className="btn btn-outline-dark" style={{marginLeft: "635px"}}/>
+                    <input type="submit" value="Edit!" readOnly className="btn btn-danger" style={{marginLeft: "635px"}}/>
                 </form>
             </div>
         </div>

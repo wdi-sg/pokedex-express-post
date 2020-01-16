@@ -26,11 +26,11 @@ return (
         <div className="row">
             <div className="col">
                 <form method="POST" action={actionURL}>
-                    <div>
-                        <label htmlFor="name">Name: </label>
-                        <input type="text" value={this.props.name} readOnly name="name" />
+                    <div style={{margin: "30px auto 5px auto"}}>
+                        <label htmlFor="name" style={{color: "red"}}>Name</label>
+                        <input type="text" style={{fontSize: 12}} value={this.props.name} readOnly name="name" />
                     </div>
-                    <input type="submit" value="Delete!" readOnly className="btn btn-outline-dark"/>
+                    <input type="submit" value="Delete!" readOnly className="btn btn-danger"/>
                 </form>
             </div>
         </div>

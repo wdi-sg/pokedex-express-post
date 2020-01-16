@@ -28,16 +28,21 @@ return (
     <div className="container">
         <div className="row">
             <div className="col-sm-3">
-                <ul>
+                <ul style={{margin: 30}}>
                     {pokemon}
                 </ul>
             </div>
+
+        <div style={{margin: 35}}>
             <div className="col-9">
                 <form method="get" action="/pokemon/sort">
-                    <input type="submit" value="Sort!" className="btn btn-outline-dark"></input>
+                    <input type="submit" value="Sort!" className="btn btn-danger"></input>
                     <input type="hidden" name="sortby" value="name"></input>
                 </form>
             </div>
+        </div>
+
+
         </div>
     </div>
 </body>
