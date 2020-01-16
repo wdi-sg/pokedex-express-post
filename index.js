@@ -46,14 +46,18 @@ jsonfile.readFile('pokedex.json', (err, obj) => {
 app.post('/pokemon/', (request, response) => {
     console.log('Received POST');
     console.log(request.body);
-    const newPokemon = {
-        id: request.body.id,
-        num: request.body.num,
-        name: request.body.name,
-        img: request.body.img,
-        height: request.body.height,
-        weight: request.body.weight
-    }
+    // const newPokemon = {
+    //     id: request.body.id,
+    //     num: request.body.num,
+    //     name: request.body.name,
+    //     img: request.body.img,
+    //     height: request.body.height,
+    //     weight: request.body.weight
+    // }
+
+    //since the request.body has the same structure as newPokemon above,
+    //we can just use the request.body as it's content
+    const newPokemon = request.body
 
     jsonfile.readFile(FILE, (err, obj) => {
 
