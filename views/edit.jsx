@@ -9,6 +9,10 @@ let taxMessage;
 if (tax !== undefined) {
 taxMessage = <h1>Tax is {tax}</h1>*/
 
+//THIS SHOULD BE HOW THE URL ABOUT SHOULD LOOK LIKE
+let id = this.props.name.id
+let actionURL = "/pokemon/"+id+"?_method=put"
+
 return (
 <html>
 
@@ -32,12 +36,12 @@ return (
 
   <div>
     <h4>
-      <form method="POST" action="/putrequest?_method=put"><input name="id" type="text" value={
-          this.props.name.id} /><input type="submit" value="Edit this" /><br /><input name="number" type="text" value={
-          this.props.name.num} /><input type="submit" value="Edit this" /><br /><input name="id" type="text" value={
-          this.props.name.name} /><input type="submit" value="Edit this" /><br /><input name="id" type="text" value={
-          this.props.name.img} /><input type="submit" value="Edit this" /><br /><input name="id" type="text" value={
-          this.props.name.height} /><input type="submit" value="Edit this" /><br /><input name="id" type="text" value={
+      <form method="POST" action={actionURL}><input name="id" type="text" value={
+          this.props.name.id} /><br /><input name="number" type="text" value={
+          this.props.name.num} /><br /><input name="id" type="text" value={
+          this.props.name.name} /><br /><input name="id" type="text" value={
+          this.props.name.img} /><br /><input name="id" type="text" value={
+          this.props.name.height} /><br /><input name="id" type="text" value={
           this.props.name.weight} /><input type="submit" value="Edit this" /></form>
     </h4>
   </div>

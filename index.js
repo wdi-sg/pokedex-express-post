@@ -133,9 +133,13 @@ app.put('/pokemon/:id', (request, response) => {
     let id = request.params.id;
 
     jsonfile.readFile(FILE, (err, obj) => {
+        //THIS IS USED RATHER FOR app.delete
         obj.names.splice(id, 1);
 
-        jsonfile.writeFile(file, obj, err => {});
+
+        jsonfile.writeFile(file, obj, (err) => {
+
+        });
 
         response.send('yes');
     })
