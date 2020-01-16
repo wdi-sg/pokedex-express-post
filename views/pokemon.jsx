@@ -15,7 +15,9 @@ class Pokemon extends React.Component {
                 <div className="display-4">
                      {this.props.pokemon.name} <span className="text-muted"> #{this.props.pokemon.num}</span>
                 </div>
+                <div style={{width:'200px;'}}>
                 <img src={this.props.pokemon.img} className="img-fluid"/>
+                </div>
                 <dl className="row">
                     <dt className="col-sm-2">
                         Height:
