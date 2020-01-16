@@ -2,6 +2,9 @@ var React = require('react');
 
 class Pokemon extends React.Component {
   render() {
+
+    const editLink = `/pokemon/${this.props.pokemon.id}/edit`;
+
     return (
 
 
@@ -38,6 +41,9 @@ class Pokemon extends React.Component {
                         {this.props.pokemon.candy}
                     </dd>
                 </dl>
+                <a href={editLink}>
+                  <button class="btn btn-primary">Click to edit {this.props.pokemon.name}</button>
+                </a>
             </div>
         </body>
         </html>
