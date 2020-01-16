@@ -6,8 +6,21 @@ class Home extends React.Component {
 
          const pokemonList = this.props.pokemonList;
          const pokemonElements = pokemonList.map(pokemon=>{
-            return (<li>{pokemon.name}</li>);
-         });
+            let pokemonlink = "/pokemon/home/pokemon/"+pokemon.id;
+           return(
+            <div className="col-sm-12 col-lg-3">
+            <div className="card mb-3 mt-3 border-0" style={{width:" 18rem"}}>
+              <div className="embed-responsive embed-responsive-4by3 " align="center">
+               <img className="embed-responsive-item bg-light"alt={pokemon.img}src={pokemon.img} />
+                </div>
+
+            <div className="card-body">
+            <p className="card-text text-muted">{pokemon.id}</p>
+            <h5 className="card-title"><a href={pokemonlink}>{pokemon.name}</a></h5>
+            </div>
+            </div>
+            </div>);
+       });
 
     return (
       <html>
@@ -19,13 +32,17 @@ class Home extends React.Component {
         <body>
           <div>
           <h1>Pokemon</h1>
-
-                <a className="btn btn-primary mr-1" href="/pokemon/home/sortByID">Sort By ID</a>
+                          <a className="btn btn-primary ml-1 mr-1" href="/pokemon/home/sortByID">Sort By ID</a>
                 <a className="btn btn-primary mr-1" href="/pokemon/home/sortByName">Sort By Name</a>
                 <a className="btn btn-primary mr-1" href="/pokemon/home/sortByNum">Sort By Num</a>
-                <div class="row ml-5">
-                <ul>{pokemonElements}</ul>
-                </div>
+                <div className="container-fluid content-row">
+    <div className="row">
+
+
+   {pokemonElements}
+
+    </div>
+</div>
           </div>
         </body>
       </html>

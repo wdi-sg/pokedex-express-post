@@ -82,6 +82,18 @@ const edit = (request,response)=>{
         }
     });
 }
+const showPokemon = (request,response)=>{
+     jsonfile.readFile(file, (err,obj)=>{
+        let pokemonIndex = parseInt(request.params.id);
+        if(idIndex(pokemonIndex, obj)!== undefined){
+            pokemonIndex = idIndex(pokemonIndex, obj);
+            let currentPokemon = obj.pokemon[pokemonIndex];
+        response.render("showPokemon",currentPokemon);}
+        else{
+            response.send('Index does not exist');
+        }
+    });
+}
 const writeEdit = (request,response)=>{
     jsonfile.readFile(file, (err,obj)=>{
         let pokemonIndex = parseInt(request.params.id);
@@ -166,6 +178,7 @@ const add = (request, response)=>{
  */
  //home
  app.get('/pokemon/home/:sort',sort);
+ app.get('/pokemon/home/pokemon/:id',showPokemon);
  //edit pokemon
  app.get('/pokemon/:id/edit',edit);
 app.put('/pokemon/:id',writeEdit);
