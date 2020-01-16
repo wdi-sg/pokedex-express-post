@@ -11,7 +11,7 @@ class Edit extends React.Component {
                     <div className="container">
                         <h1>Input Data for Existing Pokemon Here</h1>
                         <div className="col-6">
-                            <form action="/pokemon?method=put" method="POST">
+                            <form action="/pokemon?_method=put" method="POST">
                                 <div className="form-group">
                                     <label>Name :</label>
                                     <input type="text" className="form-control" placeholder="Pokemon Name" name="name" value={this.props.name}/>
