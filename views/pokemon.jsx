@@ -11,8 +11,8 @@ class PokemonPages extends React.Component {
             <ul>
               <li>ID: {this.props.id}</li>
               <li>Number: {this.props.num}</li>
-              <li>Height: {this.props.weight}</li>
-              <li>Weight: {this.props.height}</li>
+              <li>Height: {this.props.height}</li>
+              <li>Weight: {this.props.weight}</li>
             </ul>
           </div>
         </body>

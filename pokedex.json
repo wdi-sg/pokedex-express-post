@@ -52,11 +52,16 @@
       "weight": "8.5 kg"
     },
     {
-      "height": "1.01 m",
-      "id": "5",
+      "avg_spawns": 1.2,
+      "candy": "Charmander Candy",
+      "candy_count": 100,
+      "egg": "Not in Eggs",
+      "height": "1.09 m",
+      "id": 5,
       "img": "http://www.serebii.net/pokemongo/pokemon/005.png",
       "name": "Charmeleon",
       "num": "005",
+      "spawn_time": "19:00",
       "weight": "19.0 kg"
     },
     {
@@ -110,11 +115,16 @@
       "weight": "85.5 kg"
     },
     {
-      "height": "0.40 m",
-      "id": "10",
+      "avg_spawns": 303.2,
+      "candy": "Caterpie Candy",
+      "candy_count": 12,
+      "egg": "2 km",
+      "height": "0.30 m",
+      "id": 10,
       "img": "http://www.serebii.net/pokemongo/pokemon/010.png",
       "name": "Caterpie",
       "num": "010",
+      "spawn_time": "16:35",
       "weight": "2.9 kg"
     },
     {
@@ -1604,11 +1614,15 @@
       "weight": "10.0 kg"
     },
     {
-      "height": "6.51 m",
+      "avg_spawns": 0.32,
+      "candy": "Magikarp Candy",
+      "egg": "Not in Eggs",
+      "height": "6.50 m",
       "id": 130,
       "img": "http://www.serebii.net/pokemongo/pokemon/130.png",
       "name": "Gyarados",
-      "num": 130,
+      "num": "130",
+      "spawn_time": "02:15",
       "weight": "235.0 kg"
     },
     {

@@ -243,8 +243,6 @@ app.put('/pokemon/:id', (request,response) => {
   let searchedIndex = searchedId - 1;
 
   let newPokemonName = request.body.name;
-  let newPokemonId = parseInt(request.body.id);
-  let newPokemonNum = parseInt(request.body.num);
   let newPokemonImgUrl = request.body.img;
   let newPokemonHeight = request.body.height;
   let newPokemonWeight = request.body.weight;
@@ -273,23 +271,34 @@ app.put('/pokemon/:id', (request,response) => {
   });
 });
 
-app.delete('/pokemon/:id',(request, response)=>{
-
+app.get('/pokemon/:id/delete',(request, response)=>{
   let searchedId = parseInt(request.params.id);
   let searchedIndex = searchedId - 1;
-  // response.send('hey put '+request.params.id);
-
   jsonfile.readFile(FILE, (err, obj) => {
     // save the request body
 
-    // obj.fruits.push( contents );
-    // obj.fruits[fruitsIndex] = contents;
-    obj.pokemon.splice(searchedIndex, 1);
+    let currentPokemon = obj.pokemon[searchedIndex];
+  // response.send('hey put '+request.params.id);
+    let data = {
+        "id": currentPokemon.id,
+        "name": currentPokemon.name,
+      }
 
     jsonfile.writeFile(FILE, obj, (err) => {
       console.error(err)
 
-      response.render('pokemon', data);
+      response.render('delete', data);
+    });
+  });
+});
+
+app.delete("/pokemon/:id", (request, response) => {
+  let searchedId = parseInt(request.params.id);
+  let searchedIndex = searchedId - 1;
+  jsonfile.readFile(FILE, (err, obj) => {
+    obj.pokemon.splice(searchedIndex, 1);
+    jsonfile.writeFile(FILE, obj, err => {
+      response.render('home');
     });
   });
 });
