@@ -40,36 +40,36 @@ class New extends React.Component {
             </div>
 
             <form action={filePath} method="POST">
-              <div style={{ paddingBottom: `10px` }}>
+              <div style={{ paddingBottom: `10px`, width:`12%` }}>
                 <input
                   type="text"
                   placeholder="Pokemon name"
                   name="name"
-                  value={name}
+                  value={name} className="form-control"
                 />
               </div>
-              <div style={{ paddingBottom: `10px` }}>
+              <div style={{ paddingBottom: `10px`, width:`12%` }}>
                 <input
                   type="text"
                   placeholder="Pokemon image link"
                   name="img"
-                  value={image}
+                  value={image} className="form-control"
                 />
               </div>
-              <div style={{ paddingBottom: `10px` }}>
+              <div style={{ paddingBottom: `10px`, width:`12%` }}>
                 <input
                   type="text"
                   placeholder="Pokemon height"
                   name="height"
-                  value={height}
+                  value={height} className="form-control"
                 />
               </div>
-              <div style={{ paddingBottom: `10px` }}>
+              <div style={{ paddingBottom: `10px`, width:`12%` }}>
                 <input
                   type="text"
                   placeholder="Pokemon weight"
                   name="weight"
-                  value={weight}
+                  value={weight} className="form-control"
                 />
               </div>
               <div>

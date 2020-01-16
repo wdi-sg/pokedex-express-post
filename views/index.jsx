@@ -64,7 +64,7 @@ class New extends React.Component {
               />
             </form>
 
-            <button className="btn btn-success" style={{ marginTop: `10px` }}>
+            <button className="btn btn-primary" style={{ marginTop: `10px` }}>
               <a href="pokemon/new" style={{ color: `white` }}>
                 Create New Pokemon!
               </a>

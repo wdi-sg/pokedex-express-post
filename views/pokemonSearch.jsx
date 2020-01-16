@@ -33,17 +33,17 @@ class Created extends React.Component {
             {this.props.name}!
           </h2>
           <ul>
-            <li>Id: {this.props.id}</li>
-            <li>Num: {this.props.num}</li>
+            <li><strong>Id</strong>: {this.props.id}</li>
+            <li><strong>Num</strong>: {this.props.num}</li>
             <li>
-              Image:{" "}
+              <strong>Image</strong>:{" "}
               <img
                 style={{ maxWidth: `30%`, maxHeight: `100px` }}
                 src={this.props.img}
               ></img>
             </li>
-            <li>Height: {this.props.height}</li>
-            <li>Weight: {this.props.weight}</li>
+            <li><strong>Height</strong>: {this.props.height}</li>
+            <li><strong>Weight</strong>: {this.props.weight}</li>
           </ul>
           <button style={{ borderRadius: `5px`, marginLeft:`20px` }}>
             <a href={editPath}>Edit {pokemonName}</a>
