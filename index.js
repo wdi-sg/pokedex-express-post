@@ -97,11 +97,6 @@ app.post('/pokemon', (request, response) => {
     let height = request.body.Height;
     let weight = request.body.Weight;
 
-//if any of the input fields are empty/invalid, display error and how they can correct it and still render form
-// Stuart - commenting out for now
-    // var idValidation = (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
-
-
     //create new object for newly added pokemon
     let newPokemon = {};
         newPokemon.id = idNum;
@@ -111,6 +106,18 @@ app.post('/pokemon', (request, response) => {
         newPokemon.height = height;
         newPokemon.weight = weight;
 
+    //if any of the input fields are empty/invalid, display error and how they can correct it and still render form
+    // Stuart - commenting out for now
+    var idValidation = false;
+
+    // do somrthing to check validation.
+    // (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
+
+    if(!idValidation) {
+      response.send('Something is wrong' + reason);
+      // TODO: render the newpokemon input pages with error messages.
+      return;
+    }
     //push object into pokemon array in pokedex
     obj.pokemon.push(newPokemon);
 
