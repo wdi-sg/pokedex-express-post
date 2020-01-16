@@ -18,4 +18,5 @@ app.get('/pokemon/new', (request,response)=> {
   response.send(`<form method="POST" action="/pokemon">ID:<input type="text" name="id"><input type="submit" value="submit"></form>`);
 });
 
+// . //
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
