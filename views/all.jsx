@@ -12,7 +12,7 @@ class PokemonPages extends React.Component {
       <div>
       <h1>List of all Pokemon</h1>
         <ul>
-        {pokemon}
+        {pokemon} {pokemon}
         </ul>
       </div>
     );
