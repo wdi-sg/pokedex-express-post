@@ -24,6 +24,10 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 /**
  * ===================================
  * Routes
@@ -61,14 +65,59 @@ const display = (request, response) => {
     });
 }
 
-app.post('/pokemon', display)
-
 const form = (request,response) => {
     response.render('form')
 }
 
-app.get('/pokemon/new', form)
+const edit = (request,response) => {
+    jsonfile.readFile(FILE, (err,obj) => {
+        console.log(obj.pokemon);
+        let data = {
+        id: request.params.id,
+        pokemon: obj.pokemon
+        }
+    response.render('edit',data)
+    })
+}
 
+const editPage = (request,response) => {
+    let id = request.params.id;
+    jsonfile.readFile(FILE, (err, obj) => {
+
+      let pokemonId = request.body.id;
+      let pokemonName = request.body.name;
+      let pokemonNum = request.body.num;
+      let pokemonImg = request.body.img;
+      let pokemonWeight = request.body.weight;
+      let pokemonHeight = request.body.height;
+
+      obj.pokemon[id].id = parseInt(pokemonId);
+      obj.pokemon[id].name = pokemonName;
+      obj.pokemon[id].num = pokemonNum;
+      obj.pokemon[id].img = pokemonImg;
+      obj.pokemon[id].weight = pokemonWeight;
+      obj.pokemon[id].height = pokemonHeight;
+
+      jsonfile.writeFile(FILE, obj, (err) => {
+      console.error(err)
+      response.send('works');
+    });
+  });
+}
+
+const del = (request,response) =>{
+    response.render("delete")
+}
+
+app.post('/pokemon', display);
+
+app.get('/pokemon/:id/delete', del);
+
+app.get('/pokemon/new', form);
+
+app.get('/pokemon/:id/edit', edit);
+
+app.put('/pokemon/:id', editPage);
 
 app.get('/pokemon/:id', (request, response) => {
 
