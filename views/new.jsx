@@ -10,7 +10,6 @@ class Home extends React.Component {
             <form method="POST" action="/pokemon">
             <p>
                <input type="number" placeholder="Pokemon Id" name="id"/>
-               {var}
             </p>
             <p>
                 <input type="text" placeholder="Pokemon num" name="num"/>

@@ -1,9 +1,8 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const methodOverride = require('method-override')
-
+const reactEngine = require('express-react-views').createEngine();
 const FILE = 'pokedex.json';
-const test = 'test.json';
 
 /**
  * ===================================
@@ -11,7 +10,6 @@ const test = 'test.json';
  * ===================================
  */
 
-// Init express app
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -19,14 +17,8 @@ app.use(express.urlencoded({
 }));
 
 app.use(methodOverride('_method'));
-// this line below, sets a layout look to your express project
-const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
-
-// this tells express where to look for the view files
 app.set('views', __dirname + '/views');
-
-// this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 /**
  * ===================================
@@ -72,7 +64,7 @@ app.get('/pokemon/:id', (request, response) => {
 
     } else {
 
-      response.send(pokemon);
+      response.render('pokemon' , pokemon);
     }
   });
 });
@@ -86,7 +78,7 @@ app.post('/pokemon', (request, response) => {
     // console.log(request)
         jsonfile.readFile(FILE, (err, obj) =>{
         var input = {
-            id: request.body.id,
+            id: parseInt(request.body.id),
             num: request.body.num,
             name: request.body.name,
             img: request.body.img,
@@ -116,10 +108,143 @@ app.post('/pokemon', (request, response) => {
     // body...
 })
 
+app.put('/pokemon/:id/edit', (request, response) => {
 
-app.get('/pokemon/id/edit', (request,response) =>{
-    response.send("HELLO EDIT ME")
-}
+    const inputId = parseInt(request.params.id) - 1
+
+    console.log("This is the index: " + inputId);
+    console.log("name " + request.body.name);
+    console.log("img " + request.body.img);
+    console.log("height " + request.body.height);
+    console.log("weight " + request.body.weight);
+
+    jsonfile.readFile(FILE, (err, obj)=>{
+
+        console.log("reading OBJECTTTTTT" , obj)
+        console.log("FIRST ERROROOEROEORE", err)
+
+        obj.pokemon[inputId].name = request.body.name
+        obj.pokemon[inputId].img = request.body.img
+        obj.pokemon[inputId].height = request.body.height
+        obj.pokemon[inputId].weight = request.body.weight
+
+        var object = obj.pokemon[inputId]
+        console.log("FINSIHING CHANING", obj)
+
+        jsonfile.writeFile(FILE, obj, (err)=>{
+
+            console.log("Writing file HERERERE: " ,obj)
+
+            console.log("EROEOREREOREOR", err);
+            response.render('pokemon' , object)
+
+        })
+
+    })
+});
+
+
+app.get('/pokemon/:id/edit', (request,response) =>{
+    jsonfile.readFile(FILE, (err, obj) => {
+
+    // check to make sure the file was properly read
+    if( err ){
+
+      console.log("error with json read file:",err);
+      response.status(503).send("error reading filee");
+      return;
+    }
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.redirect(301, '/pokemon/new');
+
+    } else {
+        var data = {
+            index:inputId,
+            name:pokemon.name,
+            img:pokemon.img,
+            height:pokemon.height,
+            weight:pokemon.weight
+            }
+        console.log(data);
+        response.render('edit' , data)
+        }
+    });
+});
+
+app.delete('/pokemon/:id/delete', (request,response)=> {
+    let inputId = parseInt( request.params.id ) - 1;
+    jsonfile.readFile(FILE, (err,obj) => {
+        console.log("hahshahha" ,obj)
+        var remove = obj.pokemon
+        remove.splice(inputId, 1)
+        jsonfile.writeFile(FILE, obj, (err)=>{
+            console.log("delete pokemon HERERERE: " ,obj)
+
+            console.log("EROEOREREOREOR", err);
+            response.send(obj)
+        })
+    })
+})
+
+app.get('/pokemon/:id/delete', (request,response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+
+    // check to make sure the file was properly read
+    if( err ){
+
+      console.log("error with json read file:",err);
+      response.status(503).send("error reading filee");
+      return;
+    }
+    // obj is the object from the pokedex json file
+    // extract input data from request
+    let inputId = parseInt( request.params.id );
+
+    var pokemon;
+
+    // find pokemon by id from the pokedex json file
+    for( let i=0; i<obj.pokemon.length; i++ ){
+
+      let currentPokemon = obj.pokemon[i];
+
+      if( currentPokemon.id === inputId ){
+        pokemon = currentPokemon;
+      }
+    }
+
+    if (pokemon === undefined) {
+
+      // send 404 back
+      response.redirect(301, '/pokemon/new');
+
+    } else {
+        var data = {
+            index:inputId,
+            name:pokemon.name
+            }
+        }
+        // console.log(data);
+        response.render('delete' , data)
+   });
+});
 /*
  * ===================================
  * Listen to requests on port 3000
