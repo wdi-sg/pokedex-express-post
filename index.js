@@ -33,13 +33,6 @@ app.set('view engine', 'jsx');
 
 /**
  * ===================================
- * Functions
- * ===================================
- */
-
-
-/**
- * ===================================
  * Routes
  * ===================================
  */
@@ -228,8 +221,12 @@ app.post('/pokemon', (request,response) => {
       return false;
     }
 
+    response.send(data);
+    obj.pokemon.push(data);
+
     jsonfile.writeFile(FILE, obj, err => {
       console.error(err)
+
       // now look inside your json file
       // response.send(request.body);
       response.render('all', data);
@@ -243,11 +240,12 @@ app.put('/pokemon/:id', (request,response) => {
   let searchedIndex = searchedId - 1;
 
   let newPokemonName = request.body.name;
+  let newPokemonNum = request.body.num;
   let newPokemonImgUrl = request.body.img;
   let newPokemonHeight = request.body.height;
   let newPokemonWeight = request.body.weight;
   let data = {
-    "id": newPokemonId,
+    "id": searchedIndex,
     "num": newPokemonNum,
     "name": newPokemonName,
     "img": newPokemonImgUrl,

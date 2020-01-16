@@ -1881,6 +1881,14 @@
       "num": "151",
       "spawn_time": "N/A",
       "weight": "4.0 kg"
+    },
+    {
+      "height": "1",
+      "id": 199,
+      "img": "iuh",
+      "name": "Pooo",
+      "num": 199,
+      "weight": "1"
     }
   ]
 }
