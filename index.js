@@ -11,6 +11,10 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
+// Set up method-override for PUT and DELETE forms
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
@@ -149,7 +153,7 @@ app.post('/pokemon', (request,response) => {
     // save the request body
 
     if (newPokemonName === "") {
-      console.log("WRONG")
+      console.log("Enter Pokemon name")
       response.redirect(301, '/pokemon/new');
       return false;
     }
@@ -209,6 +213,74 @@ app.get('/pokemon/:id', (request, response) => {
       //response.send(pokemon);
     }
   });
+});
+
+app.get('/pokemon/:id/edit', (request, response) => {
+
+  let searchedId = parseInt(request.params.id);
+  let searchedIndex = searchedId - 1;
+
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    let currentPokemon = obj.pokemon[searchedIndex];
+    console.log(currentPokemon)
+    let data = {
+        "id": currentPokemon.id,
+        "num": currentPokemon.num,
+        "name": currentPokemon.name,
+        "img": currentPokemon.img,
+        "height": currentPokemon.height,
+        "weight": currentPokemon.weight,
+      }
+    response.render('edit', data);
+  })
+});
+
+app.put('/pokemon/:id', (request,response) => {
+  let newData = request.body;
+  let searchedId = parseInt(request.params.id);
+  let searchedIndex = searchedId - 1;
+  // response.send('hey put '+request.params.id);
+
+  jsonfile.readFile(file, (err, obj) => {
+    // save the request body
+
+    // obj.fruits.push( contents );
+    obj.pokemon[searchedIndex] = newData;
+
+    jsonfile.writeFile('data.json', obj, (err) => {
+      console.error(err)
+
+      // now look inside your json file
+      // response.send(request.body);
+      response.send('WOW WORKSS!!!');
+    });
+  });
+});
+
+app.delete('/pokemon/:id',(request, response)=>{
+
+  let searchedId = parseInt(request.params.id);
+  let searchedIndex = searchedId - 1;
+  // response.send('hey put '+request.params.id);
+
+  jsonfile.readFile(file, (err, obj) => {
+    // save the request body
+
+    // obj.fruits.push( contents );
+    // obj.fruits[fruitsIndex] = contents;
+    obj.pokemon.splice(searchedIndex, 1);
+
+    jsonfile.writeFile('data.json', obj, (err) => {
+      console.error(err)
+
+      // now look inside your json file
+      // response.send(request.body);
+      response.send('WOW WORKSS!!!');
+    });
+  });
+
+
 });
 
 app.get('/', (request, response) => {
