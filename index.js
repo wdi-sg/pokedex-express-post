@@ -125,6 +125,7 @@ app.get('/pokemon/new', (request, response) => {
 app.post('/pokemon/', (request, response) => {
     console.log('Received POST');
     console.log(request.body);
+    
     const newPokemon = {
         id: parseInt(request.body.id),
         num: request.body.num,
@@ -132,7 +133,7 @@ app.post('/pokemon/', (request, response) => {
         img: request.body.img,
         height: request.body.height,
         weight: request.body.weight,
-        candy: "none"
+        candy: request.body.candy
     }
 
     // validate the inputs here to make sure it's correct.
@@ -180,7 +181,7 @@ app.put('/pokemon/:id', (request, response) => {
         img: request.body.img,
         height: request.body.height,
         weight: request.body.weight,
-        candy: "none"
+        candy: request.body.candy
     }
 
     console.log(newPokemon);

@@ -1724,5 +1724,13 @@
 		"height": "0.41 m",
 		"weight": "4.0 kg",
 		"candy": "none"
+	}, {
+		"id": 152,
+		"num": "152",
+		"name": "Joe",
+		"img": "ajasj",
+		"height": "tall boi",
+		"weight": "fatso",
+		"candy": "none"
 	}]
 }

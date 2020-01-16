@@ -52,10 +52,14 @@ class PokemonEdit extends React.Component {
                             <dd className="col-sm-10">
                                 <input type="text" name="weight" defaultValue={this.props.pokemon.weight}/>
                             </dd>
+                            <dt className="col-sm-2">
+                                candy</dt>
                             <dd className="col-sm-10">
-                                <input type="submit"/>
-                              </dd>
-                        </dl>
+                                <input type="text" name="candy" defaultValue={this.props.pokemon.candy}/>
+                            </dd>
+                            <dd className="col-sm-10">
+
+
                     </form>
                 </div>
             </body>
