@@ -65,7 +65,7 @@ app.get('/pokemon/:id', (request, response) => {
 
       let currentPokemon = obj.pokemon[i];
       let data = {
-        "id": currentPokemon.id,
+        "id": parseInt(currentPokemon.id),
         "num": currentPokemon.num,
         "name": currentPokemon.name,
         "img": currentPokemon.img,
@@ -199,7 +199,7 @@ app.get('/pokemon', (request,response) => {
 app.post('/pokemon', (request,response) => {
   let newPokemonName = request.body.name;
   let newPokemonId = parseInt(request.body.id);
-  let newPokemonNum = parseInt(request.body.num);
+  let newPokemonNum = request.body.num;
   let newPokemonImgUrl = request.body.img;
   let newPokemonHeight = request.body.height;
   let newPokemonWeight = request.body.weight;
@@ -239,13 +239,14 @@ app.put('/pokemon/:id', (request,response) => {
   let searchedId = parseInt(request.params.id);
   let searchedIndex = searchedId - 1;
 
+  let newPokemonId = request.body.id;
   let newPokemonName = request.body.name;
   let newPokemonNum = request.body.num;
   let newPokemonImgUrl = request.body.img;
   let newPokemonHeight = request.body.height;
   let newPokemonWeight = request.body.weight;
   let data = {
-    "id": searchedIndex,
+    "id": newPokemonId,
     "num": newPokemonNum,
     "name": newPokemonName,
     "img": newPokemonImgUrl,
@@ -272,6 +273,7 @@ app.put('/pokemon/:id', (request,response) => {
 app.get('/pokemon/:id/delete',(request, response)=>{
   let searchedId = parseInt(request.params.id);
   let searchedIndex = searchedId - 1;
+  console.log(searchedIndex)
   jsonfile.readFile(FILE, (err, obj) => {
     // save the request body
 
@@ -293,10 +295,12 @@ app.get('/pokemon/:id/delete',(request, response)=>{
 app.delete("/pokemon/:id", (request, response) => {
   let searchedId = parseInt(request.params.id);
   let searchedIndex = searchedId - 1;
+    console.log(searchedIndex)
   jsonfile.readFile(FILE, (err, obj) => {
     obj.pokemon.splice(searchedIndex, 1);
+    console.log(searchedIndex)
     jsonfile.writeFile(FILE, obj, err => {
-      response.render('home');
+      response.render('pokemon', data);
     });
   });
 });
