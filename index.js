@@ -35,9 +35,12 @@ app.set('view engine', 'jsx');
  */
  //new pokemon form page --> !!! CREATE VALIDATION in input
 app.get('/pokemon/new', (request, response) => {
-  response.render('NewPokemon');
+  const idFailure = { id: false, num: false, name: false, img: false, height: false, weight: false};
+  const pokemon = { id: "", num: "", name: "", img: "", height: "", weight: ""};
+  const data = {idFailure : idFailure, pokemon: pokemon };
+  response.render('NewPokemon', data );
 });
-
+//
 
 //!!! CREATE JSX TO DISPLAY POKEMON!!!//
 app.get('/pokemon/:id', (request, response) => {
@@ -91,12 +94,12 @@ app.post('/pokemon', (request, response) => {
 
    jsonfile.readFile(FILE, (err, obj) => {
     let idNum = parseInt(request.body.ID);
-    let pokeNum = parseInt(request.body.Number);
+    let pokeNum = request.body.Number;
     let pokeName = request.body.name;
     let img = request.body.Image;
     let height = request.body.Height;
     let weight = request.body.Weight;
-
+ 
     //create new object for newly added pokemon
     let newPokemon = {};
         newPokemon.id = idNum;
@@ -108,13 +111,47 @@ app.post('/pokemon', (request, response) => {
 
     //if any of the input fields are empty/invalid, display error and how they can correct it and still render form
     // Stuart - commenting out for now
-    var idValidation = false;
+    let pokemonInputInvalid = false;
+    const idFailure = { id: false, num: false, name: false, img: false, height: false, weight: false};
+
+    if (newPokemon.id < obj.pokemon.length + 1) {
+      pokemonInputInvalid = true;
+      idFailure.id = `ID must be greater than ${obj.pokemon.length}`;
+      newPokemon.id = request.body.ID;
+    }
+    if (!newPokemon.id) {
+      pokemonInputInvalid = true;
+      idFailure.id = `input a valid ID number`;
+      newPokemon.id = request.body.ID;
+    }
+    if (!newPokemon.num) {
+      pokemonInputInvalid = true;
+      idFailure.num = `input a valid num number.`;
+      newPokemon.num = request.body.Number;
+    }
+    if (!newPokemon.name.trim()) {
+      pokemonInputInvalid = true;
+      idFailure.name = `input a valid name`;
+    }
+    if (!newPokemon.img.trim()) {
+      pokemonInputInvalid = true;
+      idFailure.img = `input a string for an image (it can be anything, just not blank)`;
+    }
+    if (!newPokemon.height.trim()) {
+      pokemonInputInvalid = true;
+      idFailure.height = `input something for the weight`;
+    }
+    if (!newPokemon.weight.trim()) {
+      pokemonInputInvalid = true;
+      idFailure.weight = `input something for the weight`;
+    }
 
     // do somrthing to check validation.
     // (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
 
-    if(!idValidation) {
-      response.send('Something is wrong' + reason);
+    if(pokemonInputInvalid) {
+      const data = { idFailure  : idFailure, pokemon: newPokemon }
+      response.render(`newpokemon`, data);
       // TODO: render the newpokemon input pages with error messages.
       return;
     }
