@@ -98,7 +98,8 @@ app.post('/pokemon', (request, response) => {
     let weight = request.body.Weight;
 
 //if any of the input fields are empty/invalid, display error and how they can correct it and still render form
-    var idValidation = (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
+// Stuart - commenting out for now
+    // var idValidation = (isNaN(idNum) || request.body.ID.isEmpty()) ? 'Please enter a valid number' : 'OK'
 
 
     //create new object for newly added pokemon
