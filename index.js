@@ -56,21 +56,24 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
     // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
-
-      let currentPokemon = obj.pokemon[i];
-      let data = {
-        "id": currentPokemon.id,
-        "num": currentPokemon.num,
-        "name": currentPokemon.name,
-        "img": currentPokemon.img,
-        "height": currentPokemon.height,
-        "weight": currentPokemon.weight,
-      }
-
-      if( currentPokemon.id === inputId ){
+      if(obj.pokemon[i].id === inputId){
+        let currentPokemon = obj.pokemon[i];
+        let data = {
+          "id": currentPokemon.id,
+          "num": currentPokemon.num,
+          "name": currentPokemon.name,
+          "img": currentPokemon.img,
+          "height": currentPokemon.height,
+          "weight": currentPokemon.weight,
+        }
         pokemon = currentPokemon;
         response.render('Edit', data);
       }
+   
+
+      // // if( currentPokemon.id === inputId ){
+        
+      // }
     }
 
     if (pokemon === undefined) {
@@ -118,6 +121,7 @@ app.delete("/pokemon/:id/delete", (request, response) => {
     response.send("Deleted!");
     });
  
+    
    jsonfile.writeFile(file, obj, function(err) {
        if (err) return console.log(err);      
        response.send("Successful!");
@@ -182,4 +186,4 @@ app.get('/pokemon/:id', (request, response) => {
  * ===================================
  */
 
-app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+app.listen(1500, () => console.log('~~~ Tuning in to the waves of port 1500 ~~~'));

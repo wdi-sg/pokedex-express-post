@@ -1,7 +1,7 @@
 var React = require('react');
 class Pokepages extends React.Component {
 render() {
-    let formUrl = "/pokemon/:id"+this.props.id+"?_method=put";
+    let formUrl = "/pokemon/"+this.props.id+"/delete?_method=put";
 return (
 <html>
 <body>
@@ -16,6 +16,7 @@ return (
 <li>Weight: {this.props.height}</li>
 </ul>
 </div>
+<form action={formUrl} method="DELETE"><input name ="Delete?" input type="submit"/></form>
 
 </body>
 </html>
