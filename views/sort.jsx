@@ -6,7 +6,7 @@ class New extends React.Component {
     let pokemon;
     if (this.props.sortType === "Alphabet") {
       pokemon = this.props.pokemon.map(poke => {
-        const dir = "/pokemon";
+        const dir = "/pokemon/";
         const id = poke.id;
         const route = dir + id;
         return (
@@ -16,8 +16,9 @@ class New extends React.Component {
         );
       });
     } else if (this.props.sortType === "Weight") {
+      console.log(this.props)
       pokemon = this.props.pokemon.map(poke => {
-        const dir = "/pokemon";
+        const dir = "/pokemon/";
         const id = poke.id;
         const route = dir + id;
         return (

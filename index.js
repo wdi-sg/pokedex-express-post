@@ -59,7 +59,8 @@ app.get("/pokemon/sortby", (request, response) => {
       for (let i = 0; i < obj.pokemon.length; i++) {
         pokemonObj.push({
           name: obj.pokemon[i].name,
-          weight: obj.pokemon[i].weight
+          weight: obj.pokemon[i].weight,
+          id: obj.pokemon[i].id
         });
       }
       pokemonObj.sort(function(a, b) {
@@ -231,7 +232,7 @@ app.delete("/pokemon/:id", (request, response) => {
     console.log("deleted", obj.pokemon[index].name);
     obj.pokemon.splice(index - 1, 1);
     for (let i = 0; i < obj.pokemon.length; i++) {
-      obj.pokemon[i].id = i+1;
+      obj.pokemon[i].id = i + 1;
     }
 
     // console.log(obj.pokemon);
