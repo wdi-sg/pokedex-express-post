@@ -17,6 +17,7 @@ const app = express();
 const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 
+
 // this tells express where to look for the view files
 app.set('views', __dirname + '/views');
 
@@ -113,7 +114,8 @@ app.post('/pokemon', (request, response) => {
         }
         obj.pokemon.push(pokeData);
         jsonfile.writeFile(FILE, obj, (err) => {
-            response.send("Pokemon Added to Pokedex")
+          // added a link back to MAIN page
+            response.send("Pokemon Added to Pokedex<br><a href=\"/pokemon\">Click to go back</a>")
         })
     })
 })
@@ -136,7 +138,7 @@ app.put('/pokemon', (request, response) => {
         }
         obj.pokemon[pokemon.id - 1] = pokeData;
         jsonfile.writeFile(FILE, obj, (err) => {
-            response.send("Pokemon Info Updated")
+            response.send("Pokemon Info Updated");
         })
     })
 })
