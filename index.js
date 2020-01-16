@@ -86,8 +86,10 @@ const showPokemon = (request,response)=>{
      jsonfile.readFile(file, (err,obj)=>{
         let pokemonIndex = parseInt(request.params.id);
         if(idIndex(pokemonIndex, obj)!== undefined){
+            console.log("Show pokemon");
             pokemonIndex = idIndex(pokemonIndex, obj);
             let currentPokemon = obj.pokemon[pokemonIndex];
+
         response.render("showPokemon",currentPokemon);}
         else{
             response.send('Index does not exist');
@@ -177,10 +179,10 @@ const add = (request, response)=>{
  * ===================================
  */
  //home
- app.get('/pokemon/home/:sort',sort);
- app.get('/pokemon/home/pokemon/:id',showPokemon);
+app.get('/pokemon/home/:sort',sort);
+app.get('/pokemon/home/pokemon/:id',showPokemon);
  //edit pokemon
- app.get('/pokemon/:id/edit',edit);
+app.get('/pokemon/:id/edit',edit);
 app.put('/pokemon/:id',writeEdit);
 app.get('/pokemon/:id/delete', showDeletePokemon)
 app.get('/pokemon/new', (request,response) => {

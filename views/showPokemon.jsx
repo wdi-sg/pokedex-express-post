@@ -3,8 +3,9 @@ var React = require('react');
 
 class showPokemon extends React.Component {
   render() {
-    let editLink ="/pokemon/"+{this.props.pokemon.id}+"/edit";
-    let showLink = "/pokemon/"+{this.props.pokemon.id}+"/delete";
+     let linkDelete= "../../"+this.props.id+"/delete";
+     let linkEdit= "../../"+this.props.id+"/edit";
+     console.log(this.props.id);
     return (
       <html>
       <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/>
@@ -15,33 +16,22 @@ class showPokemon extends React.Component {
 <div className="container h-100">
     <div className="row h-100 justify-content-center align-items-center">
         <div className="col-10 col-md-8 col-lg-6">
-            <form method="POST" action="/pokemon">
                 <h1>Pokemon</h1>
                 <div className="container h-100">
-                <div className="form-group">
+                    <img src={this.props.img}></img>
+                    <br/>
                     <label >ID : {this.props.id}</label>
-                </div>
-                <div className="form-group">
+                    <br/>
                     <label >Num: {this.props.num}</label>
-
-                 <div className="form-group">
+                    <br/>
                     <label>Name: {this.props.name}</label>
-                </div>
-                                <div className="form-group">
-                    <label>Image: {this.props.img}</label>
-                </div>
-                                <div className="form-group">
+                    <br/>
                     <label>Weight: {this.props.weight}</label>
-
-                </div>
-                                <div className="form-group">
+                    <br/>
                     <label>Height: {this.props.height}</label>
                 </div>
-                <button type="submit" className="btn btn-primary btn-customized" href={editLink}>Edit</button>
-                    <button type="submit" className="btn btn-primary btn-customized ml-1" href={deleteLink}>Delete</button>
-                </div>
-                </div>
-                </form>
+               <a className="btn btn-primary ml-1 mr-1" href={linkEdit}>Edit</a>
+                <a className="btn btn-primary mr-1" href={linkDelete}>Delete</a>
         </div>
     </div>
 </div>

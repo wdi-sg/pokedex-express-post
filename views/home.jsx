@@ -5,8 +5,9 @@ class Home extends React.Component {
   render() {
 
          const pokemonList = this.props.pokemonList;
+
          const pokemonElements = pokemonList.map(pokemon=>{
-            let pokemonlink = "/pokemon/home/pokemon/"+pokemon.id;
+            let pokemonlink = "/pokemon/home/pokemon/"+ pokemon.id;
            return(
             <div className="col-sm-12 col-lg-3">
             <div className="card mb-3 mt-3 border-0" style={{width:" 18rem"}}>
