@@ -31,18 +31,14 @@ response.render("new");
 
 app.get('/pokemon/:id', (request, response) => {
 
-  // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-
-    // check to make sure the file was properly read
     if( err ){
 
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
       return;
     }
-    // obj is the object from the pokedex json file
-    // extract input data from request
+    console.log("reading")
     let inputId = parseInt( request.params.id );
 
     var pokemon;
@@ -53,7 +49,9 @@ app.get('/pokemon/:id', (request, response) => {
       let currentPokemon = obj.pokemon[i];
 
       if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
+        console.log("CURERAERERAERAER POKEMON :" ,currentPokemon.id );
+        pokemon = obj.pokemon[i];
+        console.log("CURERAERERAERAER POKEMON :" ,pokemon );
       }
     }
 
@@ -110,30 +108,40 @@ app.post('/pokemon', (request, response) => {
 
 app.put('/pokemon/:id/edit', (request, response) => {
 
-    const inputId = parseInt(request.params.id) - 1
+    const inputId = parseInt(request.params.id)
 
     console.log("This is the index: " + inputId);
     console.log("name " + request.body.name);
     console.log("img " + request.body.img);
     console.log("height " + request.body.height);
     console.log("weight " + request.body.weight);
-
+    var pokemon;
     jsonfile.readFile(FILE, (err, obj)=>{
+         for( let i=0; i<obj.pokemon.length; i++ ){
+
+              let currentPokemon = obj.pokemon[i];
+
+              if( currentPokemon.id === inputId ){
+                console.log("CURERAERERAERAER POKEMON :" ,currentPokemon.id );
+                pokemon = obj.pokemon[i];
+                console.log("CURERAERERAERAER POKEMON :" ,pokemon );
+              }
+            }
 
         console.log("reading OBJECTTTTTT" , obj)
         console.log("FIRST ERROROOEROEORE", err)
 
-        obj.pokemon[inputId].name = request.body.name
-        obj.pokemon[inputId].img = request.body.img
-        obj.pokemon[inputId].height = request.body.height
-        obj.pokemon[inputId].weight = request.body.weight
+        pokemon.name = request.body.name
+        pokemon.img = request.body.img
+        pokemon.height = request.body.height
+        pokemon.weight = request.body.weight
 
-        var object = obj.pokemon[inputId]
-        console.log("FINSIHING CHANING", obj)
+        var object = pokemon
+        console.log("FINSIHING CHANING", pokemon)
 
         jsonfile.writeFile(FILE, obj, (err)=>{
 
-            console.log("Writing file HERERERE: " ,obj)
+            console.log("Writing file HERERERE: " ,pokemon)
 
             console.log("EROEOREREOREOR", err);
             response.render('pokemon' , object)
@@ -146,36 +154,26 @@ app.put('/pokemon/:id/edit', (request, response) => {
 
 app.get('/pokemon/:id/edit', (request,response) =>{
     jsonfile.readFile(FILE, (err, obj) => {
-
-    // check to make sure the file was properly read
     if( err ){
 
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
       return;
     }
-    // obj is the object from the pokedex json file
-    // extract input data from request
     let inputId = parseInt( request.params.id );
+        console.log("indexAHSAHDHASDHASHDASHDHASDHASDHASHDSA : " + inputId)
 
     var pokemon;
+        for( let i=0; i<obj.pokemon.length; i++ ){
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+          let currentPokemon = obj.pokemon[i];
 
-      let currentPokemon = obj.pokemon[i];
+          if( parseInt(currentPokemon.id) === inputId ){
+            pokemon = currentPokemon;
+              console.log("CURERAERERAERAER POKEMON :" ,currentPokemon.id );
+          }
+        }
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
-
-    if (pokemon === undefined) {
-
-      // send 404 back
-      response.redirect(301, '/pokemon/new');
-
-    } else {
         var data = {
             index:inputId,
             name:pokemon.name,
@@ -185,18 +183,28 @@ app.get('/pokemon/:id/edit', (request,response) =>{
             }
         console.log(data);
         response.render('edit' , data)
-        }
     });
 });
 
 app.delete('/pokemon/:id/delete', (request,response)=> {
-    let inputId = parseInt( request.params.id ) - 1;
-    jsonfile.readFile(FILE, (err,obj) => {
-        console.log("hahshahha" ,obj)
-        var remove = obj.pokemon
-        remove.splice(inputId, 1)
+    let inputId = parseInt( request.params.id );
+        jsonfile.readFile(FILE, (err, obj)=>{
+            var remove;
+            var pokemon;
+                    // console.log("reading OBJECTTTTTT" , obj)
+                    // console.log("FIRST ERROROOEROEORE", err)
+                    // console.log("hahshahha" ,obj)
+         for( let i=0; i<obj.pokemon.length; i++ ){
+              if( obj.pokemon[i].id === inputId ){
+                console.log("CURERAERERAERAER POKEMON :" + obj.pokemon[i].id);
+                pokemon = obj.pokemon[i];
+                remove = pokemon.id - 1;
+                console.log("CURERAERERAERAER POKEMON :" + pokemon );
+              }
+            }
+        obj.pokemon.splice(remove, 1)
         jsonfile.writeFile(FILE, obj, (err)=>{
-            console.log("delete pokemon HERERERE: " ,obj)
+            console.log("delete pokemon HERERERE: " ,pokemon)
 
             console.log("EROEOREREOREOR", err);
             response.send(obj)
@@ -206,24 +214,19 @@ app.delete('/pokemon/:id/delete', (request,response)=> {
 
 app.get('/pokemon/:id/delete', (request,response) => {
     jsonfile.readFile(FILE, (err, obj) => {
-
-    // check to make sure the file was properly read
     if( err ){
 
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
       return;
     }
-    // obj is the object from the pokedex json file
-    // extract input data from request
     let inputId = parseInt( request.params.id );
 
     var pokemon;
-
-    // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
 
       let currentPokemon = obj.pokemon[i];
+
 
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
