@@ -8,14 +8,14 @@ const FILE = 'pokedex.json';
  * ==========================
  */
 
-// Init express app
+// Init express appgit 
 const app = express();
 
 
 // tell your app to use the module
 app.use(express.json());
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
 
 
@@ -36,10 +36,10 @@ app.set('view engine', 'jsx');
 
 app.get("/", (request, response) => {
 
-jsonfile.readFile('pokedex.json', (err, obj) => {
-  console.log("OBJ ITEM ID~~: "+ obj.pokemon[0].id );
-  // put render here
-})
+    jsonfile.readFile('pokedex.json', (err, obj) => {
+        console.log("OBJ ITEM ID~~: " + obj.pokemon[0].id);
+        // put render here
+    })
 
 })
 
@@ -72,7 +72,10 @@ app.post('/pokemon/', (request, response) => {
         obj.pokemon.push(newPokemon);
 
         jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+            }
+
             console.log('New ' + newPokemon);
             response.send('The following pokemon related information has been added: ' + newPokemon.name);
             return;
@@ -83,15 +86,15 @@ app.post('/pokemon/', (request, response) => {
 
 app.get('/pokemon/new', (request, response) => {
 
-  let myForm ='<form method="POST" action="/pokemon">id:<input type="text" name="id"><br/>num:<input type="text" name="num"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="img"><br/>height:<input type="text" name="height"><br/>weight:<input type="text" name="weight"></br><input type="submit" value="Submit"></form>';
+    let myForm = '<form method="POST" action="/pokemon">id:<input type="text" name="id"><br/>num:<input type="text" name="num"><br/>name:<input type="text" name="name"><br/>img:<input type="text" name="img"><br/>height:<input type="text" name="height"><br/>weight:<input type="text" name="weight"></br><input type="submit" value="Submit"></form>';
 
-  response.send(myForm);
+    response.send(myForm);
 });
 
 
 
 /// ADD A FORM AT THE PATH: /pokemon/:id/edit \\\
-app.get('/pokemon/:id/edit',(request, response) => {
+app.get('/pokemon/:id/edit', (request, response) => {
     let index = request.params.id
 
     jsonfile.readFile(FILE, (err, obj) => {
@@ -108,7 +111,7 @@ app.get('/pokemon/:id/edit',(request, response) => {
 })
 
 
-      /*  let html = '<form method="POST" action="/putrequest?_method=put"><input name="id" type="text" value="Id"/><input type="submit" value="Edit this"/><br/><input name="number" type="text" value="Num"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Name"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Img"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Height"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Weight"/><input type="submit" value="Edit this"/></form>';*/
+/*  let html = '<form method="POST" action="/putrequest?_method=put"><input name="id" type="text" value="Id"/><input type="submit" value="Edit this"/><br/><input name="number" type="text" value="Num"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Name"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Img"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Height"/><input type="submit" value="Edit this"/><br/><input name="id" type="text" value="Weight"/><input type="submit" value="Edit this"/></form>';*/
 
 
 
@@ -123,7 +126,7 @@ app.get('/pokemon/:id/edit',(request, response) => {
 
 
 ///// THE FORM SHOULD MAKE A REQUEST (THE FORM ACTION ) TO THE CORRECT ROUTE ( A PUT REQUEST TO  /pokemon/:id) \\\\\
-app.put('/pokemon/:id' , (request, response) => {
+app.put('/pokemon/:id', (request, response) => {
     let id = request.params.id;
 
     jsonfile.readFile(FILE, (err, obj) => {
@@ -132,8 +135,8 @@ app.put('/pokemon/:id' , (request, response) => {
         jsonfile.writeFile(file, obj, err => {});
 
         response.send('yes');
-  })
-  //read the file in and write out to it
+    })
+    //read the file in and write out to it
 });
 
 /**
