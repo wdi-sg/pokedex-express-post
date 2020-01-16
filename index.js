@@ -29,6 +29,10 @@ app.set('views', __dirname + '/views');
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
 
+//Check if a string only contains alphanumeric characters
+//$ npm install --save is-alphanumeric
+var isAlphanumeric = require('is-alphanumeric');
+
 /**
  * ===================================
  * Routes
@@ -129,7 +133,7 @@ app.get('/pokemon/:id/edit', (request, response) => {
 
   jsonfile.readFile(file, (err, obj) => {
 
-    console.log(obj)
+    console.log(obj);
     let currentPokemon = obj.pokemon[pokemonIndex];
     const data = {
       indexPokemon: currentPokemon,
@@ -146,16 +150,13 @@ app.put('/pokemon/:id',(request, response)=>{
   let pokemonIndex = request.params.id;
   response.send('hey put '+request.params.id);
 
-
   jsonfile.readFile(file, (err, obj) => {
     // save the request body
+    let file = request.body;
 
-    let contents = request.body.name;
+    obj.pokemon[pokemonIndex] = request.body;
 
-    // obj.fruits.push( contents );
-    obj.pokemon[pokemonIndex] = contents;
-
-    jsonfile.writeFile('data.json', obj, (err) => {
+    jsonfile.writeFile(file, obj, (err) => {
       console.error(err)
 
       // now look inside your json file
@@ -165,6 +166,7 @@ app.put('/pokemon/:id',(request, response)=>{
   });
 
 })
+
 
 // app.delete('/fruits/:id',(request, response)=>{
 //   // response.send("FHJHFHJHJHF");

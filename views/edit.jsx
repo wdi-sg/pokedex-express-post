@@ -12,7 +12,7 @@ class Edit extends React.Component {
             <h3>Height: {this.props.indexPokemon.height}</h3>
             <h3>Weight: {this.props.indexPokemon.weight}</h3>
             <h3>Candy: {this.props.indexPokemon.candy}</h3>
-            <form method="POST" action="/edit-post/<post.id>?_method=PUT">
+            <form method="POST" action="/pokemon/:id?_method=put">
             <div className="form-group">
                 <label for="exampleInputEmail1">Edit Form</label>
                 <input type="text" class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Edit from here"/>
