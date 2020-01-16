@@ -2,9 +2,8 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
-    const index = this.props.id;
+    const index = parseInt(this.props.id);
     const filePath = "/pokemon/" + index + "?_method=delete";
-    console.log(filePath);
     return (
       <html lang="en">
         <head>

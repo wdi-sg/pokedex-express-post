@@ -2,12 +2,12 @@ const React = require("react");
 
 class New extends React.Component {
   render() {
-    const id = this.props.id - 1;
+    const id = parseInt(this.props.id);
     const name = this.props.name;
     const image = this.props.img;
     const height = this.props.height;
     const weight = this.props.weight;
-    const filePath = "/pokemon/" + id + "?_method=put";
+    const filePath = "/pokemon/" + (id) + "?_method=put";
     return (
       <html lang="en">
         <head>

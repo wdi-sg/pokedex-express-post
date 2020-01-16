@@ -172,7 +172,7 @@ app.get("/pokemon/:id", (request, response) => {
 });
 
 app.get("/pokemon/:id/edit", (request, response) => {
-  let index = request.params.id;
+  let index = parseInt(request.params.id) - 1;
   jsonfile.readFile(file, (err, obj) => {
     const pokemon = obj.pokemon[index];
     const data = {
@@ -187,7 +187,7 @@ app.get("/pokemon/:id/edit", (request, response) => {
 });
 
 app.put("/pokemon/:id", (request, response) => {
-  const index = request.params.id;
+  const index = parseInt(request.params.id) - 1;
   const changedName = request.body.name;
   const changedImage = request.body.img;
   const changedHeight = request.body.height;
@@ -211,22 +211,30 @@ app.put("/pokemon/:id", (request, response) => {
 });
 
 app.get("/pokemon/:id/delete", (request, response) => {
-  const index = request.params.id;
+  const index = parseInt(request.params.id) - 1;
   jsonfile.readFile(file, (err, obj) => {
     const pokemon = obj.pokemon[index];
     console.log("index is", index);
     const data = {
       name: pokemon.name,
-      id: pokemon.index
+      id: pokemon.id
     };
     response.render("delete", data);
   });
 });
 
 app.delete("/pokemon/:id", (request, response) => {
-  const index = request.params.id;
+  const index = parseInt(request.params.id);
+  console.log("index is", index);
+
   jsonfile.readFile(file, (err, obj) => {
-    obj.pokemon.splice(index, 1);
+    console.log("deleted", obj.pokemon[index].name);
+    obj.pokemon.splice(index - 1, 1);
+    for (let i = 0; i < obj.pokemon.length; i++) {
+      obj.pokemon[i].id = i+1;
+    }
+
+    // console.log(obj.pokemon);
     jsonfile.writeFile(file, obj, err => {
       const data = {
         pokemon: obj.pokemon

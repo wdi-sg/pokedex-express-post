@@ -3,7 +3,7 @@ const React = require("react");
 class Created extends React.Component {
   render() {
     console.log(this.props.id);
-    const id = this.props.id - 1;
+    const id = parseInt(this.props.id);
     const editPath = "/pokemon/" + id + "/edit";
     const pokemonName = this.props.name
     return (
