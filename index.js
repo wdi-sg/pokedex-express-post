@@ -79,8 +79,9 @@ app.post('/pokemon', addPokemon);
 // this could handle query strings if we have time
 app.get('/', (req, res) => {
   if (req.query.sortby) {
+    console.log(req.query.sortby);
     res.send("got a sort request here!");
-  }
+  } else {
   let button = [
     '<form method="GET" action="/">',
     '<select id="sort">',
@@ -89,7 +90,8 @@ app.get('/', (req, res) => {
     '<input type="submit" value="Sort">',
     '</form>'
   ];
-  res.send(button.join('<br>'));
+    res.send(button.join('<br>'));
+  }
 });
 
 // Listen on 3000
