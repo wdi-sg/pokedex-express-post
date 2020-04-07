@@ -41,8 +41,12 @@ app.get('/pokemon/new', (request, response) => {
   response.render('form');
 });
 
+app.get('/pokemon', (request, response) => {
+  response.render('form');
+});
+
 app.post('/pokemon', (req, res) => {
-// res.send(req.body);
+    // res.send(req.body);
     jsonfile.readFile(FILE, (err, obj) => {
         let newobj = {
             "id": req.body.id,
@@ -51,6 +55,14 @@ app.post('/pokemon', (req, res) => {
             "img": req.body.img,
             "height": req.body.height,
             "weight": req.body.weight
+        }
+
+        for (let property in newobj){
+            if (newobj[property] == ""){
+                const data = {message: "Dude you need to fill in everything"}
+                res.render('form', data)
+                return
+            }
         }
 
         obj.pokemon.push(newobj);
@@ -103,8 +115,39 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+app.get('/sort', (req, res) =>{
+    console.log(req.query.sortby)
+    //comparison function
+    let sorter = req.query.sortby;
+
+    let comparator = (a, b) =>{
+        if (a[sorter] < b[sorter]) {
+            return -1;
+        }
+      if (a[sorter] > b[sorter]) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    }
+
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+        obj.pokemon.sort(comparator);
+        // res.send(obj.pokemon)
+
+        jsonfile.writeFile(FILE, obj, (err) => {
+        console.error(err)
+        // now look inside your json file
+        res.send("The pokemon have been sorted!");
+        });
+    })
+
+})
+
 app.get('/', (request, response) => {
-  response.send("homepage")
+  response.render('home')
 });
 
 /**

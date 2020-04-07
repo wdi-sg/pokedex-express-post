@@ -23,6 +23,7 @@ class Form extends React.Component {
               <input type="submit" value="Submit"></input>
             </form>
           </div>
+          <p>{this.props.message}</p>
         </body>
       </html>
     );
