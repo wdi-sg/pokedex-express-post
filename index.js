@@ -5,6 +5,10 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Functions
 const getPokemon = function (req, res) {
