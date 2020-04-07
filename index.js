@@ -19,16 +19,49 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-app.post('/newpokemon', function(request, response) {
+
+
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/view');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+
+
+app.post('/pokemon', function(request, response) {
 
   //debug code (output request body)
   console.log(request.body);
 jsonfile.readFile(FILE,(err,obj)=>{
+    let nameCheck=false;
+    let heightCheck=false;
+    if(request.body.height>=100){
 
+        response.send("Too high. Choose a different value")
+        return;
+    }
+
+        let pokemonCount=0;
+        let pokemonNameString="<ol>Pokemon Names";
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                if(request.body.name === obj["pokemon"][pokemonCount]["name"])
+                {
+                    response.send("Exist in data base. Try again")
+                    return;
+                }
+        }
     console.log(typeof request.body);
-        console.log(obj["pokemon"].length);
+        console.log("The last number is "+obj["pokemon"][obj["pokemon"].length-1]["num"]);
     obj["pokemon"].push(request.body);
-
+    let arrayLength=obj["pokemon"].length;
+    obj["pokemon"][obj["pokemon"].length-1].num=arrayLength;
+    obj["pokemon"][obj["pokemon"].length-1].id=arrayLength.toString();
     console.log(obj["pokemon"].length);
       jsonfile.writeFile(FILE, obj, (err) => {
     console.error(err)
@@ -38,11 +71,13 @@ jsonfile.readFile(FILE,(err,obj)=>{
   });
 
 
-});
+                            });
 
   // save the request body
 
-});
+                                            });
+
+
 
 /**
  * ===================================
@@ -50,23 +85,13 @@ jsonfile.readFile(FILE,(err,obj)=>{
  * ===================================
  */
 
-app.get('/pokemon/new', (request, response) => {
+app.get('/pokemon/new', (req, res) => {
   // render a template form here
-  response.send(`<form method="POST" action="/newpokemon">
-  <span>Pokemon ID: </span>
-  <input type="number" name="id">
-  <span><br><br>Num: </span>
-  <input type="text" name="num">
-  <span><br><br>Name: </span>
-  <input type="text" name="name">
-    <span><br><br>Img: </span>
-  <input type="text" name="img">
-  <span><br><br>Height: </span>
-  <input type="text" name="height">
-  <span><br><br>Weight: </span>
-  <input type="text" name="weight">
-  <input type="submit" value="Submit">
-</form>`);
+
+  //const data = {name: "Sterling Archer"};
+  res.render('insert');
+
+
 });
 
 app.get('/pokemon/:id', (request, response) => {
@@ -111,9 +136,94 @@ app.get('/pokemon/:id', (request, response) => {
 
 
 
-app.get('/', (request, response) => {
-  response.send("yay");
+app.get('/', (req, res) => {
+   //const data = {name: "Sterling Archer"};
+  res.render('home');
 });
+
+app.get('/sortByName', function(request, response) {
+
+  //debug code (output request body)
+  console.log("--------------------------");
+  console.log(typeof request.query.options);
+jsonfile.readFile(FILE,(err,obj)=>{
+
+
+    if(request.query.options==="Name")
+    {
+
+        let pokemonNames=[];
+        let pokemonCount=0;
+        let pokemonNameString="<ol>Pokemon Names";
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                pokemonNames.push(obj["pokemon"][pokemonCount]["name"]);
+        }
+        pokemonNames=pokemonNames.sort();
+        //console.log(pokemonNames);
+            for(pokemonCount=0;pokemonCount<pokemonNames.length;pokemonCount++)
+        {
+                pokemonNameString+=`<li>${pokemonNames[pokemonCount]}</li>`;
+        }
+        pokemonNameString+="</ol>";
+        response.send(pokemonNameString);
+        return;
+    }
+    if(request.query.options==="Weight"){
+        let pokemonNameWeight=[];
+        let pokemonCount=0;
+        let pokemonNameString="<ol>Pokemon Sort By Weight"
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                let pokemonName=obj["pokemon"][pokemonCount]["name"];
+                let pokemonWeight=obj["pokemon"][pokemonCount]["weight"].replace(/[^0-9.]/g, "");
+                console.log(pokemonWeight);
+                pokemonNameWeight.push([pokemonName, pokemonWeight]);
+
+        }
+            pokemonNameWeight.sort(function(a,b){
+                return a[1]-b[1];
+            })
+
+        for(pokemonCount=0;pokemonCount<pokemonNameWeight.length;pokemonCount++)
+        {
+                pokemonNameString+=`<li>${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.</li>`;
+        }
+        pokemonNameString+="</ol>";
+
+        response.send(pokemonNameString);
+        return;
+    }
+    if(request.query.options==="Height"){
+        let pokemonNameHeight=[];
+        let pokemonCount=0;
+        let pokemonNameString="<ol>Pokemon Sort By Height"
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                let pokemonName=obj["pokemon"][pokemonCount]["name"];
+                let pokemonWeight=obj["pokemon"][pokemonCount]["height"].replace(/[^0-9.]/g, "");
+                pokemonNameHeight.push([pokemonName, pokemonWeight]);
+
+        }
+            pokemonNameHeight.sort(function(a,b){
+                return a[1]-b[1];
+            })
+
+        for(pokemonCount=0;pokemonCount<pokemonNameHeight.length;pokemonCount++)
+        {
+                pokemonNameString+=`<li>${pokemonNameHeight[pokemonCount][0]}: ${pokemonNameHeight[pokemonCount][1]} m.</li>`;
+        }
+        pokemonNameString+="</ol>";
+
+        response.send(pokemonNameString);
+        return;
+    }
+
+
+                            });
+
+
+                                            });
 /**
  * ===================================
  * Creating a form
