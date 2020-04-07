@@ -109,10 +109,36 @@ app.post('/pokemon', (request, response) => {
     }
 })
 
-
 app.get('/', (request, response) => {
-  response.send("yay");
-});
+    console.log(request.url);
+    if (request.url == '/') {
+        console.log('hello');
+        response.render("home");
+
+    }
+    else{
+        console.log(request.query.name)
+
+        // Get name of pokemon
+        const pokemonName = request.query.name;
+
+        const file = 'pokedex2.json';
+        jsonfile.readFile(file, (err, obj) => {
+            const pokedexArray = obj["pokemon"];
+
+            for (var i = 0; i < pokedexArray.length; i++) {
+                if(pokedexArray[i].name.toLowerCase() === pokemonName){
+                    response.render(pokedexArray[i]);
+                }
+            }
+        })
+    }
+})
+
+
+// app.get('/', (request, response) => {
+//   response.render("home");
+// });
 
 /**
  * ===================================
