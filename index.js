@@ -29,12 +29,27 @@ const getPokemon = function (req, res) {
   });
 };
 
+const sendForm = function (req, res) {
+  //id, num, name, img, height, and weight
+};
+
+const addPokemon = function (req, res) {
+};
+
 // Routes
+
+app.get('/pokemon/new', sendForm);
 
 app.get('/pokemon/:id', getPokemon);
 
-app.get('/', (request, response) => {
-  response.send("yay");
+app.post('/pokemon', addPokemon);
+
+// this could handle query strings if we have time
+app.get('/', (req, res) => {
+  if (req.query.sortBy) {
+    res.send("got a sort request here!");
+  }
+  res.send("yay");
 });
 
 // Listen on 3000
