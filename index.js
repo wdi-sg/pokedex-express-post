@@ -78,10 +78,18 @@ app.post('/pokemon', addPokemon);
 
 // this could handle query strings if we have time
 app.get('/', (req, res) => {
-  if (req.query.sortBy) {
+  if (req.query.sortby) {
     res.send("got a sort request here!");
   }
-  res.send("yay");
+  let button = [
+    '<form method="GET" action="/">',
+    '<select id="sort">',
+    '<option>Name<input type="hidden" name="sortby" value="name"></option>',
+    '</select>',
+    '<input type="submit" value="Sort">',
+    '</form>'
+  ];
+  res.send(button.join('<br>'));
 });
 
 // Listen on 3000
