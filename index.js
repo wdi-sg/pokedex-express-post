@@ -70,27 +70,27 @@ const listPokemon = function (req, res)  {
   }
 };
 
+//id, num, name, img, height, and weight
 const sendForm = function (req, res) {
-  //id, num, name, img, height, and weight
   let formFields = [
     '<form method="POST" action="/pokemon">',
-    '<label for="poke-id">Pokemon ID</label>',
-    '<input type="text" id="poke-id" name="poke-id">',
+    '<label for="monid">Pokemon ID</label>',
+    '<input type="text" id="monid" name="monid">',
 
-    '<label for="poke-num">Pokemon Number</label>',
-    '<input type="text" num="poke-num" name="poke-num">',
+    '<label for="monnum">Pokemon Number</label>',
+    '<input type="text" num="monnum" name="monnum">',
 
-    '<label for="poke-name">Pokemon Name</label>',
-    '<input type="text" name="poke-name" name="poke-name">',
+    '<label for="monname">Pokemon Name</label>',
+    '<input type="text" name="monname" name="monname">',
 
-    '<label for="poke-img">Pokemon Image</label>',
-    '<input type="url" img="poke-img" name="poke-img">',
+    '<label for="monimg">Pokemon Image</label>',
+    '<input type="url" img="monimg" name="monimg">',
 
-    '<label for="poke-height">Pokemon Height</label>',
-    '<input type="text" height="poke-height" name="poke-height">',
+    '<label for="monheight">Pokemon Height</label>',
+    '<input type="text" height="monheight" name="monheight">',
 
-    '<label for="poke-weight">Pokemon Weight</label>',
-    '<input type="text" weight="poke-weight" name="poke-weight">',
+    '<label for="monweight">Pokemon Weight</label>',
+    '<input type="text" weight="monweight" name="monweight">',
 
     '<input type="submit" value="Submit">',
     '</form>'
