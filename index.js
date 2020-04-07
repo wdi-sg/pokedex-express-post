@@ -12,25 +12,60 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 /**
  * ===================================
  * Routes
  * ===================================
  */
-// app.post('/pokemon', function (request, response) {
+app.post('/pokemon', function (request, response) {
 
-//   //debug code (output request body)
-//   console.log(request.body.num);
+  //debug code (output request body)
+  console.log(request.body);
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
 
+    // check to make sure the file was properly read
+    if (err) {
 
-//   // save the request body
-//   jsonfile.writeFile('pokedex.json', request.body, (err) => {
-//     console.error(err)
+      console.log("error with json read file:", err);
+      response.status(503).send("error reading filee");
+      return;
+    }
 
-//     // now look inside your json file
-//     response.send(request.body);
-//   });
-// });
+    obj.pokemon.push(request.body);
+
+    // save the request body
+    jsonfile.writeFile('pokedex.json', obj, (err) => {
+      console.error(err)
+
+      // now look inside your json file
+      response.send(`${request.body.name} was added to Pokedex`);
+    });
+  });
+});
+app.get('/', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('home')
+})
+app.get('/pokemon/new', (req, res) => {
+  // running this will let express to run home.handlebars file in your views folder
+  res.render('new')
+})
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -46,18 +81,7 @@ app.get('/pokemon/:id', (request, response) => {
     // obj is the object from the pokedex json file
     // extract input data from request
     if (request.params.id === "new") {
-      response.send(`<form method="POST" action="/pokemon">
-      Enter Pokemon:<br/><br/>
-      ID:&emsp;<input type="number" name="id"><br/><br/>
-      Num:&emsp;<input type="number" name="num"><br/><br/>
-      Name:&emsp;<input type="text" name="name"><br/><br/>
-      Img:&emsp;<input type="text" name="img"><br/><br/>
-      Height:&emsp;<input type="text" name="height"><br/><br/>
-      Weight:&emsp;<input type="text" name="weight"><br/><br/>
-      <input type="submit" value="Submit">
-    </form>`);
-    }
-    else {
+      response.send();
 
       let inputId = parseInt(request.params.id);
 
@@ -88,9 +112,9 @@ app.get('/pokemon/:id', (request, response) => {
 
 );
 
-app.get('/', (request, response) => {
-  response.send("yay");
-});
+// app.get('/', (request, response) => {
+//   response.send("yay");
+// });
 
 
 /**
