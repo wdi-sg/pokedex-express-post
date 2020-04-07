@@ -11,6 +11,10 @@ let pokedex;
 filePromise
   .then((obj) => pokedex = obj.pokemon)
   .catch((err) => console.error(err));
+
+// init express app
+// add some stuff to help with forms
+// that we want to parse
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
