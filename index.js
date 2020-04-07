@@ -128,7 +128,7 @@ app.get('/', (request, response) => {
 
             for (var i = 0; i < pokedexArray.length; i++) {
                 if(pokedexArray[i].name.toLowerCase() === pokemonName){
-                    response.render(pokedexArray[i]);
+                    response.send(pokedexArray[i]);
                 }
             }
         })
