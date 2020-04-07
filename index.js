@@ -132,6 +132,25 @@ app.post('/pokemon/:id', (request, response) => {
     });
 });
 
+app.get('/pokemon/:id/delete', (request, response) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        obj.pokemon.splice([request.body.id-1], 1);
+        response.send(obj.pokemon);
+        response.render('deletePokemon');
+
+        jsonfile.writeFile(FILE, obj, { spaces: 2 }, (err) => {
+            console.log("err");
+            // obj.pokemon.push(request.body);
+        });
+    });
+});
+
+// app.post('/pokemon/:id', (request, response) => {
+
+
+// });
+
+
 
 /**
  * ===================================
