@@ -5,18 +5,10 @@ class insert extends React.Component {
       <html>
         <body>
           <div>
-            <h1>Hello </h1>
-                <form method="POST" action="/pokemon">
- {/*}                   <span>Pokemon ID: </span>
-                    <input type="number" name="id" placeholder="Enter ID" required
-    oninvalid="this.setCustomValidity('Enter Valid ID Here')"
-    oninput="this.setCustomValidity('')"></input>
-                    <br></br><br></br>
-                    <span>Num: </span>
-                    <input type="text" name="num" placeholder="Enter Number" required
-    oninvalid="this.setCustomValidity('Enter Valid Number Here')"
-    oninput="this.setCustomValidity('')" ></input>
-                    <br></br><br></br> */}
+            <h1  style={{textAlign: "Center"}}>Hello </h1>
+            <h2  style={{textAlign: "Center"}}>For Insert data </h2>
+                <form method="POST" action="/pokemon"  style={{textAlign: "Center"}}>
+
                     <span>Name: </span>
                     <input id= "name" type="text" name="name" placeholder="Enter Name" required
     oninvalid="this.setCustomValidity('Enter Valid Name Here')"
@@ -40,6 +32,10 @@ class insert extends React.Component {
                     <input type="submit" value="Submit"></input>
                 </form>
 
+                <h2  style={{textAlign: "Center"}}>To return home </h2>
+            <form method="GET" action="/" style={{textAlign: "Center"}}>
+            <input type="submit" value="Return Home"></input>
+            </form>
 
           </div>
         </body>

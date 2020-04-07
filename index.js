@@ -63,11 +63,15 @@ jsonfile.readFile(FILE,(err,obj)=>{
     obj["pokemon"][obj["pokemon"].length-1].num=arrayLength;
     obj["pokemon"][obj["pokemon"].length-1].id=arrayLength.toString();
     console.log(obj["pokemon"].length);
+      const data=obj["pokemon"][obj["pokemon"].length-1];
+      //response.send(data);
+    //console.log("data passing through is"+data);
+       response.render("newpokemon",data);
       jsonfile.writeFile(FILE, obj, (err) => {
     console.error(err)
 
     // now look inside your json file
-    response.send(obj);
+
   });
 
 
@@ -154,7 +158,8 @@ jsonfile.readFile(FILE,(err,obj)=>{
 
         let pokemonNames=[];
         let pokemonCount=0;
-        let pokemonNameString="<ol>Pokemon Names";
+        let pokemonNameString="";
+        let context={pokemon:[]};
         for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
         {
                 pokemonNames.push(obj["pokemon"][pokemonCount]["name"]);
@@ -163,16 +168,20 @@ jsonfile.readFile(FILE,(err,obj)=>{
         //console.log(pokemonNames);
             for(pokemonCount=0;pokemonCount<pokemonNames.length;pokemonCount++)
         {
+                context.pokemon.push(pokemonNames[pokemonCount]);
                 pokemonNameString+=`<li>${pokemonNames[pokemonCount]}</li>`;
         }
-        pokemonNameString+="</ol>";
-        response.send(pokemonNameString);
+            console.log(context);
+        //response.send(pokemonNameString);
+        const data={output:pokemonNameString};
+        response.render(`byname`,context);
         return;
     }
     if(request.query.options==="Weight"){
         let pokemonNameWeight=[];
         let pokemonCount=0;
         let pokemonNameString="<ol>Pokemon Sort By Weight"
+        let context={pokemon:[]};
         for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
         {
                 let pokemonName=obj["pokemon"][pokemonCount]["name"];
@@ -187,22 +196,24 @@ jsonfile.readFile(FILE,(err,obj)=>{
 
         for(pokemonCount=0;pokemonCount<pokemonNameWeight.length;pokemonCount++)
         {
+            context.pokemon.push(`${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} m.`);
                 pokemonNameString+=`<li>${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.</li>`;
         }
         pokemonNameString+="</ol>";
-
-        response.send(pokemonNameString);
+        response.render(`byweight`,context);
+        //response.send(pokemonNameString);
         return;
     }
     if(request.query.options==="Height"){
         let pokemonNameHeight=[];
         let pokemonCount=0;
+        let context={pokemon:[]};
         let pokemonNameString="<ol>Pokemon Sort By Height"
         for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
         {
                 let pokemonName=obj["pokemon"][pokemonCount]["name"];
-                let pokemonWeight=obj["pokemon"][pokemonCount]["height"].replace(/[^0-9.]/g, "");
-                pokemonNameHeight.push([pokemonName, pokemonWeight]);
+                let pokemonHeight=obj["pokemon"][pokemonCount]["height"].replace(/[^0-9.]/g, "");
+                pokemonNameHeight.push([pokemonName, pokemonHeight]);
 
         }
             pokemonNameHeight.sort(function(a,b){
@@ -211,11 +222,13 @@ jsonfile.readFile(FILE,(err,obj)=>{
 
         for(pokemonCount=0;pokemonCount<pokemonNameHeight.length;pokemonCount++)
         {
+                context.pokemon.push(`${pokemonNameHeight[pokemonCount][0]}: ${pokemonNameHeight[pokemonCount][1]} m.`);
                 pokemonNameString+=`<li>${pokemonNameHeight[pokemonCount][0]}: ${pokemonNameHeight[pokemonCount][1]} m.</li>`;
         }
-        pokemonNameString+="</ol>";
-
-        response.send(pokemonNameString);
+        console.log(context);
+        //pokemonNameString+="</ol>";
+        response.render(`byheight`,context);
+       // response.send(pokemonNameString);
         return;
     }
 
