@@ -3,7 +3,14 @@ const express = require('express');
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
 
-// Init express app
+// load a cache copy
+// update only when needed
+// then write it to file
+let filePromise = jsonfile.readFile(FILE);
+let pokedex;
+filePromise
+  .then((obj) => pokedex = obj.pokemon)
+  .catch((err) => console.error(err));
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
