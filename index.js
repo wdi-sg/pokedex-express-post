@@ -81,24 +81,98 @@ app.get('/pokemon/:id', (request, response) => {
 
 app.post('/pokemon', (req, res) => {
     jsonfile.readFile(file, (err, obj) => {
-        console.log(req.body);
-        const newPokemon = {
-            id: parseInt(req.body.id),
-            num: req.body.num,
-            name: req.body.name,
-            img: req.body.img,
-            height: req.body.height,
-            weight: req.body.weight
+
+        const data = {}
+        let idOrNumExists = false;
+
+        obj.pokemon.forEach(poke => {
+            if (poke.id == req.body.id ||
+                poke.num == req.body.num) {
+
+                let lastID = obj.pokemon[0].id;
+                for (let pkm of obj.pokemon) {
+                    if (pkm.id > lastID) {
+                        lastID = pkm.id;
+                    }
+                }
+
+                data.message = `Pokemon ID or Number already exists. The last Pokemon ID and Number is ${lastID}.`;
+                idOrNumExists = true;
+                res.render('pokemon-new-form', data);
+            }
+        })
+
+
+        if (!idOrNumExists) {
+            const newPokemon = {
+                id: parseInt(req.body.id),
+                num: req.body.num,
+                name: req.body.name,
+                img: req.body.img,
+                height: req.body.height,
+                weight: req.body.weight
+            }
+
+            const emptyFieldArr = [];
+
+            for (let prop in newPokemon) {
+                if (!newPokemon[`${prop}`])
+                    emptyFieldArr.push(prop);
+            }
+
+            if (emptyFieldArr.length > 0) {
+                data.message = `Empty or invalid input at the following fields: ${emptyFieldArr.join(', ')}`;
+                res.render('pokemon-new-form', data);
+
+            } else {
+
+                obj.pokemon.push(newPokemon);
+
+                jsonfile.writeFile(file, obj, (err) => {
+                    if (err) console.log(err);
+                });
+            }
+        }
+    })
+})
+
+app.get('/sort', (req, res) => {
+
+    console.log(req.query.property);
+    jsonfile.readFile(file, (err, obj) => {
+        const selectedProp = req.query.property;
+
+        const compareSelectedProp = (a, b) => {
+
+            const valueA = a[selectedProp];
+            const valueB = b[selectedProp];
+            let comparisonVal = 0;
+
+            if (valueA > valueB) {
+                comparisonVal = 1;
+            } else if (valueA < valueB) {
+                comparisonVal = -1;
+            }
+
+            return comparisonVal;
         }
 
-        obj.pokemon.push(newPokemon);
+        obj.pokemon.sort(compareSelectedProp);
 
         jsonfile.writeFile(file, obj, (err) => {
-            if (err) console.log(err);
-        });
+            if (err) console.log(err)
+        })
+
+        res.body = "";
+
+        obj.pokemon.forEach(pokemon => {
+            res.body += `${pokemon.name}<br> ${selectedProp}: ${pokemon[selectedProp]}<br><br>`
+        })
+
+        res.send(res.body)
+
     })
 
-    res.redirect('/');
 })
 
 app.get('/reset', (req, res) => {
@@ -114,12 +188,8 @@ app.get('/reset', (req, res) => {
         );
 })
 
-app.get('/', (request, response) => {
-  response.send(`
-    <h1>POKEDEX</h1><br>
-    <a href='/pokemon/new'>Create a new Pokemon!</a><br><br>
-    <a href='/reset'>Reset to original Pokedex</a>
-    `);
+app.get('/', (req, res) => {
+    res.render('index');
 });
 
 /**

@@ -1,4 +1,4 @@
-var React = require('react');
+const React = require('react');
 
 class Form extends React.Component {
   render() {
@@ -18,6 +18,7 @@ class Form extends React.Component {
                 <br></br><br></br>
                 <input type="text" name="weight" placeholder="weight"></input>
                 <br></br><br></br>
+                <h4>{this.props.message}</h4>
                 <button type="submit">Create!</button>
             </form>
         </body>
