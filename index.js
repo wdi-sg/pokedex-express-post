@@ -51,7 +51,7 @@ app.post('/pokemon', (request, response) => {
     obj["pokemon"].push(pokemonSubmit);
 
     jsonfile.writeFile(file, obj, (err) => {
-      response.send(obj);
+      response.render("pokemon", obj);
     });
   });
 });
@@ -95,7 +95,7 @@ app.get('/pokemon/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      response.render('id', pokemon);
     }
   });
 });
@@ -103,7 +103,7 @@ app.get('/pokemon/:id', (request, response) => {
 
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.render('home');
 });
 
 /**

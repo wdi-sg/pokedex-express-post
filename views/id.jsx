@@ -5,7 +5,7 @@ class Id extends React.Component {
       <html>
         <body>
           <div>
-
+            This is { this.props.name }
           </div>
         </body>
       </html>
