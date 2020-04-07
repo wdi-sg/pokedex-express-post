@@ -3,6 +3,11 @@ const jsonfile = require('jsonfile');
 
 const FILE = 'pokedex.json';
 
+// this line below, sets a layout look to your express project
+const reactEngine = require('express-react-views').createEngine();
+
+
+
 /**
  * ===================================
  * Configurations and set up
@@ -12,23 +17,63 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+app.engine('jsx', reactEngine);
+
+// this tells express where to look for the view files
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+app.get('/pokemon/new', (request, response) => {
+  response.render('form');
+});
+
+app.post('/pokemon', (req, res) => {
+// res.send(req.body);
+    jsonfile.readFile(FILE, (err, obj) => {
+        let newobj = {
+            "id": req.body.id,
+            "num": req.body.num,
+            "name": req.body.name,
+            "img": req.body.img,
+            "height": req.body.height,
+            "weight": req.body.weight
+        }
+
+        obj.pokemon.push(newobj);
+        jsonfile.writeFile(FILE, obj, (err) => {
+        console.error(err)
+        // now look inside your json file
+        res.send("The pokemon has been added to pokedex.json!");
+        });
+    })
+})
+
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -59,7 +104,7 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send("homepage")
 });
 
 /**
