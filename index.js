@@ -71,46 +71,25 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.post("/pokemon",(request, response) => {
-        jsonfile.readFile(file,(err,obj) => {
-            console.log("error of readfile is: =============");
-            console.log(err);
-
-            const addNewPoke = {
-                id: parseInt(request.body.id),
-                num: request.body.num,
-                name: request.body.name,
-                img: request.body.img,
-                height: request.body.height,
-                weight: request.body.weight
-            }
-            obj.pokemon.push(addNewPoke);
-
-            jsonfile.writeFile(file, obj, (err)=>{
-            console.log("error of writefile is: ==========")
-            console.log(err);
-            console.log(obj.pokemon);
+    jsonfile.readFile(file,(err,obj) => {
+        console.log("error of readfile is: =============");
+        console.log(err);
+        const addNewPoke = {
+        id: parseInt(request.body.id),
+            num: request.body.num,
+            name: request.body.name,
+            img: request.body.img,
+            height: request.body.height,
+            weight: request.body.weight
+        }
+        obj.pokemon.push(addNewPoke);
+        jsonfile.writeFile(file, obj, (err)=>{
+        console.log("error of writefile is: ==========")
+        console.log(err);
+        console.log(obj.pokemon);
         })
-            /*
-            {
-              "id": 1,
-              "num": "001",
-              "name": "Bulbasaur",
-              "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-              "height": "0.71 m",
-              "weight": "6.9 kg",
-              "candy": "Bulbasaur Candy",
-              "candy_count": "25",
-              "egg": "2 km",
-              "avg_spawns": "69",
-              "spawn_time": "20:00"
-            },
-            */
-            // jsonfile.writeFile('file', obj, (err)=>{
-            // console.log("error of writefile is: ==========")
-            // console.log(err);
-            // console.log(obj);
-            // })
-        });
+    });
+    response.redirect('/');
 });
 
 // Setting up the route to render a separete site for input details
