@@ -102,7 +102,20 @@ const sendForm = function (req, res) {
 const addPokemon = function (req, res) {
   console.log("got form");
   console.log(req.body);
-  res.send("Okay we'll do something about that later");
+  let form = req.body;
+  const newMon = {
+    id: Number(form.monid),
+    num: form.monnum,
+    name: form.monname,
+    img: form.monimg,
+    height: form.monheight,
+    weight: form.monweight
+  };
+
+  pokedex.push(newMon);
+
+  writePokedex(FILE, pokedex);
+  res.send(newMon);
 };
 
 // Routes
