@@ -7,7 +7,7 @@ class Home extends React.Component {
         <body>
           <div>
             <h1>This is the home page</h1>
-            <a href="/new">Go to form</a>
+            <a href="/pokemon/new">Go to form</a>
           </div>
         </body>
       </html>

@@ -25,6 +25,21 @@ class Form extends React.Component {
                 <p>Pokemon weight:</p>
                 <input type="text" name="weight"/>
                 <br/>
+                <p>Pokemon candy:</p>
+                <input type="text" name="candy"/>
+                <br/>
+                <p>Pokemon candy count:</p>
+                <input type="text" name="candy_count"/>
+                <br/>
+                <p>Pokemon egg:</p>
+                <input type="text" name="egg"/>
+                <br/>
+                <p>Pokemon avg spawns:</p>
+                <input type="text" name="avg_spawns"/>
+                <br/>
+                <p>Pokemon spawn time:</p>
+                <input type="text" name="spawn_time"/>
+                <br/>
                 <button type="submit" value="Submit">Submit</button>
               </form>
           </div>

@@ -3,7 +3,6 @@ const jsonfile = require('jsonfile');
 
 //file name
 const FILE = 'pokedex.json';
-const tryFile = 'try.json';
 
 /**
  * ===================================
@@ -39,14 +38,47 @@ app.get('/', (request, response) => {
 });
 
 
-app.get('/new',(request, response)=>{
+app.get('/pokemon/new',(request, response)=>{
     response.render('form');
 })
 
 const savePokemon = (request, response) =>{
-  //your inputs
-   response.send(request.body);
-   console.log(request.body)
+    //your inputs
+    let newPokemon = {};
+    newPokemon['id'] = parseInt(request.body.id);
+    newPokemon['num'] = request.body.num;
+    newPokemon['name'] = request.body.name;
+    newPokemon['img'] = request.body.img;
+    newPokemon['height'] = request.body.height;
+    newPokemon['weight'] = request.body.weight;
+    newPokemon['candy'] = request.body.candy;
+    newPokemon['candy_count'] = parseInt(request.body.candy_count);
+    newPokemon['egg'] = request.body.egg;
+    newPokemon['avg_spawns'] = parseInt(request.body.avg_spawns);
+    newPokemon['spawn_time'] = request.body.spawn_time;
+
+    // response.send("id: " +parseInt(request.body.id)+"<br>"+
+    //     "num: " +request.body.num+"<br>"+
+    //     "name: " +request.body.name+"<br>"+
+    //     "img: " +request.body.img+"<br>"+
+    //     "height: " +request.body.height+"<br>"+
+    //     "weight: " +request.body.weight+"<br>"+
+    //     "candy: " +request.body.candy+"<br>"+
+    //     "candy_count: " +parseInt(request.body.candy_count)+"<br>"+
+    //     "egg: " +request.body.egg+"<br>"+
+    //     "avg_spawns: " +parseInt(request.body.avg_spawns)+"<br>"+
+    //     "spawn_time: " +request.body.spawn_time
+    // );
+
+    jsonfile.readFile(FILE, (err, obj) => {
+        response.send(newPokemon);
+        obj.pokemon.push(newPokemon);
+
+        jsonfile.writeFile(FILE, obj,  { spaces: 2 }, (err) => {
+            console.log("err");
+            // obj.pokemon.push(request.body);
+        });
+    });
 };
 
 app.post('/pokemon', savePokemon);
