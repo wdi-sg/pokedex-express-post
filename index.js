@@ -47,6 +47,27 @@ const getPokemon = function (req, res) {
     res.send(pokemon);
   }
 };
+
+const listPokemon = function (req, res)  {
+  if (req.query.sortby) {
+    let sort = req.query.sortby;
+    let sortedDex = pokedex;
+    sortedDex.sort((a, b) => (a[sort] > b[sort] ? 1 : -1));
+    res.send(sortedDex);
+  } else {
+    console.log(req.query);
+    let button = [
+      '<form method="GET" action="/">',
+      '<select id="sort" name="sortby">',
+      '<option value="name">Name</option>',
+      '<option value="weight">Weight</option>',
+      '<option value="height">Height</option>',
+      '</select>',
+      '<input type="submit"></input>',
+      '</form>'
+    ];
+    res.send(button.join('<br>'));
+  }
 };
 
 const sendForm = function (req, res) {
@@ -92,23 +113,7 @@ app.get('/pokemon/:id', getPokemon);
 
 app.post('/pokemon', addPokemon);
 
-// this could handle query strings if we have time
-app.get('/', (req, res) => {
-  if (req.query.sortby) {
-    console.log(req.query.sortby);
-    res.send("got a sort request here!");
-  } else {
-  let button = [
-    '<form method="GET" action="/">',
-    '<select id="sort">',
-    '<option>Name<input type="hidden" name="sortby" value="name"></option>',
-    '</select>',
-    '<input type="submit" value="Sort">',
-    '</form>'
-  ];
-    res.send(button.join('<br>'));
-  }
-});
+app.get('/', listPokemon);
 
 // Listen on 3000
 app.listen(3000, () => console.log('~~~ Tuning to port 3000 ~~~'));
