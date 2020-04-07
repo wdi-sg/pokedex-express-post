@@ -32,6 +32,12 @@ app.post("/pokemon", (req, res) => {
       res.status(503).send("error reading file");
       return;
     }
+    for (const property in req.body) {
+      if (req.body[property] === "") {
+        const comments = {comments: "Please complete all fields"}
+        res.render("pokemon-form", comments);
+      }
+    }
     obj["pokemon"].push(req.body);
     jsonfile.writeFile(FILE, obj, (err) => {
       if (err) {
@@ -44,8 +50,18 @@ app.post("/pokemon", (req, res) => {
   });
 });
 
+// //To display info of one pokemon at index 0
+// app.get("/pokemon/all", (req, res) => {
+//   jsonfile.readFile(FILE, (err, obj) => {
+//     // let finalIndex = obj["pokemon"].length - 1;
+//     console.log(obj.pokemon[0]);
+//     res.render("pokemon-display", obj.pokemon[0]);
+//   });
+// });
+
 app.get("/pokemon/new", (req, res) => {
-  res.render("pokemon-form");
+  const comments = {comments: ''}
+  res.render("pokemon-form", comments);
 });
 
 // app.get('/pokemon/:id', (request, response) => {

@@ -16,6 +16,9 @@ class Form extends React.Component {
               <input type="text" name="weight" placeholder="weight"/><br></br>
               <input type="submit" value="Submit"/>
             </form>
+            <p>
+              {this.props.comments}
+            </p>
           </div>
         </body>
       </html>
