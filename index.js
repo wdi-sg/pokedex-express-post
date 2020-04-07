@@ -22,6 +22,14 @@ app.use(express.urlencoded({
 }));
 
 // Functions
+const writePokedex = function (file, arr) {
+  const obj = {};
+  obj.pokemon = arr;
+  let writePromise = jsonfile.writeFile(file, obj);
+
+  writePromise.catch((err) => console.error(err));
+};
+
 const getPokemon = function (req, res) {
   let pokemon;
   let inputId = Number(req.params.id);
