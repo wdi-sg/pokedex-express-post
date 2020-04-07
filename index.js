@@ -82,16 +82,31 @@ app.get('/pokemon/:id', (request, response) => {
 });
 
 app.post('/pokemon', (request, response) => {
-    console.log(request.body);
-    const file = 'pokedex2.json';
-    jsonfile.readFile(file, (err, obj) => {
-        const pokedexArray = obj["pokemon"];
-        pokedexArray.push(request.body);
+    // Find which field in form is not field
+    let inputError = false;
+    const formInputs = Object.values(request.body);
+    for (let i=0; i<formInputs.length; i++){
+        if (formInputs[i] === "") {
+            // Find which key the input belongs to
+            const formKeys = Object.keys(request.body)
+            console.log("there is an error")
+            const data = {"errorInput" : "please input empty field", "errorKey" : formKeys[i]}
+            response.render('new', data);
+            inputError = true;
+        }
+    }
 
-        jsonfile.writeFile(file, obj, (err) => {
-            response.send(request.body);
+    if (!inputError) {
+        const file = 'pokedex2.json';
+        jsonfile.readFile(file, (err, obj) => {
+            const pokedexArray = obj["pokemon"];
+            pokedexArray.push(request.body);
+
+            jsonfile.writeFile(file, obj, (err) => {
+                response.send(request.body);
+            })
         })
-    })
+    }
 })
 
 

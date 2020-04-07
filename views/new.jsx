@@ -7,6 +7,7 @@ class New extends React.Component{
             <body>
               <div>
                 <form method="POST" action="/pokemon">
+                  <p>You forgot to fill in {this.props.errorKey} field</p>
                   <input type="text" name="id" placeholder="id"></input><br></br>
                   <input type="text" name="num" placeholder="num"></input><br></br>
                   <input type="text" name="name" placeholder="name"></input><br></br>
