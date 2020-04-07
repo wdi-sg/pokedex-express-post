@@ -1,15 +1,11 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 const FILE = 'pokedex.json';
-
-
-
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
-
 // Init express app
 const app = express();
 const reactEngine = require('express-react-views').createEngine();
@@ -26,40 +22,44 @@ app.use(express.urlencoded({
  * Routes
  * ===================================
  */
-
+//THE INPUT FORM PAGE.
 app.get(`/pokemon/new`, (req,res) => {
-
-  res.render('form.jsx')
-
+  res.render('form')
 } )
 
-
+//POSTING TO THE POKEMON ROUTE
 app.post(`/pokemon`, (req,res) => {
 
+  const newObj = req.body
+  const inputKeys = Object.keys(newObj)
+
+  for (let i=0; i < inputKeys.length; i++) {
+    let currentKey = inputKeys[i]
+    if (newObj[currentKey]==="") {
+      const data = {
+        error: `There was an error with your ${currentKey} input.`
+      }
+      return res.render('form', data)
+
+    }
+  }
+
   jsonfile.readFile(FILE, (err, obj) => {
-
     const array = obj.pokemon
-
     if( err ){
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
       return;
     }
-
     array.push(req.body);
-
     jsonfile.writeFile( FILE, obj, (err) => {
       if (err) {
         console.log(`error. ${err}`);
       }
       res.send(array[array.length-1])
     })
-
   })
-
 } )
-
-
 
 app.get('/pokemon/:id', (request, response) => {
 

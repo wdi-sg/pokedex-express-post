@@ -5,6 +5,7 @@ class Form extends React.Component {
       <html lang="en" dir="ltr">
         <body>
         <h1>Submit a Pokemon!</h1>
+        <p style={{color: 'red'}}>{this.props.error}</p>
           <form method="POST" action="/pokemon">
             <input type="number" name="id" placeholder="id"/ >
             <input type="number" name="num" placeholder="num"/ >
