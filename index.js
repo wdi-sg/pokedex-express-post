@@ -33,23 +33,20 @@ const writePokedex = function (file, arr) {
 const getPokemon = function (req, res) {
   let pokemon;
   let inputId = Number(req.params.id);
-  let filePromise = jsonfile.readFile(FILE);
 
-  filePromise
-    .then(obj => {
-      for(let mon of obj.pokemon){
-        if(mon.id === inputId ){
-          pokemon = mon;
-        }
-      }
-    if (pokemon === undefined) {
-      // send 404 back
-      res.status(404);
-      res.send("not found");
-    } else {
-      res.send(pokemon);
+  for (let mon of pokedex) {
+    if(mon.id === inputId ) {
+      pokemon = mon;
     }
-  });
+  }
+  if (pokemon === undefined) {
+    // send 404 back
+    res.status(404);
+    res.send("not found");
+  } else {
+    res.send(pokemon);
+  }
+};
 };
 
 const sendForm = function (req, res) {
