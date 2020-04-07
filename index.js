@@ -12,23 +12,74 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+// tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+app.post('/newpokemon', function(request, response) {
+
+  //debug code (output request body)
+  console.log(request.body);
+jsonfile.readFile(FILE,(err,obj)=>{
+
+    console.log(typeof request.body);
+        console.log(obj["pokemon"].length);
+    obj["pokemon"].push(request.body);
+
+    console.log(obj["pokemon"].length);
+      jsonfile.writeFile(FILE, obj, (err) => {
+    console.error(err)
+
+    // now look inside your json file
+    response.send(obj);
+  });
+
+
+});
+
+  // save the request body
+
+});
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+app.get('/pokemon/new', (request, response) => {
+  // render a template form here
+  response.send(`<form method="POST" action="/newpokemon">
+  <span>Pokemon ID: </span>
+  <input type="number" name="id">
+  <span><br><br>Num: </span>
+  <input type="text" name="num">
+  <span><br><br>Name: </span>
+  <input type="text" name="name">
+    <span><br><br>Img: </span>
+  <input type="text" name="img">
+  <span><br><br>Height: </span>
+  <input type="text" name="height">
+  <span><br><br>Weight: </span>
+  <input type="text" name="weight">
+  <input type="submit" value="Submit">
+</form>`);
+});
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -58,9 +109,19 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+
+
 app.get('/', (request, response) => {
   response.send("yay");
 });
+/**
+ * ===================================
+ * Creating a form
+ * ===================================
+ */
+
+
+
 
 /**
  * ===================================
