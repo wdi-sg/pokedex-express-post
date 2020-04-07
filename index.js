@@ -40,19 +40,25 @@ app.get('/', (req, res) => {
  */
 app.post('/pokemon', (request, response) => {
   jsonfile.readFile(file, (err, obj) =>{
-    let pokemonSubmit = {
-      "id": request.body.id,
-      "num": parseInt(request.body.num),
-      "name": request.body.name,
-      "img": request.body.img,
-      "height": request.body.height,
-      "weight": request.body.weight
-    }
-    obj["pokemon"].push(pokemonSubmit);
+    if(request.body.id === "" || request.body.num === "" || request.body.name === "" || request.body.img === "" || request.body.height === "" || request.body.weight === ""){
+      let error = { "error": "Form consists of empty input! Please complete the form."
+      }
+      response.render("new", error);
+    }else{
+      let pokemonSubmit = {
+        "id": request.body.id,
+        "num": parseInt(request.body.num),
+        "name": request.body.name,
+        "img": request.body.img,
+        "height": request.body.height,
+        "weight": request.body.weight
+      }
+      obj["pokemon"].push(pokemonSubmit);
 
-    jsonfile.writeFile(file, obj, (err) => {
-      response.render("pokemon", obj);
-    });
+      jsonfile.writeFile(file, obj, (err) => {
+        response.render("pokemon", obj);
+      });
+    }
   });
 });
 

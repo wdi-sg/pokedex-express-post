@@ -21,6 +21,7 @@ class New extends React.Component {
             <input type="submit" value="submit"></input>
             </form>
           </div>
+          {this.props.error}
         </body>
       </html>
     );
