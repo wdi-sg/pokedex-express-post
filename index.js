@@ -1,7 +1,8 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
+const file = 'pokedex.json';
+const file2 = 'pokedex-2.json';
 
 /**
  * ===================================
@@ -12,6 +13,26 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+
+
+//ReactViews
+
+const reactEngine = require('express-react-views').createEngine();
+
+app.use(express.urlencoded({
+  extended: true
+}));
+
+app.engine('jsx', reactEngine);
+
+app.set('views', __dirname + '/views');
+
+app.set('view engine', 'jsx');
+
+app.get('/pokemon/new', (req, res) => {
+    res.render('pokemon-new-form');
+});
+
 /**
  * ===================================
  * Routes
@@ -21,14 +42,14 @@ const app = express();
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    
+  jsonfile.readFile(file, (err, obj) => {
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -58,8 +79,47 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+app.post('/pokemon', (req, res) => {
+    jsonfile.readFile(file, (err, obj) => {
+        console.log(req.body);
+        const newPokemon = {
+            id: parseInt(req.body.id),
+            num: req.body.num,
+            name: req.body.name,
+            img: req.body.img,
+            height: req.body.height,
+            weight: req.body.weight
+        }
+
+        obj.pokemon.push(newPokemon);
+
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) console.log(err);
+        });
+    })
+
+    res.redirect('/');
+})
+
+app.get('/reset', (req, res) => {
+    jsonfile.readFile(file2, (err, obj) => {
+        jsonfile.writeFile(file, obj, (err) => {
+            if (err) console.log(err)
+        })
+    })
+
+    res.send(
+        `<h2>Pokedex Reset!</h2><br>
+        <a href="/">Back to Home</a>`
+        );
+})
+
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send(`
+    <h1>POKEDEX</h1><br>
+    <a href='/pokemon/new'>Create a new Pokemon!</a><br><br>
+    <a href='/reset'>Reset to original Pokedex</a>
+    `);
 });
 
 /**
