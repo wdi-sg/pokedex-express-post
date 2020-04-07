@@ -63,6 +63,9 @@ const sendForm = function (req, res) {
 };
 
 const addPokemon = function (req, res) {
+  console.log("got form");
+  console.log(req.body);
+  res.send("Okay we'll do something about that later");
 };
 
 // Routes
