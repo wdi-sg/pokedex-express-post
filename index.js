@@ -26,6 +26,8 @@ app.use(
 
 app.post("/pokemon", (req, res) => {
   console.log(req.body);
+  let reqPokemon = req.body;
+  reqPokemon.id = parseInt(reqPokemon.id);
   jsonfile.readFile(FILE, (err, obj) => {
     if (err) {
       console.log("error with json read file:", err);
@@ -34,11 +36,33 @@ app.post("/pokemon", (req, res) => {
     }
     for (const property in req.body) {
       if (req.body[property] === "") {
-        const comments = {comments: "Please complete all fields"}
+        const comments = { comments: "Please complete all fields" };
         res.render("pokemon-form", comments);
+        return;
       }
     }
+    let allPokemon = obj.pokemon;
+    let duplicate = false;
+    for (let index = 0; index < allPokemon.length; index++) {
+      const element = allPokemon[index];
+      const id = element.id;
+      const name = element.name;
+      const number = element.num;
+      if (id === reqPokemon.id || name === reqPokemon.name || number === reqPokemon.num) {
+        duplicate = true;
+        break;
+      }
+    }
+    if (duplicate) {
+      const comments = { comments: "Error: Duplicate found in name, id or number" };
+      res.render("pokemon-form", comments);
+      return;
+    }
+    // req.body.id = obj.lastKey;
+    // let lastKey = req.body.id;
+    // lastKey += lastKey;
     obj["pokemon"].push(req.body);
+    //obj.lastKey++;
     jsonfile.writeFile(FILE, obj, (err) => {
       if (err) {
         console.log("error with json write file:", err);
@@ -50,6 +74,23 @@ app.post("/pokemon", (req, res) => {
   });
 });
 
+// app.get("/pokemon/:query", (req, res) => {
+//   if (req.params.query === "?sortby=name") {
+
+//   }
+// });
+
+app.get("/pokemon/new", (req, res) => {
+  const comments = { comments: "" };
+  res.render("pokemon-form", comments);
+});
+
+app.get("/", (request, response) => {
+  response.render("home");
+});
+
+app.listen(3000, () => console.log("~~~ Tuning in to the waves of port 3000 ~~~"));
+
 // //To display info of one pokemon at index 0
 // app.get("/pokemon/all", (req, res) => {
 //   jsonfile.readFile(FILE, (err, obj) => {
@@ -58,11 +99,6 @@ app.post("/pokemon", (req, res) => {
 //     res.render("pokemon-display", obj.pokemon[0]);
 //   });
 // });
-
-app.get("/pokemon/new", (req, res) => {
-  const comments = {comments: ''}
-  res.render("pokemon-form", comments);
-});
 
 // app.get('/pokemon/:id', (request, response) => {
 
@@ -103,9 +139,3 @@ app.get("/pokemon/new", (req, res) => {
 //     }
 //   });
 // });
-
-app.get("/", (request, response) => {
-  response.send("Site up and running!");
-});
-
-app.listen(3000, () => console.log("~~~ Tuning in to the waves of port 3000 ~~~"));
