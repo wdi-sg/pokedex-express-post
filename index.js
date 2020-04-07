@@ -1,7 +1,7 @@
 const express = require('express');
 const jsonfile = require('jsonfile');
 
-const FILE = 'pokedex.json';
+const file = 'pokedex.json';
 
 /**
  * ===================================
@@ -9,8 +9,16 @@ const FILE = 'pokedex.json';
  * ===================================
  */
 
-// Init express app
+// Init and set up of express app
 const app = express();
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 /**
  * ===================================
@@ -18,17 +26,21 @@ const app = express();
  * ===================================
  */
 
+app.get("/pokemon/new", (request, response) =>{
+    response.render('new-pokemon-form');
+});
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-    
+  jsonfile.readFile(file, (err, obj) => {
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
@@ -57,6 +69,52 @@ app.get('/pokemon/:id', (request, response) => {
     }
   });
 });
+
+app.post("/pokemon",(request, response) => {
+        jsonfile.readFile(file,(err,obj) => {
+            console.log("error of readfile is: =============");
+            console.log(err);
+
+            const addNewPoke = {
+                id: parseInt(request.body.id),
+                num: request.body.num,
+                name: request.body.name,
+                img: request.body.img,
+                height: request.body.height,
+                weight: request.body.weight
+            }
+            obj.pokemon.push(addNewPoke);
+
+            jsonfile.writeFile(file, obj, (err)=>{
+            console.log("error of writefile is: ==========")
+            console.log(err);
+            console.log(obj.pokemon);
+        })
+            /*
+            {
+              "id": 1,
+              "num": "001",
+              "name": "Bulbasaur",
+              "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
+              "height": "0.71 m",
+              "weight": "6.9 kg",
+              "candy": "Bulbasaur Candy",
+              "candy_count": "25",
+              "egg": "2 km",
+              "avg_spawns": "69",
+              "spawn_time": "20:00"
+            },
+            */
+            // jsonfile.writeFile('file', obj, (err)=>{
+            // console.log("error of writefile is: ==========")
+            // console.log(err);
+            // console.log(obj);
+            // })
+        });
+});
+
+// Setting up the route to render a separete site for input details
+
 
 app.get('/', (request, response) => {
   response.send("yay");
