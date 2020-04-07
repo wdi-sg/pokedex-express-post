@@ -1881,6 +1881,19 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "blablacat",
+      "img": "https://cdn.shopify.com/s/files/1/2355/9697/products/ALT-Wooly2_110x110@2x.jpg?v=1519759173",
+      "height": "0.3 m",
+      "weight": "10 g",
+      "candy": "Sheepy Candy",
+      "candy_count": 3,
+      "egg": "Not in Eggs",
+      "avg_spawns": 5,
+      "spawn_time": "06:18"
     }
   ]
 }

@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Form extends React.Component {
+class Editform extends React.Component {
   render() {
     return (
       <html>
@@ -49,4 +49,4 @@ class Form extends React.Component {
   }
 }
 
-module.exports = Form;
+module.exports = Editform;
