@@ -35,6 +35,31 @@ const getPokemon = function (req, res) {
 
 const sendForm = function (req, res) {
   //id, num, name, img, height, and weight
+  let formFields = [
+    '<form method="POST" action="/pokemon">',
+    '<label for="poke-id">Pokemon ID</label>',
+    '<input type="text" id="poke-id" name="poke-id">',
+
+    '<label for="poke-num">Pokemon Number</label>',
+    '<input type="text" num="poke-num" name="poke-num">',
+
+    '<label for="poke-name">Pokemon Name</label>',
+    '<input type="text" name="poke-name" name="poke-name">',
+
+    '<label for="poke-img">Pokemon Image</label>',
+    '<input type="url" img="poke-img" name="poke-img">',
+
+    '<label for="poke-height">Pokemon Height</label>',
+    '<input type="text" height="poke-height" name="poke-height">',
+
+    '<label for="poke-weight">Pokemon Weight</label>',
+    '<input type="text" weight="poke-weight" name="poke-weight">',
+
+    '<input type="submit" value="Submit">',
+    '</form>'
+  ];
+
+  res.send(formFields.join('<br>'));
 };
 
 const addPokemon = function (req, res) {
