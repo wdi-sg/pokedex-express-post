@@ -33,6 +33,18 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
+app.get('/pokemon/photos/', (request, response) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        let pokemonPhotosList = [];
+        for (let i = 0; i < obj.pokemon.length; i++) {
+            pokemonPhotosList.push(obj.pokemon[i].img);
+        }
+        response.send(pokemonPhotosList);
+    })
+});
+
 app.post('/pokemon/new', (request, response) => {
     //debug code (output request body)
     console.log(request.body);
