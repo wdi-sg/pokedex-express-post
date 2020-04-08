@@ -107,7 +107,6 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-      // response.send(pokemon);
       response.render('profile', pokemon);
     }
   });
@@ -142,7 +141,6 @@ app.post('/pokemon/:id', (request, response) => {
 
         jsonfile.writeFile(FILE, obj, { spaces: 2 }, (err) => {
             console.log("err");
-            // obj.pokemon.push(request.body);
         });
     });
 });
