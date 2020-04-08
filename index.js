@@ -60,20 +60,29 @@ function handleIfDuplicates(hasDuplicate,next,res) {
   }
 }
 
+function getInvalidInputFields(id, num, name, img, height, weight ) {
+  const errors = {};
+  const params = {id, num, name, img, height, weight};
+  for (const key in params) {
+    if (!params[key]) {
+      errors[key] = `${key} is missing`
+    }
+  }
+  return errors
+}
+
 function addPokemon(req, res) {
   const {id, num, name, img, height, weight} = req.body;
-  const params = {id,num, name, img, height,weight};
-  const errors = {};
-  for (const key in params) {
-   if (!params[key]) {
-     errors[key] = `${key} is missing`
-   }
-   console.log(errors);
+  const errors = getInvalidInputFields();
+  if (errors.length) {
+    console.log(errors);
+    return res.render('form', errors);
   }
-
-  getJson()
-    .then(data =>_addPokemon(data, id, num, name, img, height, weight))
-    .then(writeJson)
+  else {
+    getJson()
+      .then(data =>_addPokemon(data, id, num, name, img, height, weight))
+      .then(writeJson)
+  }
 
 }
 
