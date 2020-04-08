@@ -142,6 +142,8 @@ app.post('/pokemon', (req, res) => {
                 jsonfile.writeFile(file, obj, (err) => {
                     if (err) console.log(err);
                 });
+
+                res.redirect(`/pokemon/${newPokemon.id}`);
             }
         }
     })
@@ -203,3 +205,5 @@ app.use(express.static(path.join(__dirname, 'public')));
  * ===================================
  */
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
+
+//CUTE DOG: https://static.businessinsider.sg/2019/12/12/5df126b679d7570ad2044f3e.png
