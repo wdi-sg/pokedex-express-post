@@ -2,14 +2,13 @@ var React = require("react");
 
 class Display extends React.Component {
   render() {
-    let pokemon = this.props;
+    let pokemon = this.props.pokemon;
     return (
       <div>
-        <h1>Pokemon Data</h1>
-        <h2>Id: {pokemon.id}</h2>
-        <h2>Name: {pokemon.name}</h2>
-        <h2>Height: {pokemon.height}</h2>
-        <h2>Weight: {pokemon.weight}</h2>
+        <p>Id: {pokemon.id}</p>
+        <p>Name: {pokemon.name}</p>
+        <p>Height: {pokemon.height}</p>
+        <p>Weight: {pokemon.weight}</p>
         <img src={pokemon.img}></img>
       </div>
     );
