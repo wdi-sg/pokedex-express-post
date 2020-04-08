@@ -2,7 +2,7 @@ var React = require('react');
 class pokemon extends React.Component {
   render() {
 const type=this.props.type.map(type=>{
-    return <li  style={{display: "inline", margin:"0px 80px"}} >{type}</li>
+    return <li  style={{display: "inline", margin:"0px 80px"}} ><a href={"/pokemon/type?options="+type}>{type}</a></li>
 });
     return (
       <html>
