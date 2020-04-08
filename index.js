@@ -20,7 +20,68 @@ app.use(
 //----------------------------
 //----------------------------
 
-//Submitting a new pokemon 
+//Sorting pokemon depending on user selection
+app.get("/pokemon/sort", (request, response) => {
+  jsonfile.readFile(FILE, (err, obj) => {
+    if (err) {
+      return;
+    }
+    //SORT BY NAME *****
+    else if (request.query.options === "sortbyname") {
+      let nameArr = obj.pokemon.map((element) => {
+        return element.name.toUpperCase();
+      });
+      nameArr.sort();
+      let sortedNameObj = {
+        nameArray: nameArr,
+      };
+      response.render("sort-name", sortedNameObj);
+    }
+    //SORT BY ASCENDING WEIGHT *****
+    else if (request.query.options === "sortbyweight") {
+      let nameWeightArr = obj.pokemon.map((element) => {
+        let weightArr = element.weight.split(" ");
+        let weightNum = parseFloat(weightArr[0]);
+        let newObj = {
+          Name: element.name.toUpperCase(),
+          Weight: weightNum,
+        };
+        return newObj;
+      });
+      // console.log(nameWeightArr);
+      nameWeightArr.sort((a, b) => {
+        return a.Weight - b.Weight;
+      });
+      // console.log(nameWeightArr);
+      let sortedWeightObj = {
+        arr: nameWeightArr,
+      };
+      response.render("sort-weight", sortedWeightObj);
+      //SORT BY ASCENDING HEIGHT *****
+    } else if (request.query.options === "sortbyheight") {
+      let nameHeightArr = obj.pokemon.map((element) => {
+        let heightArr = element.height.split(" ");
+        let heightNum = parseFloat(heightArr[0]);
+        let newObj = {
+          Name: element.name.toUpperCase(),
+          Height: heightNum,
+        };
+        return newObj;
+      });
+      // console.log(nameHeightArr);
+      nameHeightArr.sort((a, b) => {
+        return a.Height - b.Height;
+      });
+      // console.log(nameHeightArr);
+      let sortedHeightObj = {
+        arr: nameHeightArr,
+      };
+      response.render("sort-height", sortedHeightObj);
+    }
+  });
+});
+
+//Submitting a new pokemon
 app.post("/pokemon/new", (req, res) => {
   let newPokemonObj = req.body;
   jsonfile.readFile(FILE, (err, obj) => {
@@ -50,7 +111,7 @@ app.post("/pokemon/new", (req, res) => {
       res.render("pokemon-form", comments);
       return;
     }
-    //Assigns correct Id and Number to new pokemon object before pushing it into the array 
+    //Assigns correct Id and Number to new pokemon object before pushing it into the array
     obj.lastKey = pokemonArr.length;
     newPokemonObj.id = obj.lastKey + 1;
     newPokemonObj.num = newPokemonObj.id.toString();
@@ -60,7 +121,7 @@ app.post("/pokemon/new", (req, res) => {
         return;
       }
     });
-    //Redirect to display newly added pokemon 
+    //Redirect to display newly added pokemon
     res.redirect("http://127.0.0.1:3000/pokemon/display-new");
   });
 });
@@ -79,7 +140,7 @@ app.get("/pokemon/display-new", (req, res) => {
   });
 });
 
-//Displays all pokemon 
+//Displays all pokemon
 app.get("/pokemon", (req, res) => {
   jsonfile.readFile(FILE, (err, obj) => {
     res.render("pokemon-display-all", obj);
