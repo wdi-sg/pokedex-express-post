@@ -1,5 +1,5 @@
 var React = require('react');
-class Pokemon extends React.Component {
+class Pokemonhome extends React.Component {
   render() {
     return (
       <html>
@@ -13,4 +13,4 @@ class Pokemon extends React.Component {
   }
 }
 
-module.exports = Pokemon;
+module.exports = Pokemonhome;

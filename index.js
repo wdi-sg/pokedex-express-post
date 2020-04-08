@@ -29,8 +29,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 app.get('/', (req, res) => {
-  // running this will let express to run home.handlebars file in your views folder
-  res.render('home')
+  jsonfile.readFile(file, (err, obj) =>{
+    let allPokemonData = obj;
+    res.render('home', allPokemonData)
+  });
 })
 
 /**
@@ -75,7 +77,7 @@ app.get('/pokemon/:id', (request, response) => {
     if( err ){
 
       console.log("error with json read file:",err);
-      response.status(503).send("error reading filee");
+      response.status(503).send("error reading file");
       return;
     }
     // obj is the object from the pokedex json file
@@ -104,12 +106,6 @@ app.get('/pokemon/:id', (request, response) => {
       response.render('id', pokemon);
     }
   });
-});
-
-
-
-app.get('/', (request, response) => {
-  response.render('home');
 });
 
 /**
