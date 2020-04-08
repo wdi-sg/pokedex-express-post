@@ -89,8 +89,38 @@ const sortPokemon = function (sortby) {
   case "height":
     magicSort(sortedDex, order, e => Number(e.height.slice(0, -3)));
     break;
+  case "candy":
+    magicSort(sortedDex, order, e => e.candy);
+    break;
+  case "candy_count":
+    magicSort(sortedDex, order, e => e.candy_count ? Number(e.candy_count) : "N/A");
+    break;
+  case "avg_spawns":
+    magicSort(sortedDex, order, e => Number(e.avg_spawns));
+    break;
+  case "spawn_time":
+    magicSort(sortedDex, order, e => {
+      if (e.spawn_time.includes("N")) {
+        console.log(e);
+        return 9999;
+      } else {
+        let min = Number(e.spawn_time.slice(0, 2));
+        let sec = Number(e.spawn_time.slice(3, 5));
+        return (min * 60 + sec);
+      }
+    });
+    break;
+  case "egg":
+    magicSort(sortedDex, order, e => {
+      if (e.egg.includes("Not")) {
+        return 9999;
+      } else {
+        return (Number(e.egg.slice(0, -3)));
+      }
+    });
+    break;
   default:
-    magicSort(sortedDex, order, e => e.id);
+    magicSort(sortedDex, order, e => Number(e.num));
   }
   return sortedDex;
 };
@@ -99,6 +129,10 @@ const listPokemon = function (req, res)  {
   let dexObj = {dex: pokedex};
   if (req.query.sortby) {
     dexObj.dex = sortPokemon(req.query.sortby);
+    dexObj.sort =
+      req.query.sortby.includes("desc") ?
+      req.query.sortby.slice(0, -4) :
+      req.query.sortby;
   }
   res.render('list', dexObj);
 };
