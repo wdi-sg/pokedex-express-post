@@ -28,6 +28,10 @@ class List extends React.Component {
           </div>
 
           <div>
+            <a href="../pokemon/new">Add a Pokemon!</a>
+          </div>
+
+          <div>
             <ul>
               {pokelist}
             </ul>
