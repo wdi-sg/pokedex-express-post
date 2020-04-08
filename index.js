@@ -34,80 +34,49 @@ app.use(express.urlencoded({
  * ===================================
  */
 
-app.get('/pokemon/:id', (request, response) => {
+// app.get('/pokemon/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+//   // get json from specified file
+//   jsonfile.readFile(FILE, (err, obj) => {
 
-    // check to make sure the file was properly read
-    if( err ){
+//     // check to make sure the file was properly read
+//     if( err ){
 
-      console.log("error with json read file:",err);
-      response.status(503).send("error reading filee");
-      return;
-    }
+//       console.log("error with json read file:",err);
+//       response.status(503).send("error reading filee");
+//       return;
+//     }
 
-    if (request.params.id == "new") {
-        response.render('new');
-    }
+//     else {
+//         // obj is the object from the pokedex json file
+//         // extract input data from request
+//         let inputId = parseInt( request.params.id );
 
-    else {
-        // obj is the object from the pokedex json file
-        // extract input data from request
-        let inputId = parseInt( request.params.id );
+//         var pokemon;
 
-        var pokemon;
+//         // find pokemon by id from the pokedex json file
+//         for( let i=0; i<obj.pokemon.length; i++ ){
 
-        // find pokemon by id from the pokedex json file
-        for( let i=0; i<obj.pokemon.length; i++ ){
+//           let currentPokemon = obj.pokemon[i];
 
-          let currentPokemon = obj.pokemon[i];
+//           if( currentPokemon.id === inputId ){
+//             pokemon = currentPokemon;
+//           }
+//         }
 
-          if( currentPokemon.id === inputId ){
-            pokemon = currentPokemon;
-          }
-        }
+//         if (pokemon === undefined) {
 
-        if (pokemon === undefined) {
+//           // send 404 back
+//           response.status(404);
+//           response.send("not found");
+//         } else {
 
-          // send 404 back
-          response.status(404);
-          response.send("not found");
-        } else {
+//           response.send(pokemon);
+//         }
+//     }
+//   });
+// });
 
-          response.send(pokemon);
-        }
-    }
-  });
-});
-
-app.post('/pokemon', (request, response) => {
-    // Find which field in form is not field
-    let inputError = false;
-    const formInputs = Object.values(request.body);
-    for (let i=0; i<formInputs.length; i++){
-        if (formInputs[i] === "") {
-            // Find which key the input belongs to
-            const formKeys = Object.keys(request.body)
-            console.log("there is an error")
-            const data = {"errorInput" : "please input empty field", "errorKey" : formKeys[i]}
-            response.render('new', data);
-            inputError = true;
-        }
-    }
-
-    if (!inputError) {
-        const file = 'pokedex2.json';
-        jsonfile.readFile(file, (err, obj) => {
-            const pokedexArray = obj["pokemon"];
-            pokedexArray.push(request.body);
-
-            jsonfile.writeFile(file, obj, (err) => {
-                response.send(request.body);
-            })
-        })
-    }
-})
 
 app.get('/singlepokemon/:pokemon', (request, response) => {
     const pokemonName = request.params.pokemon;
@@ -116,11 +85,14 @@ app.get('/singlepokemon/:pokemon', (request, response) => {
     jsonfile.readFile(file, (err, obj) => {
         let pokemonDetails;
 
+
         for (var i = 0; i < obj.pokemon.length; i++) {
             if (obj.pokemon[i].name.toLowerCase() === pokemonName){
+
                 pokemonDetails = obj.pokemon[i];
             }
         }
+
         const data = {"pokemonDetails" : pokemonDetails}
 
         response.render('singlepokemon', data);
@@ -149,22 +121,55 @@ app.get('/sortby', (request, response) => {
     })
 })
 
+app.get('/new', (request, response) => {
+    console.log("going to new page")
+    response.render('new');
+});
+
+app.post('/newpokemon', (request, response) => {
+    // Find which field in form is not field
+    let inputError = false;
+    const formInputs = Object.values(request.body);
+    for (let i=0; i<formInputs.length; i++){
+        if (formInputs[i] === "") {
+            // Find which key the input belongs to
+            const formKeys = Object.keys(request.body)
+            console.log("there is an error")
+            const data = {"errorInput" : "please input empty field", "errorKey" : formKeys[i]}
+            response.render('new', data);
+            inputError = true;
+        }
+    }
+
+    if (!inputError) {
+        const file = 'pokedex2.json';
+        jsonfile.readFile(file, (err, obj) => {
+            const pokedexArray = obj["pokemon"];
+            pokedexArray.push(request.body);
+
+            jsonfile.writeFile(file, obj, (err) => {
+                response.send(request.body);
+            })
+        })
+    }
+})
+
 
 app.get('/', (request, response) => {
 
     const file = "pokedex2.json";
+
     jsonfile.readFile(file, (err, obj) => {
         const pokedexArray = obj["pokemon"];
         const pokemonNameArray = [];
-
         for (var i = 0; i < pokedexArray.length; i++) {
-            pokemonNameArray.push(pokedexArray[i].name)
+            pokemonNameArray.push(pokedexArray[i].name.toLowerCase())
         }
+        let data = {};
+        data.pokemons = {"pokemonNameArray" : pokemonNameArray};
 
-        const data = {"pokemonNameArray" : pokemonNameArray};
 
-
-        response.render("home", data);
+        response.render("home", data.pokemons);
     });
 })
 
