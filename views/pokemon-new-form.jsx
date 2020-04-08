@@ -20,19 +20,19 @@ class Form extends React.Component {
                     </div>
                     <form method="POST" action="/pokemon" className="create-form">
                         <h2 className="create-form__header">Create a New Pokemon</h2>
-                        <input type="text" name="id" placeholder="id"></input>
+                        <input type="number" name="id" placeholder="id" min="0" max="9999"></input>
                         <br></br>
-                        <input type="text" name="num" placeholder="num"></input>
+                        <input type="number" name="num" placeholder="num" min="0" max="9999"></input>
                         <br></br>
-                        <input type="text" name="name" placeholder="name"></input>
+                        <input type="text" name="name" placeholder="name" maxlength="25"></input>
                         <br></br>
                         <input type="text" name="img" placeholder="img"></input>
                         <br></br>
-                        <input type="text" name="height" placeholder="height"></input>
+                        <input type="number" name="height" placeholder="height" min="0" max="9999"></input>
                         <br></br>
-                        <input type="text" name="weight" placeholder="weight"></input>
+                        <input type="number" name="weight" placeholder="weight" min="0" max="9999"></input>
                         <br></br>
-                        <input type="text" name="type" placeholder="type"></input>
+                        <input type="text" name="type" placeholder="type(s) - separate with a space"></input>
                         <br></br>
                         <h4>{this.props.message}</h4>
                         <button type="submit">Create!</button>
