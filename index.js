@@ -24,6 +24,56 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+app.post('/pokemon', function(request, response) {
+
+  //debug code (output request body)
+  console.log(request.body);
+
+
+  // save the request body
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+    // check to make sure the file was properly read
+    obj.pokemon.push(request.body)
+        jsonfile.writeFile('pokedex.json',obj, (err) => {
+        console.error(err)
+
+    // now look inside your json file
+        response.send(request.body);
+    });
+    });
+});
+//cannot get it to pokemon/new --> might be due to parsing of the :new.
+// app.get('/pokemon/:new', (request, response)
+//temporarily changed to pokeform
+app.get('/pokemon/new', (request, response) => {
+      response.send(`<form method="POST" action="/pokemon">
+      Pokemon Name:
+<div>
+      <input type="text" placeholder= "ID" name=" id">
+</div>
+      <input type="text" placeholder= "Number" name=" num">
+<div>
+      <input type="text" placeholder= "Name" name=" name">
+</div>
+      <input type="text" placeholder= "Image" name=" img">
+<div>
+      <input type="text" placeholder= "Height" name=" height">
+</div>
+<div>
+      <input type="text" placeholder= "Weight" name=" weight">
+      <input type="submit" value="Submit New Pokemon">
+</div>
+  </form>`)
+});
+
+  // get json from specified file
+  jsonfile.readFile(FILE, (err, obj) => {
+
+    // check to make sure the file was properly read
+});
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -63,6 +113,9 @@ app.get('/pokemon/:id', (request, response) => {
     }
   });
 });
+
+
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -103,53 +156,7 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
-app.post('/newpokemon', function(request, response) {
 
-  //debug code (output request body)
-  console.log(request.body);
-
-
-  // save the request body
-  jsonfile.writeFile('data.json', request.body, (err) => {
-    console.error(err)
-
-    // now look inside your json file
-    response.send(request.body);
-  });
-});
-
-//cannot get it to pokemon/new --> might be due to parsing of the :new.
-// app.get('/pokemon/:new', (request, response)
-//temporarily changed to pokeform
-app.get('/pokeform', (request, response) => {
-      response.send(`<form method="POST" action="/newpokemon">
-      Pokemon Name:
-
-      <input type="text" name="Pokemon ID">
-      <input type="submit" value="Submit Pokemon ID">
-
-      <input type="text" name="Pokemon Number">
-      <input type="submit" value="Submit Pokemon Number">
-
-      <input type="text" name="Pokemon Name">
-      <input type="submit" value="Submit Pokemon Name">
-
-      <input type="text" name="Pokemon Image">
-      <input type="submit" value="Submit Pokemon Image URL">
-
-      <input type="text" name="Pokemon Height">
-      <input type="submit" value="Submit Pokemon Height">
-
-      <input type="text" name="Pokemon Weight">
-      <input type="submit" value="Submit Pokemon Weight">
-  </form>`)
-});
-
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
-
-    // check to make sure the file was properly read
-});
 
 app.get('/', (request, response) => {
   response.send("yay");
