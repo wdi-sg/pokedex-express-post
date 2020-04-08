@@ -100,21 +100,25 @@ app.get('/pokemon/new', (req, res) => {
 app.get('/test',(req,res)=>{
     jsonfile.readFile(FILE,(err,obj)=>{
 
-    let pokemonType=[];
+    let pokemonName=[];
     const data={};
-        let pokemonCount=0;
-        let context={pokemon:[]};
-        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
-        {
-                pokemonType.push(obj["pokemon"][pokemonCount]["type"]);
-        }
-        let typing=pokemonType.flat(Infinity);
-        const uniqueType=new Set(typing);
-        const uniqueArray=[...uniqueType];
-   // data.pokemon=pokemonNames;
-    //res.render('home',data);
-    res.send(uniqueArray);
-    //res.send('testing done')
+    pokemonName=obj["pokemon"];
+    function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const pokemonNameA = a.name;
+  const pokemonNameB = b.name;
+
+  let comparison = 0;
+  if (pokemonNameA > pokemonNameB) {
+    comparison = 1;
+  } else if (pokemonNameA < pokemonNameB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+    let rearrangedName=pokemonName.sort(compare)
+    //res.send(rearrangedName)
+    res.send('testing done')
                 });
 
 });
@@ -248,6 +252,31 @@ jsonfile.readFile(FILE,(err,obj)=>{
     if(request.query.options==="Name")
     {
 
+        ///more refined style////
+    let pokemonName=[];
+    let data={};
+    pokemonName=obj["pokemon"];
+    function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const pokemonNameA = a.name;
+  const pokemonNameB = b.name;
+
+  let comparison = 0;
+  if (pokemonNameA > pokemonNameB) {
+    comparison = 1;
+  } else if (pokemonNameA < pokemonNameB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+    let rearrangedName=pokemonName.sort(compare)
+        data["heading"]="Name";
+        data.pokemon=rearrangedName;
+
+        //response.send(data);
+        response.render(`sort`,data);
+        return;
+/* Draft first work
         let pokemonNames=[];
         let pokemonCount=0;
         let pokemonNameString="";
@@ -263,13 +292,36 @@ jsonfile.readFile(FILE,(err,obj)=>{
                 context.pokemon.push(pokemonNames[pokemonCount]);
                 pokemonNameString+=`<li>${pokemonNames[pokemonCount]}</li>`;
         }
-            console.log(context);
+            console.log(context);*/
         //response.send(pokemonNameString);
-        const data={output:pokemonNameString};
-        response.render(`byname`,context);
-        return;
+        //const data={output:pokemonNameString};
+
     }
     if(request.query.options==="Weight"){
+let pokemonWeight=[];
+    let data={};
+    pokemonWeight=obj["pokemon"];
+    function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const pokemonWeightA = a.weight;
+  const pokemonWeightB = b.weight;
+
+  let comparison = 0;
+  if (pokemonWeightA > pokemonWeightB) {
+    comparison = 1;
+  } else if (pokemonWeightA < pokemonWeightB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+    let rearrangedWeight=pokemonWeight.sort(compare)
+        data["heading"]="Weight";
+        data.pokemon=rearrangedWeight;
+        //response.send(data);
+         response.render(`sortweight`,data);
+        //response.send(pokemonNameString);
+        return;
+/*first draft
         let pokemonNameWeight=[];
         let pokemonCount=0;
         let pokemonNameString="<ol>Pokemon Sort By Weight"
@@ -291,12 +343,34 @@ jsonfile.readFile(FILE,(err,obj)=>{
             context.pokemon.push(`${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.`);
                 pokemonNameString+=`<li>${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.</li>`;
         }
-        pokemonNameString+="</ol>";
-        response.render(`byweight`,context);
-        //response.send(pokemonNameString);
-        return;
+        pokemonNameString+="</ol>";*/
+
     }
     if(request.query.options==="Height"){
+let pokemonHeight=[];
+    let data={};
+    pokemonHeight=obj["pokemon"];
+    function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const pokemonHeightA = a.height;
+  const pokemonHeightB = b.height;
+
+  let comparison = 0;
+  if (pokemonHeightA > pokemonHeightB) {
+    comparison = 1;
+  } else if (pokemonHeightA < pokemonHeightB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+    let rearrangedHeight=pokemonHeight.sort(compare)
+        data["heading"]="Weight";
+        data.pokemon=rearrangedHeight;
+        //response.send(data);
+         response.render(`sortheight`,data);
+        //response.send(pokemonNameString);
+        return;
+/*
         let pokemonNameHeight=[];
         let pokemonCount=0;
         let context={pokemon:[]};
@@ -321,7 +395,7 @@ jsonfile.readFile(FILE,(err,obj)=>{
         //pokemonNameString+="</ol>";
         response.render(`byheight`,context);
        // response.send(pokemonNameString);
-        return;
+        return;*/
     }
 
 

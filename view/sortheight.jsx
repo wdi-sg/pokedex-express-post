@@ -7,8 +7,11 @@ class type extends React.Component {
                     <div class={"col-md-2 border"}>
                     {index}
                     </div>
-                    <div class={"col-md-8 border text-center"}>
+                    <div class={"col-md-6 border text-center"}>
                     <p><a href={"/pokemon/index?options="+(pokemonName.id-1)}>{pokemonName.name}</a></p>
+                    </div>
+                    <div class={"col-md-2 border text-center"}>
+                    <p>{pokemonName.height}</p>
                     </div>
                     <div class={"col-md-2 border text-center"}>
 
@@ -33,7 +36,7 @@ class type extends React.Component {
             <div class={"container"}>
                 <div class={"row text-center"}>
                     <div class={"col-md-12 border"} style={{marginTop: "30px"}}>
-                    <h1>Pokemon with typing {this.props.heading}</h1>
+                    <h1>Pokemon sorted by {this.props.heading}</h1>
                     </div>
                 </div>
 

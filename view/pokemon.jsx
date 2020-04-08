@@ -49,14 +49,14 @@ const type=this.props.type.map(type=>{
                             </div>
                         </div>
 
-                        <div class={"row"}>
-
-
-                        </div>
                     </div>
                 </div>
             </div>
           </div>
+            <h2  style={{textAlign: "Center"}}>To return home </h2>
+            <form method="GET" action="/" style={{textAlign: "Center"}}>
+            <input type="submit" value="Return Home"></input>
+            </form>
         </body>
       </html>
     );

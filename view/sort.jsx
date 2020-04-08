@@ -33,7 +33,7 @@ class type extends React.Component {
             <div class={"container"}>
                 <div class={"row text-center"}>
                     <div class={"col-md-12 border"} style={{marginTop: "30px"}}>
-                    <h1>Pokemon with typing {this.props.heading}</h1>
+                    <h1>Pokemon sorted by {this.props.heading}</h1>
                     </div>
                 </div>
 
