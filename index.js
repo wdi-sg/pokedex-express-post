@@ -54,25 +54,11 @@ const getPokemon = function (req, res) {
 };
 
 const listPokemon = function (req, res)  {
+  let dexObj = {dex: pokedex};
   if (req.query.sortby) {
-    let sort = req.query.sortby;
-    let sortedDex = pokedex;
-    sortedDex.sort((a, b) => (a[sort] > b[sort] ? 1 : -1));
-    res.send(sortedDex);
-  } else {
-    console.log(req.query);
-    let button = [
-      '<form method="GET" action="/">',
-      '<select id="sort" name="sortby">',
-      '<option value="name">Name</option>',
-      '<option value="weight">Weight</option>',
-      '<option value="height">Height</option>',
-      '</select>',
-      '<input type="submit"></input>',
-      '</form>'
-    ];
-    res.send(button.join('<br>'));
+    dexObj.dex = sortPokemon(req.query.sortby);
   }
+  res.render('list', dexObj);
 };
 
 //id, num, name, img, height, and weight
