@@ -97,7 +97,27 @@ app.get('/pokemon/new', (req, res) => {
 
 
 });
+app.get('/test',(req,res)=>{
+    jsonfile.readFile(FILE,(err,obj)=>{
 
+    let pokemonType=[];
+    const data={};
+        let pokemonCount=0;
+        let context={pokemon:[]};
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                pokemonType.push(obj["pokemon"][pokemonCount]["type"]);
+        }
+        let typing=pokemonType.flat(Infinity);
+        const uniqueType=new Set(typing);
+        const uniqueArray=[...uniqueType];
+   // data.pokemon=pokemonNames;
+    //res.render('home',data);
+    res.send(uniqueArray);
+    //res.send('testing done')
+                });
+
+});
 app.get('/pokemon/index',(req,res)=>{
     console.log(parseInt(req.query.options))
     jsonfile.readFile(FILE,(err,obj)=>{
@@ -111,6 +131,35 @@ app.get('/pokemon/index',(req,res)=>{
                 });
 
 });
+
+app.get('/pokemon/type',(req,res)=>{
+
+    jsonfile.readFile(FILE,(err,obj)=>{
+
+    let pokemonWithType=[];
+    const data={};
+        let pokemonCount=0;
+        let pokemonTypeCount=0;
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+            for(pokemonTypeCount=0;pokemonTypeCount<obj["pokemon"][pokemonCount]["type"].length; pokemonTypeCount++)
+                        {
+                            if(req.query.options===obj["pokemon"][pokemonCount]["type"][pokemonTypeCount])
+                                {
+                                    pokemonWithType.push(obj["pokemon"][pokemonCount]);
+                                }
+                        }
+        }
+        data.heading=req.query.options;
+        data.pokemon=pokemonWithType;
+console.log(data);
+    //res.send(data);
+    res.render('type',data);
+
+                });
+
+            });
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -168,6 +217,19 @@ jsonfile.readFile(FILE,(err,obj)=>{
                 pokemonNames.push(obj["pokemon"][pokemonCount]["name"]);
         }
     data.pokemon=pokemonNames;
+
+    let pokemonType=[];
+
+
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                pokemonType.push(obj["pokemon"][pokemonCount]["type"]);
+        }
+        let typing=pokemonType.flat(Infinity);
+        const uniqueType=new Set(typing);
+        const uniqueTypeArray=[...uniqueType];
+        data.type=uniqueTypeArray;
+        //res.send(data)
     res.render('home',data);
 
                 });

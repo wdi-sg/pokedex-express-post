@@ -5,6 +5,9 @@ class Home extends React.Component {
     const PokemonName = this.props.pokemon.map( (pokemonName, index )=> {
                     return <option value={index}>{pokemonName}</option>
                         });
+    const PokemonType = this.props.type.map( (type, index )=> {
+                    return <option value={type}>{type}</option>
+                        });
     return (
       <html>
         <body>
@@ -20,6 +23,14 @@ class Home extends React.Component {
                     <input type="submit" value="Submit"></input>
                 </form>
 
+            <h2 style={{textAlign: "Center"}}>Click here to select Pokemon Type</h2>
+                <form method="GET" action="/pokemon/type" style={{textAlign: "Center"}}>
+                    <select id="options" name="options" >
+                        {PokemonType}
+
+                    </select>
+                    <input type="submit" value="Submit"></input>
+                </form>
 
             <h2 style={{textAlign: "Center"}}>Click here to sort the current pokemon by categories.</h2>
                 <form method="GET" action="/sortByName" style={{textAlign: "Center"}}>
