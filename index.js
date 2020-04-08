@@ -53,6 +53,55 @@ const getPokemon = function (req, res) {
   }
 };
 
+const sortPokemon = function (sortby) {
+  const descSort = function (a, b) {
+    if (a > b) {
+      return -1;
+    } else if (a < b) {
+      return 1;
+    }
+    return 0;
+  };
+  const ascSort = function (a, b) {
+    if (a < b) {
+      return -1;
+    } else if (a > b) {
+      return 1;
+    }
+    return 0;
+  };
+  const magicSort = function (list, dir, keycallback) {
+    let sortFn = (dir === "asc") ? ascSort : descSort;
+    list.sort((a, b) => {
+      a = keycallback(a);
+      b = keycallback(b);
+      return sortFn(a, b);
+    });
+  };
+
+  let sortedDex = [...pokedex];
+  let order = "asc";
+  if (sortby.includes("desc")) {
+    sortby = sortby.slice(0, -4);
+    order = "desc";
+  }
+
+  switch (sortby) {
+  case "name":
+    magicSort(sortedDex, order, e => e.name);
+    break;
+  case "weight":
+    magicSort(sortedDex, order, e => Number(e.weight.slice(0, -3)));
+    break;
+  case "height":
+    magicSort(sortedDex, order, e => Number(e.height.slice(0, -3)));
+    break;
+  default:
+    magicSort(sortedDex, order, e => e.id);
+  }
+  return sortedDex;
+};
+
 const listPokemon = function (req, res)  {
   let dexObj = {dex: pokedex};
   if (req.query.sortby) {
