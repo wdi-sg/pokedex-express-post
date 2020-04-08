@@ -1,6 +1,6 @@
 const React = require('react');
 
-class Home extends React.Component {
+class Reset extends React.Component {
 
     render() {
         return (
@@ -17,19 +17,11 @@ class Home extends React.Component {
                         </div>
                         <div className="nav">
                             <a href="/pokemon/new" className="nav__link create">Create a new Pokemon!</a>
-                            <a href="/reset" className="nav__link reset">Reset to original Pokedex</a>
+                            <a href="/" className="nav__link index">Back to Home</a>
                         </div>
-                        <form method="POST" action="/sort" className="sort-form">
-                            <label htmlFor="pokemon-properties" className="sort-form__label">SORT POKEMON BY:</label>
-                            <select id="pokemon-properties" name="property" className="sort-form__selector">
-                            <option value="id">id</option>
-                            <option value="num">number</option>
-                            <option value="name">name</option>
-                            <option value="height">height</option>
-                            <option value="height">weight</option>
-                          </select>
-                          <input type="submit" formMethod="GET" value="Sort!" className="sort-form__btn"></input>
-                        </form>
+                        <div className="reset-container">
+                        <h1>Pokedex Reset!</h1>
+                        </div>
                     </div>
                 </main>
             </body>
@@ -37,4 +29,4 @@ class Home extends React.Component {
     }
 }
 
-module.exports = Home;
+module.exports = Reset;
