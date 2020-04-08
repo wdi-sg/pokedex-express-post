@@ -12,6 +12,7 @@ class Home extends React.Component {
             <ul>
                 {allPokemonList}
             </ul>
+            <a href="/pokemon/new">Click here to create new pokemon!</a>
           </div>
         </body>
       </html>

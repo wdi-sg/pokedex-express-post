@@ -1,11 +1,11 @@
 var React = require('react');
-class Pokemon extends React.Component {
+class Edit extends React.Component {
   render() {
     return (
       <html>
         <body>
           <div>
-            Added Pokemon: {this.props.pokemon[this.props.pokemon.length - 1].name}
+            To be continued
           </div>
         </body>
       </html>
@@ -13,4 +13,4 @@ class Pokemon extends React.Component {
   }
 }
 
-module.exports = Pokemon;
+module.exports = Edit;
