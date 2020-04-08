@@ -48,7 +48,7 @@ app.post('/pokemon', (request, response) => {
       response.render("new", error);
     }else{
       let pokemonSubmit = {
-        "id": request.body.id,
+        "id": parseInt(request.body.id),
         "num": parseInt(request.body.num),
         "name": request.body.name,
         "img": request.body.img,
@@ -58,7 +58,7 @@ app.post('/pokemon', (request, response) => {
       obj["pokemon"].push(pokemonSubmit);
 
       jsonfile.writeFile(file, obj, (err) => {
-        response.render("pokemon", obj);
+        response.redirect("/pokemon/" + parseInt(request.body.id));
       });
     }
   });
