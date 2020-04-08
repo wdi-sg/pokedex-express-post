@@ -30,10 +30,14 @@ body {
     background: #f2f2f2;
     width: 100%;
     border: 0;
-    margin: 0 0 15px;
+    margin: 5px;
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
+}
+
+.error {
+    text-align: left;
 }
 .form button {
     font-family: "Roboto", sans-serif;

@@ -62,16 +62,25 @@ function handleIfDuplicates(hasDuplicate,next,res) {
 
 function addPokemon(req, res) {
   const {id, num, name, img, height, weight} = req.body;
+  const params = {id,num, name, img, height,weight};
+  const errors = {};
+  for (const key in params) {
+   if (!params[key]) {
+     errors[key] = `${key} is missing`
+   }
+   console.log(errors);
+  }
+
   getJson()
     .then(data =>_addPokemon(data, id, num, name, img, height, weight))
     .then(writeJson)
+
 }
 
 function _addPokemon(data, id, num, name, img, height, weight) {
   data.pokemon.push({id, num, name, img, height, weight});
   return data;
 }
-
 
 
 function viewPokemonById(response, request) {
