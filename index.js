@@ -101,24 +101,58 @@ app.get('/singlepokemon/:pokemon', (request, response) => {
 })
 
 app.get('/sortby', (request, response) => {
-    console.log(request.query.option)
-
-    // Get name of pokemon
+    // Get option selected
     const option = request.query.option;
 
-    const file = 'pokedex2.json';
-    jsonfile.readFile(file, (err, obj) => {
-        const pokedexArray = obj["pokemon"];
-        const pokemonNameArray = [];
+    if (option === "name"){
+        const file = 'pokedex2.json';
+        jsonfile.readFile(file, (err, obj) => {
+            const pokedexArray = obj["pokemon"];
+            const pokemonNameArray = [];
 
-        for (var i = 0; i < pokedexArray.length; i++) {
-            pokemonNameArray.push(pokedexArray[i].name)
-        }
-        pokemonNameArray.sort();
-        const data = {"pokemonNameArray" : pokemonNameArray};
+            for (var i = 0; i < pokedexArray.length; i++) {
+                pokemonNameArray.push(pokedexArray[i].name)
+            }
+            pokemonNameArray.sort();
+            const data = {"pokemonNameArray" : pokemonNameArray};
 
-        response.render('sortbyname', data);
-    })
+            response.render('sortbyname', data);
+        })
+    }
+    else if (option === "type"){
+        const file = 'pokedex3.json';
+        jsonfile.readFile(file, (err, obj) => {
+            const pokedexArray = obj["pokemon"];
+            const pokemonTypesArray = [];
+
+            // Put all the types of pokemon in an array
+            for (var i = 0; i < pokedexArray.length; i++) {
+                for (var u = 0; u < pokedexArray[i].type.length; u++) {
+                    if ( !(pokemonTypesArray.includes(pokedexArray[i].type[u])) ){
+                        pokemonTypesArray.push(pokedexArray[i].type[u])
+                    }
+                }
+            }
+
+            // Arrange pokemon according to types
+            // Ask instructor why reducer below is able to convert array to object
+
+            const pokemonTypesObject = pokemonTypesArray.reduce((a,b)=> (a[b]=[],a),{});
+
+            for (var n = 0; n < pokedexArray.length; n++) {
+                for (var m = 0; m < pokedexArray[n].type.length; m++) {
+                    const pokeType = pokedexArray[n].type[m]
+                    pokemonTypesObject[`${pokeType}`].push(pokedexArray[n].name)
+
+                }
+            }
+
+            const data = {"pokemonTypesArray": pokemonTypesArray, "pokemonTypesObject" : pokemonTypesObject}
+
+            response.render('sortbytype', data);
+        })
+    }
+
 })
 
 app.get('/new', (request, response) => {

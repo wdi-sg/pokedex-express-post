@@ -37,6 +37,7 @@ class Home extends React.Component{
                 <form method="get" action="/sortby" style={formStyle}>
                   <select name="option" size ="1" style={optionStyle}>
                     <option value="name">name</option>
+                    <option value="type">type</option>
                     <option value="id">id</option>
                     <option value="height">height</option>
                     <option value="weight">weight</option>
