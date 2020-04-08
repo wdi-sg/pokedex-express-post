@@ -47,15 +47,7 @@ const getPokemon = function (req, res) {
 };
 
 const sortPokemon = function (sortby) {
-  const descSort = function (a, b) {
-    if (a > b) {
-      return -1;
-    } else if (a < b) {
-      return 1;
-    }
-    return 0;
-  };
-  const ascSort = function (a, b) {
+  const cmp = function (a, b) {
     if (a < b) {
       return -1;
     } else if (a > b) {
@@ -63,43 +55,43 @@ const sortPokemon = function (sortby) {
     }
     return 0;
   };
-  const magicSort = function (list, dir, keycallback) {
-    let sortFn = (dir === "asc") ? ascSort : descSort;
+  const magicSort = function (list, isAsc, keycallback) {
+    let dir = isAsc ? 1 : -1;
     list.sort((a, b) => {
       a = keycallback(a);
       b = keycallback(b);
-      return sortFn(a, b);
+      return cmp(a, b) * dir;
     });
   };
 
   let sortedDex = [...pokedex];
-  let order = "asc";
+  let isAsc = true;
   if (sortby.includes("desc")) {
     sortby = sortby.slice(0, -4);
-    order = "desc";
+    isAsc = false;
   }
 
   switch (sortby) {
   case "name":
-    magicSort(sortedDex, order, e => e.name);
+    magicSort(sortedDex, isAsc, e => e.name);
     break;
   case "weight":
-    magicSort(sortedDex, order, e => Number(e.weight.slice(0, -3)));
+    magicSort(sortedDex, isAsc, e => Number(e.weight.slice(0, -3)));
     break;
   case "height":
-    magicSort(sortedDex, order, e => Number(e.height.slice(0, -3)));
+    magicSort(sortedDex, isAsc, e => Number(e.height.slice(0, -3)));
     break;
   case "candy":
-    magicSort(sortedDex, order, e => e.candy);
+    magicSort(sortedDex, isAsc, e => e.candy);
     break;
   case "candy_count":
-    magicSort(sortedDex, order, e => e.candy_count ? Number(e.candy_count) : "N/A");
+    magicSort(sortedDex, isAsc, e => e.candy_count ? Number(e.candy_count) : 9999);
     break;
   case "avg_spawns":
-    magicSort(sortedDex, order, e => Number(e.avg_spawns));
+    magicSort(sortedDex, isAsc, e => Number(e.avg_spawns));
     break;
   case "spawn_time":
-    magicSort(sortedDex, order, e => {
+    magicSort(sortedDex, isAsc, e => {
       if (e.spawn_time.includes("N")) {
         console.log(e);
         return 9999;
@@ -111,7 +103,7 @@ const sortPokemon = function (sortby) {
     });
     break;
   case "egg":
-    magicSort(sortedDex, order, e => {
+    magicSort(sortedDex, isAsc, e => {
       if (e.egg.includes("Not")) {
         return 9999;
       } else {
@@ -120,7 +112,7 @@ const sortPokemon = function (sortby) {
     });
     break;
   default:
-    magicSort(sortedDex, order, e => Number(e.num));
+    magicSort(sortedDex, isAsc, e => Number(e.num));
   }
   return sortedDex;
 };
