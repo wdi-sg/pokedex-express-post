@@ -3,17 +3,19 @@ class Form extends React.Component {
   render() {
     return (
       <html lang="en" dir="ltr">
-        <body>
-        <h1>Submit a Pokemon!</h1>
+        <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/></head>
+
+        <body style={{textAlign: "center"}}>
+        <div className="jumbotron">        <h1>Submit a Pokemon!</h1>
+
+        </div>
         <p style={{color: 'red'}}>{this.props.error}</p>
           <form method="POST" action="/pokemon">
-            <input type="number" name="id" placeholder="id"/ >
-            <input type="number" name="num" placeholder="num"/ >
-            <input type="text" name="name" placeholder="name"/ >
-            <input type="text" name="img" placeholder="img"/ >
-            <input type="text" name="height" placeholder="height"/ >
-            <input type="text" name="weight" placeholder="weight"/ >
-            <input type="submit" value="Submit" />
+            <br/><input type="text" name="name" placeholder="Name"/ >
+            <br/><input type="text" name="img" placeholder="Image"/ >
+            <br/><input type="text" name="height" placeholder="Height"/ >
+            <br/><input type="text" name="weight" placeholder="Weight"/ >
+            <br/><input className="btn btn-primary" type="submit" value="Submit" />
           </form>
         </body>
       </html>

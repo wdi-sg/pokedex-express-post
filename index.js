@@ -67,24 +67,24 @@ app.get(`/type/:x`, (req, res) => {
     const query = capitalize(req.params.x)
     jsonfile.readFile(FILE, (err, obj) => {
 
-        const array = obj.pokemon
+            const pokeArray = obj.pokemon
 
-        const findType = (pokemon) => {
-            const result = pokemon.type.find((type) => type === query)
-            return result ? pokemon : false
-        }
+            const findType = (pokemon) => {
+                const typeArray = pokemon.type;
+                if (typeArray!==undefined) {
+                    const result = typeArray.find(type => type === query);
+                    return result ? pokemon : false
+                }
+            }
 
-        const foundPokemon = array.filter(findType);
+            const foundPokemon = pokeArray.filter(findType);
 
-        if (foundPokemon.length !== 0) {
             const data = {
                 list: foundPokemon,
                 query: query
             }
-            res.render('typelist', data)
-        } else {
-          res.send(`Sorry, no Pokemon with that type was found!`)
-        }
+
+            res.render('typelist', data);
 
     })
 })
@@ -97,12 +97,15 @@ app.post(`/pokemon`, (req, res) => {
 
     for (let i = 0; i < inputKeys.length; i++) {
         let currentKey = inputKeys[i]
+
+        //Check if any of the fields are empty.
         if (newObj[currentKey] === "") {
+            //Create error message.
             const data = {
                 error: `There was an error with your ${currentKey} input.`
             }
+            //Reload the form, with error message.
             return res.render('form', data)
-
         }
     }
 
@@ -113,55 +116,20 @@ app.post(`/pokemon`, (req, res) => {
             response.status(503).send("error reading filee");
             return;
         }
-        array.push(req.body);
+        const newPokemon = {
+            id: (array.length + 1),
+            num: (array.length + 1).toString(),
+            name: req.body.name,
+            img: req.body.img,
+            height: req.body.height,
+            weight: req.body.weight
+        }
+        array.push(newPokemon);
         jsonfile.writeFile(FILE, obj, (err) => {
-            if (err) {
-                console.log(`error. ${err}`);
-            }
-            res.send(array[array.length - 1])
+            err ? console.log(`error: ${err}`) : res.redirect(`/pokemon/${newPokemon.id}`)
         })
     })
 })
-
-app.get('/pokemon/:id', (request, response) => {
-
-    // get json from specified file
-    jsonfile.readFile(FILE, (err, obj) => {
-
-        // check to make sure the file was properly read
-        if (err) {
-
-            console.log("error with json read file:", err);
-            response.status(503).send("error reading filee");
-            return;
-        }
-        // obj is the object from the pokedex json file
-        // extract input data from request
-        let inputId = parseInt(request.params.id);
-
-        var pokemon;
-
-        // find pokemon by id from the pokedex json file
-        for (let i = 0; i < obj.pokemon.length; i++) {
-
-            let currentPokemon = obj.pokemon[i];
-
-            if (currentPokemon.id === inputId) {
-                pokemon = currentPokemon;
-            }
-        }
-
-        if (pokemon === undefined) {
-
-            // send 404 back
-            response.status(404);
-            response.send("not found");
-        } else {
-
-            response.send(pokemon);
-        }
-    });
-});
 
 app.get('/', (req, res) => {
 

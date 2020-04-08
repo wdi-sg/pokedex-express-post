@@ -17,10 +17,14 @@ class Index extends React.Component {
 
     return (
       <html lang="en" dir="ltr">
+        <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/></head>
         <body style={{fontFamily: "sans-serif", textAlign: "center"}}>
-        <h1>This is an Okay Pokedex</h1>
+        <div className="jumbotron">
+          <h1>This is an Okay Pokedex</h1>
+            <h2><a href="/pokemon/new">Create a Pokemon</a></h2>
+        </div>
 
-        <h2><a href="/pokemon/new">Create a Pokemon?</a></h2>
+        <h3>All Pokemon:</h3>
 
         <ul>
           {allNames}
