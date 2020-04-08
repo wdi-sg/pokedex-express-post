@@ -1,18 +1,6 @@
 {
   "pokemon": [
     {
-      "id": 9,
-      "num": "009",
-      "name": "Blastoise",
-      "img": "http://www.serebii.net/pokemongo/pokemon/009.png",
-      "height": "1.60 m",
-      "weight": "85.5 kg",
-      "candy": "Squirtle Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 0.67,
-      "spawn_time": "00:06"
-    },
-    {
       "id": 10,
       "num": "010",
       "name": "Caterpie",
@@ -1784,6 +1772,19 @@
       "id": 152,
       "num": "152",
       "name": "blablacat",
+      "img": "https://cdn.shopify.com/s/files/1/2355/9697/products/ALT-Wooly2_110x110@2x.jpg?v=1519759173",
+      "height": "0.3 m",
+      "weight": "10 g",
+      "candy": "Sheepy Candy",
+      "candy_count": 3,
+      "egg": "Not in Eggs",
+      "avg_spawns": 5,
+      "spawn_time": "06:18"
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "blablasheep",
       "img": "https://cdn.shopify.com/s/files/1/2355/9697/products/ALT-Wooly2_110x110@2x.jpg?v=1519759173",
       "height": "0.3 m",
       "weight": "10 g",
