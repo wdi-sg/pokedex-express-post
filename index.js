@@ -5,6 +5,7 @@ const file = 'pokedex.json';
 
 const reactEngine = require('express-react-views').createEngine();
 
+
 /**
  * ===================================
  * Configurations and set up
@@ -32,15 +33,135 @@ app.use(express.urlencoded({
  * Routes
  * ===================================
  */
-app.get('/', (request, response) => {
-    //response.send("yay");
-    response.render('home')
+app.get('/', (req, res) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        let data = obj
+        //console.log(data)
+        res.render('index', data);
+
+    });
 });
 
-app.get('/pokemon/new', (request, response) => {
-  //response.send("yay");
-    response.render('pokemonForm')
+// app.get('/pokemon/index', (request, response) => {
+//     response.render('index')
+// });
+// app.get('/pokemon/new', (request, response) => {
+//     response.render('pokemonNew')
+// });
+// app.get('/pokemon/createnew', (request, response) => {
+//     response.render('createnew')
+// });
+app.get("/pokemon/id/:x", (request, response) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        let i=0;
+        let type;
+        let pType2 = [];
+
+        obj.pokemon.forEach ((element,index) => {
+            if(element.id == request.params.x){
+                i = index;
+            }
+        })
+        //console.log(i)
+        //POKEMON TYPE
+
+        if(obj.pokemon[i].type.length == 1) {
+            pType = obj.pokemon[i].type+" type";
+        } else if (obj.pokemon[i].type.length == 2) {
+            pType = "dual-type "+obj.pokemon[i].type[0]+"\/"+obj.pokemon[i].type[1];
+        }
+
+        if(obj.pokemon[i].type.length == 1) {
+            pType2.push(obj.pokemon[i].type);
+        } else if (obj.pokemon[i].type.length == 2) {
+            pType2.push(obj.pokemon[i].type[0])
+            pType2.push(obj.pokemon[i].type[1]);
+        }
+
+        data = {
+            name:obj.pokemon[i].name,
+            id:obj.pokemon[i].id,
+            num:obj.pokemon[i].num,
+            img:obj.pokemon[i].img,
+            height:obj.pokemon[i].height,
+            weight:obj.pokemon[i].weight,
+            type:pType,
+            type2:pType2
+        }
+
+        console.log(data)
+        response.render('pokemon',data)
+    });
 });
+
+app.get("/type/:x", (request, response) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+        let pokemon = [];
+        let data = {};
+        let data2 = {};
+        for(let i=0; i<obj.pokemon.length; i++){
+
+            if(obj.pokemon[i].type[0]==request.params.x) {
+                data = {
+                    name:obj.pokemon[i].name,
+                    id:obj.pokemon[i].id,
+                    img:obj.pokemon[i].img,
+                }
+                pokemon.push(data)
+            }
+            if(obj.pokemon[i].type.length == 2){
+                if(obj.pokemon[i].type[1]==request.params.x) {
+                    data = {
+                        name:obj.pokemon[i].name,
+                        id:obj.pokemon[i].id,
+                        img:obj.pokemon[i].img,
+                    }
+                    pokemon.push(data)
+                }
+            }
+        }
+        data2["pokemon"]=pokemon
+        response.render('type',data2)
+    });
+});
+
+
+// app.get("/type/:x", (request, response) => {
+
+//     jsonfile.readFile(file, (err, obj) => {
+//         let pName = [];
+//         let pImg = [];
+//         let pId = [];
+//         for(let i=0; i<obj.pokemon.length; i++){
+
+//             if(obj.pokemon[i].type[0].toLowerCase()==request.params.x) {
+//                 pName.push(obj.pokemon[i].name)
+//                 pImg.push(obj.pokemon[i].img)
+//                 pId.push(obj.pokemon[i].id)
+//             }
+//             if(obj.pokemon[i].type.length == 2){
+//                 if(obj.pokemon[i].type[1].toLowerCase()==request.params.x) {
+//                     pName.push(obj.pokemon[i].name);
+//                     pImg.push(obj.pokemon[i].img)
+//                     pId.push(obj.pokemon[i].id)
+//                 }
+//             }
+//         }
+//         console.log(pName)
+//         data = {
+//             name:pName,
+//             img:pImg,
+//             id:pId
+//         }
+//         console.log(data)
+//         response.render('type',data)
+//     });
+// });
 
 app.post('/pokemon/id', (request,response) => {
 
@@ -50,20 +171,22 @@ app.post('/pokemon/id', (request,response) => {
             console.error(err)
         });
         // check id
+
+
         for(let i=0; i<obj.pokemon.length; i++) {
-            console.log(i)
+            //console.log(i)
             if(obj.pokemon[i].id == parseInt(request.body.id)) {
                 data = {
                     "id": request.body.id,
                     "name": obj.pokemon[i].name,
-                    "weight": obj.pokemon[i].weight
+                    "weight": obj.pokemon[i].weight,
                 }
                 response.render('home',data);
             }
         }
         // check num
         for(let i=0; i<obj.pokemon.length; i++) {
-            console.log(i)
+            //console.log(i)
             if(obj.pokemon[i].num == request.body.num) {
                 data = {
                     "id": request.body.id,
@@ -83,40 +206,11 @@ app.post('/pokemon/id', (request,response) => {
             "weight": request.body.weight
         }
         obj.pokemon.push(newPoke);
-        console.log(obj.pokemon);
+        //console.log(obj.pokemon);
         response.render('newPoke',newPoke);
-
     });
 });
-// app.get("/pokemon/:x", (request, response) => {
 
-//     let pName;
-//     let pWeight;
-//     let pHeight;
-//     let pType;
-
-//     jsonfile.readFile(file, (err, obj) => {
-
-//         for(let i=0; i<obj.pokemon.length; i++){
-//             if(obj.pokemon[i].name.toLowerCase()==request.params.x) {
-//                 pName = obj.pokemon[i].name.toLowerCase()
-//                 pWeight = obj.pokemon[i].weight
-//                 pHeight = obj.pokemon[i].height
-//                 if(obj.pokemon[i].type.length == 1) {
-//                     pType = obj.pokemon[i].type+" type";
-//                 } else if (obj.pokemon[i].type.length == 2) {
-//                     pType = "dual-type "+obj.pokemon[i].type[0]+"\/"+obj.pokemon[i].type[1];
-//                 }
-
-//                 response.send(
-//                     "This is "+pName+", he is "+pWeight
-//                     +" in weight,"+pHeight+" in height! he is a "+pType+" Pokemon!")
-//                 return;
-//             }
-//         }
-//         response.send("Could not find information about "+request.params.x+" - Is that a new pokemon? Gotta catch em' all!")
-//     });
-// });
 
 
 /**

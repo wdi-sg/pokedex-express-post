@@ -2,9 +2,9 @@ var React = require('react');
 class Home extends React.Component {
   render() {
 
-    return (
-      <html>
-        <body>
+    return (>
+
+      <html        <body>
           <div>
           <h1> Pokemon Info </h1>
             <form method="POST" action="/pokemon/id">
