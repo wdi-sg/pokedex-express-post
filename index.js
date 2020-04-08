@@ -26,8 +26,26 @@ app.use(express.urlencoded({
  * ===================================
  */
 
+
+
 app.get("/pokemon/new", (request, response) =>{
     response.render('new-pokemon-form');
+});
+
+app.get("/pokemon/home", (request, response) =>{
+    response.render('home');
+});
+
+const pokeNames = {names:[], url:[]};
+
+app.get("/pokemon/list", (request, response) =>{
+    jsonfile.readFile(file,(err, obj)=> {
+        for (i=0; i<obj.pokemon.length;i++){
+            pokeNames.names.push(obj.pokemon[i].name);
+        };
+
+        response.render('list', pokeNames);
+    })
 });
 
 app.get('/pokemon/:id', (request, response) => {
