@@ -6,17 +6,16 @@ class Home extends React.Component{
           <html>
             <body>
               <div>
-                <form method="get" action="/?sortby=name&sortby=sort">
-                  <input type="text" name="name"></input>
-                  <select name="sortby" size ="1">
-                    <option name="sort">name</option>
-                    <option name="sort">id</option>
-                    <option name="sort">height</option>
-                    <option name="sort">weight</option>
-                    <option name="sort">candy</option>
-                    <option name="sort">egg</option>
+                <form method="get" action="/sortby">
+                  <select name="option" size ="1">
+                    <option value="name">name</option>
+                    <option value="id">id</option>
+                    <option value="height">height</option>
+                    <option value="weight">weight</option>
+                    <option value="candy">candy</option>
+                    <option value="egg">egg</option>
                   </select><br></br>
-                  <input type="submit" value="Sort By Name"></input>
+                  <input type="submit" value="Sort By"></input>
                 </form>
               </div>
             </body>

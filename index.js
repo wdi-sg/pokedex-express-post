@@ -109,6 +109,29 @@ app.post('/pokemon', (request, response) => {
     }
 })
 
+
+app.get('/sortby', (request, response) => {
+    console.log(request.query.option)
+
+    // Get name of pokemon
+    const option = request.query.option;
+
+    const file = 'pokedex2.json';
+    jsonfile.readFile(file, (err, obj) => {
+        const pokedexArray = obj["pokemon"];
+        const pokemonNameArray = [];
+
+        for (var i = 0; i < pokedexArray.length; i++) {
+            pokemonNameArray.push(pokedexArray[i].name)
+        }
+        pokemonNameArray.sort();
+        const data = {"pokemonNameArray" : pokemonNameArray};
+
+        response.render('sortbyname', data);
+    })
+})
+
+
 app.get('/', (request, response) => {
     console.log(request.url);
     if (request.url == '/') {
@@ -117,21 +140,6 @@ app.get('/', (request, response) => {
 
     }
     else{
-        console.log(request.query.name)
-
-        // Get name of pokemon
-        const pokemonName = request.query.name;
-
-        const file = 'pokedex2.json';
-        jsonfile.readFile(file, (err, obj) => {
-            const pokedexArray = obj["pokemon"];
-
-            for (var i = 0; i < pokedexArray.length; i++) {
-                if(pokedexArray[i].name.toLowerCase() === pokemonName){
-                    response.send(pokedexArray[i]);
-                }
-            }
-        })
     }
 })
 
