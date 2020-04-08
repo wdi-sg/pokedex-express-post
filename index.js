@@ -42,7 +42,7 @@ const getPokemon = function (req, res) {
     res.status(404);
     res.send("not found");
   } else {
-    res.send(pokemon);
+    res.render('pokemon', { mon: pokemon});
   }
 };
 
