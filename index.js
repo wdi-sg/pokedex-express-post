@@ -22,13 +22,13 @@ app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
   jsonfile.readFile(FILE, (err, obj) => {
-    
+
     // check to make sure the file was properly read
     if( err ){
-      
+
       console.log("error with json read file:",err);
       response.status(503).send("error reading filee");
-      return; 
+      return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
