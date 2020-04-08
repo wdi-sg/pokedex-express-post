@@ -1,22 +1,37 @@
-const express = require('express');
-const jsonfile = require('jsonfile');
-
-const FILE = 'pokedex.json';
-
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
 
+console.log("Poke express node is working..")
+const jsonfile = require('jsonfile');
+const express = require('express');
 // Init express app
 const app = express();
+const reactEngine = require('express-react-views').createEngine();
 
+
+// tell your app to use the module
+app.engine('jsx', reactEngine);
+// this line set views to view directory
+app.set('views', __dirname + '/views');
+
+// this line sets react to be the default view engine
+app.set('view engine', 'jsx');
+
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+let FILE = "./pokedex.json";
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -27,14 +42,16 @@ app.get('/pokemon/:id', (request, response) => {
     if( err ){
 
       console.log("error with json read file:",err);
-      response.status(503).send("error reading filee");
+      response.status(503).send("error reading file");
       return;
     }
     // obj is the object from the pokedex json file
     // extract input data from request
     let inputId = parseInt( request.params.id );
+    console.log("parsing input into integer...")
 
     var pokemon;
+    console.log("setting empty variable pokemon...")
 
     // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
@@ -43,6 +60,7 @@ app.get('/pokemon/:id', (request, response) => {
 
       if( currentPokemon.id === inputId ){
         pokemon = currentPokemon;
+        console.log("Checking for right pokemon...")
       }
     }
 
@@ -52,14 +70,16 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-
+      console.log("The pokemon : [" + pokemon.name + "] has been found");
       response.send(pokemon);
+
     }
   });
 });
 
 app.get('/', (request, response) => {
   response.send("yay");
+  console.log(FILE)
 });
 
 /**
