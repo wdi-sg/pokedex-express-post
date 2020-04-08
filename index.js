@@ -116,7 +116,7 @@ app.get('/pokemon/:id', (request, response) => {
 
 
 //------------------------------------
-// Edit Current Pokemon //
+// Edit Current Pokemon (IGNORE)//
 //------------------------------------
 app.get('/pokemon/:id/edit',(request, response) => {
     response.render('editform');
