@@ -142,17 +142,19 @@ app.post('/newpokemon', (request, response) => {
     }
 
     if (!inputError) {
+        console.log('there is no error')
         const file = 'pokedex2.json';
         jsonfile.readFile(file, (err, obj) => {
             const pokedexArray = obj["pokemon"];
             pokedexArray.push(request.body);
-
+            const data = {"pokemonDetails" : request.body}
+            response.render('newpokemon', data);
             jsonfile.writeFile(file, obj, (err) => {
-                response.send(request.body);
             })
         })
     }
 })
+
 
 
 app.get('/', (request, response) => {
