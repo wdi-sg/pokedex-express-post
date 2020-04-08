@@ -64,8 +64,14 @@ app.post('/pokemon', (request, response) => {
   });
 });
 
+
+
 app.get('/pokemon/new', (request, response) => {
   response.render("new");
+});
+
+app.get('/pokemon/edit', (request, response) => {
+  response.render("edit");
 });
 
 app.get('/pokemon/:id', (request, response) => {

@@ -5,7 +5,11 @@ class Id extends React.Component {
       <html>
         <body>
           <div>
-            This is { this.props.name }
+            <img src={this.props.img}></img>
+          </div>
+          <div>
+            <p>This is { this.props.name }</p>
+            <a href="/pokemon/edit">Edit Pokemon Details</a>
           </div>
         </body>
       </html>
