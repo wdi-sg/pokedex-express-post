@@ -98,6 +98,19 @@ app.get('/pokemon/new', (req, res) => {
 
 });
 
+app.get('/pokemon/index',(req,res)=>{
+    console.log(parseInt(req.query.options))
+    jsonfile.readFile(FILE,(err,obj)=>{
+
+
+    const data=obj["pokemon"][parseInt(req.query.options)];
+
+    //res.send(data);
+    res.render('pokemon',data);
+
+                });
+
+});
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -142,7 +155,24 @@ app.get('/pokemon/:id', (request, response) => {
 
 app.get('/', (req, res) => {
    //const data = {name: "Sterling Archer"};
-  res.render('home');
+
+jsonfile.readFile(FILE,(err,obj)=>{
+
+    let pokemonNames=[];
+    const data={};
+        let pokemonCount=0;
+        let pokemonNameString="";
+        let context={pokemon:[]};
+        for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
+        {
+                pokemonNames.push(obj["pokemon"][pokemonCount]["name"]);
+        }
+    data.pokemon=pokemonNames;
+    res.render('home',data);
+
+                });
+
+//  res.render('home');
 });
 
 app.get('/sortByName', function(request, response) {
