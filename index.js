@@ -103,7 +103,8 @@ app.post("/pokemon/new", (req, res) => {
       return;
     }
     //Ensures that pokemon names are not purely numbers
-    if (typeof parseInt(newPokemonObj.name) === "number") {
+    // console.log(parseInt(newPokemonObj.name));
+    if (!!parseInt(newPokemonObj.name)) {
       const comments = { comments: "Error: Please enter a valid name and not a number!" };
       res.render("pokemon-form", comments);
       return;
