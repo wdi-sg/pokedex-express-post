@@ -9,6 +9,7 @@ class Form extends React.Component {
         <body>
           <div>
               <h1>New Pokemon Form</h1>
+              <a href="/">Back to Home page</a>
               <form method="POST" action="/pokemon/:id">
                 <p>Pokemon id:</p>
                 <input type="text" name="id"/>
