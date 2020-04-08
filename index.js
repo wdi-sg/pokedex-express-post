@@ -109,6 +109,24 @@ app.post('/pokemon', (request, response) => {
     }
 })
 
+app.get('/singlepokemon/:pokemon', (request, response) => {
+    const pokemonName = request.params.pokemon;
+    const file = 'pokedex2.json';
+
+    jsonfile.readFile(file, (err, obj) => {
+        let pokemonDetails;
+
+        for (var i = 0; i < obj.pokemon.length; i++) {
+            if (obj.pokemon[i].name.toLowerCase() === pokemonName){
+                pokemonDetails = obj.pokemon[i];
+            }
+        }
+        const data = {"pokemonDetails" : pokemonDetails}
+
+        response.render('singlepokemon', data);
+    })
+
+})
 
 app.get('/sortby', (request, response) => {
     console.log(request.query.option)
@@ -133,14 +151,21 @@ app.get('/sortby', (request, response) => {
 
 
 app.get('/', (request, response) => {
-    console.log(request.url);
-    if (request.url == '/') {
-        console.log('hello');
-        response.render("home");
 
-    }
-    else{
-    }
+    const file = "pokedex2.json";
+    jsonfile.readFile(file, (err, obj) => {
+        const pokedexArray = obj["pokemon"];
+        const pokemonNameArray = [];
+
+        for (var i = 0; i < pokedexArray.length; i++) {
+            pokemonNameArray.push(pokedexArray[i].name)
+        }
+
+        const data = {"pokemonNameArray" : pokemonNameArray};
+
+
+        response.render("home", data);
+    });
 })
 
 

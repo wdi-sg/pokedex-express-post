@@ -2,6 +2,14 @@ var React = require('react');
 
 class Home extends React.Component{
     render() {
+        const listOfPokemon = this.props.pokemonNameArray.map(el => {
+            return(
+                <div>
+                    <a href={`./singlepokemon/${el.toLowerCase()}`}>{el}</a>
+                </div>
+            );
+        })
+
         return (
           <html>
             <body>
@@ -17,6 +25,7 @@ class Home extends React.Component{
                   </select><br></br>
                   <input type="submit" value="Sort By"></input>
                 </form>
+                {listOfPokemon}
               </div>
             </body>
            </html>
