@@ -1779,7 +1779,8 @@
       "candy_count": 3,
       "egg": "Not in Eggs",
       "avg_spawns": 5,
-      "spawn_time": "06:18"
+      "spawn_time": "06:18",
+      "_locals": {}
     }
   ]
 }

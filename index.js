@@ -71,8 +71,8 @@ const savePokemon = (request, response) =>{
     newPokemon['spawn_time'] = request.body.spawn_time;
 
     jsonfile.readFile(FILE, (err, obj) => {
-        response.send(newPokemon);
         obj.pokemon.push(newPokemon);
+        response.render('pokemonnew', newPokemon);
 
         jsonfile.writeFile(FILE, obj,  { spaces: 2 }, (err) => {
             console.log("err");

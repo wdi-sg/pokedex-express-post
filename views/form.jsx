@@ -10,7 +10,7 @@ class Form extends React.Component {
           <div>
               <h1>New Pokemon Form</h1>
               <a href="/">Back to Home page</a>
-              <form method="POST" action="/pokemon/:id">
+              <form method="POST" action="/pokemon">
                 <p>Pokemon id:</p>
                 <input type="text" name="id"/>
                 <br/>
