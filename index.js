@@ -196,7 +196,7 @@ jsonfile.readFile(FILE,(err,obj)=>{
 
         for(pokemonCount=0;pokemonCount<pokemonNameWeight.length;pokemonCount++)
         {
-            context.pokemon.push(`${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} m.`);
+            context.pokemon.push(`${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.`);
                 pokemonNameString+=`<li>${pokemonNameWeight[pokemonCount][0]}: ${pokemonNameWeight[pokemonCount][1]} kg.</li>`;
         }
         pokemonNameString+="</ol>";
