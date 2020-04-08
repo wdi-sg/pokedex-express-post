@@ -3,6 +3,7 @@ class pokemon extends React.Component {
   render() {
 const type=this.props.type.map(type=>{
     return <li  style={{display: "inline", margin:"0px 80px"}} ><a href={"/pokemon/type?options="+type}>{type}</a></li>
+
 });
     return (
       <html>
@@ -53,9 +54,18 @@ const type=this.props.type.map(type=>{
                 </div>
             </div>
           </div>
+            <h2  style={{textAlign: "Center"}}>To Edit </h2>
+            <form method="GET" action= "/pokemon/edit" style={{textAlign: "Center"}}>
+                    <input type="radio" name="id" id="home" value="home" /><label for="track">    Go back to home page</label><br />
+                    <input type="radio" name="id" id="event" value={this.props.id}  /><label for="event">    Click to edit</label><br />
+
+
+            <input type="submit" value="Edit"></input>
+            </form>
+
             <h2  style={{textAlign: "Center"}}>To return home </h2>
             <form method="GET" action="/" style={{textAlign: "Center"}}>
-            <input type="submit" value="Return Home"></input>
+            <input type="submit" id="something"value="Return Home"></input>
             </form>
         </body>
       </html>

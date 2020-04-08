@@ -45,12 +45,21 @@ jsonfile.readFile(FILE,(err,obj)=>{
         response.send("Too high. Choose a different value")
         return;
     }
+    if(!isNaN(parseInt(request.body.name))) {
 
+        response.send("Pokemon name cannot be a number")
+        return;
+    }
+        if(request.body.name.length<=1) {
+
+        response.send("Pokemon name cannot single letter")
+        return;
+    }
         let pokemonCount=0;
         let pokemonNameString="<ol>Pokemon Names";
         for(pokemonCount=0;pokemonCount<obj["pokemon"].length;pokemonCount++)
         {
-                if(request.body.name === obj["pokemon"][pokemonCount]["name"])
+                if(request.body.name === obj["pokemon"][pokemonCount]["name"]||request.body.name === obj["pokemon"][pokemonCount]["name"]+"s")
                 {
                     response.send("Exist in data base. Try again")
                     return;
@@ -81,7 +90,33 @@ jsonfile.readFile(FILE,(err,obj)=>{
 
                                             });
 
+app.post("/pokemon/edited/:id", (request, response) => {
+  //read the file in and write out to it
+  let id=parseInt(request.body.id)-1;
+jsonfile.readFile(FILE,(err,obj)=>{
+    let nameCheck=false;
+    let heightCheck=false;
+        let pokemonCount=0;
 
+
+    obj["pokemon"][id].height=request.body.height;
+    obj["pokemon"][id].weight=request.body.weight;
+    obj["pokemon"][id].img=request.body.img;
+
+       //response.send(obj["pokemon"][id]);
+ jsonfile.writeFile(FILE, obj, (err) => {
+    console.error(err)
+    const data=obj["pokemon"][id];
+
+    //res.send(data);
+    response.render('pokemon',data);
+    // now look inside your json file
+
+  });
+});
+
+
+});
 
 /**
  * ===================================
@@ -135,6 +170,29 @@ app.get('/pokemon/index',(req,res)=>{
                 });
 
 });
+app.get('/pokemon/edit',(req,res)=>{
+
+    if(req.query.id==="home")
+    {
+        console.log("===============Welcome home");
+        res.redirect('/');
+        return;
+    }
+    else
+    {
+            jsonfile.readFile(FILE,(err,obj)=>{
+            let id=parseInt(req.query.id);
+            let pokemonName=[];
+            const data={};
+                data.pokemon=obj["pokemon"][id-1];
+
+            //res.send(data)
+
+            res.render('edit',data);
+                });
+
+    }
+})
 
 app.get('/pokemon/type',(req,res)=>{
 
