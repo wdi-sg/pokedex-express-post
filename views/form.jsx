@@ -2,10 +2,13 @@ var React = require('react');
 
 class Form extends React.Component {
   render() {
+
+
     return (
-      <html>
+
         <body>
           <div>
+              <h1>New Pokemon Form</h1>
               <form method="POST" action="/pokemon/:id">
                 <p>Pokemon id:</p>
                 <input type="text" name="id"/>
@@ -44,7 +47,7 @@ class Form extends React.Component {
               </form>
           </div>
         </body>
-      </html>
+
     );
   }
 }

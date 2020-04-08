@@ -6,7 +6,8 @@ class Editform extends React.Component {
       <html>
         <body>
           <div>
-              <form method="POST" action="/pokemon/:id">
+            <h1>Form to Edit Pokemon Data</h1>
+            <form method="POST" action="/pokemon/:id">
                 <p>Pokemon id:</p>
                 <input type="text" name="id"/>
                 <br/>
@@ -41,7 +42,7 @@ class Editform extends React.Component {
                 <input type="text" name="spawn_time"/>
                 <br/>
                 <button type="submit" value="Submit">Submit</button>
-              </form>
+            </form>
           </div>
         </body>
       </html>
