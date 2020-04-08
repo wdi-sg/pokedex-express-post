@@ -6,8 +6,9 @@ class Form extends React.Component {
         <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"/></head>
 
         <body style={{textAlign: "center"}}>
-        <div className="jumbotron">        <h1>Submit a Pokemon!</h1>
-
+        <div className="jumbotron">
+          <h1>Submit a Pokemon!</h1>
+          <a href="/"><button className="btn btn-success">Back to Home</button></a>
         </div>
         <p style={{color: 'red'}}>{this.props.error}</p>
           <form method="POST" action="/pokemon">

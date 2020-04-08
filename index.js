@@ -22,13 +22,6 @@ const capitalize = (s) => {
     return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function searchFor(obj, param, str) {
-    let item = obj[param]
-    let result = item.find((element) => element === str)
-
-    result ? result : false
-}
-
 /**
  * ===================================
  * Routes
@@ -67,24 +60,24 @@ app.get(`/type/:x`, (req, res) => {
     const query = capitalize(req.params.x)
     jsonfile.readFile(FILE, (err, obj) => {
 
-            const pokeArray = obj.pokemon
+        const pokeArray = obj.pokemon
 
-            const findType = (pokemon) => {
-                const typeArray = pokemon.type;
-                if (typeArray!==undefined) {
-                    const result = typeArray.find(type => type === query);
-                    return result ? pokemon : false
-                }
+        const findType = (pokemon) => {
+            const typeArray = pokemon.type;
+            if (typeArray !== undefined) {
+                const result = typeArray.find(type => type === query);
+                return result ? pokemon : false
             }
+        }
 
-            const foundPokemon = pokeArray.filter(findType);
+        const foundPokemon = pokeArray.filter(findType);
 
-            const data = {
-                list: foundPokemon,
-                query: query
-            }
+        const data = {
+            list: foundPokemon,
+            query: query
+        }
 
-            res.render('typelist', data);
+        res.render('typelist', data);
 
     })
 })
@@ -132,6 +125,67 @@ app.post(`/pokemon`, (req, res) => {
 })
 
 app.get('/', (req, res) => {
+
+    jsonfile.readFile(FILE, (err, obj) => {
+
+      const pokeArray = obj.pokemon
+
+        if (err) {
+            console.log(`error w reading file: ${err}`);
+        }
+
+        const sortingQuery = req.query.sort
+        let data;
+        let sorted;
+        if (sortingQuery === undefined) {
+          sorted = pokeArray;
+        } else if (sortingQuery===`nameAscend`) {
+          sorted = pokeArray.sort( (a,b) => (a.name > b.name) ? 1 : -1 )
+        } else if (sortingQuery===`nameDescend`) {
+          sorted = pokeArray.sort( (a,b) => (a.name < b.name) ? 1 : -1 )
+        } else if (sortingQuery===`type`) {
+          sorted = pokeArray.sort( (a,b) => (a.type > b.type) ? 1 : -1 )
+        } else if (sortingQuery===`idAscend`) {
+          sorted = pokeArray.sort( (a,b) => (a.id > b.id) ? 1 : -1 )
+        }else if (sortingQuery===`idDescend`) {
+          sorted = pokeArray.sort( (a,b) => (a.id < b.id) ? 1 : -1 )
+        } else if (sortingQuery===`heightAscend`) {
+          sorted = pokeArray.sort( (a,b) => {
+            let height1 = parseFloat(a.height);
+            let height2 = parseFloat(b.height);
+            return (height1 > height2) ? 1 : -1
+          })
+        } else if (sortingQuery===`heightDescend`) {
+          sorted = pokeArray.sort( (a,b) => {
+            let height1 = parseFloat(a.height);
+            let height2 = parseFloat(b.height);
+            return (height1 < height2) ? 1 : -1
+          })
+        } else if (sortingQuery===`weightAscend`) {
+          sorted = pokeArray.sort( (a,b) => {
+            let weight1 = parseFloat(a.weight);
+            let weight2 = parseFloat(b.weight);
+            return (weight1 > weight2) ? 1 : -1
+          })
+        } else if (sortingQuery===`weightDescend`) {
+          sorted = pokeArray.sort( (a,b) => {
+            let weight1 = parseFloat(a.weight);
+            let weight2 = parseFloat(b.weight);
+            return (weight1 < weight2) ? 1 : -1
+          })
+        }
+        data = {
+            pokeData: sorted
+        }
+        res.render('index', data);
+
+    })
+
+});
+
+app.get('/sort', (req, res) => {
+
+    console.log(req.query.sort)
 
     jsonfile.readFile(FILE, (err, obj) => {
         if (err) {

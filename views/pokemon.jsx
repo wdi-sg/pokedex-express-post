@@ -5,7 +5,7 @@ class Pokemon extends React.Component {
     let typeDiv;
     let typeList
 
-    let types = this.props.type
+    let types = this.props.type;
 
     if (types) {
       typeList = types.map( (type)=> {
