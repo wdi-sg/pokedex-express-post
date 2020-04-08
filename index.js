@@ -28,9 +28,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 // Functions
-const writePokedex = function (file, arr) {
-  const obj = {};
-  obj.pokemon = arr;
+const writePokedex = function (file) {
+  let obj = {pokemon: pokedex};
   let writePromise = jsonfile.writeFile(file, obj);
 
   writePromise.catch((err) => console.error(err));
@@ -120,7 +119,7 @@ const addPokemon = function (req, res) {
 
   pokedex.push(newMon);
 
-  writePokedex(FILE, pokedex);
+  writePokedex(FILE);
   res.send(newMon);
 };
 
