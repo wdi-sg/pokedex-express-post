@@ -13,6 +13,10 @@
 
 #### further
 
+Use bootstrap to add CSS styles to your app. (we haven't covered using a style.css file yet)
+
+#### further
+
 - upon creation of a new pokemon, redirect the user to that single pokemon page ( use `response.redirect` )
 
 #### further
