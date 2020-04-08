@@ -33,17 +33,83 @@ app.set('view engine', 'jsx');
  * ===================================
  */
 
+//////////////////////////////
+// INDEX PAGE              //
+////////////////////////////
+
+app.get('/pokemon/index', (request, response) => {
+    jsonfile.readFile(file, (err, obj) => {
+
+        let pokemonList = obj.pokemon;
+
+        const data = {
+            'pokemon': pokemonList
+        }
+
+        response.render('list', data);
+    })
+});
+
+//////////////////////////////
+// EACH TYPES               //
+////////////////////////////
+
+app.get('/pokemon/types/:type', (request, response) => {
+    jsonfile.readFile(file, (err, obj) => {
+
+        let pokemonList = obj.pokemon;
+
+        const data = {
+            'pokemon': pokemonList
+        }
+
+        response.render('types', data);
+    });
+})
+
+//////////////////////////////
+// ALL TYPES               //
+////////////////////////////
+
+app.get('/pokemon/types', (request, response) => {
+    jsonfile.readFile(file, (err, obj) => {
+
+        let pokemonList = obj.pokemon;
+
+        const data = {
+            'pokemon': pokemonList
+        }
+
+        response.render('types', data);
+    });
+})
+
+//////////////////////////////
+// ALL PHOTOS              //
+////////////////////////////
+
 app.get('/pokemon/photos/', (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
 
-        let pokemonPhotosList = [];
-        for (let i = 0; i < obj.pokemon.length; i++) {
-            pokemonPhotosList.push(obj.pokemon[i].img);
+        let pokemonList = obj.pokemon;
+
+        const data = {
+            'pokemon': pokemonList
         }
-        response.send(pokemonPhotosList);
+
+        // let pokemonPhotosList = [];
+        // for (let i = 0; i < obj.pokemon.length; i++) {
+        //     pokemonPhotosList.push(obj.pokemon[i].img);
+        // }
+
+        response.render('photos', data);
     })
 });
+
+//////////////////////////////
+// CREATE NEW POKEMON      //
+////////////////////////////
 
 app.post('/pokemon/new', (request, response) => {
     //debug code (output request body)
@@ -83,6 +149,23 @@ app.get('/pokemon/new', (request, response) => {
     response.render('form');
 });
 
+//////////////////////////////
+// EDIT PAGE               //
+////////////////////////////
+
+app.get('/pokemon/edit', (request, response) => {
+    jsonfile.readFile(file, (err, obj) => {
+
+        //To be added
+
+        response.render('edit');
+    })
+});
+
+//////////////////////////////
+// GET POKEMON BY ID       //
+////////////////////////////
+
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
@@ -115,11 +198,10 @@ app.get('/pokemon/:id', (request, response) => {
       response.status(404);
       response.send("not found");
     } else {
-      response.send(pokemon);
+      response.render('individual', pokemon);
     }
   });
 });
-
 
 /**
  * ===================================

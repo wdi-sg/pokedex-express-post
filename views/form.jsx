@@ -4,6 +4,7 @@ class Form extends React.Component {
         return (
             <html>
                 <body>
+                    <h1>Update Pokedex</h1>
                     <form method='POST' action='/pokemon/new'>
                         ID:<br/>
                         <input type='number' name='id'/><br/><br/>
