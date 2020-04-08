@@ -21,6 +21,12 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// add react
+const reactEngine = require('express-react-views').createEngine();
+app.engine('jsx', reactEngine);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+
 // Functions
 const writePokedex = function (file, arr) {
   const obj = {};
