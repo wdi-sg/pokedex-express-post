@@ -75,45 +75,45 @@ app.post('/pokemon', (req, res) => {
 })
 
 
-app.get('/pokemon/:id', (request, response) => {
+// app.get('/pokemon/:id', (request, response) => {
 
-  // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+//   // get json from specified file
+//   jsonfile.readFile(FILE, (err, obj) => {
 
-    // check to make sure the file was properly read
-    if( err ){
+//     // check to make sure the file was properly read
+//     if( err ){
 
-      console.log("error with json read file:",err);
-      response.status(503).send("error reading filee");
-      return;
-    }
-    // obj is the object from the pokedex json file
-    // extract input data from request
-    let inputId = parseInt( request.params.id );
+//       console.log("error with json read file:",err);
+//       response.status(503).send("error reading filee");
+//       return;
+//     }
+//     // obj is the object from the pokedex json file
+//     // extract input data from request
+//     let inputId = parseInt( request.params.id );
 
-    var pokemon;
+//     var pokemon;
 
-    // find pokemon by id from the pokedex json file
-    for( let i=0; i<obj.pokemon.length; i++ ){
+//     // find pokemon by id from the pokedex json file
+//     for( let i=0; i<obj.pokemon.length; i++ ){
 
-      let currentPokemon = obj.pokemon[i];
+//       let currentPokemon = obj.pokemon[i];
 
-      if( currentPokemon.id === inputId ){
-        pokemon = currentPokemon;
-      }
-    }
+//       if( currentPokemon.id === inputId ){
+//         pokemon = currentPokemon;
+//       }
+//     }
 
-    if (pokemon === undefined) {
+//     if (pokemon === undefined) {
 
-      // send 404 back
-      response.status(404);
-      response.send("not found");
-    } else {
+//       // send 404 back
+//       response.status(404);
+//       response.send("not found");
+//     } else {
 
-      response.send(pokemon);
-    }
-  });
-});
+//       response.send(pokemon);
+//     }
+//   });
+// });
 
 app.get('/sort', (req, res) =>{
     console.log(req.query.sortby)
@@ -144,6 +144,71 @@ app.get('/sort', (req, res) =>{
         });
     })
 
+})
+
+app.get('/index', (req, res) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeArray = [];
+        for (let el of obj.pokemon){
+            pokeArray.push(el.name)
+        }
+        const data = {pokeArray}
+        res.render('index', data)
+
+    })
+})
+
+app.get('/types', (req, res) => {
+    jsonfile.readFile(FILE, (err, obj) => {
+        let pokeTypeArray = [];
+        for (let el of obj.pokemon){
+            for (let type of el.type){
+                pokeTypeArray.push(type)
+            }
+        }
+        let uniquePokeTypeArray = pokeTypeArray.filter((item, index) => {
+            return pokeTypeArray.indexOf(item) === index
+        })
+
+        let typesWithPokemonArray = []
+        for (let type of uniquePokeTypeArray){
+            let pokeType = {
+                "type": type,
+                "pokemon" : []
+            }
+            typesWithPokemonArray.push(pokeType);
+        }
+
+        //for each object in the types array
+        for (let i = 0; i < typesWithPokemonArray.length; i++){
+            for (let j = 0; j < obj.pokemon.length; j++){
+                for (let k = 0; k < obj.pokemon[j].type.length; k++){
+                    if (obj.pokemon[j].type[k] === typesWithPokemonArray[i].type){
+                        typesWithPokemonArray[i].pokemon.push(obj.pokemon[j].name)
+                    }
+                }
+            }
+        }
+
+        const data = {typesWithPokemonArray}
+
+        res.render('types', data)
+
+    })
+})
+
+
+app.get('/pokemon/:name', (req, res) => {
+    const data = {"name": req.params.name}
+    res.render('pokemonPage', data)
+})
+
+app.get('/pokemon/:name/edit', (req, res) => {
+    res.send("Page under construction")
+})
+
+app.get('/createPokemon', (req, res) =>{
+    res.send("Page under construction")
 })
 
 app.get('/', (request, response) => {
