@@ -96,6 +96,18 @@ app.post("/pokemon/new", (req, res) => {
         return;
       }
     }
+    //Ensures that pokemon names are longer than one character
+    if (newPokemonObj.name.length < 2) {
+      const comments = { comments: "Error: Please enter a valid name with more than one character!" };
+      res.render("pokemon-form", comments);
+      return;
+    }
+    //Ensures that pokemon names are not purely numbers
+    if (typeof parseInt(newPokemonObj.name) === "number") {
+      const comments = { comments: "Error: Please enter a valid name and not a number!" };
+      res.render("pokemon-form", comments);
+      return;
+    }
     //Checks that there are no duplicate names in existing pokemon array
     let pokemonArr = obj.pokemon;
     let duplicate = false;
