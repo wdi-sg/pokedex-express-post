@@ -35,8 +35,14 @@ app.set("view engine", "jsx");
 */
 
 // GET requests
+app.get("/pokemon", (request, response) => {
+  jsonfile.readFile(FILE, (error, data) => {
+    response.render("index", data);
+  })
+})
+
 app.get("/pokemon/new", (request, response) => {
-  response.render("home");
+  response.render("form");
 })
 
 app.get('/pokemon/:id', (request, response) => {
@@ -59,7 +65,6 @@ app.get('/pokemon/:id', (request, response) => {
 
     // find pokemon by id from the pokedex json file
     for( let i=0; i<obj.pokemon.length; i++ ){
-
       let currentPokemon = obj.pokemon[i];
 
       if( currentPokemon.id === inputId ){
@@ -74,10 +79,16 @@ app.get('/pokemon/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      obj["pokemonId"] = parseInt( request.params.id );
+
+      response.render("single", obj);
     }
   });
 });
+
+app.get("/pokemon/:id/edit", (request, response) => {
+  response.send("<h1>Page under construction</h1>");
+})
 
 app.get('/', (request, response) => {
   response.send("yay");
@@ -87,10 +98,9 @@ app.get('/', (request, response) => {
 app.post("/pokemon", (request, response) => {
   jsonfile.readFile(FILE, (error, data) => {
     const inputs = request.body;
-    console.log(inputs.id);
     const pokedex = data.pokemon;
 
-    pokedex[pokedex.length-1] = {
+    pokedex[inputs.id-1] = {
       "id": parseInt(inputs.id),
       "num": inputs.num,
       "name": inputs.name,
@@ -100,10 +110,9 @@ app.post("/pokemon", (request, response) => {
     };
 
     jsonfile.writeFile(FILE, data, (error) => {
-      console.log(error);
-
-      response.send("Thank you for helping complete the Pokedex!");
     })
+
+    response.redirect(302, "/pokemon/" + inputs.id);
 
   })
 })
