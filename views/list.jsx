@@ -6,11 +6,7 @@ class List extends React.Component {
     let pokedex = this.props.dex;
     let pokelist = pokedex.map((mon) => {
       let link = "../pokemon/" + mon.id;
-      let sort = (this.props.sort) ? this.props.sort : "num";
-      if (sort === "name") {
       return <li key={mon.id}><a href={link}>{mon.name}</a></li>;
-      }
-      return <li key={mon.id}><a href={link}>{mon[sort]}: {mon.name}</a></li>;
     });
 
     return (
