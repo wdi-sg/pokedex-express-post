@@ -152,6 +152,11 @@ const addPokemon = function (req, res) {
 
 // Routes
 
+app.get('/pokemon/edit/:id', (req, res) => {
+  console.log(req);
+  res.send("Okay, next time we'll do something");
+});
+
 app.get('/pokemon/new', sendForm);
 
 app.get('/pokemon/:id', getPokemon);
