@@ -26,12 +26,31 @@ app.use(express.urlencoded({
 }));
 
 let FILE = "./pokedex.json";
+let newDex = "./newpokedex.json"
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+app.get('/pokemon/new', (request, response) => {
+    jsonfile.readFile(FILE, (err,obj) => {
+        console.log("reading from pokedex....")
+        let pokedex = obj.pokemon
+        response.render('form.jsx', pokedex);
+    })
+})
+
+const uploadpokedex = (request, response) =>{
+  //your inputs
+   console.log(request.body);
+  jsonfile.writeFile(file, request.body, (err) => {
+    console.error(err)
+    response.send(request.body);
+  });
+}
+
+app.post(newDex, uploadpokedex);
 
 app.get('/pokemon/:id', (request, response) => {
 
