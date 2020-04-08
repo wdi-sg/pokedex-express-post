@@ -47,6 +47,7 @@ class Pokemon extends React.Component {
                             <a href="/pokemon/new" className="nav__link create">Create a new Pokemon!</a>
                             <a href="/reset" className="nav__link reset">Reset to original Pokedex</a>
                             <a href="/" className="nav__link index">Back to Home</a>
+                            <a href="/sort" className="nav__link poke-list">Back to List</a>
                         </div>
                         <div className={`pokemon ${this.props.pokemon[0].type[0].toLowerCase()}`}>
                             <div className="pokemon__name-container">

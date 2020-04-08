@@ -20,7 +20,7 @@ class Reset extends React.Component {
                             <a href="/" className="nav__link index">Back to Home</a>
                         </div>
                         <div className="reset-container">
-                        <h1>Pokedex Reset!</h1>
+                            <h1 className="reset-container__header">Pokedex Reset!</h1>
                         </div>
                     </div>
                 </main>
