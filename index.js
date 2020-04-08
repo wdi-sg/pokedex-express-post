@@ -28,13 +28,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 
 // Functions
-const writePokedex = function (file) {
-  let obj = {pokemon: pokedex};
-  let writePromise = jsonfile.writeFile(file, obj);
-
-  writePromise.catch((err) => console.error(err));
-};
-
 const getPokemon = function (req, res) {
   let pokemon;
   let inputId = Number(req.params.id);
@@ -110,52 +103,51 @@ const listPokemon = function (req, res)  {
   res.render('list', dexObj);
 };
 
-//id, num, name, img, height, and weight
 const sendForm = function (req, res) {
-  let formFields = [
-    '<form method="POST" action="/pokemon">',
-    '<label for="monid">Pokemon ID</label>',
-    '<input type="text" id="monid" name="monid">',
+  res.render('newmonster', {mon: {}});
+};
 
-    '<label for="monnum">Pokemon Number</label>',
-    '<input type="text" num="monnum" name="monnum">',
+const validateMonster = function (monObj) {
+  const getNumber = function (instr) {
+    return (Number(instr)) ? Number(instr) : "Invalid, please enter a number.";
+  };
 
-    '<label for="monname">Pokemon Name</label>',
-    '<input type="text" name="monname" name="monname">',
+  const newMon = {
+    id: getNumber(monObj.monid),
+    num: getNumber(monObj.monnum),
+    name: monObj.monname,
+    img: monObj.monimg,
+    height: getNumber(monObj.monheight),
+    weight: getNumber(monObj.monweight)
+  };
 
-    '<label for="monimg">Pokemon Image</label>',
-    '<input type="url" img="monimg" name="monimg">',
+  let oldIds = pokedex.map(mon => mon.id);
+  if (oldIds.includes(newMon.id)) {
+    newMon.id = "Invalid, ID number already in use.";
+  }
 
-    '<label for="monheight">Pokemon Height</label>',
-    '<input type="text" height="monheight" name="monheight">',
+  return newMon;
+};
 
-    '<label for="monweight">Pokemon Weight</label>',
-    '<input type="text" weight="monweight" name="monweight">',
-
-    '<input type="submit" value="Submit">',
-    '</form>'
-  ];
-
-  res.send(formFields.join('<br>'));
+const isValid = function (val) {
+  return !(String(val).toLowerCase().includes("invalid"));
 };
 
 const addPokemon = function (req, res) {
-  console.log("got form");
-  console.log(req.body);
-  let form = req.body;
-  const newMon = {
-    id: Number(form.monid),
-    num: form.monnum,
-    name: form.monname,
-    img: form.monimg,
-    height: form.monheight,
-    weight: form.monweight
-  };
+  let newMon = validateMonster(req.body);
 
-  pokedex.push(newMon);
-
-  writePokedex(FILE);
-  res.send(newMon);
+  if (Object.values(newMon).every(isValid)) {
+    newMon.num = String(newMon.num);
+    newMon.height = String(newMon.height) + " m";
+    newMon.weight = String(newMon.weight) + " kg";
+    pokedex.push(newMon);
+    let writePromise = jsonfile.writeFile(FILE, {pokemon: pokedex});
+    writePromise
+      .then(res.redirect('../pokemon/' + newMon.id))
+      .catch(err => console.log(err));
+  } else {
+    res.render('newmonster', {mon: newMon});
+  }
 };
 
 // Routes
