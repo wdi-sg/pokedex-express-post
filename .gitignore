@@ -1,4 +1,5 @@
 ####### NODE
+yarn.lock
 pnpm-lock.yaml
 # Logs
 logs
