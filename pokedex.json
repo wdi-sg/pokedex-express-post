@@ -8,9 +8,9 @@
       "height": "0.71 m",
       "weight": "6.9 kg",
       "candy": "Bulbasaur Candy",
-      "candy_count": "25",
+      "candy_count": 25,
       "egg": "2 km",
-      "avg_spawns": "69",
+      "avg_spawns": 69,
       "spawn_time": "20:00"
     },
     {
@@ -1881,6 +1881,19 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "asdf",
+      "img": "asdfasdfasdf.com/asdfadsfasdf.jpg",
+      "height": "1.65m",
+      "weight": "88kg",
+      "candy": "no",
+      "candy_count": 123,
+      "egg": "no egg",
+      "avg_spawns": 1,
+      "spawn_time": "20m"
     }
   ]
 }
