@@ -9,7 +9,8 @@ class Pokemon extends React.Component {
     return (
 
           <div>
-            <h1>Pokemon Data</h1>
+            <h1>Pokemon List</h1>
+            <a href="/">Back to Home page</a>
             <ul>
                 {pokemonList}
             </ul>

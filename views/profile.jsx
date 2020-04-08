@@ -34,6 +34,9 @@ class Profile extends React.Component {
           <div>
             <h1>{name}</h1>
             {profile}
+            <br/>
+            <a href="/pokemon">Back to Pokemon List page</a>
+
 
           </div>
 
