@@ -17,7 +17,6 @@ app.set('view engine', 'jsx');
 app.use(express.static(path.join(__dirname, 'public')));
 app.listen(port, () => console.log(`~~~ Tuning in to the waves of port ${port} ~~~`));
 
-
 /**
  * ===================================
  * Routes
@@ -73,10 +72,13 @@ function getInvalidInputFields(id, num, name, img, height, weight ) {
 
 function addPokemon(req, res) {
   const {id, num, name, img, height, weight} = req.body;
-  const errors = getInvalidInputFields();
-  if (errors.length) {
-    console.log(errors);
-    return res.render('form', errors);
+  const errors = getInvalidInputFields(id, num, name,img, height, weight);
+  console.log("error are");
+  console.log(errors);
+  if (Object.keys(errors).length) {
+    console.log("this is run");
+    console.log({errors});
+    return res.render('form', {errors});
   }
   else {
     getJson()

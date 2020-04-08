@@ -24,20 +24,29 @@ body {
     align-items: center;
     margin-right:1rem;
 }
+
+.input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 .form input {
+
+    align-self: flex-end;
     font-family: "Roboto", sans-serif;
     outline: 0;
     background: #f2f2f2;
     width: 100%;
     border: 0;
     margin: 5px;
-    padding: 15px;
+    padding: 10px 30px;
     box-sizing: border-box;
     font-size: 14px;
 }
 
 .error {
-    text-align: left;
+    display: block;
+    color:pink;
 }
 .form button {
     font-family: "Roboto", sans-serif;
@@ -52,6 +61,7 @@ body {
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+    margin-top:10px;
 }
 .form button:hover,.form button:active,.form button:focus {
     background: #43A047;

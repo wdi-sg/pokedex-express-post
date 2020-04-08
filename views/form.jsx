@@ -13,34 +13,51 @@ class Form extends React.Component {
         <form method="POST" action="/pokemon" class="form">
           <div className="form-group">
             <label htmlFor="id">ID</label>
-            <input type="text" name="id"/>
+            <div className="input">
+              <input type="text" name="id"/>
+              <span className="error">{this.props.errors && this.props.errors.id ? this.props.errors.id : ""}</span>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.id ? this.props.error.id : ""}</span>
           <div className="form-group">
             <label htmlFor="num">Num</label>
-            <input type="text" name="num"/>
+            <div className="input">
+              <input type="text" name="num"/>
+              <span className="error">{this.props.errors && this.props.errors.num ? this.props.errors.num : ""}</span>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.num? this.props.error.num: ""}</span>
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name"/>
+            <div className="input">
+              <div className="input">
+                <input type="text" name="name"/>
+                <span
+                  className="error">{this.props.errors && this.props.errors.name ? this.props.errors.name : ""}</span>
+              </div>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.name? this.props.error.name: ""}</span>
           <div className="form-group">
             <label htmlFor="img">Image</label>
-            <input type="text" name="img"/>
+            <div className="input">
+              <input type="text" name="img"/>
+              <span className="error">{this.props.errors && this.props.errors.img ? this.props.errors.img : ""}</span>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.img? this.props.error.img: ""}</span>
           <div className="form-group">
             <label htmlFor="height">height</label>
-            <input type="text" name="height"/>
+            <div className="input">
+              <input type="text" name="height"/>
+              <span
+                className="error">{this.props.errors && this.props.errors.height ? this.props.errors.height : ""}</span>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.height? this.props.error.height: ""}</span>
           <div className="form-group">
             <label htmlFor="weight">weight</label>
-            <input type="text" name="weight"/>
+            <div className="input">
+              <input type="text" name="weight"/>
+              <span
+                className="error">{this.props.errors && this.props.errors.weight ? this.props.errors.weight : ""}</span>
+            </div>
           </div>
-          <span className="error">{this.props.error && this.props.error.weight? this.props.error.weight: ""}</span>
           <button type="submit">Submit</button>
         </form>
       </div>
