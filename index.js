@@ -12,11 +12,56 @@ const FILE = 'pokedex.json';
 // Init express app
 const app = express();
 
+// Tell your app to use the module
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
+// Sets layout to your react engine
+const reactEngine = require("express-react-views").createEngine();
+app.engine("jsx", reactEngine);
+
+// This tells express where to look for your view files
+app.set("views", "views");
+
+// This line sets react to be the default engine
+app.set("view engine", "jsx");
+
+
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+app.get("/pokemon/new", (request, response) => {
+  response.render("new");
+})
+
+app.post("/pokemon", (request, response) => {
+  jsonfile.readFile(FILE, (error, data) => {
+    const inputs = request.body;
+    console.log(inputs.id);
+    const pokedex = data.pokemon;
+
+    pokedex[pokedex.length-1] = {
+      "id": parseInt(inputs.id),
+      "num": inputs.num,
+      "name": inputs.name,
+      "img": inputs.img,
+      "height": inputs.height,
+      "weight": inputs.weight
+    };
+
+    jsonfile.writeFile(FILE, data, (error) => {
+      console.log(error);
+
+      response.send("lol thanks");
+    })
+
+  })
+})
 
 app.get('/pokemon/:id', (request, response) => {
 
@@ -53,14 +98,27 @@ app.get('/pokemon/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      obj["pokemonId"] = parseInt( request.params.id );
+
+      response.render("single", obj);
     }
   });
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send("go to /pokemon/, /pokemon/new or something like that");
 });
+
+app.get("/pokemon", (request, response) => {
+  jsonfile.readFile(FILE, (error, data) => {
+    response.render("index", data);
+  })
+})
+
+app.get("/pokemon/:id/edit", (request, response) => {
+  response.send("you came to the wrong neighbourhood buddy");
+})
+
 
 /**
  * ===================================
