@@ -11,6 +11,7 @@ var React = require('react');
      return (
        <div>
        <h1>List of all Pokemon</h1>
+       <a href = {"/pokemon/new"}>Create pokemon</a>
          <ul>
          {pokemon}
          </ul>

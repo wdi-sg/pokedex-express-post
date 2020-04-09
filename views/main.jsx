@@ -5,7 +5,7 @@ class Main extends React.Component {
 
     return (
       <div>
-        <p>POKEMON:{this.proms.name}</p>
+        <p>POKEMON:{this.props.name}</p>
         <p>ID:{this.props.id}</p>
         <p>NUM:{this.props.num}</p>
         <p>NAME:{this.props.name}</p>
