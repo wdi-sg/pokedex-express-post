@@ -7,8 +7,8 @@ class Home extends React.Component {
           <div>
             <h1><u>#{this.props.num}:{this.props.name}</u></h1>
             <img src={this.props.img} alt=""/>
-            <p>Height: {this.props.height}</p>
-            <p>Weight: {this.props.weight}</p>
+            <p><strong>Height</strong>: {this.props.height}</p>
+            <p><strong>Weight</strong>: {this.props.weight}</p>
               
           </div>
         </body>

@@ -1,4 +1,10 @@
 var React = require('react');
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 class Home extends React.Component {
     
   render() {
@@ -6,18 +12,20 @@ class Home extends React.Component {
     var list = [];
     pokedex.forEach(pokemon => {
         var pokemon = `#${pokemon.num} : ${pokemon.name}`
-        list.push(pokemon);
+        list.push(<li>
+            {pokemon}
+            {/* <Link to={`/pokemon/${pokemon.id}`} >{pokemon}</Link> */}
+           </li>);
     });
-    list = list.map(pokemon =>{
-        return <li>{pokemon}</li>
-    })
+    
     return (
       <html>
         <body>
           <div>
             <h1><u>List of Pokemon:</u></h1>
+            {/* <Router> */}
             <ul>{list}</ul>
-            
+            {/* </Router> */}
           </div>
         </body>
       </html>
