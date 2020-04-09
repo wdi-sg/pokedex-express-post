@@ -72,11 +72,12 @@ const savePokemon = (request, response) =>{
 
     jsonfile.readFile(FILE, (err, obj) => {
         obj.pokemon.push(newPokemon);
-        response.render('pokemonnew', newPokemon);
+
 
         jsonfile.writeFile(FILE, obj,  { spaces: 2 }, (err) => {
             console.log("err");
         });
+        response.render('pokemonnew', newPokemon);
     });
 };
 app.post('/pokemon', savePokemon);
