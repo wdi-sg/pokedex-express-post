@@ -44,12 +44,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// app.get('/pokemon/index', (request, response) => {
-//     response.render('index')
-// });
-// app.get('/pokemon/newpokemon', (request, response) => {
-//     response.render('newpokemon')
-// });
 app.get('/pokemon/createnew', (request, response) => {
     response.render('createnew')
 });
