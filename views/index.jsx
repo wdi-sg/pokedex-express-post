@@ -19,28 +19,17 @@ class Home extends React.Component {
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
             <link rel="stylesheet" type="text/css" href="css/style.css"/>
             <body>
-                <div>
-                    <div>
-                        <form method="get" action="/pokemon/test">
-                            <button type="submit">Continue</button>
-                            <input type="text" name="id"/><br/>
-                        </form>
-                        <form method="get" action="/pokemon/indexlist">
-                            <button type="submit">Continue</button>
-                        </form>
+                <div className="container mt-5">
+                    <div className="row">
+                        <h1><u>Pokemon 1st Generation</u></h1>
+                    </div>
+                    <div className="row my-2">
                         <form method="get" action="/pokemon/createnew">
-                            <button type="submit">Continue</button>
+                            <button type="submit">CreateNewPokemon</button>
                         </form>
-                        <form method="get" action="/pokemon/edit">
-                            <button type="submit">Continue</button>
-                        </form>
-                        <div className="container">
-                            <div className="container d-flex border flex-row flex-wrap">
-
-                                    {pokemonlist}
-
-                            </div>
-                        </div>
+                    </div>
+                    <div className="row d-flex border flex-row flex-wrap">
+                            {pokemonlist}
                     </div>
                 </div>
             </body>

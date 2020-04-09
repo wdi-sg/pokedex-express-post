@@ -4,12 +4,19 @@ class Home extends React.Component {
 
     render() {
         let typelink;
-       if(this.props.type2.length == 1) {
+        let typelink0;
+        let typelink1;
+        let typefinal;
+
+        if(this.props.type2.length == 1) {
             typelink = <a href={"/type/"+this.props.type2}>{this.props.type2}</a>
         }
-        // if(this.props.type2.length == 2) {
+        if(this.props.type2.length == 2) {
 
-        // }
+            typelink0 = <a href={"/type/"+this.props.type2[0]}>{this.props.type2[0]}</a>
+            typelink1 = <a href={"/type/"+this.props.type2[1]}>{this.props.type2[1]}</a>
+        }
+
     return (
         <html>
             <meta charset="UTF-8"/>
@@ -30,6 +37,10 @@ class Home extends React.Component {
                                 <div>
                                     Num: {this.props.num}
                                 </div>
+                                <div>
+                                    Type: {typelink} {typelink0} {typelink1}
+                                    {typefinal}
+                                </div>
                             </div>
                             <div className="col-5">
                                 <div>
@@ -41,13 +52,13 @@ class Home extends React.Component {
                             </div>
                         </div>
                         <div className="row mt-3 ml-1">
-                            {this.props.name} is a {this.props.type} Pokemon!
+                            {this.props.name} is a {this.props.type} Pokemon!<br/> It is {this.props.weight}, and {this.props.height} tall!
                         </div>
-                        <div className="row mt-5 ml-1">
+                        <div className="row mt-1 ml-1">
                             <form method="get" action="/">
                                 <button type="submit" className="btn btn-secondary d-flex flex-column justify-content-center" style={{height:"20px",width:"100px",fontSize:"12px"}}>Back to Index</button>
                             </form>
-                                {typelink}
+
                         </div>
                     </div>
                 </div>

@@ -47,12 +47,12 @@ app.get('/', (req, res) => {
 // app.get('/pokemon/index', (request, response) => {
 //     response.render('index')
 // });
-// app.get('/pokemon/new', (request, response) => {
-//     response.render('pokemonNew')
+// app.get('/pokemon/newpokemon', (request, response) => {
+//     response.render('newpokemon')
 // });
-// app.get('/pokemon/createnew', (request, response) => {
-//     response.render('createnew')
-// });
+app.get('/pokemon/createnew', (request, response) => {
+    response.render('createnew')
+});
 app.get("/pokemon/id/:x", (request, response) => {
 
     jsonfile.readFile(file, (err, obj) => {
@@ -93,7 +93,7 @@ app.get("/pokemon/id/:x", (request, response) => {
             type2:pType2
         }
 
-        console.log(data)
+        //console.log(data)
         response.render('pokemon',data)
     });
 });
@@ -130,45 +130,12 @@ app.get("/type/:x", (request, response) => {
     });
 });
 
-
-// app.get("/type/:x", (request, response) => {
-
-//     jsonfile.readFile(file, (err, obj) => {
-//         let pName = [];
-//         let pImg = [];
-//         let pId = [];
-//         for(let i=0; i<obj.pokemon.length; i++){
-
-//             if(obj.pokemon[i].type[0].toLowerCase()==request.params.x) {
-//                 pName.push(obj.pokemon[i].name)
-//                 pImg.push(obj.pokemon[i].img)
-//                 pId.push(obj.pokemon[i].id)
-//             }
-//             if(obj.pokemon[i].type.length == 2){
-//                 if(obj.pokemon[i].type[1].toLowerCase()==request.params.x) {
-//                     pName.push(obj.pokemon[i].name);
-//                     pImg.push(obj.pokemon[i].img)
-//                     pId.push(obj.pokemon[i].id)
-//                 }
-//             }
-//         }
-//         console.log(pName)
-//         data = {
-//             name:pName,
-//             img:pImg,
-//             id:pId
-//         }
-//         console.log(data)
-//         response.render('type',data)
-//     });
-// });
-
-app.post('/pokemon/id', (request,response) => {
+app.post('/pokemon/newpokemon', (request,response) => {
 
     jsonfile.readFile(file, (err, obj) => {
 
         jsonfile.writeFile('data.json', request.body, (err) => {
-            console.error(err)
+            //console.error(err)
         });
         // check id
 
