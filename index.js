@@ -5,13 +5,14 @@
  */
 
 console.log("Poke express node is working..")
+console.log("------------------------------")
+// Importing modules
 const jsonfile = require('jsonfile');
 const express = require('express');
-// Init express app
-const app = express();
 const reactEngine = require('express-react-views').createEngine();
 
-
+// Init express app
+const app = express();
 // tell your app to use the module
 app.engine('jsx', reactEngine);
 // this line set views to view directory
@@ -19,22 +20,38 @@ app.set('views', __dirname + '/views');
 
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
-
+//
 app.use(express.json());
 app.use(express.urlencoded({
-  extended: true
+extended: true
 }));
 
-let FILE = "./pokedex.json";
-let newDex = "./newpokedex.json"
+
+let pokedexData = "./pokedex.json";
+let newDex = "./newpokedex.json";
+let formPage = "./views/form.jsx";
 /**
  * ===================================
  * Routes
  * ===================================
  */
 
+
+
+
+app.get('/pokemon/index', (request, response) => {
+    jsonfile.readFile(pokedexData, (err, obj) => {
+        console.log("reading from pokedex....")
+        let pokemon = obj.pokemon
+
+    })
+response.send(obj);
+    // response.send("welcome to the index page");
+})
+
+
 app.get('/pokemon/new', (request, response) => {
-    jsonfile.readFile(FILE, (err,obj) => {
+    jsonfile.readFile(pokedexData, (err,obj) => {
         console.log("reading from pokedex....")
         let pokedex = obj.pokemon
         response.render('form.jsx', pokedex);
@@ -44,18 +61,22 @@ app.get('/pokemon/new', (request, response) => {
 const uploadpokedex = (request, response) =>{
   //your inputs
    console.log(request.body);
-  jsonfile.writeFile(file, request.body, (err) => {
+  jsonfile.writeFile(pokedexData, request.body, (err) => {
     console.error(err)
     response.send(request.body);
   });
 }
 
+
+
 app.post(newDex, uploadpokedex);
+
+
 
 app.get('/pokemon/:id', (request, response) => {
 
   // get json from specified file
-  jsonfile.readFile(FILE, (err, obj) => {
+  jsonfile.readFile(pokedexData, (err, obj) => {
 
     // check to make sure the file was properly read
     if( err ){
@@ -96,9 +117,11 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
+
+
 app.get('/', (request, response) => {
   response.send("yay");
-  console.log(FILE)
+  console.log(pokedexData)
 });
 
 /**
@@ -106,4 +129,6 @@ app.get('/', (request, response) => {
  * Listen to requests on port 3000
  * ===================================
  */
+
+
 app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
