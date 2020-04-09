@@ -36,7 +36,7 @@ app.set("view engine", "jsx");
  */
 
 app.get("/pokemon/new", (request, response) => {
-  response.render("home");
+  response.render("new");
 })
 
 app.post("/pokemon", (request, response) => {
@@ -98,14 +98,27 @@ app.get('/pokemon/:id', (request, response) => {
       response.send("not found");
     } else {
 
-      response.send(pokemon);
+      obj["pokemonId"] = parseInt( request.params.id );
+
+      response.render("single", obj);
     }
   });
 });
 
 app.get('/', (request, response) => {
-  response.send("yay");
+  response.send("go to /pokemon/, /pokemon/new or something like that");
 });
+
+app.get("/pokemon", (request, response) => {
+  jsonfile.readFile(FILE, (error, data) => {
+    response.render("index", data);
+  })
+})
+
+app.get("/pokemon/:id/edit", (request, response) => {
+  response.send("you came to the wrong neighbourhood buddy");
+})
+
 
 /**
  * ===================================
