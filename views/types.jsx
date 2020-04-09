@@ -1,8 +1,16 @@
 const React = require('react');
 
-class Home extends React.Component {
+class Types extends React.Component {
 
     render() {
+
+        const allTypes =
+            this.props.types.map(type => {
+                const typeUrl = `./types/${type}`
+                return <a href={typeUrl} key={type} className={`types-list__entry ${type.toLowerCase()}`}>{type}</a>
+            })
+
+
         return (
             <body>
                 <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet"></link>
@@ -18,19 +26,11 @@ class Home extends React.Component {
                         <div className="nav">
                             <a href="/pokemon/new" className="nav__link create">Create a new Pokemon!</a>
                             <a href="/reset" className="nav__link reset">Reset to original Pokedex</a>
-                            <a href="/types" className="nav__link reset">View Pokemon by Types</a>
+                            <a href="/" className="nav__link index">Back to Home</a>
                         </div>
-                        <form method="POST" action="/sort" className="sort-form">
-                            <label htmlFor="pokemon-properties" className="sort-form__label">SORT POKEMON BY:</label>
-                            <select id="pokemon-properties" name="property" className="sort-form__selector">
-                            <option value="id">ID</option>
-                            <option value="num">number</option>
-                            <option value="name">name</option>
-                            <option value="height">height</option>
-                            <option value="height">weight</option>
-                          </select>
-                          <input type="submit" formMethod="GET" value="Sort!" className="sort-form__btn"></input>
-                        </form>
+                        <ul className="types-list">
+                            {allTypes}
+                        </ul>
                     </div>
                 </main>
             </body>
@@ -38,4 +38,4 @@ class Home extends React.Component {
     }
 }
 
-module.exports = Home;
+module.exports = Types;

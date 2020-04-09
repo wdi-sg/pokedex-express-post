@@ -1,20 +1,20 @@
 const React = require('react');
 
 class List extends React.Component {
-  render() {
+    render() {
 
 
-    const pokemonList = this.props.pokemon.map(pkmn => {
+        const pokemonList = this.props.pokemon.map(pkmn => {
             const pokemonUrl = `./pokemon/${pkmn.id}`
             if (pkmn.type) {
                 return <a href={pokemonUrl} key={pkmn.id} className={`pokemon-list__entry ${pkmn.type[0].toLowerCase()}`}>{pkmn.name}</a>
             } else {
                 return <a href={pokemonUrl} key={pkmn.id} className={`pokemon-list__entry`}>{pkmn.name}</a>
             }
-    })
+        })
 
-    return (
-        <body>
+        return (
+            <body>
             <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet"></link>
             <link rel="stylesheet" type="text/css" href="/css/styles.css"></link>
             <main>
@@ -35,8 +35,8 @@ class List extends React.Component {
                 </div>
             </main>
         </body>
-    );
-  }
+        );
+    }
 }
 
 module.exports = List;

@@ -20,13 +20,13 @@ class Form extends React.Component {
                     </div>
                     <form method="POST" action="/pokemon" className="create-form">
                         <h2 className="create-form__header">Create a New Pokemon</h2>
-                        <input type="number" name="id" placeholder="id" min="0" max="9999"></input>
+                        <input type="number" name="id" placeholder="ID" min="0" max="9999"></input>
                         <br></br>
-                        <input type="number" name="num" placeholder="num" min="0" max="9999"></input>
+                        <input type="number" name="num" placeholder="number" min="0" max="9999"></input>
                         <br></br>
-                        <input type="text" name="name" placeholder="name" maxlength="25"></input>
+                        <input type="text" name="name" placeholder="name" maxLength="25"></input>
                         <br></br>
-                        <input type="text" name="img" placeholder="img"></input>
+                        <input type="text" name="img" placeholder="image link"></input>
                         <br></br>
                         <input type="number" name="height" placeholder="height" min="0" max="9999"></input>
                         <br></br>

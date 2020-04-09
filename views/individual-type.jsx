@@ -1,8 +1,14 @@
 const React = require('react');
 
-class Home extends React.Component {
+class Type extends React.Component {
 
     render() {
+
+        const pokemonList = this.props.pokemon.map(pkmn => {
+            const pokemonUrl = `../pokemon/${pkmn.id}`
+            return <a href={pokemonUrl} key={pkmn.id} className={`types-list__entry ${pkmn.type[0].toLowerCase()}`}>{pkmn.name}</a>
+        })
+
         return (
             <body>
                 <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet"></link>
@@ -18,19 +24,12 @@ class Home extends React.Component {
                         <div className="nav">
                             <a href="/pokemon/new" className="nav__link create">Create a new Pokemon!</a>
                             <a href="/reset" className="nav__link reset">Reset to original Pokedex</a>
-                            <a href="/types" className="nav__link reset">View Pokemon by Types</a>
+                            <a href="/" className="nav__link index">Back to Home</a>
+                            <a href="/types" className="nav__link types">Back to Types</a>
                         </div>
-                        <form method="POST" action="/sort" className="sort-form">
-                            <label htmlFor="pokemon-properties" className="sort-form__label">SORT POKEMON BY:</label>
-                            <select id="pokemon-properties" name="property" className="sort-form__selector">
-                            <option value="id">ID</option>
-                            <option value="num">number</option>
-                            <option value="name">name</option>
-                            <option value="height">height</option>
-                            <option value="height">weight</option>
-                          </select>
-                          <input type="submit" formMethod="GET" value="Sort!" className="sort-form__btn"></input>
-                        </form>
+                        <ul className="types-list">
+                            {pokemonList}
+                        </ul>
                     </div>
                 </main>
             </body>
@@ -38,4 +37,4 @@ class Home extends React.Component {
     }
 }
 
-module.exports = Home;
+module.exports = Type;

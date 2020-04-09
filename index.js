@@ -30,15 +30,15 @@ app.set('views', __dirname + '/views');
 
 app.set('view engine', 'jsx');
 
-app.get('/pokemon/new', (req, res) => {
-    res.render('pokemon-new-form');
-});
-
 /**
  * ===================================
  * Routes
  * ===================================
  */
+
+app.get('/pokemon/new', (req, res) => {
+    res.render('pokemon-new-form');
+});
 
 app.get('/pokemon/:id', (req, res) => {
 
@@ -190,6 +190,57 @@ app.get('/reset', (req, res) => {
     })
 
     res.render('reset');
+})
+
+app.get('/types', (req, res) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        let typesArr = [];
+
+        obj.pokemon.forEach(pkmn => {
+            let pkmnTypes = pkmn.type.flat(4);
+
+            pkmnTypes.forEach(type => {
+                if (!typesArr.includes(type)) {
+                    typesArr.push(type);
+                }
+            })
+        })
+
+        data = {
+            types: typesArr
+        }
+
+        res.render('types', data);
+    })
+})
+
+app.get('/types/:typ', (req, res) => {
+
+    jsonfile.readFile(file, (err, obj) => {
+
+        let pokeTypeArr = [];
+
+        obj.pokemon.forEach(pkmn => {
+            let pkmnTypes = pkmn.type.flat(4);
+
+            pkmnTypes.forEach(type => {
+                if (type == req.params.typ) {
+                    pokeTypeArr.push(pkmn);
+                }
+            })
+        })
+
+        data = {
+            pokemon: pokeTypeArr
+        }
+
+        console.log(pokeTypeArr);
+
+        res.render('individual-type', data);
+    })
+
 })
 
 app.get('/', (req, res) => {
