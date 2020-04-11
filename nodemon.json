@@ -1,7 +1,7 @@
 {
   "restartable": "rs",
   "ignore": [
-    "pokedex.json",
+    "*.json",
     ".git",
     "node_modules/**/node_modules"
   ],
