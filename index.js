@@ -75,9 +75,8 @@ const savePokemon = (request, response) =>{
 
 
         jsonfile.writeFile(FILE, obj,  { spaces: 2 }, (err) => {
-            console.log("err");
+            response.render('pokemonnew', newPokemon);
         });
-        response.render('pokemonnew', newPokemon);
     });
 };
 app.post('/pokemon', savePokemon);
@@ -88,7 +87,7 @@ app.post('/pokemon', savePokemon);
 app.get('/pokemon/:id', (request, response) => {
   jsonfile.readFile(FILE, (err, obj) => {
     if( err ){
-      console.log("error with json read file:",err);
+      console.log("error with json read file:", err);
       response.status(503).send("error reading file");
       return;
     }
@@ -113,14 +112,6 @@ app.get('/pokemon/:id', (request, response) => {
   });
 });
 
-
-
-//------------------------------------
-// Edit Current Pokemon (IGNORE)//
-//------------------------------------
-app.get('/pokemon/:id/edit',(request, response) => {
-    response.render('editform');
-})
 app.post('/pokemon/:id', (request, response) => {
     let newPokemon = {};
     newPokemon['id'] = parseInt(request.body.id);
@@ -141,10 +132,19 @@ app.post('/pokemon/:id', (request, response) => {
         obj.pokemon.splice([request.body.id-1], 1, newPokemon);
 
         jsonfile.writeFile(FILE, obj, { spaces: 2 }, (err) => {
-            console.log("err");
+
         });
     });
 });
+
+
+//------------------------------------
+// Edit Current Pokemon (IGNORE)//
+//------------------------------------
+app.get('/pokemon/:id/edit',(request, response) => {
+    response.render('editform');
+})
+
 
 
 /**

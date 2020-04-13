@@ -10,24 +10,23 @@ class Profile extends React.Component {
         if (this.props[key] !== undefined){
             if (key !== "img") {
                 let desc = key[0].toUpperCase()+key.slice(1);
-                return <p>{desc}: {this.props[key]}</p>;
+                return <li key={this.props.id}>{desc}: {this.props[key]}</li>;
             } else {
-                return <img src={this.props[key]} className="img-pokemon"></img>
+                return <li key={this.props.id}><img src={this.props[key]} className="img-pokemon"></img></li>
             }
-        };
-
+        }
     });
 
     return (
-
+        <body>
           <div>
             <h1>{name}</h1>
-            {profile}
+
+            <ul>{profile}</ul>
             <br/>
             <a href="/pokemon">Back to Pokemon List page</a>
-
-
           </div>
+        </body>
 
     );
   }
