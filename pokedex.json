@@ -1,120 +1,6 @@
 {
   "pokemon": [
     {
-      "id": 1,
-      "num": "001",
-      "name": "Bulbasaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/001.png",
-      "height": "0.71 m",
-      "weight": "6.9 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": "25",
-      "egg": "2 km",
-      "avg_spawns": "69",
-      "spawn_time": "20:00"
-    },
-    {
-      "id": 2,
-      "num": "002",
-      "name": "Ivysaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/002.png",
-      "height": "0.99 m",
-      "weight": "13.0 kg",
-      "candy": "Bulbasaur Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 4.2,
-      "spawn_time": "07:00"
-    },
-    {
-      "id": 3,
-      "num": "003",
-      "name": "Venusaur",
-      "img": "http://www.serebii.net/pokemongo/pokemon/003.png",
-      "height": "2.01 m",
-      "weight": "100.0 kg",
-      "candy": "Bulbasaur Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.7,
-      "spawn_time": "11:30"
-    },
-    {
-      "id": 4,
-      "num": "004",
-      "name": "Charmander",
-      "img": "http://www.serebii.net/pokemongo/pokemon/004.png",
-      "height": "0.61 m",
-      "weight": "8.5 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 25,
-      "egg": "2 km",
-      "avg_spawns": 25.3,
-      "spawn_time": "08:45"
-    },
-    {
-      "id": 5,
-      "num": "005",
-      "name": "Charmeleon",
-      "img": "http://www.serebii.net/pokemongo/pokemon/005.png",
-      "height": "1.09 m",
-      "weight": "19.0 kg",
-      "candy": "Charmander Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 1.2,
-      "spawn_time": "19:00"
-    },
-    {
-      "id": 6,
-      "num": "006",
-      "name": "Charizard",
-      "img": "http://www.serebii.net/pokemongo/pokemon/006.png",
-      "height": "1.70 m",
-      "weight": "90.5 kg",
-      "candy": "Charmander Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 0.31,
-      "spawn_time": "13:34"
-    },
-    {
-      "id": 7,
-      "num": "007",
-      "name": "Squirtle",
-      "img": "http://www.serebii.net/pokemongo/pokemon/007.png",
-      "height": "0.51 m",
-      "weight": "9.0 kg",
-      "candy": "Squirtle Candy",
-      "candy_count": 25,
-      "egg": "2 km",
-      "avg_spawns": 58,
-      "spawn_time": "04:25"
-    },
-    {
-      "id": 8,
-      "num": "008",
-      "name": "Wartortle",
-      "img": "http://www.serebii.net/pokemongo/pokemon/008.png",
-      "height": "0.99 m",
-      "weight": "22.5 kg",
-      "candy": "Squirtle Candy",
-      "candy_count": 100,
-      "egg": "Not in Eggs",
-      "avg_spawns": 3.4,
-      "spawn_time": "07:02"
-    },
-    {
-      "id": 9,
-      "num": "009",
-      "name": "Blastoise",
-      "img": "http://www.serebii.net/pokemongo/pokemon/009.png",
-      "height": "1.60 m",
-      "weight": "85.5 kg",
-      "candy": "Squirtle Candy",
-      "egg": "Not in Eggs",
-      "avg_spawns": 0.67,
-      "spawn_time": "00:06"
-    },
-    {
       "id": 10,
       "num": "010",
       "name": "Caterpie",
@@ -1881,6 +1767,32 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "blablasheep",
+      "img": "https://cdn.shopify.com/s/files/1/2355/9697/products/ALT-Wooly2_110x110@2x.jpg?v=1519759173",
+      "height": "0.3 m",
+      "weight": "10 g",
+      "candy": "Sheepy Candy",
+      "candy_count": 3,
+      "egg": "Not in Eggs",
+      "avg_spawns": 5,
+      "spawn_time": "06:18"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "blablasheep",
+      "img": "https://cdn.shopify.com/s/files/1/2355/9697/products/ALT-Wooly2_110x110@2x.jpg?v=1519759173",
+      "height": "0.3 m",
+      "weight": "10 g",
+      "candy": "Sheepy Candy",
+      "candy_count": 3,
+      "egg": "Not in Eggs",
+      "avg_spawns": 5,
+      "spawn_time": "06:18"
     }
   ]
 }
