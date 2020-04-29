@@ -17,7 +17,7 @@ class PokemonDetails extends React.Component {
                 <h1 className = "h1"> Welcome to Pokedex</h1>
             </header>
             <div className = "Sort-Form">
-            <form  method="GET" action="/">
+            <form  method="P" action="/">
                 <label className="choice" htmlFor="choice">Choose your sorting option : </label>
                 <select className="choice" name="choice" id="choice">
                   <option className="choice" value="">--Please choose your option--</option>
