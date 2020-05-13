@@ -11,7 +11,9 @@ const FILE = 'pokedex.json';
 
 // Init express app
 const app = express();
+app.post('/post', (request, response) => {
 
+})
 /**
  * ===================================
  * Routes
