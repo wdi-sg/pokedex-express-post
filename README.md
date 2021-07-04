@@ -8,11 +8,15 @@ The starter code in this repository builds upon the previous exercise's ([pokede
 
 ## Getting Started
 
-1.  Fork and clone this repository to your computer
-2.  Run `npm install` to install dependencies
-3.  Look in the starter file called `index.js`, run `nodemon` to start local server on port 3000
-4.  Open `localhost:3000` on your browser and see the home page
-5.  Install the react jsx express libraries described in the gitbook
+1.  Fork and clone this repository to your computer [DONE]
+2.  Run `npm install` to install dependencies [DONE]
+        - npm init
+        - npm install express
+        - npm install jsonfile
+3.  Look in the starter file called `index.js`, run `nodemon` to start local server on port 3000 [DONE]
+4.  Open `localhost:3000` on your browser and see the home page [DONE]
+5.  Install the react jsx express libraries described in the gitbook [DONE]
+
 
 #### Note on comments:
 
@@ -20,13 +24,13 @@ The comments in this file are deliberately verbose meant to orientate you to an 
 
 ## Deliverables
 
-* Expose a new endpoint that intercepts GET requests to `/pokemon/new`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight`
+* Expose a new endpoint that intercepts GET requests to `/pokemon/new`, which responds with a HTML page with a `form` that has these fields: `id`, `num`, `name`, `img`, `height`, and `weight` [DONE]
 
-* Point the form to submit data to the (`/pokemon`) route using POST method
+* Point the form to submit data to the (`/pokemon`) route using POST method  [DONE]
 
 * (for the `id` and `num` fields, for now, the user will simply choose a number. Obviously if they happen to pick an id that already exists, they will have a bad time. We will have the tools to correct this soon)
 
-* Expose a new endpoint that accepts POST requests to `/pokemon`, which parses the form data and saves the new pokemon data into `pokedex.json`
+* Expose a new endpoint that accepts POST requests to `/pokemon`, which parses the form data and saves the new pokemon data into `pokedex.json`  [DONE]
 
 #### RESTful Routing
 
@@ -61,7 +65,7 @@ RESTful routing is a scheme to structure your URLS that removes duplication, and
 
 * Add a "Sort by height" button to the homepage
   - what do you need to write to abstract the idea of *sorting* in your code? What is the most elegant way to sort by any field in the pokedex?
-  
+
 * restrict the user from creating a pokemon with a id, number and name that already exists
 
 * validate all of the incoming user data. Restrict values to reasonable numbers (i.e. height less that 100, etc.) What is the best structure for your app to have this validation code?
