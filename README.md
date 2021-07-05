@@ -6,6 +6,8 @@ For this exercise, we will continue building our Pokedex web app - setting up ou
 
 The starter code in this repository builds upon the previous exercise's ([pokedex-express](https://github.com/wdi-sg/pokedex-express)).
 
++ Collab
+
 ## Getting Started
 
 1.  Fork and clone this repository to your computer
@@ -61,7 +63,7 @@ RESTful routing is a scheme to structure your URLS that removes duplication, and
 
 * Add a "Sort by height" button to the homepage
   - what do you need to write to abstract the idea of *sorting* in your code? What is the most elegant way to sort by any field in the pokedex?
-  
+
 * restrict the user from creating a pokemon with a id, number and name that already exists
 
 * validate all of the incoming user data. Restrict values to reasonable numbers (i.e. height less that 100, etc.) What is the best structure for your app to have this validation code?
