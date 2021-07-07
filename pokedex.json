@@ -1881,6 +1881,33 @@
       "egg": "Not in Eggs",
       "avg_spawns": 0,
       "spawn_time": "N/A"
+    },
+    {
+      "id": 152,
+      "num": "152",
+      "name": "Pikamon",
+      "img": "https://vignette.wikia.nocookie.net/p__/images/a/af/Agumon_DA_The_Movie.png/revision/latest?cb=20190707155018&path-prefix=protagonist",
+      "weight": "20kg",
+      "height": "100m",
+      "_locals": {}
+    },
+    {
+      "id": 153,
+      "num": "153",
+      "name": "Agumon",
+      "img": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d1c7b06b-1e30-4ede-8165-f65c350fc8fa/d5zuijv-fc1a7209-06ce-4496-ba86-319f583b1aae.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2QxYzdiMDZiLTFlMzAtNGVkZS04MTY1LWY2NWMzNTBmYzhmYVwvZDV6dWlqdi1mYzFhNzIwOS0wNmNlLTQ0OTYtYmE4Ni0zMTlmNTgzYjFhYWUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.judhUKB9QAAdsvgDtzyomB6xnQdS79-v_C0mfX0FDhc",
+      "weight": "1kg",
+      "height": "200m",
+      "_locals": {}
+    },
+    {
+      "id": 154,
+      "num": "154",
+      "name": "Chiiiitahhh",
+      "img": "https://vignette.wikia.nocookie.net/p__/images/a/af/Agumon_DA_The_Movie.png/revision/latest?cb=20190707155018&path-prefix=protagonist",
+      "weight": "20kg",
+      "height": "2000m",
+      "_locals": {}
     }
   ]
 }
